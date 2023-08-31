@@ -30,7 +30,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 3134136856764318927}
+  m_Father: {fileID: 3592291797021179449}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
@@ -87,13 +87,14 @@ GameObject:
   - component: {fileID: 3592291797021179449}
   - component: {fileID: 6938543302168809626}
   - component: {fileID: 8276033324118939361}
+  - component: {fileID: 20367271285192715}
   m_Layer: 5
   m_Name: Focus Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3592291797021179449
 RectTransform:
   m_ObjectHideFlags: 0
@@ -105,7 +106,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 8569800570152486918}
   m_Father: {fileID: 3134136856764318927}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -152,6 +154,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.3
+--- !u!225 &20367271285192715
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8672323992050171554}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &5224057319068898742
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -323,15 +337,15 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 3592291797021179449}
-    - targetCorrespondingSourceObject: {fileID: 7134023596179198329, guid: bce46eb11ec5a431bbac2753a4e77b98,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 8569800570152486918}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3689245617229108444, guid: bce46eb11ec5a431bbac2753a4e77b98,
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 4608064498588653089}
+    - targetCorrespondingSourceObject: {fileID: 3689245617229108444, guid: bce46eb11ec5a431bbac2753a4e77b98,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5312694761482193347}
   m_SourcePrefab: {fileID: 100100000, guid: bce46eb11ec5a431bbac2753a4e77b98, type: 3}
 --- !u!224 &3134136856764318927 stripped
 RectTransform:
@@ -399,9 +413,73 @@ MonoBehaviour:
   m_Interactable: 1
   m_TargetGraphic: {fileID: 7510246186311040982}
   toggleTransition: 1
-  graphic: {fileID: 2370868161574963498}
+  graphic: {fileID: 0}
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 0
+--- !u!114 &5312694761482193347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8884829261630407018}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13d5140830eac473f8b6d7a8cc6ba533, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _toggle: {fileID: 4608064498588653089}
+  _onOffObjects:
+  - {fileID: 8672323992050171554}
+  _fadeSpeed: 2
+  _onCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 2.5319176
+      outSlope: 2.5319176
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.053776808
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 136
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _offCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.0000003915888
+      outSlope: -0.0000003915888
+      tangentMode: 0
+      weightedMode: 2
+      inWeight: 0.33333334
+      outWeight: 0.30442467
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -2.7348723
+      outSlope: -2.7348723
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.031707466
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
