@@ -38,12 +38,15 @@ namespace WatKhaoWong.Utils.UI
         {
             bool hasError = false;
 
+            // CHECK if 'target image' is MISSING
             if (!_targetImage)
             {
                 Debug.LogError($"Please assign 'Target Image' field in the Inspector first before using this script. Under '{gameObject.name}' GameObject.");
                 hasError = true;
             }
 
+            // CHECK if 'current attached Image' is MISSING
+            // CHECK if 'current attached Image' ALPHA color is ZERO
             var image = GetComponent<UnityEngine.UI.Image>();
             if (!image)
             {
@@ -56,38 +59,42 @@ namespace WatKhaoWong.Utils.UI
                 hasError = true;
             }
 
+            // CHECK if 'child Image' is MISSING
             UnityEngine.UI.Image childImage = null;
             foreach (Transform child in gameObject.transform)
             {
                 childImage = child.GetComponent<UnityEngine.UI.Image>();
                 if (childImage) break;
             }
-
             if (!childImage)
             {
                 Debug.LogError($"No 'Image' component found in current attached GameObject's Children. Under '{gameObject.name}' GameObject.");
                 hasError = true;
             }
 
+            // CHECK if 'canvas group' is MISSING
+            // CHECK if 'canvas group' BLOCK RAYCASTS is TRUE
             CanvasGroup canvasGroup = GetComponentInChildren<CanvasGroup>();
             if (!canvasGroup)
             {
                 Debug.LogError($"No 'Canvas Group' component found in current attached GameObject's Children. Under '{gameObject.name}' GameObject.");
                 hasError = true;
             }
-
             if (canvasGroup && canvasGroup.blocksRaycasts == true)
             {
                 Debug.LogError($"'Blocks Raycasts' boolean field MUST set to 'False' under 'Canvas Group' component. Under '{gameObject.name}/{canvasGroup.name}' GameObject.");
                 hasError = true;
             }
 
+            // CHECK if 'button' is MISSING
             var button = GetComponent<UnityEngine.UI.Button>();
             if (!button)
             {
                 Debug.LogError($"No 'Button' component found in current attached GameObject. Under '{gameObject.name}' GameObject.");
                 hasError = true;
             }
+
+            // CHECK if 'button' TARGET GRAPHIC is ITSELF 'current attached Image', WHICH IS WRONG, MUST be CHILD IMAGE
             if (button && image && button.targetGraphic.transform.Equals(image.transform))
             {
                 Debug.LogError($"Wrong 'Target Graphic' field on 'Button' component, MUST be child image NOT itself image. USE '{_targetImage.name}' GameObject instead. Under '{gameObject.name}' GameObject.");
