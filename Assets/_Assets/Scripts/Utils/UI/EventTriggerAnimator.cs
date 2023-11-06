@@ -145,6 +145,7 @@ namespace WatKhaoWong.Utils.UI
                 yield return null;
             }
 
+            _previousCoroutine = null;
             yield break;
         }
         #endregion
