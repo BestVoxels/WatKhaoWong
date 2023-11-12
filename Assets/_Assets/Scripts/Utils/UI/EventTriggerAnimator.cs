@@ -164,8 +164,11 @@ namespace WatKhaoWong.Utils.UI
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
-            DefaultSize();
-            _permission = false;
+            if (_permission)
+            {
+                DefaultSize();
+                _permission = false;
+            }
         }
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
