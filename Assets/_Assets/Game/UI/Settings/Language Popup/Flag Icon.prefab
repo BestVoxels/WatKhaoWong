@@ -34,7 +34,6 @@ RectTransform:
   m_Children:
   - {fileID: 5638130016756083218}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
@@ -139,7 +138,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13d5140830eac473f8b6d7a8cc6ba533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _toggle: {fileID: 7651801311446581081}
   _onOffObjects:
   - {fileID: 8858791465538447862}
   _fadeSpeed: 2
@@ -173,21 +171,21 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -0.0000003915888
-      outSlope: -0.0000003915888
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
-      weightedMode: 2
-      inWeight: 0.33333334
-      outWeight: 0.30442467
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -2.7348723
-      outSlope: -2.7348723
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.031707466
-      outWeight: 0.33333334
+      inWeight: 0
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -222,7 +220,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5638130016756083218}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -300,7 +297,6 @@ RectTransform:
   m_Children:
   - {fileID: 5070387854474709644}
   m_Father: {fileID: 3139346600702783495}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
