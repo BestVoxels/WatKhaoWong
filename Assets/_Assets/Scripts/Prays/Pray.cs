@@ -16,7 +16,7 @@ namespace WatKhaoWong.Prays
 
 
         #region --Events-- (Delegate as Action)
-        public event Action OnTMPointsChanged;
+        public event Action OnTMPointsChanged;  // TODO might have to declare at Confirm Popup Script
         #endregion
 
 
@@ -26,11 +26,7 @@ namespace WatKhaoWong.Prays
         {
             return "Thanitsak Leuangsupornpong";
         }
-        #endregion
 
-
-
-        #region --Methods-- (Custom PUBLIC) ~AllTime/Today/ Points~
         public int GetAllTimePoints()
         {
             return 0;
@@ -56,7 +52,7 @@ namespace WatKhaoWong.Prays
         #region --Methods-- (Custom PUBLIC) ~Done~
         public void AddPoints()
         {
-            
+            // TODO might have to declare at Confirm Popup Script
             OnTMPointsChanged?.Invoke();
         }
         #endregion
@@ -66,8 +62,6 @@ namespace WatKhaoWong.Prays
         #region --Methods-- (Custom PUBLIC) ~Page UI Buttons~
         public void OnDoneButtonClick()
         {
-            //TODO _playerPray.AddPoints(); // MOVE to PopupUI Script, call when click 'Confirm' Button!!!
-
             Debug.LogWarning("Click \"Done\" Button!");
 
             _onDoneButtonClick?.Invoke();
