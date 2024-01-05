@@ -25,6 +25,7 @@ namespace WatKhaoWong.UI.Prays
         private int _result = 0;
 
         private InputPopup _playerInputPopup;
+        private ConfirmPopup _playerConfirmPopup;
         #endregion
 
 
@@ -33,6 +34,7 @@ namespace WatKhaoWong.UI.Prays
         private void Awake()
         {
             _playerInputPopup = GameObject.FindWithTag("Player").GetComponentInChildren<InputPopup>();
+            _playerConfirmPopup = GameObject.FindWithTag("Player").GetComponentInChildren<ConfirmPopup>();
 
             _closeButton.onClick.AddListener(Close);
 
@@ -73,7 +75,7 @@ namespace WatKhaoWong.UI.Prays
         {
             if (_isValidated)
             {
-                _playerInputPopup.SaveToTempPlace(_result);
+                _playerConfirmPopup.SaveToTempPlace(_result);
 
                 _playerInputPopup.OnOkButtonClick();
             }

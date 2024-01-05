@@ -6,6 +6,7 @@ namespace WatKhaoWong.Prays
     public class InputPopup : Popup
     {
         #region --Properties-- (Inspector)
+        [field: Header("Input Popup Settings")]
         [field: SerializeField] public string StatusTextDefault { get; private set; } = "Enter your desired number!";
         [field: SerializeField] public string StatusTextValid { get; private set; } = "Good job!";
         [field: SerializeField] public string StatusTextInvalid { get; private set; } = "Only positive value are allow!";
@@ -36,11 +37,6 @@ namespace WatKhaoWong.Prays
             Debug.LogWarning("Click \"OK\" Button! on Popup");
 
             _onOkButtonClick?.Invoke();
-        }
-
-        public void SaveToTempPlace(int TMPoints)
-        {
-            Debug.LogWarning($"Save Points ({TMPoints}) to ConfirmPopup.cs ...");
         }
         #endregion
     }

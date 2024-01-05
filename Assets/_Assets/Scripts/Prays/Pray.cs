@@ -15,12 +15,6 @@ namespace WatKhaoWong.Prays
 
 
 
-        #region --Events-- (Delegate as Action)
-        public event Action OnTMPointsChanged;  // TODO might have to declare at Confirm Popup Script
-        #endregion
-
-
-
         #region --Methods-- (Custom PUBLIC) ~User~
         public string GetUsernameText()
         {
@@ -44,16 +38,6 @@ namespace WatKhaoWong.Prays
         public string GetChallengeText()
         {
             return "No Challenge Avaiable";
-        }
-        #endregion
-
-
-
-        #region --Methods-- (Custom PUBLIC) ~Done~
-        public void AddPoints()
-        {
-            // TODO might have to declare at Confirm Popup Script
-            OnTMPointsChanged?.Invoke();
         }
         #endregion
 

@@ -13,7 +13,7 @@ namespace WatKhaoWong.Prays
 
 
         #region --Methods-- (Custom PUBLIC) ~Page Header UI~
-        public void OnCloseButtonClick()
+        public virtual void OnCloseButtonClick()
         {
             Debug.LogWarning("Click \"Close\" Button! on Popup");
 
