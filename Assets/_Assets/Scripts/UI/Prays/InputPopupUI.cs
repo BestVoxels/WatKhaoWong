@@ -47,16 +47,6 @@ namespace WatKhaoWong.UI.Prays
 
 
         #region --Methods-- (Custom PRIVATE)
-        private bool Validate(int number)
-        {
-            if (number <= 0)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
         private void UpdateStatusText(string newStatus) => _statusText.text = newStatus;
         #endregion
 
@@ -80,7 +70,7 @@ namespace WatKhaoWong.UI.Prays
                 _playerInputPopup.OnOkButtonClick();
             }
             else
-                UpdateStatusText(_playerInputPopup.StatusTextCantClick);
+                _playerInputPopup.OnOkButtonCantClick();
         }
 
         private void UpdateInputText(string TMPointsText)
@@ -94,18 +84,15 @@ namespace WatKhaoWong.UI.Prays
 
             if (int.TryParse(TMPointsText, out int result))
             {
-                if (Validate(result))
+                if (_playerInputPopup.Validate(result, out string validateStatus))
                 {
-                    _isValidated = true;
-                    UpdateStatusText(_playerInputPopup.StatusTextValid);
-
                     _result = result;
+                    _isValidated = true;
                 }
                 else
-                {
                     _isValidated = false;
-                    UpdateStatusText(_playerInputPopup.StatusTextInvalid);
-                }
+
+                UpdateStatusText(validateStatus);
             }
             else
             {
