@@ -25,7 +25,7 @@ namespace WatKhaoWong.Prays
         [SerializeField] private UnityEvent _onUndoButtonClick;
         [Space]
         [Header("Other Event")]
-        [SerializeField] private UnityEvent _onUploadDelayCompleted;
+        [SerializeField] private UnityEvent _onUploadCompleted;
         #endregion
 
 
@@ -104,9 +104,10 @@ namespace WatKhaoWong.Prays
                 timer += Time.deltaTime;
                 yield return null;
             }
+            yield return null; // Wait for next frame, because when While() loop condition is false, it Invoke _onUploadCompleted() right away, but we don't want that.
 
             UploadToServer();
-            _onUploadDelayCompleted?.Invoke();
+            _onUploadCompleted?.Invoke();
 
             _previousCoroutine = null;
             yield break;

@@ -107,6 +107,8 @@ namespace WatKhaoWong.Utils.UI
 
         public void ClosePopup(Animator popupAnimator)
         {
+            if (!popupAnimator.GetCurrentAnimatorStateInfo(0).IsName("PopupUI Open")) return;
+
             if (_popupDepth == 1)
                 _dim.animator.Play(_popupClose, -1, 0f);
 
