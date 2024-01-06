@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,43 +5,27 @@ namespace WatKhaoWong.Prays
 {
     public class ConfirmPopup : Popup
     {
-        #region --Fields-- (Inspector)
-        [Header("Undo Popup Settings")]
-        [Tooltip("This Numerical Value is represented as 'second' unit.")]
-        [Range(0f, 10f)]
-        [SerializeField] private float _uploadDelay = 3f;
-        #endregion
-
-
-
         #region --Events-- (UnityEvent)
         [Header("Confirm Popup UI Event")]
         [SerializeField] private UnityEvent _onCancelButtonClick;
         [SerializeField] private UnityEvent _onConfirmButtonClick;
-        [Space]
-        [Header("Undo Popup UI Event")]
-        [SerializeField] private UnityEvent _onUndoButtonClick;
-        [Space]
-        [Header("Other Event")]
-        [SerializeField] private UnityEvent _onUploadCompleted;
-        #endregion
-
-
-
-        #region --Events-- (Delegate as Action)
-        public event Action OnUploadSucceed;
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        private Coroutine _previousCoroutine;
+        private int _tempTMPoints;
+
+        private UndoPopup _undoPopup;
         #endregion
 
 
 
-        #region --Properties-- (Auto)
-        [field: SerializeField] public int TMPoints { get; private set; }
+        #region --Methods-- (Built In)
+        private void Start()
+        {
+            _undoPopup = GameObject.FindWithTag("Player").GetComponentInChildren<UndoPopup>();
+        }
         #endregion
 
 
@@ -53,9 +35,9 @@ namespace WatKhaoWong.Prays
         {
             if (result <= 0) return;
 
-            Debug.LogWarning($"Save Points ({result}) to TMPoints property under ConfirmPopup.cs");
+            Debug.LogWarning($"Save Points ({result}) to _tempTMPoints field under ConfirmPopup.cs");
 
-            TMPoints = result;
+            _tempTMPoints = result;
         }
         #endregion
 
@@ -66,7 +48,7 @@ namespace WatKhaoWong.Prays
         {
             Debug.LogWarning("Click \"Cancel\" Button! on Popup");
 
-            TMPoints = 0;
+            _tempTMPoints = 0;
 
             _onCancelButtonClick?.Invoke();
         }
@@ -75,51 +57,9 @@ namespace WatKhaoWong.Prays
         {
             Debug.LogWarning("Click \"Confirm\" Button! on Popup");
 
-            _previousCoroutine = StartCoroutine(UploadToServerDelay());
+            _undoPopup.StartUploadToServer(_tempTMPoints);
 
             _onConfirmButtonClick?.Invoke();
-        }
-
-        public void OnUndoButtonClick()
-        {
-            Debug.LogWarning("Click \"Undo\" Button! on Popup");
-
-            if (_previousCoroutine != null)
-                StopCoroutine(_previousCoroutine);
-
-            TMPoints = 0;
-
-            _onUndoButtonClick?.Invoke();
-        }
-        #endregion
-
-
-
-        #region --Methods-- (Custom PRIVATE)
-        private IEnumerator UploadToServerDelay()
-        {
-            float timer = 0f;
-            while (timer < _uploadDelay)
-            {
-                timer += Time.deltaTime;
-                yield return null;
-            }
-            yield return null; // Wait for next frame, because when While() loop condition is false, it Invoke _onUploadCompleted() right away, but we don't want that.
-
-            UploadToServer();
-            _onUploadCompleted?.Invoke();
-
-            _previousCoroutine = null;
-            yield break;
-        }
-
-        private void UploadToServer()
-        {
-            // TODO Upload to Server HERE!!! Pass in 'TMPoints' to it!!!
-            Debug.LogWarning($"Upload {TMPoints} Point to Server!!!");
-
-            // TODO When Upload SUCCESSFUL, call OnUploadSucceed Event
-            OnUploadSucceed?.Invoke();
         }
         #endregion
 
@@ -128,7 +68,7 @@ namespace WatKhaoWong.Prays
         #region --Methods-- (Override)
         public override void OnCloseButtonClick()
         {
-            TMPoints = 0;
+            _tempTMPoints = 0;
 
             base.OnCloseButtonClick();
         }

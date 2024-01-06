@@ -13,9 +13,6 @@ namespace WatKhaoWong.UI.Prays
         [Header("Confirm Popup UI Stuffs")]
         [SerializeField] private Button _cancelButton;
         [SerializeField] private Button _confirmButton;
-
-        [Header("Undo Popup UI Stuffs")]
-        [SerializeField] private Button _undoButton;
         #endregion
 
 
@@ -35,8 +32,6 @@ namespace WatKhaoWong.UI.Prays
 
             _cancelButton.onClick.AddListener(Cancel);
             _confirmButton.onClick.AddListener(Confirm);
-
-            _undoButton.onClick.AddListener(Undo);
         }
         #endregion
 
@@ -57,11 +52,6 @@ namespace WatKhaoWong.UI.Prays
         private void Confirm()
         {
             _playerConfirmPopup.OnConfirmButtonClick();
-        }
-
-        private void Undo()
-        {
-            _playerConfirmPopup.OnUndoButtonClick();
         }
         #endregion
     }

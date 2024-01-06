@@ -26,6 +26,13 @@ namespace WatKhaoWong.Utils.UI
 
 
 
+        #region --Properties-- (Inspector)
+        [field: Header("General Settings")]
+        [field: SerializeField] public bool Interactable { get; set; } = true;
+        #endregion
+
+
+
         #region --Fields-- (In Class)
         private Coroutine _previousCoroutine;
         private bool _permission = false;
@@ -155,6 +162,8 @@ namespace WatKhaoWong.Utils.UI
         #region --Methods-- (Interface)
         void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
         {
+            if (!Interactable) return;
+
             if (_permission == false)
             {
                 Shrink();
@@ -164,6 +173,8 @@ namespace WatKhaoWong.Utils.UI
 
         void IPointerExitHandler.OnPointerExit(PointerEventData eventData)
         {
+            if (!Interactable) return;
+
             if (_permission)
             {
                 DefaultSize();
@@ -173,12 +184,16 @@ namespace WatKhaoWong.Utils.UI
 
         void IPointerEnterHandler.OnPointerEnter(PointerEventData eventData)
         {
+            if (!Interactable) return;
+
             Shrink();
             _permission = true;
         }
 
         void IPointerUpHandler.OnPointerUp(PointerEventData eventData)
         {
+            if (!Interactable) return;
+
             if (_permission)
                 Expand();
             else

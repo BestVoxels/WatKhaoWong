@@ -22,7 +22,7 @@ namespace WatKhaoWong.UI
 
 
         #region --Fields-- (In Class)
-        private ConfirmPopup _confirmPopup;
+        private UndoPopup _undoPopup;
         #endregion
 
 
@@ -32,13 +32,13 @@ namespace WatKhaoWong.UI
         {
             GameObject player = GameObject.FindWithTag("Player");
 
-            _confirmPopup = player.GetComponentInChildren<ConfirmPopup>();
+            _undoPopup = player.GetComponentInChildren<UndoPopup>();
         }
 
         private void OnEnable()
         {
             // PRAY SYSTEM
-            _confirmPopup.OnUploadSucceed += () => { RefreshPrayUI(); };
+            _undoPopup.OnUploadSucceed += () => { RefreshPrayUI(); };
         }
 
         private void OnDisable()
