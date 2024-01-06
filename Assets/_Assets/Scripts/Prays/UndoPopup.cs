@@ -20,8 +20,9 @@ namespace WatKhaoWong.Prays
         [field: Header("Undo Popup Status Text")]
         [field: SerializeField] public string StatusHeaderTextDefault { get; private set; } = "Uploading...";
         [field: SerializeField] public string StatusInfoTextDefault { get; private set; } = "Press Undo if you uplooad by mistake";
-        [field: SerializeField] public string StatusHeaderTextDone { get; private set; } = "Uploade Completed!";
-        [field: SerializeField] public string StatusInfoTextDone { get; private set; } = $"You have successfully upload {TMPoints} to the system. Awesome!";
+        [field: SerializeField] public string StatusHeaderTextDone { get; private set; } = "Uploaded!";
+        [field: SerializeField] public string StatusInfoTextDoneBegin { get; private set; } = $"You have successfully upload (";
+        [field: SerializeField] public string StatusInfoTextDoneEnd { get; private set; } = $") to the system. Awesome!";
         #endregion
 
 
@@ -49,8 +50,14 @@ namespace WatKhaoWong.Prays
 
 
 
+        #region --Properties-- (Computed)
+        public string StatusInfoTextDone => StatusInfoTextDoneBegin + TMPoints + StatusInfoTextDoneEnd;
+        #endregion
+
+
+
         #region --Properties-- (Auto)
-        public static int TMPoints { get; private set; } = 0;
+        public int TMPoints { get; private set; } = 0;
         #endregion
 
 

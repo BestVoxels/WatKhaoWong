@@ -450,7 +450,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _uploadDelay: 3
+  _uploadDelay: 8
+  <StatusHeaderTextDefault>k__BackingField: Uploading...
+  <StatusInfoTextDefault>k__BackingField: Press Undo if you uplooad by mistake
+  <StatusHeaderTextDone>k__BackingField: Uploaded!
+  <StatusInfoTextDoneBegin>k__BackingField: You have successfully upload (
+  <StatusInfoTextDoneEnd>k__BackingField: ) to the system. Awesome!
   _onUndoButtonClick:
     m_PersistentCalls:
       m_Calls:

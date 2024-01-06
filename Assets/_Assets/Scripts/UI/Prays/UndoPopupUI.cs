@@ -41,10 +41,6 @@ namespace WatKhaoWong.UI.Prays
 
         private void OnEnable()
         {
-            // TODO Make OnEnable() and OnDisable() get call properly, have to be done outside.
-            // 1. Popup Animation should disable GameObject instead
-            // 2. Create 'Popup Panel' gameObject as a child of Root Popup GameObject so that when disabled, Animator component won't get disabled because Animator now being at root, and we disable its child instead 'Popup Panel'.
-            print("On Enable on UndoPOpupUI");
             RefreshUIDefault();
 
             _playerUndoPopup.OnUploading += UpdateStatus;
@@ -53,10 +49,6 @@ namespace WatKhaoWong.UI.Prays
 
         private void OnDisable()
         {
-            // TODO Make OnEnable() and OnDisable() get call properly, have to be done outside.
-            // 1. Popup Animation should disable GameObject instead
-            // 2. Create 'Popup Panel' gameObject as a child of Root Popup GameObject so that when disabled, Animator component won't get disabled because Animator now being at root, and we disable its child instead 'Popup Panel'.
-            print("On Disable on UndoPOpupUI");
             _playerUndoPopup.OnUploading -= UpdateStatus;
             _playerUndoPopup.OnUploadSucceed -= RefreshUIDone;
         }
@@ -104,7 +96,7 @@ namespace WatKhaoWong.UI.Prays
             _closeButton.gameObject.SetActive(true);
 
             _headerText.text = _playerUndoPopup.StatusHeaderTextDone;
-            _infoText.text = _playerUndoPopup.StatusInfoTextDone + $"{UndoPopup.TMPoints}";  // TODO create Method on UndoPopup.cs that combined First Half and Second Half string and we can just call it here.
+            _infoText.text = _playerUndoPopup.StatusInfoTextDone;
         }
         #endregion
     }
