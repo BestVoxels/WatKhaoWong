@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Utils.Core;
+using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.Prays
 {

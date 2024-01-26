@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.Prays
 {

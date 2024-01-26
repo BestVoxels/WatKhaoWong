@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace WatKhaoWong.Prays
+namespace WatKhaoWong.Attributes
 {
     public class Popup : MonoBehaviour
     {
