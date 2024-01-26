@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.Prays
 {
@@ -102,7 +103,7 @@ namespace WatKhaoWong.Prays
             {
                 timer += Time.deltaTime;
 
-                uploadProgress01 = Mathf.InverseLerp(0f, _uploadDelay, timer);
+                uploadProgress01 = Utilities.Get01ValueFrom(0f, _uploadDelay, timer);
                 OnUploading?.Invoke(uploadProgress01);
 
                 yield return null;

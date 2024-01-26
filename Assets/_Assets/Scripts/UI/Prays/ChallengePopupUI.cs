@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Prays;
 using WatKhaoWong.UI.Toggles;
+using WatKhaoWong.UI.System;
 
 namespace WatKhaoWong.UI.Prays
 {
@@ -33,6 +34,7 @@ namespace WatKhaoWong.UI.Prays
         private int _delayTimeValue;
 
         private ChallengePopup _playerChallengePopup;
+        private StatusText _statusText;
         #endregion
 
 
@@ -41,6 +43,7 @@ namespace WatKhaoWong.UI.Prays
         private void Awake()
         {
             _playerChallengePopup = GameObject.FindWithTag("Player").GetComponentInChildren<ChallengePopup>();
+            _statusText = FindAnyObjectByType<StatusText>();
 
             _closeButton.onClick.AddListener(Close);
 
@@ -94,22 +97,19 @@ namespace WatKhaoWong.UI.Prays
 
             if (!_lengthTG.AnyTogglesOn())
             {
-                // TODO UPDATE Status Text by calling SingleTon METHOD Maybe?
-                Debug.LogWarning(_playerChallengePopup.StatusMissingLengthTG);
+                _statusText.Show(_playerChallengePopup.StatusMissingLengthTG, _playerChallengePopup.StatusMissingLengthTGColor);
 
                 isEmpty = true;
             }
             if (!_nowOrLaterTG.AnyTogglesOn())
             {
-                // TODO UPDATE Status Text by calling SingleTon METHOD Maybe?
-                Debug.LogWarning(_playerChallengePopup.StatusMissingNowOrLaterTG);
+                _statusText.Show(_playerChallengePopup.StatusMissingNowOrLaterTG, _playerChallengePopup.StatusMissingNowOrLaterTGColor);
 
                 isEmpty = true;
             }
             if (!_delayDurationTG.AnyTogglesOn() && !_isNowToggleTicked)
             {
-                // TODO UPDATE Status Text by calling SingleTon METHOD Maybe?
-                Debug.LogWarning(_playerChallengePopup.StatusMissingDelayDurationTG);
+                _statusText.Show(_playerChallengePopup.StatusMissingDelayDurationTG, _playerChallengePopup.StatusMissingDelayDurationTGColor);
 
                 isEmpty = true;
             }
@@ -141,13 +141,11 @@ namespace WatKhaoWong.UI.Prays
 
             if (isUploaded)
             {
-                // TODO UPDATE Status Text by calling SingleTon METHOD Maybe?
-                Debug.LogWarning(_playerChallengePopup.StatusUploadSucceed);
+                _statusText.Show(_playerChallengePopup.StatusUploadSucceed, _playerChallengePopup.StatusUploadSucceedColor);
             }
             else
             {
-                // TODO UPDATE Status Text by calling SingleTon METHOD Maybe?
-                Debug.LogWarning(_playerChallengePopup.StatusUploadFail);
+                _statusText.Show(_playerChallengePopup.StatusUploadFail, _playerChallengePopup.StatusUploadFailColor);
             }
         }
         #endregion

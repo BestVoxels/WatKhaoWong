@@ -258,5 +258,38 @@ namespace WatKhaoWong.Utils.Core
             return Mathf.InverseLerp(minValue, maxValue, currentValue);
         }
         #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Color~
+        /// <summary>
+        /// Convert 'Color' or 'Color32' into 'string' Hexadecimal Color Code.
+        /// </summary>
+        /// <param name="color">Color or Color32 is fine, no need to cast.</param>
+        /// <returns>Hexadecimal Color Code</returns>
+        public static string ColorToHex(Color32 color) => $"{color.r:X2}{color.g:X2}{color.b:X2}";
+
+        /// <summary>
+        /// Convert 'string' Hexadecimal Color Code into 'Color' or 'Color32'.
+        /// </summary>
+        /// <param name="hex">Hexadecimal Color Code</param>
+        /// <param name="a">Default Alpha is fully visible, but if Hexadecimal Color Code has Alpha value this will be overrided by Hexadecimal Color Code.</param>
+        /// <returns>'Color' or 'Color32'</returns>
+        public static Color32 HexToColor(string hex, byte a = 255)
+        {
+            hex = hex.Replace("0x", ""); // in case the string is formatted 0xFFFFFF
+            hex = hex.Replace("#", ""); // in case the string is formatted #FFFFFF
+
+            byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+            byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+            byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+
+            // Only use alpha if the string has enough characters
+            if (hex.Length == 8)
+                a = byte.Parse(hex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
+
+            return new Color32(r, g, b, a);
+        }
+        #endregion
     }
 }
