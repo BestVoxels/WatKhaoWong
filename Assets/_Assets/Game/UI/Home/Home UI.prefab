@@ -32,7 +32,6 @@ RectTransform:
   m_Children:
   - {fileID: 6991962082480065338}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -75,6 +74,9 @@ MonoBehaviour:
   _page:
     animator: {fileID: 7208376917129762339}
     isShowOnStart: 1
+  _dim:
+    animator: {fileID: 0}
+    isShowOnStart: 0
   _popups: []
 --- !u!1001 &7339231586553120935
 PrefabInstance:
@@ -299,6 +301,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7456547958656644764}
+    - target: {fileID: 958134210323668950, guid: ea7f985393e974af298461a52fb84e1a,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OpenPage
+      objectReference: {fileID: 0}
     - target: {fileID: 1217478505697357434, guid: ea7f985393e974af298461a52fb84e1a,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target

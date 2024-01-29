@@ -17,12 +17,14 @@ namespace WatKhaoWong.UI
     {
         #region --Events-- (Delegate as Action)
         public static event Action OnPrayRefreshed;
+        public static event Action OnSettingRefreshed;
         #endregion
 
 
 
         #region --Fields-- (In Class)
         private UndoPopup _undoPopup;
+        // TODO lets see what to subscribe to for SETTING SYSTEM
         #endregion
 
 
@@ -39,6 +41,9 @@ namespace WatKhaoWong.UI
         {
             // PRAY SYSTEM
             _undoPopup.OnUploadSucceed += () => { RefreshPrayUI(); };
+
+            // SETTING SYSTEM
+            // TODO lets see what to subscribe to for SETTING SYSTEM
         }
 
         private void OnDisable()
@@ -55,6 +60,7 @@ namespace WatKhaoWong.UI
         public static void RefreshAllUI()
         {
             RefreshPrayUI();
+            RefreshSettingUI();
             print("Refreshed All UI");
         }
 
@@ -62,6 +68,12 @@ namespace WatKhaoWong.UI
         {
             OnPrayRefreshed?.Invoke();
             print("Refreshed Pray UI " + OnPrayRefreshed?.GetInvocationList().Length);
+        }
+
+        public static void RefreshSettingUI()
+        {
+            OnSettingRefreshed?.Invoke();
+            print("Refreshed Setting UI " + OnSettingRefreshed?.GetInvocationList().Length);
         }
         #endregion
 
@@ -71,6 +83,7 @@ namespace WatKhaoWong.UI
         private void RemoveStaticDelegatesSubscribers()
         {
             OnPrayRefreshed = null;
+            OnSettingRefreshed = null;
         }
         #endregion
     }
