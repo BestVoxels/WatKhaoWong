@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 322728750039578852}
   - component: {fileID: 7208376917129762339}
-  - component: {fileID: 7456547958656644764}
   m_Layer: 5
   m_Name: Home UI
   m_TagString: Untagged
@@ -59,25 +58,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7456547958656644764
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2895463734714906538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a57fcdb414b3242fd9646a8f1842a6b9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _page:
-    animator: {fileID: 7208376917129762339}
-    isShowOnStart: 1
-  _dim:
-    animator: {fileID: 0}
-    isShowOnStart: 0
-  _popups: []
 --- !u!1001 &7339231586553120935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -298,19 +278,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 958134210323668950, guid: ea7f985393e974af298461a52fb84e1a,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 7456547958656644764}
-    - target: {fileID: 958134210323668950, guid: ea7f985393e974af298461a52fb84e1a,
-        type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
       value: OpenPage
       objectReference: {fileID: 0}
-    - target: {fileID: 1217478505697357434, guid: ea7f985393e974af298461a52fb84e1a,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 7456547958656644764}
     - target: {fileID: 2384671931945094448, guid: ea7f985393e974af298461a52fb84e1a,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -411,11 +381,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8324931394550825667, guid: ea7f985393e974af298461a52fb84e1a,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 7456547958656644764}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

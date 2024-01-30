@@ -63,11 +63,18 @@ namespace WatKhaoWong.Utils.UI
             }
         }
 
-        private IEnumerator DelayPageAnimation(int animationIndex, float delayAmount)
+        private IEnumerator DelayPageAnimation(int animationIndex, float delayAmount, bool toManagePopup)
         {
             yield return new WaitForSeconds(delayAmount);
 
-            _page.animator.Play(animationIndex, -1, 0f);
+            _page.animator.Play(animationIndex, -1, 0f); // Ex Case : play "PageUI Open" animation
+
+            // Ex Case : current animation .IsName("PageUI Open") == false | .normalizedTime == HighNumber.  [false:Still on Old Animation | HighNumber:Played Time of Old Animation]
+            yield return null; // Wait for 'Page Animation' to change (to enable its Panel GameObject first). Otherwise 'Popup Animations' won't be able to interact. // Must Have 'Panel GameObject' enabled in the beginning of the New Animation, so 'Popup Animations' can interact with them.
+            // Ex Case : current animation .IsName("PageUI Open") == true | .normalizedTime == 0.  [true:Updated to New Animation | 0:Just Started Playing "PageUI Open"]
+
+            if (toManagePopup)
+                CloseOrOpenPopup(); // Can't Put in Start() because once Popup UI are disabled first, then Page UI is disabled. LATER WHEN Page UI is enabled, ALL Popup UI are enabled too!
 
             _previousCoroutine = null;
         }
@@ -81,9 +88,8 @@ namespace WatKhaoWong.Utils.UI
             if (_previousCoroutine != null)
                 StopCoroutine(_previousCoroutine);
 
-            _previousCoroutine = StartCoroutine(DelayPageAnimation(_pageOpen, delayBeforePlay));
+            _previousCoroutine = StartCoroutine(DelayPageAnimation(_pageOpen, delayBeforePlay, true));
 
-            CloseOrOpenPopup();
             _popupDepth = 0;
         }
 
@@ -92,7 +98,7 @@ namespace WatKhaoWong.Utils.UI
             if (_previousCoroutine != null)
                 StopCoroutine(_previousCoroutine);
 
-            _previousCoroutine = StartCoroutine(DelayPageAnimation(_pageClose, delayBeforePlay));
+            _previousCoroutine = StartCoroutine(DelayPageAnimation(_pageClose, delayBeforePlay, false));
         }
 
         public void OpenPopup(Animator popupAnimator)
@@ -107,14 +113,17 @@ namespace WatKhaoWong.Utils.UI
 
         public void ClosePopup(Animator popupAnimator)
         {
-            if (!popupAnimator.GetCurrentAnimatorStateInfo(0).IsName("PopupUI Open")) return;
+            // Guard Check only "PopupUI Open" & "PopupUI Idle" are allow to proceed
+            if (!popupAnimator.GetCurrentAnimatorStateInfo(0).IsName("PopupUI Open") && !popupAnimator.GetCurrentAnimatorStateInfo(0).IsName("PopupUI Idle"))
+                return;
 
-            if (_popupDepth == 1)
+            if (_popupDepth <= 1)
                 _dim.animator.Play(_popupClose, -1, 0f);
 
             popupAnimator.Play(_popupClose, -1, 0f);
 
-            _popupDepth--;
+            if (_popupDepth > 0)
+                _popupDepth--;
         }
         #endregion
 
