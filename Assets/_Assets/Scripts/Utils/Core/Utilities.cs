@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -151,9 +152,9 @@ namespace WatKhaoWong.Utils.Core
         /// For more details, check 'Animation Code' section in 'Unity Doc' note.
         /// </summary>
         /// <param name="animator">Animator that we want to check</param>
-        /// <param name="tag">Animation Tag that we put under Animation Clip, can be empty tag "" as well</param>
+        /// <param name="tag">Animation Tag that we put under Animation Clip, can be empty tag "" as well. (Optional Parameter)</param>
         /// <returns>NormalizedTime in range of [0f, Infinity]</returns>
-        public static float GetNormalizedTime(Animator animator, string tag)
+        public static float GetNormalizedTime(Animator animator, string tag = "")
         {
             // We can't simply return currentState.normalizedTime while There is Transitioning between States
             AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0);
@@ -173,6 +174,35 @@ namespace WatKhaoWong.Utils.Core
             else
             {
                 return 0f;
+            }
+        }
+
+        /// <summary>
+        /// Caller must be under IEnumerator type method.
+        /// This Method will Pause code execution until specify 'Animation Clip' is finished playing. Caller have to use (1) way.
+        /// Caller can choose to do 2 ways:
+        /// (1) 'yield return WaitForClipFinished();'  OR  'yield return StartCoroutine(WaitForClipFinished());'  code after this line WON'T go on.
+        /// (2) 'WaitForClipFinished();'  OR  'StartCoroutine(WaitForClipFinished());'  code after this line WILL go on.
+        /// Another 'Return Type' that allows Caller to choose in 2 ways is 'Coroutine'.
+        /// For more details & use case examples, check 'IEnumerator  ——Unity——' section in 'C# Doc' note.
+        /// ------
+        /// For more details about Animation, check 'Animation Code' section in 'Unity Doc' note.
+        /// </summary>
+        /// <param name="animator">Animator that contains Animation Clip</param>
+        /// <param name="clipName">Name of the Animation State Node</param>
+        /// <returns>IEnumerator that can pause the code execution if Caller use (1) way to call.</returns>
+        public static IEnumerator WaitForClipFinished(Animator animator, string clipName)
+        {
+            // While Animation Clip is still the OLD one, wait for it to get update
+            while (!animator.GetCurrentAnimatorStateInfo(0).IsName(clipName))
+            {
+                yield return null;
+            }
+
+            // Wait for New Animation Clip to play until it ends
+            while (animator.GetCurrentAnimatorStateInfo(0).IsName(clipName) && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f)
+            {
+                yield return null;
             }
         }
         #endregion
