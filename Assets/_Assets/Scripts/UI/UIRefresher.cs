@@ -16,6 +16,7 @@ namespace WatKhaoWong.UI
     public class UIRefresher : MonoBehaviour
     {
         #region --Events-- (Delegate as Action)
+        public static event Action OnHomeRefreshed;
         public static event Action OnPrayRefreshed;
         public static event Action OnSettingRefreshed;
         public static event Action OnHistoryRefreshed;
@@ -24,6 +25,7 @@ namespace WatKhaoWong.UI
 
 
         #region --Fields-- (In Class)
+        // TODO lets see what to subscribe to for HOME SYSTEM
         private UndoPopup _undoPopup;
         // TODO lets see what to subscribe to for SETTING SYSTEM
         // TODO lets see what to subscribe to for HISTORY SYSTEM
@@ -41,6 +43,9 @@ namespace WatKhaoWong.UI
 
         private void OnEnable()
         {
+            // HOME SYSTEM
+            // TODO lets see what to subscribe to for HOME SYSTEM
+
             // PRAY SYSTEM
             _undoPopup.OnUploadSucceed += () => { RefreshPrayUI(); };
 
@@ -64,10 +69,17 @@ namespace WatKhaoWong.UI
         #region --Methods-- (Custom PUBLIC), (Subscriber)
         public static void RefreshAllUI()
         {
+            RefreshHomeUI();
             RefreshPrayUI();
             RefreshSettingUI();
             RefreshHistoryUI();
             print("Refreshed All UI");
+        }
+
+        public static void RefreshHomeUI()
+        {
+            OnHomeRefreshed?.Invoke();
+            print("Refreshed Home UI " + OnHomeRefreshed?.GetInvocationList().Length);
         }
 
         public static void RefreshPrayUI()
@@ -94,6 +106,7 @@ namespace WatKhaoWong.UI
         #region --Methods-- (Custom PRIVATE)
         private void RemoveStaticDelegatesSubscribers()
         {
+            OnHomeRefreshed = null;
             OnPrayRefreshed = null;
             OnSettingRefreshed = null;
             OnHistoryRefreshed = null;
