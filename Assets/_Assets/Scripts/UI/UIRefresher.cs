@@ -18,6 +18,7 @@ namespace WatKhaoWong.UI
         #region --Events-- (Delegate as Action)
         public static event Action OnPrayRefreshed;
         public static event Action OnSettingRefreshed;
+        public static event Action OnHistoryRefreshed;
         #endregion
 
 
@@ -25,6 +26,7 @@ namespace WatKhaoWong.UI
         #region --Fields-- (In Class)
         private UndoPopup _undoPopup;
         // TODO lets see what to subscribe to for SETTING SYSTEM
+        // TODO lets see what to subscribe to for HISTORY SYSTEM
         #endregion
 
 
@@ -44,6 +46,9 @@ namespace WatKhaoWong.UI
 
             // SETTING SYSTEM
             // TODO lets see what to subscribe to for SETTING SYSTEM
+
+            // HISTORY SYSTEM
+            // TODO lets see what to subscribe to for HISTORY SYSTEM
         }
 
         private void OnDisable()
@@ -61,6 +66,7 @@ namespace WatKhaoWong.UI
         {
             RefreshPrayUI();
             RefreshSettingUI();
+            RefreshHistoryUI();
             print("Refreshed All UI");
         }
 
@@ -75,6 +81,12 @@ namespace WatKhaoWong.UI
             OnSettingRefreshed?.Invoke();
             print("Refreshed Setting UI " + OnSettingRefreshed?.GetInvocationList().Length);
         }
+
+        public static void RefreshHistoryUI()
+        {
+            OnHistoryRefreshed?.Invoke();
+            print("Refreshed History UI " + OnHistoryRefreshed?.GetInvocationList().Length);
+        }
         #endregion
 
 
@@ -84,6 +96,7 @@ namespace WatKhaoWong.UI
         {
             OnPrayRefreshed = null;
             OnSettingRefreshed = null;
+            OnHistoryRefreshed = null;
         }
         #endregion
     }
