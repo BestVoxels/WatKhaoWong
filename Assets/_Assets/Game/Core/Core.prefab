@@ -385,6 +385,7 @@ Transform:
   m_Children:
   - {fileID: 1618551056171792657}
   - {fileID: 7070464524601806179}
+  - {fileID: 4089146525035716039}
   - {fileID: 2637654065332200263}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -414,6 +415,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _persistentObjectPrefab: {fileID: 1603943417787598604, guid: f8914bffd4ee04068964698b79cfd14c,
     type: 3}
+--- !u!1 &4015423802478686636
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4089146525035716039}
+  - component: {fileID: 1908285290424802923}
+  m_Layer: 0
+  m_Name: URLOpener
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4089146525035716039
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4015423802478686636}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5923315315416972317}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1908285290424802923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4015423802478686636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7211b78016103474fa49ed4e527f1373, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4222515426203979952
 GameObject:
   m_ObjectHideFlags: 0
@@ -1180,6 +1225,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3547641287673499957}
+  - component: {fileID: 2877384778960014764}
   m_Layer: 0
   m_Name: Settings Support Popup System
   m_TagString: Untagged
@@ -1202,6 +1248,78 @@ Transform:
   m_Children: []
   m_Father: {fileID: 251800662036913830}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2877384778960014764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7528254027513631171}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e643f56d2d97420fa2f4ea80d8a0685, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onCloseButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7604709115715315857}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onWatKhaoWongButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1908285290424802923}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
+        m_MethodName: OpenUrl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: https://www.facebook.com/watkhaowong
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onNaraiSongritButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1908285290424802923}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
+        m_MethodName: OpenUrl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: https://www.facebook.com/Naraisongrit
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onBestVoxelsButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1908285290424802923}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
+        m_MethodName: OpenUrl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: https://www.bestvoxels.com
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8533724761888453121
 GameObject:
   m_ObjectHideFlags: 0
