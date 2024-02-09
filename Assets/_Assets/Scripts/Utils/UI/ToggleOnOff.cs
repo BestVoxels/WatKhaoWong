@@ -34,10 +34,15 @@ namespace WatKhaoWong.Utils.UI
             _toggle.onValueChanged.AddListener(UpdateUI);
         }
 
-        private void Start()
+        private void OnEnable()
         {
             if (_toggle.isOn)
                 UpdateUI(true);
+        }
+
+        private void OnDisable()
+        {
+            _previousCoroutine = null;
         }
         #endregion
 
