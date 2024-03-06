@@ -6,6 +6,14 @@ namespace WatKhaoWong.Utils.UI
 {
     public class ToggleOnOff : MonoBehaviour
     {
+        private enum UpdateUIType
+        {
+            Animate,
+            Instant
+        }
+
+
+
         #region --Fields-- (Inspector)
         [Tooltip("IMPORTANT : First Element in 'OnOffObjects' field MUST have 'Canvas Group' component, but the Rest are optional.")]
         [SerializeField] private GameObject[] _onOffObjects;
@@ -31,13 +39,12 @@ namespace WatKhaoWong.Utils.UI
         {
             _toggle = GetComponentInChildren<Toggle>();
 
-            _toggle.onValueChanged.AddListener(UpdateUI);
+            _toggle.onValueChanged.AddListener(onOffStatus => RefrsehUI(onOffStatus, UpdateUIType.Animate));
         }
 
         private void OnEnable()
         {
-            if (_toggle.isOn)
-                UpdateUI(true);
+            RefrsehUI(_toggle.isOn, UpdateUIType.Instant);
         }
 
         private void OnDisable()
@@ -73,23 +80,36 @@ namespace WatKhaoWong.Utils.UI
             _previousCoroutine = null;
             yield break;
         }
+
+        private void SetCanvasGroupTo(AnimationCurve targetCurve)
+        {
+            _canvasGroup.alpha = targetCurve.Evaluate(1f);
+        }
         #endregion
 
 
 
         #region --Methods-- (Subscriber)
-        private void UpdateUI(bool status)
+        private void RefrsehUI(bool onOffStatus, UpdateUIType updateUIStatus)
         {
+            if (!gameObject.activeInHierarchy) return;
+
             UpdateCanvasGroup();
             if (!HasCanvasGroup()) return;
 
             if (_previousCoroutine != null)
                 StopCoroutine(_previousCoroutine);
 
-            if (status)
-                _previousCoroutine = StartCoroutine(FadeCanvasGroupTo(_onCurve));
-            else
-                _previousCoroutine = StartCoroutine(FadeCanvasGroupTo(_offCurve));
+            switch (updateUIStatus)
+            {
+                case UpdateUIType.Animate:
+                    _previousCoroutine = StartCoroutine( FadeCanvasGroupTo(onOffStatus ? _onCurve : _offCurve) );
+                    break;
+
+                case UpdateUIType.Instant:
+                    SetCanvasGroupTo(onOffStatus ? _onCurve : _offCurve);
+                    break;
+            }
         }
         #endregion
     }
