@@ -117,6 +117,7 @@ namespace WatKhaoWong.UI.Prays
             return isEmpty;
         }
 
+        // TODO MOVE THIS METHOD to ChallengePopup.cs to let that class do its Logic Job!!!!! Only Validation UI is needed to be done here!!!!!!!!! Change it fast!!!! xD
         private void UploadToServer()
         {
             bool isUploaded = false;

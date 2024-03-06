@@ -167,8 +167,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _defaultSfxSliderValue: 0.5
-  _defaultMusicSliderValue: 0.25
+  _defaultSfxSliderValue: 0.6
+  _defaultMusicSliderValue: 0.4
   _onAccountButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -1014,6 +1014,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4093619250642013008}
+  - component: {fileID: 5660254912490754542}
   m_Layer: 0
   m_Name: Settings Notification Popup System
   m_TagString: Untagged
@@ -1036,6 +1037,46 @@ Transform:
   m_Children: []
   m_Father: {fileID: 251800662036913830}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5660254912490754542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6038469830596371298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ff0d398b44c4436396967c998295904, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onCloseButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7604709115715315857}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _defaultNotificationSwitchValue: 1
+  _defaultTimeTogglesValue: 000100000100
+  <StatusSwitchOff>k__BackingField: Notification is now DISABLED
+  <StatusSwitchOffColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusSwitchOn>k__BackingField: Notification is now ENABLED
+  <StatusSwitchOnColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  _onNotificationSwitchClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7306031348881270002
 GameObject:
   m_ObjectHideFlags: 0

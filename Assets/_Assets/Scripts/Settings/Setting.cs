@@ -28,8 +28,8 @@ namespace WatKhaoWong.Settings
 
 
         #region --Fields-- (Constant)
-        private const string KeySfxSliderValue = "SfxSliderValue";
-        private const string KeyMusicSliderValue = "MusicSliderValue";
+        private const string KeySfxSliderValue = "KeySfxSliderValue";
+        private const string KeyMusicSliderValue = "KeyMusicSliderValue";
         #endregion
 
 

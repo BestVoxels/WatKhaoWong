@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using WatKhaoWong.Prays;
+using WatKhaoWong.Settings;
 
 namespace WatKhaoWong.UI
 {
@@ -27,7 +28,8 @@ namespace WatKhaoWong.UI
         #region --Fields-- (In Class)
         // TODO lets see what to subscribe to for HOME SYSTEM
         private UndoPopup _undoPopup;
-        // TODO lets see what to subscribe to for SETTING SYSTEM
+        private NotificationPopup _notificationPopup;
+        // TODO lets see what to subscribe to for SETTING SYSTEM -> probably last one is _languagePopup
         // TODO lets see what to subscribe to for HISTORY SYSTEM
         #endregion
 
@@ -39,6 +41,7 @@ namespace WatKhaoWong.UI
             GameObject player = GameObject.FindWithTag("Player");
 
             _undoPopup = player.GetComponentInChildren<UndoPopup>();
+            _notificationPopup = player.GetComponentInChildren<NotificationPopup>();
         }
 
         private void OnEnable()
@@ -50,7 +53,8 @@ namespace WatKhaoWong.UI
             _undoPopup.OnUploadSucceed += () => { RefreshPrayUI(); };
 
             // SETTING SYSTEM
-            // TODO lets see what to subscribe to for SETTING SYSTEM
+            _notificationPopup.OnNotificationSwitchChanged += () => { RefreshSettingUI(); };
+            // TODO lets see what to subscribe to for SETTING SYSTEM -> probably last one is _languagePopup when select each language toggle
 
             // HISTORY SYSTEM
             // TODO lets see what to subscribe to for HISTORY SYSTEM

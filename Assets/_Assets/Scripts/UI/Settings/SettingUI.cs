@@ -30,6 +30,7 @@ namespace WatKhaoWong.UI.Settings
 
         #region --Fields-- (In Class)
         private Setting _playerSetting;
+        private NotificationPopup _notificationPopup;
         #endregion
 
 
@@ -38,6 +39,7 @@ namespace WatKhaoWong.UI.Settings
         private void Awake()
         {
             _playerSetting = GameObject.FindWithTag("Player").GetComponentInChildren<Setting>();
+            _notificationPopup = GameObject.FindWithTag("Player").GetComponentInChildren<NotificationPopup>();
 
             _backButton.onClick.AddListener(Back);
 
@@ -91,7 +93,7 @@ namespace WatKhaoWong.UI.Settings
             _musicSlider.value = _playerSetting.LoadMusicValue();
 
             // TODO update these UI, wait for 'LanguagePopup' and 'NotificationPopup' classes
-            //_notificationStatusText.text = "";
+            _notificationStatusText.text = _notificationPopup.GetNotificationSwitchStatus();
             //_languageStatusText.text = "";
             //_languageStatusIcon.overrideSprite = ;
         }
