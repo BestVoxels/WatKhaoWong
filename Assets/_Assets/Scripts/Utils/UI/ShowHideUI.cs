@@ -39,7 +39,10 @@ namespace WatKhaoWong.Utils.UI
         #region --Methods-- (Built In)
         private void Start()
         {
-            CloseOrOpenPage();
+            if (IsPageExist())
+                CloseOrOpenPage();
+            else
+                CloseOrOpenPopup();
         }
         #endregion
 
@@ -48,12 +51,14 @@ namespace WatKhaoWong.Utils.UI
         #region --Methods-- (Custom PRIVATE)
         private void CloseOrOpenPage()
         {
+            if (!IsPageExist()) return;
+
             _page.animator.Play(_page.isShowOnStart ? _pageIdle : _pageCloseInstant, -1, 0f);
         }
 
         private void CloseOrOpenPopup()
         {
-            if (!_dim.animator) return;
+            if (!IsDimExist()) return;
 
             _dim.animator.Play(_dim.isShowOnStart ? _popupIdle : _popupCloseInstant, -1, 0f);
 
@@ -78,6 +83,9 @@ namespace WatKhaoWong.Utils.UI
 
             _previousCoroutine = null;
         }
+
+        private bool IsPageExist() => _page.animator;
+        private bool IsDimExist() => _dim.animator;
         #endregion
 
 
