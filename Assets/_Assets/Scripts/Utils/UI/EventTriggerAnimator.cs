@@ -8,7 +8,7 @@ namespace WatKhaoWong.Utils.UI
     /// <summary>
     /// Place on the Parent GameObject of the Any UI.
     /// 
-    /// The Parent GameObject MUST have a child GameObject that CONTAINS 'Canvas Group' component
+    /// EVERY items under gameObjectsToBeAnimated array MUST CONTAINS 'Canvas Group' component
     ///     - 'Blocks Raycasts' Boolean Field is set to 'False' or 'Untick'  -  so Pointer won't trigger with the UI and won't cause shaking, shink and expand infinitely.
     ///
     /// ONLY use 'Image' on the current attached GameObject as an Interactable Zone for Pointer to trigger animation, this won't cause shaking.
@@ -74,17 +74,19 @@ namespace WatKhaoWong.Utils.UI
 
             // CHECK if 'canvas group' is MISSING
             // CHECK if 'canvas group' BLOCK RAYCASTS is TRUE
-            CanvasGroup[] canvasGroups = GetComponentsInChildren<CanvasGroup>();
-            if (canvasGroups.IsNullOrEmpty())   // Requires 'ArrayExtension.cs'
+            foreach (Transform each in gameObjectsToBeAnimated)
             {
-                Debug.LogError($"No 'Canvas Group' component found in current attached GameObject's Children. Under '{gameObject.name}' GameObject.");
-                hasError = true;
-            }
-            foreach (CanvasGroup each in canvasGroups)
-            {
-                if (each.blocksRaycasts == true)
+                if (each.TryGetComponent<CanvasGroup>(out CanvasGroup canvasGroup))
                 {
-                    Debug.LogError($"'Blocks Raycasts' boolean field MUST set to 'False' under 'Canvas Group' component OTHERWISE it will cause Shaking! Under '{gameObject.name}/{each.name}' GameObject.");
+                    if (canvasGroup.blocksRaycasts == true)
+                    {
+                        Debug.LogError($"'Blocks Raycasts' boolean field MUST set to 'False' under 'Canvas Group' component OTHERWISE it will cause Shaking! Under '{gameObject.name}/{canvasGroup.name}' GameObject.");
+                        hasError = true;
+                    }
+                }
+                else
+                {
+                    Debug.LogError($"No 'Canvas Group' component found! Under '{gameObject.name}/{each.name}' GameObject.");
                     hasError = true;
                 }
             }
