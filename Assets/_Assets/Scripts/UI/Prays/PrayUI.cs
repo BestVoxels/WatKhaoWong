@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Globalization;
 using TMPro;
 using WatKhaoWong.Prays;
-using UnityEngine.EventSystems;
 
 namespace WatKhaoWong.UI.Prays
 {

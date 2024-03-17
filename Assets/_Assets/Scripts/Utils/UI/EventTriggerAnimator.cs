@@ -1,19 +1,25 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 using UnityEngine;
+using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.Utils.UI
 {
     /// <summary>
-    /// Place on the Parent GameObject of the Button UI (on a GameObject that has 'Button' component attached).
-    /// The Parent GameObject MUST have a child GameObject that CONTAINS 'Canvas Group' component, and its 'Blocks Raycasts' Boolean Field is set to 'False' or 'Untick'.
+    /// Place on the Parent GameObject of the Any UI.
+    /// 
+    /// The Parent GameObject MUST have a child GameObject that CONTAINS 'Canvas Group' component
+    ///     - 'Blocks Raycasts' Boolean Field is set to 'False' or 'Untick'  -  so Pointer won't trigger with the UI and won't cause shaking, shink and expand infinitely.
+    ///
+    /// ONLY use 'Image' on the current attached GameObject as an Interactable Zone for Pointer to trigger animation, this won't cause shaking.
+    /// This is why we need to avoid raycast on Child UI so that shaking won't occurs.
     /// </summary>
     public class EventTriggerAnimator : MonoBehaviour, IPointerEnterHandler, IPointerDownHandler, IPointerUpHandler, IPointerExitHandler
     {
         #region --Fields-- (Inspector)
         [Header("Animation Settings")]
-        [Tooltip("Image to be animated (child of the button), the one that won't effect InteractableZone, its scale will be changed. Recommend to use Child Image.")]
-        [SerializeField] private Transform _targetImage;
+        [Tooltip("GameObjects to be animated, the one that won't effect Interactable Zone, its scale will be changed. Ex incase of Button -> use Child Image (child of the button)")]
+        [SerializeField] private Transform[] gameObjectsToBeAnimated;
         [Space]
         [SerializeField] private AnimationCurve _pressCurve = AnimationCurve.EaseInOut(0f, 1f, 0.25f, 0.9f);
         [SerializeField] private AnimationCurve _liftCurve = AnimationCurve.EaseInOut(0f, 1f, 0.25f, 1.1f);
@@ -45,10 +51,10 @@ namespace WatKhaoWong.Utils.UI
         {
             bool hasError = false;
 
-            // CHECK if 'target image' is MISSING
-            if (!_targetImage)
+            // CHECK if 'gameObjectsToBeAnimated' is MISSING
+            if (gameObjectsToBeAnimated.IsNullOrEmpty())   // Requires 'ArrayExtension.cs'
             {
-                Debug.LogError($"Please assign 'Target Image' field in the Inspector first before using this script. Under '{gameObject.name}' GameObject.");
+                Debug.LogError($"Please assign 'GameObjectsToBeAnimated' field in the Inspector first before using this script. Under '{gameObject.name}' GameObject.");
                 hasError = true;
             }
 
@@ -66,45 +72,28 @@ namespace WatKhaoWong.Utils.UI
                 hasError = true;
             }
 
-            // CHECK if 'child Image' is MISSING
-            UnityEngine.UI.Image childImage = null;
-            foreach (Transform child in gameObject.transform)
-            {
-                childImage = child.GetComponent<UnityEngine.UI.Image>();
-                if (childImage) break;
-            }
-            if (!childImage)
-            {
-                Debug.LogError($"No 'Image' component found in current attached GameObject's Children. Under '{gameObject.name}' GameObject.");
-                hasError = true;
-            }
-
             // CHECK if 'canvas group' is MISSING
             // CHECK if 'canvas group' BLOCK RAYCASTS is TRUE
-            CanvasGroup canvasGroup = GetComponentInChildren<CanvasGroup>();
-            if (!canvasGroup)
+            CanvasGroup[] canvasGroups = GetComponentsInChildren<CanvasGroup>();
+            if (canvasGroups.IsNullOrEmpty())   // Requires 'ArrayExtension.cs'
             {
                 Debug.LogError($"No 'Canvas Group' component found in current attached GameObject's Children. Under '{gameObject.name}' GameObject.");
                 hasError = true;
             }
-            if (canvasGroup && canvasGroup.blocksRaycasts == true)
+            foreach (CanvasGroup each in canvasGroups)
             {
-                Debug.LogError($"'Blocks Raycasts' boolean field MUST set to 'False' under 'Canvas Group' component. Under '{gameObject.name}/{canvasGroup.name}' GameObject.");
-                hasError = true;
+                if (each.blocksRaycasts == true)
+                {
+                    Debug.LogError($"'Blocks Raycasts' boolean field MUST set to 'False' under 'Canvas Group' component OTHERWISE it will cause Shaking! Under '{gameObject.name}/{each.name}' GameObject.");
+                    hasError = true;
+                }
             }
 
-            // CHECK if 'button' is MISSING
+            // INCASE there is 'button' component, CHECK if 'button' TARGET GRAPHIC is ITSELF 'current attached Image', WHICH IS WRONG, MUST be CHILD IMAGE
             var button = GetComponent<UnityEngine.UI.Button>();
-            if (!button)
-            {
-                Debug.LogError($"No 'Button' component found in current attached GameObject. Under '{gameObject.name}' GameObject.");
-                hasError = true;
-            }
-
-            // CHECK if 'button' TARGET GRAPHIC is ITSELF 'current attached Image', WHICH IS WRONG, MUST be CHILD IMAGE
             if (button && image && button.targetGraphic.transform.Equals(image.transform))
             {
-                Debug.LogError($"Wrong 'Target Graphic' field on 'Button' component, MUST be child image NOT itself image. USE '{_targetImage.name}' GameObject instead. Under '{gameObject.name}' GameObject.");
+                Debug.LogError($"Wrong 'Target Graphic' field on 'Button' component, MUST be child image NOT itself image. USE 'GameObjectsToBeAnimated' instead. Under '{gameObject.name}' GameObject.");
                 hasError = true;
             }
 
@@ -122,7 +111,8 @@ namespace WatKhaoWong.Utils.UI
             if (_previousCoroutine != null)
                 StopCoroutine(_previousCoroutine);
 
-            _targetImage.localScale = new Vector3(1f, 1f, 1f);
+            foreach (Transform each in gameObjectsToBeAnimated)
+                each.localScale = new Vector3(1f, 1f, 1f);
         }
 
         private void Expand()
@@ -147,7 +137,8 @@ namespace WatKhaoWong.Utils.UI
             while (timer <= 1f)
             {
                 timer += Time.deltaTime * speed;
-                _targetImage.localScale = new Vector3(targetCurve.Evaluate(timer), targetCurve.Evaluate(timer));
+                foreach (Transform each in gameObjectsToBeAnimated)
+                    each.localScale = new Vector3(targetCurve.Evaluate(timer), targetCurve.Evaluate(timer));
 
                 yield return null;
             }
