@@ -8,6 +8,9 @@ namespace WatKhaoWong.Prays
     {
         #region --Events-- (UnityEvent)
         [Header("Pray UI Event")]
+        [SerializeField] private UnityEvent _onUserProfileClick;
+        [SerializeField] private UnityEvent _onUserStatsClick;
+        [Space]
         [SerializeField] private UnityEvent _onDoneButtonClick;
         [SerializeField] private UnityEvent _onPlaySoundButtonClick;
         [SerializeField] private UnityEvent _onChallengeButtonClick;
@@ -47,6 +50,20 @@ namespace WatKhaoWong.Prays
 
 
         #region --Methods-- (Custom PUBLIC) ~Page UI Buttons~
+        public void OnUserProfileClick()
+        {
+            Debug.LogWarning("Click \"User Profile (Icon & Username)\" UI!");
+
+            _onUserProfileClick?.Invoke();
+        }
+
+        public void OnUserStatsClick()
+        {
+            Debug.LogWarning("Click \"User Stats (All Time & Today)\" UI!");
+
+            _onUserStatsClick?.Invoke();
+        }
+
         public void OnDoneButtonClick()
         {
             Debug.LogWarning("Click \"Done\" Button!");

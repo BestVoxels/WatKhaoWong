@@ -981,8 +981,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2315403196926243263}
   - component: {fileID: 3941040743554343908}
+  - component: {fileID: 2893620269796170692}
   m_Layer: 5
-  m_Name: Counter Panel
+  m_Name: User Stats
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1035,6 +1036,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &2893620269796170692
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2758190883535730710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
 --- !u!1 &3141445293546658597
 GameObject:
   m_ObjectHideFlags: 0
@@ -1964,9 +1978,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4194431114689606677}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 719.6486, y: -384.01364}
   m_SizeDelta: {x: 600, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8625663033019684321
@@ -2339,8 +2353,9 @@ GameObject:
   m_Component:
   - component: {fileID: 961696707305236052}
   - component: {fileID: 6570201749721822727}
+  - component: {fileID: 7457409296418946836}
   m_Layer: 5
-  m_Name: User Panel
+  m_Name: User Profile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2393,6 +2408,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &7457409296418946836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6736075183166201996}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
 --- !u!1 &7268307236422606535
 GameObject:
   m_ObjectHideFlags: 0
@@ -3593,7 +3621,7 @@ PrefabInstance:
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
@@ -3603,7 +3631,7 @@ PrefabInstance:
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
@@ -3653,12 +3681,12 @@ PrefabInstance:
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 719.6486
       objectReference: {fileID: 0}
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -556.5137
       objectReference: {fileID: 0}
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
@@ -12799,6 +12827,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _backButton: {fileID: 7477576566628601137}
+  _userProfileEventTrigger: {fileID: 7457409296418946836}
+  _userStatsEventTrigger: {fileID: 2893620269796170692}
   _usernameText: {fileID: 5911323745826626982}
   _allTimeTMPointsText: {fileID: 305794164023251709}
   _todayTMPointsText: {fileID: 8495628251922098249}

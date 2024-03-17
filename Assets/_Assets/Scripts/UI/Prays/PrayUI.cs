@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using System.Globalization;
 using TMPro;
 using WatKhaoWong.Prays;
+using UnityEngine.EventSystems;
 
 namespace WatKhaoWong.UI.Prays
 {
@@ -13,6 +14,9 @@ namespace WatKhaoWong.UI.Prays
         [SerializeField] private Button _backButton;
 
         [Header("Pray UI Stuffs")]
+        [SerializeField] private EventTrigger _userProfileEventTrigger;
+        [SerializeField] private EventTrigger _userStatsEventTrigger;
+        [Space]
         [SerializeField] private TMP_Text _usernameText;
         [SerializeField] private TMP_Text _allTimeTMPointsText;
         [SerializeField] private TMP_Text _todayTMPointsText;
@@ -38,6 +42,16 @@ namespace WatKhaoWong.UI.Prays
             _playerPray = GameObject.FindWithTag("Player").GetComponentInChildren<Pray>();
 
             _backButton.onClick.AddListener(Back);
+
+            EventTrigger.Entry entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerClick;
+            entry.callback.AddListener((BaseEventData data) => UserProfile((PointerEventData)data));
+            _userProfileEventTrigger.triggers.Add(entry);
+
+            entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerClick;
+            entry.callback.AddListener((BaseEventData data) => UserStats((PointerEventData)data));
+            _userStatsEventTrigger.triggers.Add(entry);
 
             _doneButton.onClick.AddListener(Done);
             _playSoundButton.onClick.AddListener(PlaySound);
@@ -69,6 +83,10 @@ namespace WatKhaoWong.UI.Prays
 
 
         #region --Methods-- (Subscriber)
+        private void UserProfile(PointerEventData data) => _playerPray.OnUserProfileClick();
+
+        private void UserStats(PointerEventData data) => _playerPray.OnUserStatsClick();
+
         private void Done() => _playerPray.OnDoneButtonClick();
 
         private void PlaySound() => _playerPray.OnPlaySoundButtonClick();
