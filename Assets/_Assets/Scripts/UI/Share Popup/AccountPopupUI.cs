@@ -10,7 +10,29 @@ namespace WatKhaoWong.UI.SharePopup
         [Header("Popup Header UI Stuffs")]
         [SerializeField] private Button _closeButton;
 
-        //[Header("Account Popup UI Stuffs")]
+        [Space]
+
+        [Header("Account Popup UI Stuffs")]
+        [Header("User Profile")]
+        [SerializeField] private Image _backgroundImage;
+        [SerializeField] private Image _iconImage;
+        [SerializeField] private AspectRatioFitter _aspectRatioFitter;
+        [SerializeField] private RectTransform _iconRect;
+        [Space]
+        [SerializeField] private Text _userNameText;
+        [SerializeField] private Text _userLevelText;
+        [SerializeField] private Button _modifyButton;
+
+        [Header("User Stats")]
+        [SerializeField] private Text _allTimeText;
+        [SerializeField] private Text _todayText;
+        [SerializeField] private Text _wonChallengeText;
+        [SerializeField] private Text _memberSinceText;
+
+        [Header("User Inventory")]
+        [SerializeField] private Text _inventoryHeaderText;
+        [SerializeField] private Text _inventoryValueText;
+        [SerializeField] private ProfileIconUI[] _profileIconUI;
         #endregion
 
 

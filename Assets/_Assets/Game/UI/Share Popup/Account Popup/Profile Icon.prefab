@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6762460486235718345}
   - component: {fileID: 3957154593945410941}
   - component: {fileID: 4548035954999168965}
+  - component: {fileID: 4274109405321909746}
   m_Layer: 5
   m_Name: Profile Icon
   m_TagString: Untagged
@@ -151,6 +152,22 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4274109405321909746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1002864579923773292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9943cdb5ea5f29f4bafb6d0c1b0ca82f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _backgroundImage: {fileID: 4895834114337108501}
+  _iconImage: {fileID: 6054733873523781662}
+  _aspectRatioFitter: {fileID: 5619559509223594472}
+  _iconRect: {fileID: 8501748325164607820}
 --- !u!1 &1080280753103239332
 GameObject:
   m_ObjectHideFlags: 0
