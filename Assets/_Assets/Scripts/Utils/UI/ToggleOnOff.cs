@@ -103,7 +103,7 @@ namespace WatKhaoWong.Utils.UI
             switch (updateUIStatus)
             {
                 case UpdateUIType.Animate:
-                    _previousCoroutine = StartCoroutine( FadeCanvasGroupTo(onOffStatus ? _onCurve : _offCurve) );
+                    _previousCoroutine = StartCoroutine(FadeCanvasGroupTo(onOffStatus ? _onCurve : _offCurve));
                     break;
 
                 case UpdateUIType.Instant:

@@ -56,7 +56,7 @@ namespace WatKhaoWong.UI.Histories
         #region --Methods-- (Subscriber)
         private void RefreshUI()
         {
-            
+
         }
         #endregion
     }

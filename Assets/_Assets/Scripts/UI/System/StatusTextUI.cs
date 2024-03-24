@@ -12,7 +12,7 @@ namespace WatKhaoWong.UI.System
 
 
         #region --Properties-- (With Backing Fields)
-        public string text { get => _text.text;  set => _text.text = value; }
+        public string text { get => _text.text; set => _text.text = value; }
         public Color32 color { get => _text.color; set => _text.color = value; }
         public RectTransform rectTransfrom { get => _text.rectTransform; }
         #endregion

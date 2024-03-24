@@ -53,7 +53,7 @@ namespace WatKhaoWong.Prays
         public void OnConfirmButtonCantClick()
         {
             Debug.LogWarning("CANT Click \"Confirm\" Button! on Popup");
-            
+
             _onConfirmButtonCantClick?.Invoke();
         }
         #endregion

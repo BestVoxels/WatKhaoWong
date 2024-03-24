@@ -10,7 +10,8 @@ namespace WatKhaoWong.UI.Settings
         [Header("Popup Header UI Stuffs")]
         [SerializeField] private Button _closeButton;
 
-        //[Header("Credits Popup UI Stuffs")]
+        [Header("Credits Popup UI Stuffs")]
+        [SerializeField] private Button _closeButton3;
         #endregion
 
 

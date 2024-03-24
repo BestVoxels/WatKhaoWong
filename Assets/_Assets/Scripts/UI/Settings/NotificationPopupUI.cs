@@ -41,7 +41,7 @@ namespace WatKhaoWong.UI.Settings
             _closeButton.onClick.AddListener(Close);
 
             _notificationSwitch.onValueChanged.AddListener(SwitchChanged);
-            
+
             foreach (Toggle each in _timeToggles)
                 each.onValueChanged.AddListener(ToggleChanged);
         }

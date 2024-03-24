@@ -45,7 +45,7 @@ namespace WatKhaoWong.Utils.Debugger
         #endregion
 
 
-        
+
         #region --Methods-- (Built In)
         private void Start()
         {
