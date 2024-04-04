@@ -34,6 +34,7 @@ RectTransform:
   - {fileID: 4291145671045572337}
   - {fileID: 5151492889870121023}
   - {fileID: 8009077264738883526}
+  - {fileID: 5652274850338547646}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
@@ -164,10 +165,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9943cdb5ea5f29f4bafb6d0c1b0ca82f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _backgroundImage: {fileID: 4895834114337108501}
-  _iconImage: {fileID: 6054733873523781662}
-  _aspectRatioFitter: {fileID: 5619559509223594472}
-  _iconRect: {fileID: 8501748325164607820}
+  _icon:
+    backgroundImage: {fileID: 4895834114337108501}
+    iconImage: {fileID: 6054733873523781662}
+    aspectRatioFitter: {fileID: 5619559509223594472}
+    iconRect: {fileID: 8501748325164607820}
+    decoratorSpawnParent: {fileID: 5652274850338547646}
+  _toggle: {fileID: 3957154593945410941}
 --- !u!1 &1080280753103239332
 GameObject:
   m_ObjectHideFlags: 0
@@ -511,6 +515,41 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &4262944430783999232
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5652274850338547646}
+  m_Layer: 5
+  m_Name: Decorator Parent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &5652274850338547646
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4262944430783999232}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6762460486235718345}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5540177115035860341
 GameObject:
   m_ObjectHideFlags: 0

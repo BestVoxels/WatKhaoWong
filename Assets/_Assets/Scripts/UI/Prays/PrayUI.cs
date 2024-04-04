@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 using System.Globalization;
 using TMPro;
 using WatKhaoWong.Prays;
+using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.UI.Prays
 {
@@ -17,7 +18,7 @@ namespace WatKhaoWong.UI.Prays
         [SerializeField] private EventTrigger _userProfileEventTrigger;
         [SerializeField] private EventTrigger _userStatsEventTrigger;
         [Space]
-        [SerializeField] private TMP_Text _usernameText;
+        [SerializeField] private TMP_Text _userNameText;
         [SerializeField] private TMP_Text _allTimeTMPointsText;
         [SerializeField] private TMP_Text _todayTMPointsText;
         [Space]
@@ -32,6 +33,7 @@ namespace WatKhaoWong.UI.Prays
 
         #region --Fields-- (In Class)
         private Pray _playerPray;
+        private Account _account;
         #endregion
 
 
@@ -40,6 +42,7 @@ namespace WatKhaoWong.UI.Prays
         private void Awake()
         {
             _playerPray = GameObject.FindWithTag("Player").GetComponentInChildren<Pray>();
+            _account = GameObject.FindWithTag("Player").GetComponentInChildren<Account>();
 
             _backButton.onClick.AddListener(Back);
 
@@ -98,9 +101,9 @@ namespace WatKhaoWong.UI.Prays
             var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
-            _usernameText.text = _playerPray.GetUsernameText();
-            _allTimeTMPointsText.text = _playerPray.GetAllTimePoints().ToString("#,0", nfi);
-            _todayTMPointsText.text = _playerPray.GetTodayPoints().ToString("#,0", nfi);
+            _userNameText.text = _account.GetUserNameText();
+            _allTimeTMPointsText.text = _account.GetAllTimeTMPoints().ToString("#,0", nfi);
+            _todayTMPointsText.text = _account.GetTodayTMPoints().ToString("#,0", nfi);
 
             _challengeText.text = _playerPray.GetChallengeText();
         }

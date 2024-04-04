@@ -149,6 +149,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  <StatusInformUser>k__BackingField: Click any Profile Icon on the right section
+    to change Profile Picture
+  <StatusInformUserColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  _onAccountProfileChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1187216208980445647
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,6 +402,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2637654065332200263}
+  - component: {fileID: 4749867448591421449}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -421,6 +430,18 @@ Transform:
   - {fileID: 1313416025136834623}
   m_Father: {fileID: 5923315315416972317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4749867448591421449
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009358291179130440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58799e86949114904b60eedc84f1d4bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2463763845362812804
 GameObject:
   m_ObjectHideFlags: 0

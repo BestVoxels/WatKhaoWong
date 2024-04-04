@@ -18,28 +18,6 @@ namespace WatKhaoWong.Prays
 
 
 
-        #region --Methods-- (Custom PUBLIC) ~User~
-        public string GetUsernameText()
-        {
-            // TODO fetch data from Server
-            return "Thanitsak Leuangsupornpong";
-        }
-
-        public int GetAllTimePoints()
-        {
-            // TODO fetch data from Server
-            return 0;
-        }
-
-        public int GetTodayPoints()
-        {
-            // TODO fetch data from Server
-            return 0;
-        }
-        #endregion
-
-
-
         #region --Methods-- (Custom PUBLIC) ~Challenge~
         public string GetChallengeText()
         {

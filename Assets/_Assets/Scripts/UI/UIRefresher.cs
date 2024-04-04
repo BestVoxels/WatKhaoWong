@@ -58,6 +58,9 @@ namespace WatKhaoWong.UI
 
             // HISTORY SYSTEM
             // TODO lets see what to subscribe to for HISTORY SYSTEM
+
+            // SHARE POPUP SYSTEM
+            // TODO _account.OnProfileIconUpdated += () => { RefreshPrayUI(); };
         }
 
         private void OnDisable()
