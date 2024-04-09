@@ -55,6 +55,8 @@ namespace WatKhaoWong.UI.Settings
 
         private void OnEnable()
         {
+            RefreshUI();
+
             UIRefresher.OnSettingRefreshed += RefreshUI;
         }
 

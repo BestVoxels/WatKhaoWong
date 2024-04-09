@@ -31,6 +31,8 @@ namespace WatKhaoWong.UI.Histories
 
         private void OnEnable()
         {
+            RefreshUI();
+
             UIRefresher.OnHistoryRefreshed += RefreshUI;
         }
 

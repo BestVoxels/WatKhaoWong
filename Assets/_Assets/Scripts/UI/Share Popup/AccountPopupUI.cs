@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,9 +41,10 @@ namespace WatKhaoWong.UI.SharePopup
 
         #region --Fields-- (In Class)
         private byte _totalProfileIcon;
+        private readonly List<ProfileIcon> _profileIcons = new List<ProfileIcon>();
 
         private AccountPopup _playerAccountPopup;
-        private Account _playerAccount;
+        private Account _account;
         private StatusText _statusText;
         #endregion
 
@@ -57,7 +60,7 @@ namespace WatKhaoWong.UI.SharePopup
         private void Awake()
         {
             _playerAccountPopup = GameObject.FindWithTag("Player").GetComponentInChildren<AccountPopup>();
-            _playerAccount = GameObject.FindWithTag("Player").GetComponentInChildren<Account>();
+            _account = GameObject.FindWithTag("Player").GetComponentInChildren<Account>();
             _statusText = FindAnyObjectByType<StatusText>();
 
             _closeButton.onClick.AddListener(Close);
@@ -65,10 +68,11 @@ namespace WatKhaoWong.UI.SharePopup
 
             foreach (Transform child in _profileIconUIParent)
             {
-                if (child.TryGetComponent(out ProfileIconUI profileIconUI))
+                if (child.TryGetComponent(out ProfileIcon profileIcon))
                 {
-                    profileIconUI.OnToggleChanged += OnToggleChanged;
+                    profileIcon.OnToggleChanged += OnToggleChanged;
 
+                    _profileIcons.Add(profileIcon);
                     _totalProfileIcon++;
                 }
             }
@@ -76,6 +80,8 @@ namespace WatKhaoWong.UI.SharePopup
 
         private void Start()
         {
+            RefreshToggleStatusOnStart();
+
             RefreshUI();
         }
         #endregion
@@ -83,43 +89,38 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Methods-- (Custom PRIVATE)
+        private void RefreshToggleStatusOnStart()
+        {
+            Account.IconData iconData = _account.GetIconData();
+            List<ProfileIcon> temp = _profileIcons.Where(
+                (ProfileIcon p) =>
+                {
+                    bool result = p.UI.Icon.Equals(iconData.icon);
+                    if (result)
+                        p.Toggle.isOn = true;
+
+                    return result;
+                }
+            ).ToList();
+        }
+
         private void RefreshUI()
         {
             var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
-            _userNameText.text = _playerAccount.GetUserNameText();
-            _userLevelText.text = _playerAccount.GetUserLevelText();
+            _account.UpdateProfileIcon(_icon, _account.GetIconData(), MultiplierRatioForDecorator);
 
-            _allTimeTMPointsText.text = _playerAccount.GetAllTimeTMPoints().ToString("#,0", nfi);
-            _todayTMPointsText.text = _playerAccount.GetTodayTMPoints().ToString("#,0", nfi);
+            _userNameText.text = _account.GetUserNameText();
+            _userLevelText.text = _account.GetUserLevelText();
 
-            _totalWonTMChallengeText.text = _playerAccount.GetTotalWonTMChallenge().ToString("#,0", nfi);
-            _memberSinceText.text = _playerAccount.GetMemberSinceText();
+            _allTimeTMPointsText.text = _account.GetAllTimeTMPoints().ToString("#,0", nfi);
+            _todayTMPointsText.text = _account.GetTodayTMPoints().ToString("#,0", nfi);
+
+            _totalWonTMChallengeText.text = _account.GetTotalWonTMChallenge().ToString("#,0", nfi);
+            _memberSinceText.text = _account.GetMemberSinceText();
 
             _profilePicHeaderText.text = $"<#f8913f>{_totalProfileIcon.ToString("#,0", nfi)}</color>";
-        }
-
-        private void UpdateProfile(ProfileIconUI profileIconUI)
-        {
-            // Clear Spawned Decorators (no error if there are not)
-            foreach (Transform each in _icon.decoratorSpawnParent)
-                Destroy(each.gameObject);
-
-            // Replicate Toggle Profile to Main Profile
-            _icon.backgroundImage.color = profileIconUI.BackgroundColor;
-            _icon.iconImage.overrideSprite = profileIconUI.Icon;
-            _icon.aspectRatioFitter.aspectRatio = profileIconUI.AspectRatio;
-            _icon.iconRect.pivot = profileIconUI.IconPivotY;
-
-            foreach (GameObject each in profileIconUI.Decorators)
-            {
-                GameObject result = Instantiate(each, _icon.decoratorSpawnParent, false);
-
-                RectTransform rt = result.GetComponent<RectTransform>();
-                rt.localPosition = new Vector2(rt.localPosition.x * MultiplierRatioForDecorator, rt.localPosition.y * MultiplierRatioForDecorator);
-                rt.sizeDelta = new Vector2(rt.sizeDelta.x * MultiplierRatioForDecorator, rt.sizeDelta.y * MultiplierRatioForDecorator);
-            }
         }
         #endregion
 
@@ -132,13 +133,13 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Methods-- (Subscriber)
-        private void OnToggleChanged(ProfileIconUI profileIconUI, bool isOn)
+        private void OnToggleChanged(Account.IconUI selectedIconUI, bool isOn)
         {
             if (isOn)
             {
-                UpdateProfile(profileIconUI);
+                _account.UpdateProfileIcon(_icon, selectedIconUI, MultiplierRatioForDecorator);
 
-                _playerAccountPopup.OnAccountProfileChanged();
+                _playerAccountPopup.OnAccountProfileChangedByClick();
 
             }
         }

@@ -1242,12 +1242,12 @@ MonoBehaviour:
   m_Color: {r: 0.53333336, g: 0.88235295, b: 0.96862745, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 67967e3264f124556a3867f3e270ac4d, type: 3}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 03989fa918ce549f29cf95aa1186bf70, type: 3}
+  m_Type: 1
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -2334,9 +2334,9 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 4194431114689606677}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 720.2652, y: -384.01364}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 600, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8625663033019684321
@@ -3376,6 +3376,7 @@ GameObject:
   - component: {fileID: 4437915327771654220}
   - component: {fileID: 8634158208237808017}
   - component: {fileID: 50781554530055308}
+  - component: {fileID: 6580433603456396846}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -3398,7 +3399,7 @@ RectTransform:
   m_Father: {fileID: 1568877007232702408}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3440,6 +3441,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &6580433603456396846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7356000007145898732}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86710e43de46f6f4bac7c8e50813a599, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AspectMode: 3
+  m_AspectRatio: 0.65
 --- !u!1 &7402686994484097569
 GameObject:
   m_ObjectHideFlags: 0
@@ -4323,7 +4338,7 @@ PrefabInstance:
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
@@ -4333,7 +4348,7 @@ PrefabInstance:
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
@@ -4383,12 +4398,12 @@ PrefabInstance:
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 720.2652
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -556.5137
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
@@ -13531,6 +13546,12 @@ MonoBehaviour:
   _backButton: {fileID: 7477576566628601137}
   _userProfileEventTrigger: {fileID: 7457409296418946836}
   _userStatsEventTrigger: {fileID: 2893620269796170692}
+  _icon:
+    backgroundImage: {fileID: 5828076871077985418}
+    iconImage: {fileID: 50781554530055308}
+    aspectRatioFitter: {fileID: 6580433603456396846}
+    iconRect: {fileID: 4437915327771654220}
+    decoratorSpawnParent: {fileID: 3294012153178188522}
   _userNameText: {fileID: 5911323745826626982}
   _allTimeTMPointsText: {fileID: 305794164023251709}
   _todayTMPointsText: {fileID: 8495628251922098249}

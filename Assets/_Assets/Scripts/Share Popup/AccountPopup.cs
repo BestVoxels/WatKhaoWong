@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Attributes;
@@ -16,15 +17,22 @@ namespace WatKhaoWong.SharePopup
 
         #region --Events-- (UnityEvent)
         [Header("Account Popup UI Event")]
-        [SerializeField] private UnityEvent _onAccountProfileChanged;
+        [SerializeField] private UnityEvent _onAccountProfileChangedByClick;
+        #endregion
+
+
+
+        #region --Events-- (Delegate as Action)
+        public event Action OnProfileIconChangedByClick;
         #endregion
 
 
 
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
-        public void OnAccountProfileChanged()
+        public void OnAccountProfileChangedByClick()
         {
-            _onAccountProfileChanged?.Invoke();
+            OnProfileIconChangedByClick?.Invoke();
+            _onAccountProfileChangedByClick?.Invoke();
         }
         #endregion
     }

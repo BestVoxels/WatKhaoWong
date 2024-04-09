@@ -18,6 +18,8 @@ namespace WatKhaoWong.UI.Prays
         [SerializeField] private EventTrigger _userProfileEventTrigger;
         [SerializeField] private EventTrigger _userStatsEventTrigger;
         [Space]
+        [SerializeField] private Account.IconUI _icon;
+        [Space]
         [SerializeField] private TMP_Text _userNameText;
         [SerializeField] private TMP_Text _allTimeTMPointsText;
         [SerializeField] private TMP_Text _todayTMPointsText;
@@ -34,6 +36,12 @@ namespace WatKhaoWong.UI.Prays
         #region --Fields-- (In Class)
         private Pray _playerPray;
         private Account _account;
+        #endregion
+
+
+
+        #region --Fields-- (Constant)
+        private const float MultiplierRatioForDecorator = 165f / 135f;  // Formula : Main Profile's Size (BIG) % Inventory Profile's Size (SMALL)
         #endregion
 
 
@@ -63,6 +71,8 @@ namespace WatKhaoWong.UI.Prays
 
         private void OnEnable()
         {
+            RefreshUI();
+
             UIRefresher.OnPrayRefreshed += RefreshUI;
         }
 
@@ -100,6 +110,8 @@ namespace WatKhaoWong.UI.Prays
         {
             var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
+
+            _account.UpdateProfileIcon(_icon, _account.GetIconData(), MultiplierRatioForDecorator);
 
             _userNameText.text = _account.GetUserNameText();
             _allTimeTMPointsText.text = _account.GetAllTimeTMPoints().ToString("#,0", nfi);

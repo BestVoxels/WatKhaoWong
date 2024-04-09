@@ -37,6 +37,8 @@ namespace WatKhaoWong.UI.Homes
 
         private void OnEnable()
         {
+            RefreshUI();
+
             UIRefresher.OnHomeRefreshed += RefreshUI;
         }
 

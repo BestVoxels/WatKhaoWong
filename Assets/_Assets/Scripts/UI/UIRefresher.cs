@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using WatKhaoWong.Prays;
 using WatKhaoWong.Settings;
+using WatKhaoWong.SharePopup;
 
 namespace WatKhaoWong.UI
 {
@@ -31,6 +32,7 @@ namespace WatKhaoWong.UI
         private NotificationPopup _notificationPopup;
         // TODO lets see what to subscribe to for SETTING SYSTEM -> probably last one is _languagePopup
         // TODO lets see what to subscribe to for HISTORY SYSTEM
+        private AccountPopup _accountPopup;
         #endregion
 
 
@@ -42,6 +44,7 @@ namespace WatKhaoWong.UI
 
             _undoPopup = player.GetComponentInChildren<UndoPopup>();
             _notificationPopup = player.GetComponentInChildren<NotificationPopup>();
+            _accountPopup = player.GetComponentInChildren<AccountPopup>();
         }
 
         private void OnEnable()
@@ -60,7 +63,7 @@ namespace WatKhaoWong.UI
             // TODO lets see what to subscribe to for HISTORY SYSTEM
 
             // SHARE POPUP SYSTEM
-            // TODO _account.OnProfileIconUpdated += () => { RefreshPrayUI(); };
+            _accountPopup.OnProfileIconChangedByClick += () => { RefreshPrayUI(); };
         }
 
         private void OnDisable()
