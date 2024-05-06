@@ -97,7 +97,7 @@ namespace WatKhaoWong.UI.Settings
             // TODO update these UI, wait for 'LanguagePopup' and 'NotificationPopup' classes
             _notificationStatusText.text = _notificationPopup.GetNotificationSwitchStatus();
             //_languageStatusText.text = "";
-            //_languageStatusIcon.overrideSprite = ;
+            //_languageStatusIcon.sprite = ;
         }
         #endregion
     }

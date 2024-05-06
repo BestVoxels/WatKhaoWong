@@ -23,7 +23,7 @@ namespace WatKhaoWong.Prays
 
 
         #region --Methods-- (Built In)
-        private void Start()
+        private void Awake()
         {
             _undoPopup = GameObject.FindWithTag("Player").GetComponentInChildren<UndoPopup>();
         }

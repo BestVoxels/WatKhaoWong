@@ -62,7 +62,7 @@ namespace WatKhaoWong.UI.Homes
 
         private void RefreshUI()
         {
-            _coverImage.overrideSprite = _playerHome.GetCoverImage();
+            //_coverImage.sprite = _playerHome.GetCoverImage();
             _welcomeText.text = _playerHome.GetWelcomeText();
         }
         #endregion

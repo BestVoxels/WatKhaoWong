@@ -6,6 +6,9 @@ namespace WatKhaoWong.Attributes
 {
     public class Account : MonoBehaviour
     {
+        // TODO isAdmin / hasLogin - these should be declared here
+
+
         #region --Properties-- (Inspector)
         [field: Header("Account Stuffs")]
         [field: SerializeField] public ProfileIcon DefaultProfileIcon { get; private set; }
@@ -136,7 +139,7 @@ namespace WatKhaoWong.Attributes
 
             // Replicate Toggle Profile to Main Profile
             oldUI.backgroundImage.color = newData.backgroundColor;
-            oldUI.iconImage.overrideSprite = newData.icon;
+            oldUI.iconImage.sprite = newData.icon;
             oldUI.aspectRatioFitter.aspectRatio = newData.aspectRatio;
             oldUI.iconRect.pivot = newData.iconPivotY;
 
