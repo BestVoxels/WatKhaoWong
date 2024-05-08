@@ -26,6 +26,9 @@ namespace WatKhaoWong.UI.System
         #region --Methods-- (Custom PUBLIC)
         public void Show(string text, Color32 color = default)
         {
+            if (string.IsNullOrWhiteSpace(text))
+                return;
+            
             if (color.r == 0 && color.g == 0 && color.b == 0 && color.a == 0)
                 color = _defaultColor;
 
