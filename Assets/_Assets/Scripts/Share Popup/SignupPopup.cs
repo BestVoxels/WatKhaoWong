@@ -8,14 +8,22 @@ namespace WatKhaoWong.SharePopup
     {
         #region --Properties-- (Inspector)
         [field: Header("Signup Popup General Settings")]
+        [field: SerializeField] public byte MinimumFirstNameLength { get; private set; } = 5;
+        [field: SerializeField] public byte MinimumLastNameLength { get; private set; } = 5;
         [field: SerializeField] public byte MinimumPasswordLength { get; private set; } = 6;
         [field: Space]
         [field: Header("Signup Popup Status Text")]
-        [field: SerializeField] public string StatusConfirmPasswordNotMatch { get; private set; } = "Confirm Password & Password must match!";
-        [field: SerializeField] public Color32 StatusConfirmPasswordNotMatchColor { get; private set; }
+        [field: SerializeField] public string StatusFirstNameTooShort { get; private set; } = "Your first name must be at least 5 characters long. Please try another.";
+        [field: SerializeField] public Color32 StatusFirstNameTooShortColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public string StatusLastNameTooShort { get; private set; } = "Your last name must be at least 5 characters long. Please try another.";
+        [field: SerializeField] public Color32 StatusLastNameTooShortColor { get; private set; }
         [field: Space]
         [field: SerializeField] public string StatusPasswordTooShort { get; private set; } = "Your password must be at least 6 characters long. Please try another.";
         [field: SerializeField] public Color32 StatusPasswordTooShortColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public string StatusConfirmPasswordNotMatch { get; private set; } = "Confirm Password & Password must match!";
+        [field: SerializeField] public Color32 StatusConfirmPasswordNotMatchColor { get; private set; }
         #endregion
 
 

@@ -59,15 +59,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  <MinimumFirstNameLength>k__BackingField: 5
+  <MinimumLastNameLength>k__BackingField: 5
   <MinimumPasswordLength>k__BackingField: 6
+  <StatusFirstNameTooShort>k__BackingField: Your First name must be at least 5 characters
+    long. Please try another.
+  <StatusFirstNameTooShortColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusLastNameTooShort>k__BackingField: Your Last name must be at least 5 characters
+    long. Please try another.
+  <StatusLastNameTooShortColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusPasswordTooShort>k__BackingField: Your Password must be at least 6 characters
+    long. Please try another.
+  <StatusPasswordTooShortColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
   <StatusConfirmPasswordNotMatch>k__BackingField: Confirm Password & Password must
     match!
   <StatusConfirmPasswordNotMatchColor>k__BackingField:
-    serializedVersion: 2
-    rgba: 4285887999
-  <StatusPasswordTooShort>k__BackingField: Your password must be at least 6 characters
-    long. Please try another.
-  <StatusPasswordTooShortColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
   _onInformTextClick:

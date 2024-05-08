@@ -4,7 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using WatKhaoWong.SharePopup;
 using WatKhaoWong.Utils.UI;
-using WatKhaoWong.UI.System;
+using WatKhaoWong.UI.InputFields;
 
 namespace WatKhaoWong.UI.SharePopup
 {
@@ -36,7 +36,7 @@ namespace WatKhaoWong.UI.SharePopup
         private string _password;
 
         private SignupPopup _playerSignupPopup;
-        private StatusText _statusText;
+        private InputFieldValidator _inputFieldValidator;
         private InputFieldStatus _firstNameInputFieldStatus;
         private InputFieldStatus _lastNameInputFieldStatus;
         private InputFieldStatus _userNameInputFieldStatus;
@@ -50,7 +50,7 @@ namespace WatKhaoWong.UI.SharePopup
         private void Awake()
         {
             _playerSignupPopup = GameObject.FindWithTag("Player").GetComponentInChildren<SignupPopup>();
-            _statusText = FindAnyObjectByType<StatusText>();
+            _inputFieldValidator = FindAnyObjectByType<InputFieldValidator>();
             _firstNameInputFieldStatus = _firstNameInputField.GetComponent<InputFieldStatus>();
             _lastNameInputFieldStatus = _lastNameInputField.GetComponent<InputFieldStatus>();
             _userNameInputFieldStatus = _userNameInputField.GetComponent<InputFieldStatus>();
@@ -59,11 +59,11 @@ namespace WatKhaoWong.UI.SharePopup
 
             _closeButton.onClick.AddListener(Close);
 
-            _firstNameInputField.onEndEdit.AddListener(inputText => ValidateFirstNameInputField(inputText));
-            _lastNameInputField.onEndEdit.AddListener(inputText => ValidateLastNameInputField(inputText));
-            _userNameInputField.onEndEdit.AddListener(inputText => ValidateUserNameInputField(inputText));
-            _passwordInputField.onEndEdit.AddListener(inputText => ValidatePasswordInputField(inputText));
-            _confirmPasswordInputField.onEndEdit.AddListener(inputText => ValidateConfirmPasswordInputField(inputText));
+            _firstNameInputField.onEndEdit.AddListener(inputText => IsFirstNameValidated());
+            _lastNameInputField.onEndEdit.AddListener(inputText => IsLastNameValidated());
+            _userNameInputField.onEndEdit.AddListener(inputText => IsUserNameValidated());
+            _passwordInputField.onEndEdit.AddListener(inputText => IsPasswordValidated());
+            _confirmPasswordInputField.onEndEdit.AddListener(inputText => IsConfirmPasswordValidated());
 
             EventTrigger.Entry entry = new EventTrigger.Entry();
             entry.eventID = EventTriggerType.PointerClick;
@@ -86,11 +86,11 @@ namespace WatKhaoWong.UI.SharePopup
         {
             bool status = true;
 
-            if (!ValidateFirstNameInputField(_firstNameInputField.text)) status = false;
-            if (!ValidateLastNameInputField(_lastNameInputField.text)) status = false;
-            if (!ValidateUserNameInputField(_userNameInputField.text)) status = false;
-            if (!ValidatePasswordInputField(_passwordInputField.text)) status = false;
-            if (!ValidateConfirmPasswordInputField(_confirmPasswordInputField.text)) status = false;
+            if (!IsFirstNameValidated()) status = false;
+            if (!IsLastNameValidated()) status = false;
+            if (!IsUserNameValidated()) status = false;
+            if (!IsPasswordValidated()) status = false;
+            if (!IsConfirmPasswordValidated()) status = false;
 
             return status;
         }
@@ -105,105 +105,33 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Methods-- (Subscriber)
-        private bool ValidateFirstNameInputField(string inputText)
-        {
-            if (string.IsNullOrWhiteSpace(inputText))
-            {
-                _firstNameInputFieldStatus.SetError();
-                _firstName = string.Empty;
-                return false;
-            }
-            // TODO CHECK Name is not relates to something bad or pornography
-            // TODO CHECK Name is not too short
-            // Facebook Example : 
-            // 1. Usernames can only contain alphanumeric characters (A-Z, 0-9) and full stops ("."). They can't contain generic terms or domain extensions (e.g.,.com, net), including country extensions
-            // 2. Usernames must be at least 5 characters long.
-            // TODO maybe  COMBINE  ValidateFirstNameInputField() & ValidateLastNameInputField() into one method.
+        private bool IsFirstNameValidated() => _inputFieldValidator.ValidateFirstName(
+            _firstNameInputField.text, _firstNameInputFieldStatus, out _firstName,
+            _playerSignupPopup.MinimumFirstNameLength,
+            (string.Empty, default),
+            (_playerSignupPopup.StatusFirstNameTooShort, _playerSignupPopup.StatusFirstNameTooShortColor));
 
-            _firstNameInputFieldStatus.SetNormal();
-            _firstName = inputText;
-            return true;
-        }
+        private bool IsLastNameValidated() => _inputFieldValidator.ValidateLastName(
+            _lastNameInputField.text, _lastNameInputFieldStatus, out _lastName,
+            _playerSignupPopup.MinimumLastNameLength,
+            (string.Empty, default),
+            (_playerSignupPopup.StatusLastNameTooShort, _playerSignupPopup.StatusLastNameTooShortColor));
 
-        private bool ValidateLastNameInputField(string inputText)
-        {
-            if (string.IsNullOrWhiteSpace(inputText))
-            {
-                _lastNameInputFieldStatus.SetError();
-                _lastName = string.Empty;
-                return false;
-            }
-            // TODO CHECK Name is not relates to something bad or pornography
-            // TODO CHECK Name is not too short
-            // Facebook Example : 
-            // 1. Usernames can only contain alphanumeric characters (A-Z, 0-9) and full stops ("."). They can't contain generic terms or domain extensions (e.g.,.com, net), including country extensions
-            // 2. Usernames must be at least 5 characters long.
-            // TODO maybe  COMBINE  ValidateFirstNameInputField() & ValidateLastNameInputField() into one method.
+        private bool IsUserNameValidated() => _inputFieldValidator.ValidateUserName(
+            _userNameInputField.text, _userNameInputFieldStatus, out _userName,
+            (string.Empty, default));
 
-            _lastNameInputFieldStatus.SetNormal();
-            _lastName = inputText;
-            return true;
-        }
+        private bool IsPasswordValidated() => _inputFieldValidator.ValidatePassword(
+            _passwordInputField.text, _passwordInputFieldStatus, out _password,
+            _playerSignupPopup.MinimumPasswordLength,
+            (string.Empty, default),
+            (_playerSignupPopup.StatusPasswordTooShort, _playerSignupPopup.StatusPasswordTooShortColor));
 
-        private bool ValidateUserNameInputField(string inputText)
-        {
-            if (string.IsNullOrWhiteSpace(inputText))
-            {
-                _userNameInputFieldStatus.SetError();
-                _userName = string.Empty;
-                return false;
-            }
-            // TODO CHECK IF Email or Phone Number is valid.
-            // Facebook check if email Domain is Valid,
-            // Example: wfek.com is valid website, WhateverNames@wfek.com is consider valid.
-            // BUT asdfakljs.com is NOT valid website, WhateverNames@asdfakljs.com is NOT valid.
-
-            _userNameInputFieldStatus.SetNormal();
-            _userName = inputText;
-            return true;
-        }
-
-        private bool ValidatePasswordInputField(string inputText)
-        {
-            if (string.IsNullOrWhiteSpace(inputText))
-            {
-                _passwordInputFieldStatus.SetError();
-                _password = string.Empty;
-                return false;
-            }
-            // MinimumPassword Length
-            else if (inputText.Length < _playerSignupPopup.MinimumPasswordLength)
-            {
-                _passwordInputFieldStatus.SetError();
-                _password = string.Empty;
-                _statusText.Show(_playerSignupPopup.StatusPasswordTooShort, _playerSignupPopup.StatusPasswordTooShortColor);
-                return false;
-            }
-            // TODO TooEasy Password
-
-            _passwordInputFieldStatus.SetNormal();
-            _password = inputText;
-            return true;
-        }
-
-        private bool ValidateConfirmPasswordInputField(string inputText)
-        {
-            if (string.IsNullOrWhiteSpace(inputText))
-            {
-                _confirmPasswordInputFieldStatus.SetError();
-                return false;
-            }
-            // PASSWORD MISMATCH
-            else if (!_password.Equals(inputText))
-            {
-                _confirmPasswordInputFieldStatus.SetError();
-                _statusText.Show(_playerSignupPopup.StatusConfirmPasswordNotMatch, _playerSignupPopup.StatusConfirmPasswordNotMatchColor);
-                return false;
-            }
-
-            _confirmPasswordInputFieldStatus.SetNormal();
-            return true;
-        }
+        private bool IsConfirmPasswordValidated() => _inputFieldValidator.ValidateConfirmPassword(
+            _confirmPasswordInputField.text, _confirmPasswordInputFieldStatus, out _,
+            _password,
+            (string.Empty, default),
+            (_playerSignupPopup.StatusConfirmPasswordNotMatch, _playerSignupPopup.StatusConfirmPasswordNotMatchColor));
 
         private void InformText(PointerEventData data) => _playerSignupPopup.OnInformTextClick();
 
