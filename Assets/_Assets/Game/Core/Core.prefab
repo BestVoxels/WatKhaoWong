@@ -530,9 +530,9 @@ MonoBehaviour:
   - animator: {fileID: 0}
     isShowOnStart: 0
   - animator: {fileID: 0}
-    isShowOnStart: 1
-  - animator: {fileID: 0}
     isShowOnStart: 0
+  - animator: {fileID: 0}
+    isShowOnStart: 1
   - animator: {fileID: 0}
     isShowOnStart: 0
 --- !u!1 &2009358291179130440
@@ -2018,6 +2018,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  <MinimumCodeLength>k__BackingField: 6
+  <StatusCodeTooShort>k__BackingField: Your code must be at least 6 characters long.
+    Please check the code that we've just sent.
+  <StatusCodeTooShortColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusCodeNotMatch>k__BackingField: Please enter a valid code. Please check the
+    code that we've just sent.
+  <StatusCodeNotMatchColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusResendCode>k__BackingField: 'Code Sent
+
+    Please check the code that we''ve
+    just sent.'
+  <StatusResendCodeColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onInformTextClick:
     m_PersistentCalls:
       m_Calls: []

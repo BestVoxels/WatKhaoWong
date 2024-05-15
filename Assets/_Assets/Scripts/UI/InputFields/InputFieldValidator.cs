@@ -102,6 +102,22 @@ namespace WatKhaoWong.UI.InputFields
             resultText = inputText;
             return true;
         }
+
+        public bool ValidateCode(string inputText, InputFieldStatus fieldStatus, out string resultText, byte minLength, string compareText, params (string Msg, Color32 Color)[] status)
+        {
+            if (IsNullOrWhiteSpace(inputText, fieldStatus, out resultText, (status[0].Msg, status[0].Color)))
+                return false;
+
+            if (IsLessThanMinimumLength(inputText, fieldStatus, out resultText, minLength, (status[1].Msg, status[1].Color)))
+                return false;
+
+            if (IsNotMatch(inputText, fieldStatus, out resultText, compareText, (status[2].Msg, status[2].Color)))
+                return false;
+
+            fieldStatus.SetNormal();
+            resultText = inputText;
+            return true;
+        }
         #endregion
 
 

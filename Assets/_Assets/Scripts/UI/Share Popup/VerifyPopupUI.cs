@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using WatKhaoWong.SharePopup;
+using WatKhaoWong.UI.System;
+using WatKhaoWong.UI.InputFields;
+using WatKhaoWong.Utils.UI;
 
 namespace WatKhaoWong.UI.SharePopup
 {
@@ -24,7 +27,13 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Fields-- (In Class)
+        // TODO Temp Maybe? Have to check with firebase again on how to implement this.
+        private string _generatedCode = "123456";
+
         private VerifyPopup _playerVerifyPopup;
+        private StatusText _statusText;
+        private InputFieldValidator _inputFieldValidator;
+        private InputFieldStatus _codeInputFieldStatus;
         #endregion
 
 
@@ -33,10 +42,13 @@ namespace WatKhaoWong.UI.SharePopup
         private void Awake()
         {
             _playerVerifyPopup = GameObject.FindWithTag("Player").GetComponentInChildren<VerifyPopup>();
+            _statusText = FindAnyObjectByType<StatusText>();
+            _inputFieldValidator = FindAnyObjectByType<InputFieldValidator>();
+            _codeInputFieldStatus = _codeInputField.GetComponentInChildren<InputFieldStatus>();
 
             _closeButton.onClick.AddListener(Close);
 
-            _codeInputField.onEndEdit.AddListener(UpdateCodeInputField);
+            _codeInputField.onEndEdit.AddListener(inputText => IsCodeValidated());
 
             EventTrigger.Entry entry = new EventTrigger.Entry();
             entry.eventID = EventTriggerType.PointerClick;
@@ -54,6 +66,24 @@ namespace WatKhaoWong.UI.SharePopup
 
 
 
+        #region --Methods-- (Custom PRIVATE)
+        private bool Validate()
+        {
+            bool status = true;
+
+            if (!IsCodeValidated()) status = false;
+
+            return status;
+        }
+
+        private void SendStatusText()
+        {
+            _statusText.Show(_playerVerifyPopup.StatusResendCode, _playerVerifyPopup.StatusResendCodeColor);
+        }
+        #endregion
+
+
+
         #region --Methods-- (Subscriber) ~Popup Header UI~
         private void Close() => _playerVerifyPopup.OnCloseButtonClick();
         #endregion
@@ -61,18 +91,39 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Methods-- (Subscriber)
-        private void UpdateCodeInputField(string text)
-        {
+        private bool IsCodeValidated() => _inputFieldValidator.ValidateCode(
+            _codeInputField.text, _codeInputFieldStatus, out _,
+            _playerVerifyPopup.MinimumCodeLength, _generatedCode,
+            (string.Empty, default),
+            (_playerVerifyPopup.StatusCodeTooShort, _playerVerifyPopup.StatusCodeTooShortColor),
+            (_playerVerifyPopup.StatusCodeNotMatch, _playerVerifyPopup.StatusCodeNotMatchColor));
 
+        private void InformText(PointerEventData data)
+        {
+            SendStatusText();
+
+            _playerVerifyPopup.OnInformTextClick();
         }
 
-        private void InformText(PointerEventData data) => _playerVerifyPopup.OnInformTextClick();
+        private void ResendText(PointerEventData data)
+        {
+            SendStatusText();
 
-        private void ResendText(PointerEventData data) => _playerVerifyPopup.OnResendTextClick();
+            _playerVerifyPopup.OnResendTextClick();
+        }
 
         private void Confirm()
         {
-            _playerVerifyPopup.OnConfirmButtonClick();
+            if (Validate())
+            {
+                // TODO Do something with server maybe?
+
+                _playerVerifyPopup.OnConfirmButtonClick();
+            }
+            else
+            {
+                _playerVerifyPopup.OnConfirmButtonCantClick();
+            }
         }
         #endregion
     }

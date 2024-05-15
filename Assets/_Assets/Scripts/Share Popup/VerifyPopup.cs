@@ -6,6 +6,23 @@ namespace WatKhaoWong.SharePopup
 {
     public class VerifyPopup : Popup
     {
+        #region --Properties-- (Inspector)
+        [field: Header("Verify Popup General Settings")]
+        [field: SerializeField] public byte MinimumCodeLength { get; private set; } = 6;
+        [field: Space]
+        [field: Header("Verify Popup Status Text")]
+        [field: SerializeField] public string StatusCodeTooShort { get; private set; } = "Your code must be at least 6 characters long. Please check the code that we've just sent.";
+        [field: SerializeField] public Color32 StatusCodeTooShortColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public string StatusCodeNotMatch { get; private set; } = "Please enter a valid code. Please check the code that we've just sent.";
+        [field: SerializeField] public Color32 StatusCodeNotMatchColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public string StatusResendCode { get; private set; } = "Code Sent\nPlease check the code that we've just sent.";
+        [field: SerializeField] public Color32 StatusResendCodeColor { get; private set; }
+        #endregion
+
+
+
         #region --Events-- (UnityEvent)
         [Header("Verify Popup UI Event")]
         [SerializeField] private UnityEvent _onInformTextClick;
