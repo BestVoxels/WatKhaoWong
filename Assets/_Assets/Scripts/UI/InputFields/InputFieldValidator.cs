@@ -21,7 +21,7 @@ namespace WatKhaoWong.UI.InputFields
 
 
 
-        #region --Methods-- (Custom PUBLIC) ~STATIC~ ~Custom Extension~
+        #region --Methods-- (Custom PUBLIC) ~Signup~
         public bool ValidateFirstName(string inputText, InputFieldStatus fieldStatus, out string resultText, byte minLength, params (string Msg, Color32 Color)[] status)
         {
             if (IsNullOrWhiteSpace(inputText, fieldStatus, out resultText, (status[0].Msg, status[0].Color)))
@@ -60,7 +60,7 @@ namespace WatKhaoWong.UI.InputFields
             return true;
         }
 
-        public bool ValidateUserName(string inputText, InputFieldStatus fieldStatus, out string resultText, params (string Msg, Color32 Color)[] status)
+        public bool ValidateSignupUserName(string inputText, InputFieldStatus fieldStatus, out string resultText, params (string Msg, Color32 Color)[] status)
         {
             if (IsNullOrWhiteSpace(inputText, fieldStatus, out resultText, (status[0].Msg, status[0].Color)))
                 return false;
@@ -75,7 +75,7 @@ namespace WatKhaoWong.UI.InputFields
             return true;
         }
 
-        public bool ValidatePassword(string inputText, InputFieldStatus fieldStatus, out string resultText, byte minLength, params (string Msg, Color32 Color)[] status)
+        public bool ValidateSignupPassword(string inputText, InputFieldStatus fieldStatus, out string resultText, byte minLength, params (string Msg, Color32 Color)[] status)
         {
             if (IsNullOrWhiteSpace(inputText, fieldStatus, out resultText, (status[0].Msg, status[0].Color)))
                 return false;
@@ -102,7 +102,11 @@ namespace WatKhaoWong.UI.InputFields
             resultText = inputText;
             return true;
         }
+        #endregion
 
+
+
+        #region --Methods-- (Custom PUBLIC) ~Verification~
         public bool ValidateCode(string inputText, InputFieldStatus fieldStatus, out string resultText, byte minLength, string compareText, params (string Msg, Color32 Color)[] status)
         {
             if (IsNullOrWhiteSpace(inputText, fieldStatus, out resultText, (status[0].Msg, status[0].Color)))
@@ -112,6 +116,37 @@ namespace WatKhaoWong.UI.InputFields
                 return false;
 
             if (IsNotMatch(inputText, fieldStatus, out resultText, compareText, (status[2].Msg, status[2].Color)))
+                return false;
+
+            fieldStatus.SetNormal();
+            resultText = inputText;
+            return true;
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Login~
+        public bool ValidateLoginUserName(string inputText, InputFieldStatus fieldStatus, out string resultText, params (string Msg, Color32 Color)[] status)
+        {
+            if (IsNullOrWhiteSpace(inputText, fieldStatus, out resultText, (status[0].Msg, status[0].Color)))
+                return false;
+
+            // TODO CHECK IF Email or Phone Number is valid.
+            // Facebook check if email is Valid within their server,
+            // (use this easier maybe) Shopee check if "email" is Valid by '@' and "Phone Number" counts is = 10 characters.
+
+            fieldStatus.SetNormal();
+            resultText = inputText;
+            return true;
+        }
+
+        public bool ValidateLoginPassword(string inputText, InputFieldStatus fieldStatus, out string resultText, string compareText, params (string Msg, Color32 Color)[] status)
+        {
+            if (IsNullOrWhiteSpace(inputText, fieldStatus, out resultText, (status[0].Msg, status[0].Color)))
+                return false;
+
+            if (IsNotMatch(inputText, fieldStatus, out resultText, compareText, (status[1].Msg, status[1].Color)))
                 return false;
 
             fieldStatus.SetNormal();

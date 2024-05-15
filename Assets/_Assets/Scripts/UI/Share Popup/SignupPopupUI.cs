@@ -117,11 +117,11 @@ namespace WatKhaoWong.UI.SharePopup
             (string.Empty, default),
             (_playerSignupPopup.StatusLastNameTooShort, _playerSignupPopup.StatusLastNameTooShortColor));
 
-        private bool IsUserNameValidated() => _inputFieldValidator.ValidateUserName(
+        private bool IsUserNameValidated() => _inputFieldValidator.ValidateSignupUserName(
             _userNameInputField.text, _userNameInputFieldStatus, out _userName,
             (string.Empty, default));
 
-        private bool IsPasswordValidated() => _inputFieldValidator.ValidatePassword(
+        private bool IsPasswordValidated() => _inputFieldValidator.ValidateSignupPassword(
             _passwordInputField.text, _passwordInputFieldStatus, out _password,
             _playerSignupPopup.MinimumPasswordLength,
             (string.Empty, default),

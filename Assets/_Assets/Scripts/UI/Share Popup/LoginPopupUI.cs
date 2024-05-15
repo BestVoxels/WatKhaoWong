@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using WatKhaoWong.SharePopup;
+using WatKhaoWong.UI.System;
+using WatKhaoWong.UI.InputFields;
+using WatKhaoWong.Utils.UI;
 
 namespace WatKhaoWong.UI.SharePopup
 {
@@ -25,7 +28,14 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Fields-- (In Class)
+        // TODO Temp
+        private string _userPassword = "thanitsakBoat";
+
         private LoginPopup _playerLoginPopup;
+        private StatusText _statusText;
+        private InputFieldValidator _inputFieldValidator;
+        private InputFieldStatus _userNameInputFieldStatus;
+        private InputFieldStatus _passwordInputFieldStatus;
         #endregion
 
 
@@ -34,11 +44,15 @@ namespace WatKhaoWong.UI.SharePopup
         private void Awake()
         {
             _playerLoginPopup = GameObject.FindWithTag("Player").GetComponentInChildren<LoginPopup>();
+            _statusText = FindAnyObjectByType<StatusText>();
+            _inputFieldValidator = FindAnyObjectByType<InputFieldValidator>();
+            _userNameInputFieldStatus = _userNameInputField.GetComponentInChildren<InputFieldStatus>();
+            _passwordInputFieldStatus = _passwordInputField.GetComponentInChildren<InputFieldStatus>();
 
             _closeButton.onClick.AddListener(Close);
 
-            _userNameInputField.onEndEdit.AddListener(UpdateUserNameInputField);
-            _passwordInputField.onEndEdit.AddListener(UpdatePasswordInputField);
+            _userNameInputField.onEndEdit.AddListener(inputText => IsUserNameValidated());
+            _passwordInputField.onEndEdit.AddListener(inputText => IsPasswordValidated());
 
             EventTrigger.Entry entry = new EventTrigger.Entry();
             entry.eventID = EventTriggerType.PointerClick;
@@ -56,6 +70,20 @@ namespace WatKhaoWong.UI.SharePopup
 
 
 
+        #region --Methods-- (Custom PRIVATE)
+        private bool Validate()
+        {
+            bool status = true;
+
+            if (!IsUserNameValidated()) status = false;
+            if (!IsPasswordValidated()) status = false;
+
+            return status;
+        }
+        #endregion
+
+
+
         #region --Methods-- (Subscriber) ~Popup Header UI~
         private void Close() => _playerLoginPopup.OnCloseButtonClick();
         #endregion
@@ -63,23 +91,38 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Methods-- (Subscriber)
-        private void UpdateUserNameInputField(string text)
-        {
+        private bool IsUserNameValidated() => _inputFieldValidator.ValidateLoginUserName(
+            _userNameInputField.text, _userNameInputFieldStatus, out _,
+            (string.Empty, default),
+            (_playerLoginPopup.StatusInvalidUserName, _playerLoginPopup.StatusInvalidUserNameColor));
 
-        }
-
-        private void UpdatePasswordInputField(string text)
-        {
-
-        }
+        private bool IsPasswordValidated() => _inputFieldValidator.ValidateLoginPassword(
+            _passwordInputField.text, _passwordInputFieldStatus, out _,
+            _userPassword,
+            (string.Empty, default),
+            (_playerLoginPopup.StatusInvalidPassword, _playerLoginPopup.StatusInvalidPasswordColor));
 
         private void SignupText(PointerEventData data) => _playerLoginPopup.OnSignupTextClick();
 
-        private void ForgotText(PointerEventData data) => _playerLoginPopup.OnForgotTextClick();
+        private void ForgotText(PointerEventData data)
+        {
+            _statusText.Show(_playerLoginPopup.StatusForgotPassword, _playerLoginPopup.StatusForgotPasswordColor);
+
+            _playerLoginPopup.OnForgotTextClick();
+        }
 
         private void Confirm()
         {
-            _playerLoginPopup.OnConfirmButtonClick();
+            if (Validate())
+            {
+                // TODO do something later with server maybe?
+
+                _playerLoginPopup.OnConfirmButtonClick();
+            }
+            else
+            {
+                _playerLoginPopup.OnConfirmButtonCantClick();
+            }
         }
         #endregion
     }

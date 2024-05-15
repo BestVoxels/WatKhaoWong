@@ -6,6 +6,20 @@ namespace WatKhaoWong.SharePopup
 {
     public class LoginPopup : Popup
     {
+        #region --Properties-- (Inspector)
+        [field: Header("Login Popup Status Text")]
+        [field: SerializeField] public string StatusInvalidUserName { get; private set; } = "Invalid Email or Phone Number.";
+        [field: SerializeField] public Color32 StatusInvalidUserNameColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public string StatusInvalidPassword { get; private set; } = "Invalid Account or Password.";
+        [field: SerializeField] public Color32 StatusInvalidPasswordColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public string StatusForgotPassword { get; private set; } = "Please contact for support at developer website.";
+        [field: SerializeField] public Color32 StatusForgotPasswordColor { get; private set; }
+        #endregion
+
+
+
         #region --Events-- (UnityEvent)
         [Header("Login Popup UI Event")]
         [SerializeField] private UnityEvent _onSignupTextClick;

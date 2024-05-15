@@ -532,9 +532,9 @@ MonoBehaviour:
   - animator: {fileID: 0}
     isShowOnStart: 0
   - animator: {fileID: 0}
-    isShowOnStart: 1
-  - animator: {fileID: 0}
     isShowOnStart: 0
+  - animator: {fileID: 0}
+    isShowOnStart: 1
 --- !u!1 &2009358291179130440
 GameObject:
   m_ObjectHideFlags: 0
@@ -1488,6 +1488,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  <StatusInvalidUserName>k__BackingField: Invalid Email or Phone Number.
+  <StatusInvalidUserNameColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusInvalidPassword>k__BackingField: Invalid Account or Password.
+  <StatusInvalidPasswordColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusForgotPassword>k__BackingField: Please contact for support at developer
+    website.
+  <StatusForgotPasswordColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onSignupTextClick:
     m_PersistentCalls:
       m_Calls:
@@ -1517,7 +1530,19 @@ MonoBehaviour:
         m_CallState: 2
   _onForgotTextClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1908285290424802923}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
+        m_MethodName: OpenUrl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: https://www.bestvoxels.com
+          m_BoolArgument: 0
+        m_CallState: 2
   _onConfirmButtonClick:
     m_PersistentCalls:
       m_Calls:
