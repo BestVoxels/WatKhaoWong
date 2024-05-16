@@ -506,6 +506,7 @@ Transform:
   - {fileID: 3672484629506604567}
   - {fileID: 7423408979919273027}
   - {fileID: 6365214590018219571}
+  - {fileID: 5691466238723910595}
   m_Father: {fileID: 2637654065332200263}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4956454277919580197
@@ -1357,6 +1358,53 @@ MonoBehaviour:
     animator: {fileID: 0}
     isShowOnStart: 0
   _popups: []
+--- !u!1 &6008341982099111722
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5691466238723910595}
+  - component: {fileID: 7025401772511450966}
+  m_Layer: 0
+  m_Name: Logout Button System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5691466238723910595
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6008341982099111722}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1313416025136834623}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7025401772511450966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6008341982099111722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba8f01f248491491ea604d2952fdae77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onLogoutButtonClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &6038469830596371298
 GameObject:
   m_ObjectHideFlags: 0
