@@ -89,6 +89,9 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Methods-- (Custom PRIVATE)
+        /// <summary>
+        /// Turn on Toggle to matches with Player's selected ProfileIcon.
+        /// </summary>
         private void RefreshToggleStatusOnStart()
         {
             Account.IconData iconData = _account.GetIconData();

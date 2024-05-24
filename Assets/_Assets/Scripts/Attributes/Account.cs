@@ -55,7 +55,7 @@ namespace WatKhaoWong.Attributes
 
         public IconData GetIconData()
         {
-            // TODO SAVE CODE - TEMP CODE
+            // TODO SAVE CODE - TEMP CODE - have to change save method because InstaceID will be changed everytime we load UnityEditor.
             IconData iconData = JsonUtility.FromJson<IconData>(PlayerPrefs.GetString("AccountProfileIcon"));
 
             // TODO fetch data from Server
@@ -147,6 +147,8 @@ namespace WatKhaoWong.Attributes
             {
                 foreach (GameObject each in newData.decorators)
                 {
+                    if (each == null) return; // Guard check MUST DO because InstaceID will be changed everytime we load UnityEditor.
+
                     GameObject result = Instantiate(each, oldUI.decoratorSpawnParent, false);
 
                     RectTransform rt = result.GetComponent<RectTransform>();
