@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.SharePopup;
 using WatKhaoWong.UI.System;
-using WatKhaoWong.Attributes;
+using WatKhaoWong.Identity;
 
 namespace WatKhaoWong.UI.SharePopup
 {

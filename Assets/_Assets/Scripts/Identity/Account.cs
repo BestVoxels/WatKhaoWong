@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WatKhaoWong.Attributes
+namespace WatKhaoWong.Identity
 {
     public class Account : MonoBehaviour
     {

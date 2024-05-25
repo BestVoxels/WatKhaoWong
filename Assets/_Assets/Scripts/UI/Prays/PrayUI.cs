@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 using System.Globalization;
 using TMPro;
 using WatKhaoWong.Prays;
-using WatKhaoWong.Attributes;
+using WatKhaoWong.Identity;
 
 namespace WatKhaoWong.UI.Prays
 {

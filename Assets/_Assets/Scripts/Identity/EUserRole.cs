@@ -1,4 +1,4 @@
-namespace WatKhaoWong.Attributes
+namespace WatKhaoWong.Identity
 {
     public enum EAccountRole
     {

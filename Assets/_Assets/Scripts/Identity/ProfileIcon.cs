@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace WatKhaoWong.Attributes
+namespace WatKhaoWong.Identity
 {
     public class ProfileIcon : MonoBehaviour
     {
