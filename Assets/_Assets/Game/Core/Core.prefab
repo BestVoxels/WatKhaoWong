@@ -586,7 +586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DefaultProfileIcon>k__BackingField: {fileID: 0}
-  <Role>k__BackingField: 1
+  <Role>k__BackingField: 2
 --- !u!1 &2463763845362812804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1981,6 +1981,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _uIToShowOnStart: []
   _uIToHideOnStart:
+  - uI: {fileID: 0}
+    targetRoles: 02000000
+  - uI: {fileID: 0}
+    targetRoles: 02000000
   - uI: {fileID: 0}
     targetRoles: 0100000002000000
 --- !u!1 &8533724761888453121
