@@ -6,12 +6,12 @@ namespace WatKhaoWong.Attributes
 {
     public class Account : MonoBehaviour
     {
-        // TODO isAdmin / hasLogin - these should be declared here
-
-
         #region --Properties-- (Inspector)
         [field: Header("Account Stuffs")]
         [field: SerializeField] public ProfileIcon DefaultProfileIcon { get; private set; }
+        [field: Space]
+        [field: Header("Debugger Stuffs")]
+        [field: SerializeField] public EAccountRole Role { get; private set; } = EAccountRole.Member;
         #endregion
 
 
