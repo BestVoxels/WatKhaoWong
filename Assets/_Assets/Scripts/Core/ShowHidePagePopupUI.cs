@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using WatKhaoWong.Identity;
 
-namespace WatKhaoWong.Utils.UI
+namespace WatKhaoWong.Core
 {
     /// <summary>
     /// Place on any GameObject that itself won't get disabled so that it can Show/Hide another GameObject
     /// </summary>
-    public class ShowHideUI : MonoBehaviour
+    public class ShowHidePagePopupUI : MonoBehaviour
     {
         #region --Fields-- (Inspector)
         [Header("Page Animation Stuffs")]
@@ -31,12 +32,19 @@ namespace WatKhaoWong.Utils.UI
         private readonly int _popupCloseInstant = Animator.StringToHash("PopupUI Close Instant");
 
         private Coroutine _previousCoroutine;
-        private byte _popupDepth = 0;
+        private static byte s_popupDepth = 0;
+
+        private Account _account;
         #endregion
 
 
 
         #region --Methods-- (Built In)
+        private void Awake()
+        {
+            _account = GameObject.FindWithTag("Player").GetComponentInChildren<Account>();
+        }
+
         private void Start()
         {
             if (IsPageExist())
@@ -98,7 +106,7 @@ namespace WatKhaoWong.Utils.UI
 
             _previousCoroutine = StartCoroutine(DelayPageAnimation(_pageOpen, delayBeforePlay, true));
 
-            _popupDepth = 0;
+            s_popupDepth = 0;
         }
 
         public void ClosePage(float delayBeforePlay)
@@ -111,12 +119,12 @@ namespace WatKhaoWong.Utils.UI
 
         public void OpenPopup(Animator popupAnimator)
         {
-            if (_popupDepth == 0)
+            if (s_popupDepth == 0)
                 _dim.animator.Play(_popupOpen, -1, 0f);
 
             popupAnimator.Play(_popupOpen, -1, 0f);
 
-            _popupDepth++;
+            s_popupDepth++;
         }
 
         public void ClosePopup(Animator popupAnimator)
@@ -125,13 +133,25 @@ namespace WatKhaoWong.Utils.UI
             if (!popupAnimator.GetCurrentAnimatorStateInfo(0).IsName("PopupUI Open") && !popupAnimator.GetCurrentAnimatorStateInfo(0).IsName("PopupUI Idle"))
                 return;
 
-            if (_popupDepth <= 1)
+            if (s_popupDepth <= 1)
                 _dim.animator.Play(_popupClose, -1, 0f);
 
             popupAnimator.Play(_popupClose, -1, 0f);
 
-            if (_popupDepth > 0)
-                _popupDepth--;
+            if (s_popupDepth > 0)
+                s_popupDepth--;
+        }
+
+        public void OpenPopupIfGuest(Animator popupAnimator)
+        {
+            if (_account.Role == EAccountRole.Guest)
+                OpenPopup(popupAnimator);
+        }
+
+        public void OpenPopupIfNotGuest(Animator popupAnimator)
+        {
+            if (_account.Role != EAccountRole.Guest)
+                OpenPopup(popupAnimator);
         }
         #endregion
 

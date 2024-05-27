@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using WatKhaoWong.Identity;
 
-namespace WatKhaoWong.Identity
+namespace WatKhaoWong.Core
 {
     public class ShowHideUIByRole : MonoBehaviour
     {
