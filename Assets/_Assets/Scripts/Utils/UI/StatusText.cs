@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace WatKhaoWong.UI.System
+namespace WatKhaoWong.Utils.UI
 {
     public class StatusText : MonoBehaviour
     {

@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.SharePopup;
-using WatKhaoWong.UI.System;
+using WatKhaoWong.Utils.UI;
 using WatKhaoWong.Identity;
 
 namespace WatKhaoWong.UI.SharePopup

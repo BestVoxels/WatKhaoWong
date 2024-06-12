@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using WatKhaoWong.SharePopup;
-using WatKhaoWong.UI.System;
 using WatKhaoWong.UI.InputFields;
 using WatKhaoWong.Utils.UI;
 

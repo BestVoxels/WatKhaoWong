@@ -1,7 +1,7 @@
 using UnityEngine;
 using TMPro;
 
-namespace WatKhaoWong.UI.System
+namespace WatKhaoWong.Utils.UI
 {
     public class StatusTextUI : MonoBehaviour
     {

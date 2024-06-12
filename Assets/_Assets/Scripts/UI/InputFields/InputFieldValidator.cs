@@ -1,6 +1,5 @@
 using UnityEngine;
 using WatKhaoWong.Utils.UI;
-using WatKhaoWong.UI.System;
 
 namespace WatKhaoWong.UI.InputFields
 {

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Prays;
 using WatKhaoWong.UI.Toggles;
-using WatKhaoWong.UI.System;
+using WatKhaoWong.Utils.UI;
 
 namespace WatKhaoWong.UI.Prays
 {

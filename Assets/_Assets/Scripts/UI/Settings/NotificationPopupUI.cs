@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Settings;
-using WatKhaoWong.UI.System;
+using WatKhaoWong.Utils.UI;
 using Michsky.MUIP;
 
 namespace WatKhaoWong.UI.Settings
