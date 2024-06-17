@@ -18,7 +18,7 @@ namespace WatKhaoWong.UI.Prays
         [SerializeField] private EventTrigger _userProfileEventTrigger;
         [SerializeField] private EventTrigger _userStatsEventTrigger;
         [Space]
-        [SerializeField] private Account.IconUI _icon;
+        [SerializeField] private AccountData.IconUI _icon;
         [Space]
         [SerializeField] private TMP_Text _userNameText;
         [SerializeField] private TMP_Text _allTimeTMPointsText;
@@ -35,7 +35,7 @@ namespace WatKhaoWong.UI.Prays
 
         #region --Fields-- (In Class)
         private Pray _playerPray;
-        private Account _account;
+        private AccountData _account;
         #endregion
 
 
@@ -50,7 +50,7 @@ namespace WatKhaoWong.UI.Prays
         private void Awake()
         {
             _playerPray = GameObject.FindWithTag("Player").GetComponentInChildren<Pray>();
-            _account = GameObject.FindWithTag("Player").GetComponentInChildren<Account>();
+            _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountData>();
 
             _backButton.onClick.AddListener(Back);
 

@@ -8,14 +8,14 @@ namespace WatKhaoWong.Identity
     {
         #region --Properties-- (Inspector)
         [field: Header("UI Stuffs")]
-        [field: SerializeField] public Account.IconUI UI { get; private set; }
+        [field: SerializeField] public AccountData.IconUI UI { get; private set; }
         [field: SerializeField] public Toggle Toggle { get; private set; }
         #endregion
 
 
 
         #region --Events-- (Delegate as Action)
-        public event Action<Account.IconUI, bool> OnToggleChanged;
+        public event Action<AccountData.IconUI, bool> OnToggleChanged;
         #endregion
 
 

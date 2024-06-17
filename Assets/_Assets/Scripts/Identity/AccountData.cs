@@ -4,14 +4,11 @@ using UnityEngine.UI;
 
 namespace WatKhaoWong.Identity
 {
-    public class Account : MonoBehaviour
+    public class AccountData : MonoBehaviour
     {
         #region --Properties-- (Inspector)
         [field: Header("Account Stuffs")]
         [field: SerializeField] public ProfileIcon DefaultProfileIcon { get; private set; }
-        [field: Space]
-        [field: Header("Debugger Stuffs")]
-        [field: SerializeField] public EAccountRole Role { get; private set; } = EAccountRole.Member;
         #endregion
 
 

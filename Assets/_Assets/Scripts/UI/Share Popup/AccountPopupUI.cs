@@ -20,7 +20,7 @@ namespace WatKhaoWong.UI.SharePopup
 
         [Header("Account Popup UI Stuffs")]
         [Header("User Profile")]
-        [SerializeField] private Account.IconUI _icon;
+        [SerializeField] private AccountData.IconUI _icon;
         [Space]
         [SerializeField] private TMP_Text _userNameText;
         [SerializeField] private TMP_Text _userLevelText;
@@ -44,7 +44,7 @@ namespace WatKhaoWong.UI.SharePopup
         private readonly List<ProfileIcon> _profileIcons = new List<ProfileIcon>();
 
         private AccountPopup _playerAccountPopup;
-        private Account _account;
+        private AccountData _account;
         private StatusText _statusText;
         #endregion
 
@@ -60,7 +60,7 @@ namespace WatKhaoWong.UI.SharePopup
         private void Awake()
         {
             _playerAccountPopup = GameObject.FindWithTag("Player").GetComponentInChildren<AccountPopup>();
-            _account = GameObject.FindWithTag("Player").GetComponentInChildren<Account>();
+            _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountData>();
             _statusText = FindAnyObjectByType<StatusText>();
 
             _closeButton.onClick.AddListener(Close);
@@ -94,7 +94,7 @@ namespace WatKhaoWong.UI.SharePopup
         /// </summary>
         private void RefreshToggleStatusOnStart()
         {
-            Account.IconData iconData = _account.GetIconData();
+            AccountData.IconData iconData = _account.GetIconData();
             List<ProfileIcon> temp = _profileIcons.Where(
                 (ProfileIcon p) =>
                 {
@@ -136,7 +136,7 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Methods-- (Subscriber)
-        private void OnToggleChanged(Account.IconUI selectedIconUI, bool isOn)
+        private void OnToggleChanged(AccountData.IconUI selectedIconUI, bool isOn)
         {
             if (isOn)
             {

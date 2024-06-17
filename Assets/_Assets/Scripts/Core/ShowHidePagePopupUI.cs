@@ -34,7 +34,7 @@ namespace WatKhaoWong.Core
         private Coroutine _previousCoroutine;
         private static byte s_popupDepth = 0;
 
-        private Account _account;
+        private AccountRule _account;
         #endregion
 
 
@@ -42,7 +42,7 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _account = GameObject.FindWithTag("Player").GetComponentInChildren<Account>();
+            _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountRule>();
         }
 
         private void Start()
