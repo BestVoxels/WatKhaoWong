@@ -3,6 +3,7 @@ using UnityEngine;
 using WatKhaoWong.Prays;
 using WatKhaoWong.Settings;
 using WatKhaoWong.SharePopup;
+using WatKhaoWong.Identity;
 
 namespace WatKhaoWong.UI
 {
@@ -22,11 +23,13 @@ namespace WatKhaoWong.UI
         public static event Action OnPrayRefreshed;
         public static event Action OnSettingRefreshed;
         public static event Action OnHistoryRefreshed;
+        public static event Action OnUIShowedHidByRoles;
         #endregion
 
 
 
         #region --Fields-- (In Class)
+        private AccountRole _account;
         // TODO lets see what to subscribe to for HOME SYSTEM
         private UndoPopup _undoPopup;
         private NotificationPopup _notificationPopup;
@@ -42,6 +45,7 @@ namespace WatKhaoWong.UI
         {
             GameObject player = GameObject.FindWithTag("Player");
 
+            _account = player.GetComponentInChildren<AccountRole>();
             _undoPopup = player.GetComponentInChildren<UndoPopup>();
             _notificationPopup = player.GetComponentInChildren<NotificationPopup>();
             _accountPopup = player.GetComponentInChildren<AccountPopup>();
@@ -49,6 +53,9 @@ namespace WatKhaoWong.UI
 
         private void OnEnable()
         {
+            // ACCOUNT ROLE SYSTEM
+            _account.OnRoleChanged += RefreshAllUI;
+
             // HOME SYSTEM
             // TODO lets see what to subscribe to for HOME SYSTEM
 
@@ -68,7 +75,7 @@ namespace WatKhaoWong.UI
 
         private void OnDisable()
         {
-            // NONE of the Above Delegates are static so don't have to Unsubscribe to make it more clean
+            // NONE of the Above Delegates are static so don't have to Unsubscribe to make it more clean / Also can't Unsubscribe anonymous function
 
             RemoveStaticDelegatesSubscribers();
         }
@@ -83,6 +90,7 @@ namespace WatKhaoWong.UI
             RefreshPrayUI();
             RefreshSettingUI();
             RefreshHistoryUI();
+            ShowHideUIByRoles();
             print("Refreshed All UI");
         }
 
@@ -108,6 +116,12 @@ namespace WatKhaoWong.UI
         {
             OnHistoryRefreshed?.Invoke();
             print("Refreshed History UI " + OnHistoryRefreshed?.GetInvocationList().Length);
+        }
+
+        public static void ShowHideUIByRoles()
+        {
+            OnUIShowedHidByRoles?.Invoke();
+            print("Showed Hid UI By Roles " + OnUIShowedHidByRoles?.GetInvocationList().Length);
         }
         #endregion
 

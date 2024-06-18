@@ -140,12 +140,9 @@ namespace WatKhaoWong.UI.InputFields
             return true;
         }
 
-        public bool ValidateLoginPassword(string inputText, InputFieldStatus fieldStatus, out string resultText, string compareText, params (string Msg, Color32 Color)[] status)
+        public bool ValidateLoginPassword(string inputText, InputFieldStatus fieldStatus, out string resultText, params (string Msg, Color32 Color)[] status)
         {
             if (IsNullOrWhiteSpace(inputText, fieldStatus, out resultText, (status[0].Msg, status[0].Color)))
-                return false;
-
-            if (IsNotMatch(inputText, fieldStatus, out resultText, compareText, (status[1].Msg, status[1].Color)))
                 return false;
 
             fieldStatus.SetNormal();

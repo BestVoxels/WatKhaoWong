@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using WatKhaoWong.Identity;
+using WatKhaoWong.UI;
 
 namespace WatKhaoWong.Core
 {
@@ -8,14 +9,14 @@ namespace WatKhaoWong.Core
     {
         #region --Fields-- (Inspector)
         [Header("General Settings")]
-        [SerializeField] private UIItem[] _uIToShowOnStart;
-        [SerializeField] private UIItem[] _uIToHideOnStart;
+        [SerializeField] private UIItem[] _showUIByRoles;
+        [SerializeField] private UIItem[] _hideUIByRoles;
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        private AccountRule _account;
+        private AccountRole _account;
         #endregion
 
 
@@ -23,31 +24,43 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountRule>();
+            _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountRole>();
+        }
+
+        private void OnEnable()
+        {
+            UIRefresher.OnUIShowedHidByRoles += ShowUI;
+            UIRefresher.OnUIShowedHidByRoles += HideUI;
         }
 
         private void Start()
         {
-            ShowUIOnStart();
-            HideUIOnStart();
+            ShowUI();
+            HideUI();
+        }
+
+        private void OnDisable()
+        {
+            UIRefresher.OnUIShowedHidByRoles -= ShowUI;
+            UIRefresher.OnUIShowedHidByRoles -= HideUI;
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PRIVATE)
-        private void ShowUIOnStart()
+        private void ShowUI()
         {
-            foreach (UIItem each in _uIToShowOnStart)
+            foreach (UIItem each in _showUIByRoles)
             {
                 if (each.targetRoles.Contains(_account.Role))
                     each.uI.SetActive(true);
             }
         }
 
-        private void HideUIOnStart()
+        private void HideUI()
         {
-            foreach (UIItem each in _uIToHideOnStart)
+            foreach (UIItem each in _hideUIByRoles)
             {
                 if (each.targetRoles.Contains(_account.Role))
                     each.uI.SetActive(false);

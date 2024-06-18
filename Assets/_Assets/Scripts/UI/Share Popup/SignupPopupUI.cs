@@ -141,14 +141,11 @@ namespace WatKhaoWong.UI.SharePopup
         {
             if (Validate())
             {
-                // TODO pass on these values below to other script or server maybe?
-                //_firstName, _lastName, _userName, _password
-
-                _playerSignupPopup.OnConfirmButtonClick();
+                _playerSignupPopup.OnValidateSucceeded(_firstName, _lastName, _userName, _password);
             }
             else
             {
-                _playerSignupPopup.OnConfirmButtonCantClick();
+                _playerSignupPopup.OnValidateFailed();
             }
         }
         #endregion

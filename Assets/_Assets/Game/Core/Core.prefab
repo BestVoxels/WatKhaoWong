@@ -59,6 +59,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  StatusSucceeded: Signed up successfully
+  StatusSucceededColor:
+    serializedVersion: 2
+    rgba: 0
+  StatusCanceled: Canceled
+  StatusCanceledColor:
+    serializedVersion: 2
+    rgba: 0
+  StatusErrored: Signed up failed. Error.
+  StatusErroredColor:
+    serializedVersion: 2
+    rgba: 0
   <MinimumFirstNameLength>k__BackingField: 5
   <MinimumLastNameLength>k__BackingField: 5
   <MinimumPasswordLength>k__BackingField: 6
@@ -136,11 +148,11 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _onConfirmButtonClick:
+  _onSignupSucceeded:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4956454277919580197}
-        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: OpenPopup
         m_Mode: 2
         m_Arguments:
@@ -152,7 +164,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 4956454277919580197}
-        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: ClosePopup
         m_Mode: 2
         m_Arguments:
@@ -163,7 +175,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _onConfirmButtonCantClick:
+  _onSignupFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  _onValidateFailed:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &212433798140894278
@@ -558,6 +573,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2637654065332200263}
   - component: {fileID: 4749867448591421449}
+  - component: {fileID: 6465570840427602857}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -598,7 +614,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <DefaultProfileIcon>k__BackingField: {fileID: 0}
-  <Role>k__BackingField: 2
+--- !u!114 &6465570840427602857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009358291179130440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff81b02c78aff4dd9a6eddd393699027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _role: 1
 --- !u!1 &2463763845362812804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1587,6 +1615,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  StatusSucceeded: Logged in successfully
+  StatusSucceededColor:
+    serializedVersion: 2
+    rgba: 0
+  StatusCanceled: Canceled
+  StatusCanceledColor:
+    serializedVersion: 2
+    rgba: 0
+  StatusErrored: Logged in failed. Error.
+  StatusErroredColor:
+    serializedVersion: 2
+    rgba: 0
   <StatusInvalidUserName>k__BackingField: Invalid Email or Phone Number.
   <StatusInvalidUserNameColor>k__BackingField:
     serializedVersion: 2
@@ -1654,11 +1694,11 @@ MonoBehaviour:
           m_StringArgument: https://www.bestvoxels.com
           m_BoolArgument: 0
         m_CallState: 2
-  _onConfirmButtonClick:
+  _onLoginSucceeded:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4956454277919580197}
-        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: ClosePopup
         m_Mode: 2
         m_Arguments:
@@ -1669,7 +1709,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _onConfirmButtonCantClick:
+  _onLoginFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  _onValidateFailed:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &7306031348881270002
@@ -2028,8 +2071,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34585a0e3bf0b584087b5e5381131734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _uIToShowOnStart: []
-  _uIToHideOnStart:
+  _showUIByRoles:
+  - uI: {fileID: 0}
+    targetRoles: 0000000001000000
+  - uI: {fileID: 0}
+    targetRoles: 0000000001000000
+  - uI: {fileID: 0}
+    targetRoles: 00000000
+  _hideUIByRoles:
   - uI: {fileID: 0}
     targetRoles: 02000000
   - uI: {fileID: 0}

@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using WatKhaoWong.SharePopup;
-using WatKhaoWong.UI.System;
 using WatKhaoWong.UI.InputFields;
 using WatKhaoWong.Utils.UI;
 
@@ -28,9 +27,6 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Fields-- (In Class)
-        // TODO Temp
-        private string _userPassword = "thanitsakBoat";
-
         private LoginPopup _playerLoginPopup;
         private StatusText _statusText;
         private InputFieldValidator _inputFieldValidator;
@@ -98,7 +94,6 @@ namespace WatKhaoWong.UI.SharePopup
 
         private bool IsPasswordValidated() => _inputFieldValidator.ValidateLoginPassword(
             _passwordInputField.text, _passwordInputFieldStatus, out _,
-            _userPassword,
             (string.Empty, default),
             (_playerLoginPopup.StatusInvalidPassword, _playerLoginPopup.StatusInvalidPasswordColor));
 
@@ -115,13 +110,11 @@ namespace WatKhaoWong.UI.SharePopup
         {
             if (Validate())
             {
-                // TODO do something later with server maybe?
-
-                _playerLoginPopup.OnConfirmButtonClick();
+                _playerLoginPopup.OnValidateSucceeded(_userNameInputField.text, _passwordInputField.text);
             }
             else
             {
-                _playerLoginPopup.OnConfirmButtonCantClick();
+                _playerLoginPopup.OnValidateFailed();
             }
         }
         #endregion

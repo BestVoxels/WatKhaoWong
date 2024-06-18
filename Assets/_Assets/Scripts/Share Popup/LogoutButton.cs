@@ -1,3 +1,4 @@
+using Firebase.Auth;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -20,11 +21,11 @@ namespace WatKhaoWong.SharePopup
         #region --Methods-- (Custom PUBLIC) ~UI Button~
         public void OnLogoutButtonClick()
         {
+            // TODO show iOS/Android's Native Alert Window (like Signout Now or Cancel?) - do it like Shopee, Facebook, Lazada.
+
             Debug.LogWarning("Click \"Logout\" Button!");
 
-            // TODO show iOS/Android Popup Window - do like Facebook, Shopee, Lazada.
-
-            // TODO deals with Logout stuff, reset Profile Image to default, and all the values back to default!
+            FirebaseAuth.DefaultInstance.SignOut();
 
             _onLogoutButtonClick?.Invoke();
         }
