@@ -1,4 +1,3 @@
-using System.Collections;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,10 +14,7 @@ namespace WatKhaoWong.SharePopup
         [SerializeField] private string StatusSucceeded = "Logged in successfully";
         [SerializeField] private Color32 StatusSucceededColor;
         [Space]
-        [SerializeField] private string StatusCanceled = "Canceled";
-        [SerializeField] private Color32 StatusCanceledColor;
-        [Space]
-        [SerializeField] private string StatusErrored = "Logged in failed. Error.";
+        [SerializeField] private string StatusErrored = "Logged in failed.";
         [SerializeField] private Color32 StatusErroredColor;
         #endregion
 
@@ -51,7 +47,7 @@ namespace WatKhaoWong.SharePopup
 
 
         #region --Fields-- (In Class)
-        private Coroutine _previousCoroutine;
+        private bool _isRunningOnBackground = false;
 
         private StatusText _statusText;
         #endregion
@@ -86,10 +82,8 @@ namespace WatKhaoWong.SharePopup
         {
             Debug.LogWarning("Validate Texts Succeeded");
 
-            if (_previousCoroutine != null)
-                StopCoroutine(_previousCoroutine);
-
-            _previousCoroutine = StartCoroutine(LoginCoroutine(userName, password));
+            if (!_isRunningOnBackground)
+                LoginAsync(userName, password);
         }
 
         public void OnValidateFailed()
@@ -103,34 +97,29 @@ namespace WatKhaoWong.SharePopup
 
 
         #region --Methods-- (Custom PRIVATE)
-        private IEnumerator LoginCoroutine(string userName, string password)
+        private async void LoginAsync(string userName, string password)
         {
-            var auth = FirebaseAuth.DefaultInstance;
-            var registerTask = auth.SignInWithEmailAndPasswordAsync(userName, password);
-            yield return new WaitUntil(() => registerTask.IsCompleted);
-
-            if (registerTask.IsCanceled)
+            FirebaseAuth auth = FirebaseAuth.DefaultInstance;
+            AuthResult result = null;
+            try
             {
-                Debug.Log("Registration was canceled.");
-                _statusText.Show(StatusCanceled, StatusCanceledColor);
+                _isRunningOnBackground = true;
+                result = await auth.SignInWithEmailAndPasswordAsync(userName, password);
             }
-            else if (registerTask.IsFaulted)
+            catch (Firebase.FirebaseException e)
             {
-                Debug.LogError($"Registration encountered an error: {registerTask.Exception}");
-                _statusText.Show(StatusErrored, StatusErroredColor);
+                Debug.LogError($"Login encountered an error: ({e.ErrorCode})\n{e.Message}");
+                _statusText.Show($"{StatusErrored} Error Code ({e.ErrorCode})\n{e.Message}", StatusErroredColor);
 
-                _onLoginFailed?.Invoke(registerTask.Exception);
-            }
-            else if (registerTask.IsCompletedSuccessfully)
-            {
-                Debug.Log($"Successfully registered user {registerTask.Result.User.Email}");
-                _statusText.Show(StatusSucceeded, StatusSucceededColor);
-
-                _onLoginSucceeded?.Invoke(auth.CurrentUser);
+                _onLoginFailed?.Invoke(e);
+                _isRunningOnBackground = false;
             }
 
-            _previousCoroutine = null;
-            yield break;
+            Debug.Log($"Successfully Logged in user {result.User.Email}");
+            _statusText.Show(StatusSucceeded, StatusSucceededColor);
+
+            _onLoginSucceeded?.Invoke(result.User);
+            _isRunningOnBackground = false;
         }
         #endregion
     }
