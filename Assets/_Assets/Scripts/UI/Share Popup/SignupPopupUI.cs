@@ -4,7 +4,6 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using WatKhaoWong.SharePopup;
 using WatKhaoWong.Utils.UI;
-using WatKhaoWong.UI.InputFields;
 
 namespace WatKhaoWong.UI.SharePopup
 {

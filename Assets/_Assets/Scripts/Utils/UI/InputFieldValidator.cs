@@ -1,7 +1,6 @@
 using UnityEngine;
-using WatKhaoWong.Utils.UI;
 
-namespace WatKhaoWong.UI.InputFields
+namespace WatKhaoWong.Utils.UI
 {
     public class InputFieldValidator : MonoBehaviour
     {
