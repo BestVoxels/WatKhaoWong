@@ -21,15 +21,31 @@ namespace WatKhaoWong.SharePopup
 
 
         #region --Properties-- (Inspector)
+        [field: Header("Login Popup General Settings")]
+        [field: SerializeField] public byte MinimumPhoneNumberLength { get; private set; } = 9;
+        [field: SerializeField] public byte MaximumPhoneNumberLength { get; private set; } = 15;
+        [field: Space]
         [field: Header("Login Popup Status Text")]
-        [field: SerializeField] public string StatusInvalidUserName { get; private set; } = "Invalid Email or Phone Number.";
-        [field: SerializeField] public Color32 StatusInvalidUserNameColor { get; private set; }
+        [field: SerializeField] public string StatusInvalidPhoneNumber { get; private set; } = "Invalid Phone Number.";
+        [field: SerializeField] public Color32 StatusInvalidPhoneNumberColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public string StatusPhoneNumberTooShort { get; private set; } = "Invalid Phone Number (too Short).";
+        [field: SerializeField] public Color32 StatusPhoneNumberTooShortColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public string StatusPhoneNumberTooLong { get; private set; } = "Invalid Phone Number (too Long).";
+        [field: SerializeField] public Color32 StatusPhoneNumberTooLongColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public string StatusInvalidEmail { get; private set; } = "Invalid Email.";
+        [field: SerializeField] public Color32 StatusInvalidEmailColor { get; private set; }
         [field: Space]
         [field: SerializeField] public string StatusInvalidPassword { get; private set; } = "Invalid Account or Password.";
         [field: SerializeField] public Color32 StatusInvalidPasswordColor { get; private set; }
         [field: Space]
         [field: SerializeField] public string StatusForgotPassword { get; private set; } = "Please contact for support at developer website.";
         [field: SerializeField] public Color32 StatusForgotPasswordColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public string StatusWrongFormat { get; private set; } = "Wrong Format!";
+        [field: SerializeField] public Color32 StatusWrongFormatColor { get; private set; }
         #endregion
 
 
@@ -78,12 +94,21 @@ namespace WatKhaoWong.SharePopup
             _onForgotTextClick?.Invoke();
         }
 
-        public void OnValidateSucceeded(string userName, string password)
+        public void OnValidateSucceeded(EAuthType authType, string phoneNumber, string email, string password)
         {
             Debug.LogWarning("Validate Texts Succeeded");
 
-            if (!_isRunningOnBackground)
-                LoginAsync(userName, password);
+
+            if (_isRunningOnBackground) return;
+
+            if (authType == EAuthType.PhoneNumber)
+            {
+
+            }
+            else if (authType == EAuthType.EmailPassword)
+            {
+                LoginAsync(email, password);
+            }
         }
 
         public void OnValidateFailed()
@@ -97,14 +122,14 @@ namespace WatKhaoWong.SharePopup
 
 
         #region --Methods-- (Custom PRIVATE)
-        private async void LoginAsync(string userName, string password)
+        private async void LoginAsync(string email, string password)
         {
             FirebaseAuth auth = FirebaseAuth.DefaultInstance;
             AuthResult result = null;
             try
             {
                 _isRunningOnBackground = true;
-                result = await auth.SignInWithEmailAndPasswordAsync(userName, password);
+                result = await auth.SignInWithEmailAndPasswordAsync(email, password);
             }
             catch (Firebase.FirebaseException e)
             {

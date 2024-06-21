@@ -26,7 +26,7 @@ namespace WatKhaoWong.Identity
             set
             {
                 _role = value; // Role MUST be changed before calls "OnRoleChanged?.Invoke()" so UI can update properly.
-                print("Role Changed");
+                print("***Role Changed***");
 
                 OnRoleChanged?.Invoke();
             }

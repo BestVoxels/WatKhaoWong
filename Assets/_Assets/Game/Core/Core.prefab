@@ -70,6 +70,8 @@ MonoBehaviour:
   <MinimumFirstNameLength>k__BackingField: 5
   <MinimumLastNameLength>k__BackingField: 5
   <MinimumPasswordLength>k__BackingField: 6
+  <MinimumPhoneNumberLength>k__BackingField: 9
+  <MaximumPhoneNumberLength>k__BackingField: 15
   <StatusFirstNameTooShort>k__BackingField: Your First name must be at least 5 characters
     long. Please try another.
   <StatusFirstNameTooShortColor>k__BackingField:
@@ -80,6 +82,22 @@ MonoBehaviour:
   <StatusLastNameTooShortColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
+  <StatusInvalidPhoneNumber>k__BackingField: Invalid Phone Number.
+  <StatusInvalidPhoneNumberColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusPhoneNumberTooShort>k__BackingField: Invalid Phone Number (too Short).
+  <StatusPhoneNumberTooShortColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusPhoneNumberTooLong>k__BackingField: Invalid Phone Number (too Long).
+  <StatusPhoneNumberTooLongColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusInvalidEmail>k__BackingField: Invalid Email.
+  <StatusInvalidEmailColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
   <StatusPasswordTooShort>k__BackingField: Your Password must be at least 6 characters
     long. Please try another.
   <StatusPasswordTooShortColor>k__BackingField:
@@ -88,6 +106,10 @@ MonoBehaviour:
   <StatusConfirmPasswordNotMatch>k__BackingField: Confirm Password & Password must
     match!
   <StatusConfirmPasswordNotMatchColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusWrongFormat>k__BackingField: Wrong Format!
+  <StatusWrongFormatColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
   _onInformTextClick:
@@ -1619,8 +1641,22 @@ MonoBehaviour:
   StatusErroredColor:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusInvalidUserName>k__BackingField: Invalid Email or Phone Number.
-  <StatusInvalidUserNameColor>k__BackingField:
+  <MinimumPhoneNumberLength>k__BackingField: 9
+  <MaximumPhoneNumberLength>k__BackingField: 15
+  <StatusInvalidPhoneNumber>k__BackingField: Invalid Phone Number.
+  <StatusInvalidPhoneNumberColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusPhoneNumberTooShort>k__BackingField: Invalid Phone Number (too Short).
+  <StatusPhoneNumberTooShortColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusPhoneNumberTooLong>k__BackingField: Invalid Phone Number (too Long).
+  <StatusPhoneNumberTooLongColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusInvalidEmail>k__BackingField: Invalid Email.
+  <StatusInvalidEmailColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
   <StatusInvalidPassword>k__BackingField: Invalid Account or Password.
@@ -1632,6 +1668,10 @@ MonoBehaviour:
   <StatusForgotPasswordColor>k__BackingField:
     serializedVersion: 2
     rgba: 0
+  <StatusWrongFormat>k__BackingField: Wrong Format!
+  <StatusWrongFormatColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
   _onSignupTextClick:
     m_PersistentCalls:
       m_Calls:
