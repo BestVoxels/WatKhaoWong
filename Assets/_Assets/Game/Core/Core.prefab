@@ -59,12 +59,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StatusSucceeded: Signed up successfully
-  StatusSucceededColor:
+  _statusSucceeded: Signed up successfully
+  _statusSucceededColor:
     serializedVersion: 2
     rgba: 4288011303
-  StatusErrored: Signed up failed.
-  StatusErroredColor:
+  _statusErrored: Signed up failed.
+  _statusErroredColor:
     serializedVersion: 2
     rgba: 4285887999
   <MinimumFirstNameLength>k__BackingField: 5
@@ -171,18 +171,6 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4956454277919580197}
         m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
-        m_MethodName: OpenPopup
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4956454277919580197}
-        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: ClosePopup
         m_Mode: 2
         m_Arguments:
@@ -196,7 +184,7 @@ MonoBehaviour:
   _onSignupFailed:
     m_PersistentCalls:
       m_Calls: []
-  _onValidateFailed:
+  _onValidateTextFailed:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &212433798140894278
@@ -549,8 +537,8 @@ Transform:
   m_Children:
   - {fileID: 6712304440810370011}
   - {fileID: 3672484629506604567}
-  - {fileID: 7423408979919273027}
   - {fileID: 6365214590018219571}
+  - {fileID: 7423408979919273027}
   - {fileID: 5691466238723910595}
   m_Father: {fileID: 2637654065332200263}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1633,12 +1621,12 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  StatusSucceeded: Logged in successfully
-  StatusSucceededColor:
+  _statusSucceeded: Logged in successfully
+  _statusSucceededColor:
     serializedVersion: 2
     rgba: 4288011303
-  StatusErrored: Logged in failed.
-  StatusErroredColor:
+  _statusErrored: Logged in failed.
+  _statusErroredColor:
     serializedVersion: 2
     rgba: 4285887999
   <MinimumPhoneNumberLength>k__BackingField: 9
@@ -1744,7 +1732,7 @@ MonoBehaviour:
   _onLoginFailed:
     m_PersistentCalls:
       m_Calls: []
-  _onValidateFailed:
+  _onValidateTextFailed:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &7306031348881270002
@@ -2320,7 +2308,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4956454277919580197}
-        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: ClosePopup
         m_Mode: 2
         m_Arguments:
@@ -2331,35 +2319,73 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _statusCodeConnecting: Connecting...
+  _statusCodeConnectingColor:
+    serializedVersion: 2
+    rgba: 4288011303
+  _statusCodeSentSucceeded: Code sent successfully.
+  _statusCodeSentSucceededColor:
+    serializedVersion: 2
+    rgba: 4288011303
+  _statusCodeSentFailed: Failed to send the code. Please try again.
+  _statusCodeSentFailedColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusCodeAutoVerifyCompleted: Auto verification completed successfully.
+  _statusCodeAutoVerifyCompletedColor:
+    serializedVersion: 2
+    rgba: 4288011303
+  _statusCodeAutoRetrievalTimeOut: Auto-SMS retrieval timed out. Please enter the
+    verification code manually.
+  _statusCodeAutoRetrievalTimeOutColor:
+    serializedVersion: 2
+    rgba: 0
+  _statusResendCode: Code Sent. Please check the code we've just sent.
+  _statusResendCodeColor:
+    serializedVersion: 2
+    rgba: 4288011303
+  _statusCantResendCode: Cannot resend code. Please restart the app and try again.
+  _statusCantResendCodeColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusErrorNoSendCodeRequest: 'Error: Please send a code request before verifying
+    the OTP. Restart the app and try again.'
+  _statusErrorNoSendCodeRequestColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _timeoutInMilliseconds: 60000
   <MinimumCodeLength>k__BackingField: 6
   <StatusCodeTooShort>k__BackingField: Your code must be at least 6 characters long.
     Please check the code that we've just sent.
   <StatusCodeTooShortColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusCodeNotMatch>k__BackingField: Please enter a valid code. Please check the
-    code that we've just sent.
-  <StatusCodeNotMatchColor>k__BackingField:
-    serializedVersion: 2
-    rgba: 4285887999
-  <StatusResendCode>k__BackingField: 'Code Sent
-
-    Please check the code that we''ve
-    just sent.'
-  <StatusResendCodeColor>k__BackingField:
-    serializedVersion: 2
-    rgba: 0
   _onInformTextClick:
     m_PersistentCalls:
       m_Calls: []
   _onResendTextClick:
     m_PersistentCalls:
       m_Calls: []
-  _onConfirmButtonClick:
+  _onOTPCodeSentSucceeded:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4956454277919580197}
-        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: OpenPopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onVerifySucceeded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4956454277919580197}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: ClosePopup
         m_Mode: 2
         m_Arguments:
@@ -2370,7 +2396,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _onConfirmButtonCantClick:
+  _onVerifyFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  _onValidateTextFailed:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1001 &8803156098798840112

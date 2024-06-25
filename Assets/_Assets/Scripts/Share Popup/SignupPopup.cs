@@ -11,11 +11,11 @@ namespace WatKhaoWong.SharePopup
     {
         #region --Fields-- (Inspector)
         [Header("Signup Popup Status Text")]
-        [SerializeField] private string StatusSucceeded = "Signed up successfully";
-        [SerializeField] private Color32 StatusSucceededColor;
+        [SerializeField] private string _statusSucceeded = "Signed up successfully";
+        [SerializeField] private Color32 _statusSucceededColor;
         [Space]
-        [SerializeField] private string StatusErrored = "Signed up failed.";
-        [SerializeField] private Color32 StatusErroredColor;
+        [SerializeField] private string _statusErrored = "Signed up failed.";
+        [SerializeField] private Color32 _statusErroredColor;
         #endregion
 
 
@@ -66,7 +66,7 @@ namespace WatKhaoWong.SharePopup
         [Space]
         [SerializeField] private UnityEvent<FirebaseUser> _onSignupSucceeded;
         [SerializeField] private UnityEvent<Exception> _onSignupFailed;
-        [SerializeField] private UnityEvent _onValidateFailed;
+        [SerializeField] private UnityEvent _onValidateTextFailed;
         #endregion
 
 
@@ -75,6 +75,7 @@ namespace WatKhaoWong.SharePopup
         private bool _isRunningOnBackground = false;
 
         private StatusText _statusText;
+        private VerifyPopup _verifyPopup;
         #endregion
 
 
@@ -83,6 +84,7 @@ namespace WatKhaoWong.SharePopup
         private void Awake()
         {
             _statusText = FindAnyObjectByType<StatusText>();
+            _verifyPopup = GameObject.FindWithTag("Player").GetComponentInChildren<VerifyPopup>();
         }
         #endregion
 
@@ -114,11 +116,11 @@ namespace WatKhaoWong.SharePopup
 
             if (authType == EAuthType.PhoneNumber)
             {
-
+                _verifyPopup.SendNewCode(phoneNumber, _onSignupSucceeded, _onSignupFailed, _statusErrored, _statusErroredColor, _statusSucceeded, _statusSucceededColor);
             }
             else if (authType == EAuthType.EmailPassword)
             {
-                SignupAsync(email, password);
+                SignupAsyncWithEmailAndPassword(email, password);
             }
         }
 
@@ -126,14 +128,14 @@ namespace WatKhaoWong.SharePopup
         {
             Debug.LogWarning("Validate Texts Failed");
 
-            _onValidateFailed?.Invoke();
+            _onValidateTextFailed?.Invoke();
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PRIVATE)
-        private async void SignupAsync(string email, string password)
+        private async void SignupAsyncWithEmailAndPassword(string email, string password)
         {
             FirebaseAuth auth = FirebaseAuth.DefaultInstance;
             AuthResult result = null;
@@ -145,14 +147,14 @@ namespace WatKhaoWong.SharePopup
             catch (Firebase.FirebaseException e)
             {
                 Debug.LogError($"Registration encountered an error: ({e.ErrorCode})\n{e.Message}");
-                _statusText.Show($"{StatusErrored} Error Code ({e.ErrorCode})\n{e.Message}", StatusErroredColor);
+                _statusText.Show($"{_statusErrored} Error Code ({e.ErrorCode})\n{e.Message}", _statusErroredColor);
 
                 _onSignupFailed?.Invoke(e);
                 _isRunningOnBackground = false;
             }
 
             Debug.Log($"Successfully registered user {result.User.Email}");
-            _statusText.Show(StatusSucceeded, StatusSucceededColor);
+            _statusText.Show(_statusSucceeded, _statusSucceededColor);
 
             _onSignupSucceeded?.Invoke(result.User);
             _isRunningOnBackground = false;

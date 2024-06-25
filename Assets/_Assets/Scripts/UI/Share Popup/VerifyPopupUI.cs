@@ -25,11 +25,9 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Fields-- (In Class)
-        // TODO Temp Maybe? Have to check with firebase again on how to implement this.
-        private string _generatedCode = "123456";
+        private string _typedCode;
 
         private VerifyPopup _playerVerifyPopup;
-        private StatusText _statusText;
         private InputFieldValidator _inputFieldValidator;
         private InputFieldStatus _codeInputFieldStatus;
         #endregion
@@ -40,10 +38,18 @@ namespace WatKhaoWong.UI.SharePopup
         private void Awake()
         {
             _playerVerifyPopup = GameObject.FindWithTag("Player").GetComponentInChildren<VerifyPopup>();
-            _statusText = FindAnyObjectByType<StatusText>();
             _inputFieldValidator = FindAnyObjectByType<InputFieldValidator>();
             _codeInputFieldStatus = _codeInputField.GetComponentInChildren<InputFieldStatus>();
 
+            BindUIWithFunction();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE)
+        private void BindUIWithFunction()
+        {
             _closeButton.onClick.AddListener(Close);
 
             _codeInputField.onEndEdit.AddListener(inputText => IsCodeValidated());
@@ -60,11 +66,7 @@ namespace WatKhaoWong.UI.SharePopup
 
             _confirmButton.onClick.AddListener(Confirm);
         }
-        #endregion
 
-
-
-        #region --Methods-- (Custom PRIVATE)
         private bool Validate()
         {
             bool status = true;
@@ -72,11 +74,6 @@ namespace WatKhaoWong.UI.SharePopup
             if (!IsCodeValidated()) status = false;
 
             return status;
-        }
-
-        private void SendStatusText()
-        {
-            _statusText.Show(_playerVerifyPopup.StatusResendCode, _playerVerifyPopup.StatusResendCodeColor);
         }
         #endregion
 
@@ -90,23 +87,18 @@ namespace WatKhaoWong.UI.SharePopup
 
         #region --Methods-- (Subscriber)
         private bool IsCodeValidated() => _inputFieldValidator.ValidateCode(
-            _codeInputField.text, _codeInputFieldStatus, out _,
-            _playerVerifyPopup.MinimumCodeLength, _generatedCode,
+            _codeInputField.text, _codeInputFieldStatus, out _typedCode,
+            _playerVerifyPopup.MinimumCodeLength,
             (string.Empty, default),
-            (_playerVerifyPopup.StatusCodeTooShort, _playerVerifyPopup.StatusCodeTooShortColor),
-            (_playerVerifyPopup.StatusCodeNotMatch, _playerVerifyPopup.StatusCodeNotMatchColor));
+            (_playerVerifyPopup.StatusCodeTooShort, _playerVerifyPopup.StatusCodeTooShortColor));
 
         private void InformText(PointerEventData data)
         {
-            SendStatusText();
-
             _playerVerifyPopup.OnInformTextClick();
         }
 
         private void ResendText(PointerEventData data)
         {
-            SendStatusText();
-
             _playerVerifyPopup.OnResendTextClick();
         }
 
@@ -114,13 +106,11 @@ namespace WatKhaoWong.UI.SharePopup
         {
             if (Validate())
             {
-                // TODO Do something with server maybe?
-
-                _playerVerifyPopup.OnConfirmButtonClick();
+                _playerVerifyPopup.OnValidateSucceeded(_typedCode);
             }
             else
             {
-                _playerVerifyPopup.OnConfirmButtonCantClick();
+                _playerVerifyPopup.OnValidateFailed();
             }
         }
         #endregion

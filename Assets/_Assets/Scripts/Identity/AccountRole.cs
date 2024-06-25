@@ -55,8 +55,6 @@ namespace WatKhaoWong.Identity
 
 
         #region --Methods-- (Custom PRIVATE)
-        private void HandleStateChanged(object obj, EventArgs args) => AssignUserRole();
-
         private void AssignUserRole()
         {
             if (FirebaseAuth.DefaultInstance.CurrentUser == null)
@@ -67,6 +65,12 @@ namespace WatKhaoWong.Identity
 
             // TODO set Role to 'Admin' this have to load from Server
         }
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber)
+        private void HandleStateChanged(object obj, EventArgs args) => AssignUserRole();
         #endregion
     }
 }

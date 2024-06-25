@@ -147,15 +147,12 @@ namespace WatKhaoWong.Utils.UI
 
 
         #region --Methods-- (Custom PUBLIC) ~Verification~
-        public bool ValidateCode(string inputText, InputFieldStatus fieldStatus, out string resultText, byte minimum, string compareText, params (string Msg, Color32 Color)[] status)
+        public bool ValidateCode(string inputText, InputFieldStatus fieldStatus, out string resultText, byte minimum, params (string Msg, Color32 Color)[] status)
         {
             if (IsNullOrWhiteSpace(inputText, fieldStatus, out resultText, (status[0].Msg, status[0].Color)))
                 return false;
 
             if (IsLessThanTargetLength(inputText, fieldStatus, out resultText, minimum, (status[1].Msg, status[1].Color)))
-                return false;
-
-            if (IsNotMatch(inputText, fieldStatus, out resultText, compareText, (status[2].Msg, status[2].Color)))
                 return false;
 
             fieldStatus.SetNormal();
