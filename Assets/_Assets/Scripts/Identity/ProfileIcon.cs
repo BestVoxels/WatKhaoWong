@@ -1,38 +1,20 @@
-using System;
 using UnityEngine;
-using UnityEngine.UI;
+using WatKhaoWong.CoreItems;
 
 namespace WatKhaoWong.Identity
 {
-    public class ProfileIcon : MonoBehaviour
+    /// <summary>
+    /// An inventory item that will be transfer to Coin Economy System of the collector. (Mechanism is at Coin.cs)
+    /// </summary>
+    /// <remarks>
+    /// This class should be used as is. No need to have Subclasses OR itself class implementation.
+    /// </remarks>
+    [CreateAssetMenu(fileName = "Untitled", menuName = "WatKhaoWong/Item/New Profile Icon", order = 0)]
+    public class ProfileIcon : BaseItem
     {
         #region --Properties-- (Inspector)
-        [field: Header("UI Stuffs")]
-        [field: SerializeField] public AccountData.IconUI UI { get; private set; }
-        [field: SerializeField] public Toggle Toggle { get; private set; }
-        #endregion
-
-
-
-        #region --Events-- (Delegate as Action)
-        public event Action<AccountData.IconUI, bool> OnToggleChanged;
-        #endregion
-
-
-
-        #region --Methods-- (Built In)
-        private void Awake()
-        {
-            Toggle.onValueChanged.AddListener(OnValueChanged);
-        }
-        #endregion
-
-
-        #region --Methods-- (Subscriber)
-        private void OnValueChanged(bool isOn)
-        {
-            OnToggleChanged?.Invoke(UI, isOn);
-        }
+        [field: Tooltip("Profile Icon UI GameObject.")]
+        [field: SerializeField] public ProfileIconUI ProfileIconUI { get; private set; }
         #endregion
     }
 }

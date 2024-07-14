@@ -619,7 +619,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58799e86949114904b60eedc84f1d4bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DefaultProfileIcon>k__BackingField: {fileID: 0}
+  <DefaultProfileIcon>k__BackingField: {fileID: 11400000, guid: 8299965814d1d4f66ad2fada5a936b95,
+    type: 2}
 --- !u!114 &6465570840427602857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2149,6 +2150,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c221460ece99340c7aea10870ad43525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _onFirebaseInitialized:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8533724761888453121
 GameObject:
   m_ObjectHideFlags: 0

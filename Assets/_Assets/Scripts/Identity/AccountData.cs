@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using WatKhaoWong.CoreItems;
 
 namespace WatKhaoWong.Identity
 {
@@ -50,17 +51,17 @@ namespace WatKhaoWong.Identity
             return "2/3/2001";
         }
 
-        public IconData GetIconData()
+        public ProfileIcon GetProfileIcon()
         {
             // TODO SAVE CODE - TEMP CODE - have to change save method because InstaceID will be changed everytime we load UnityEditor.
-            IconData iconData = JsonUtility.FromJson<IconData>(PlayerPrefs.GetString("AccountProfileIcon"));
-
             // TODO fetch data from Server
+            string id = PlayerPrefs.GetString("AccountProfileIcon", DefaultProfileIcon.ItemID);
 
-            if (iconData == null)
-                return new IconData(DefaultProfileIcon.UI.BackgroundColor, DefaultProfileIcon.UI.Icon, DefaultProfileIcon.UI.AspectRatio, DefaultProfileIcon.UI.IconPivotY, DefaultProfileIcon.UI.Decorators);
+            ProfileIcon icon = BaseItem.GetFromID(id) as ProfileIcon;
 
-            return iconData;
+            if (icon == null) return DefaultProfileIcon;
+
+            return icon;
         }
         #endregion
 
@@ -97,22 +98,10 @@ namespace WatKhaoWong.Identity
         //    // TODO SAVE data TO server
         //}
 
-        public void SetIconData(IconUI iconUI)
-        {
-            SetIconData(iconUI.BackgroundColor, iconUI.Icon, iconUI.AspectRatio, iconUI.IconPivotY, iconUI.Decorators);
-        }
-
-        public void SetIconData(Color32 backgroundColor, Sprite icon, float aspectRatio, Vector2 iconPivotY, List<GameObject> decorators)
-        {
-            IconData iconData = new(backgroundColor, icon, aspectRatio, iconPivotY, decorators);
-
-            SetIconData(iconData);
-        }
-
-        public void SetIconData(IconData iconData)
+        public void SetProfileIcon(ProfileIcon icon)
         {
             // TODO SAVE CODE - TEMP CODE
-            PlayerPrefs.SetString("AccountProfileIcon", JsonUtility.ToJson(iconData));
+            PlayerPrefs.SetString("AccountProfileIcon", icon.ItemID);
 
             // TODO SAVE data TO server
         }
@@ -121,28 +110,27 @@ namespace WatKhaoWong.Identity
 
 
         #region --Methods-- (Custom PUBLIC)
-        public void UpdateProfileIcon(IconUI oldUI, IconUI newUI, float multiplierRatioForDecorator)
+        public void UpdateProfileIcon(IconUI oldUI, ProfileIcon newIcon, float multiplierRatioForDecorator)
         {
-            IconData iconData = new(newUI.BackgroundColor, newUI.Icon, newUI.AspectRatio, newUI.IconPivotY, newUI.Decorators);
+            if (newIcon == null)
+            {
+                Debug.LogError("Can't Update ProfileIcon to new one because it is Null.");
+                return;
+            }
 
-            UpdateProfileIcon(oldUI, iconData, multiplierRatioForDecorator);
-        }
-
-        public void UpdateProfileIcon(IconUI oldUI, IconData newData, float multiplierRatioForDecorator)
-        {
             // Clear Spawned Decorators (no error if there are not)
             foreach (Transform each in oldUI.decoratorSpawnParent)
                 Destroy(each.gameObject);
 
             // Replicate Toggle Profile to Main Profile
-            oldUI.backgroundImage.color = newData.backgroundColor;
-            oldUI.iconImage.sprite = newData.icon;
-            oldUI.aspectRatioFitter.aspectRatio = newData.aspectRatio;
-            oldUI.iconRect.pivot = newData.iconPivotY;
+            oldUI.backgroundImage.color = newIcon.ProfileIconUI.UI.BackgroundColor;
+            oldUI.iconImage.sprite = newIcon.ProfileIconUI.UI.Icon;
+            oldUI.aspectRatioFitter.aspectRatio = newIcon.ProfileIconUI.UI.AspectRatio;
+            oldUI.iconRect.pivot = newIcon.ProfileIconUI.UI.IconPivotY;
 
-            if (newData.decorators != null)
+            if (newIcon.ProfileIconUI.UI.Decorators != null)
             {
-                foreach (GameObject each in newData.decorators)
+                foreach (GameObject each in newIcon.ProfileIconUI.UI.Decorators)
                 {
                     if (each == null) return; // Guard check MUST DO because InstaceID will be changed everytime we load UnityEditor.
 
@@ -153,37 +141,14 @@ namespace WatKhaoWong.Identity
                     rt.sizeDelta = new Vector2(rt.sizeDelta.x * multiplierRatioForDecorator, rt.sizeDelta.y * multiplierRatioForDecorator);
                 }
             }
-
-            SetIconData(newData);
+            
+            SetProfileIcon(newIcon);
         }
         #endregion
 
 
 
         #region --Classes-- (Custom PUBLIC)
-        [System.Serializable]
-        public class IconData
-        {
-            public Color32 backgroundColor;
-            public Sprite icon;
-            public float aspectRatio;
-            public Vector2 iconPivotY;
-            public List<GameObject> decorators;
-
-
-
-            #region --Constructors-- (PUBLIC)
-            public IconData(Color32 bgColor, Sprite ic, float apRatio, Vector2 icPivotY, List<GameObject> decors)
-            {
-                backgroundColor = bgColor;
-                icon = ic;
-                aspectRatio = apRatio;
-                iconPivotY = icPivotY;
-                decorators = decors;
-            }
-            #endregion
-        }
-
         [System.Serializable]
         public class IconUI
         {

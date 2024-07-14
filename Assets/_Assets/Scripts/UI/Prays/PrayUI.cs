@@ -111,7 +111,7 @@ namespace WatKhaoWong.UI.Prays
             var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
-            _account.UpdateProfileIcon(_icon, _account.GetIconData(), MultiplierRatioForDecorator);
+            _account.UpdateProfileIcon(_icon, _account.GetProfileIcon(), MultiplierRatioForDecorator);
 
             _userNameText.text = _account.GetUserNameText();
             _allTimeTMPointsText.text = _account.GetAllTimeTMPoints().ToString("#,0", nfi);

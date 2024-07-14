@@ -41,7 +41,7 @@ namespace WatKhaoWong.UI.SharePopup
 
         #region --Fields-- (In Class)
         private byte _totalProfileIcon;
-        private readonly List<ProfileIcon> _profileIcons = new List<ProfileIcon>();
+        private readonly List<ProfileIconUI> _profileIcons = new List<ProfileIconUI>();
 
         private AccountPopup _playerAccountPopup;
         private AccountData _account;
@@ -68,7 +68,7 @@ namespace WatKhaoWong.UI.SharePopup
 
             foreach (Transform child in _profileIconUIParent)
             {
-                if (child.TryGetComponent(out ProfileIcon profileIcon))
+                if (child.TryGetComponent(out ProfileIconUI profileIcon))
                 {
                     profileIcon.OnToggleChanged += OnToggleChanged;
 
@@ -94,11 +94,12 @@ namespace WatKhaoWong.UI.SharePopup
         /// </summary>
         private void RefreshToggleStatusOnStart()
         {
-            AccountData.IconData iconData = _account.GetIconData();
-            List<ProfileIcon> temp = _profileIcons.Where(
-                (ProfileIcon p) =>
+            ProfileIcon profileIcon = _account.GetProfileIcon();
+
+            List<ProfileIconUI> temp = _profileIcons.Where(
+                (ProfileIconUI p) =>
                 {
-                    bool result = p.UI.Icon.Equals(iconData.icon);
+                    bool result = p.Icon.ItemID.Equals(profileIcon.ItemID);
                     if (result)
                         p.Toggle.isOn = true;
 
@@ -112,7 +113,7 @@ namespace WatKhaoWong.UI.SharePopup
             var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
-            _account.UpdateProfileIcon(_icon, _account.GetIconData(), MultiplierRatioForDecorator);
+            _account.UpdateProfileIcon(_icon, _account.GetProfileIcon(), MultiplierRatioForDecorator);
 
             _userNameText.text = _account.GetUserNameText();
             _userLevelText.text = _account.GetUserLevelText();
@@ -136,11 +137,11 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Methods-- (Subscriber)
-        private void OnToggleChanged(AccountData.IconUI selectedIconUI, bool isOn)
+        private void OnToggleChanged(ProfileIcon selectedProfileIcon, bool isOn)
         {
             if (isOn)
             {
-                _account.UpdateProfileIcon(_icon, selectedIconUI, MultiplierRatioForDecorator);
+                _account.UpdateProfileIcon(_icon, selectedProfileIcon, MultiplierRatioForDecorator);
 
                 _playerAccountPopup.OnAccountProfileChangedByClick();
 
