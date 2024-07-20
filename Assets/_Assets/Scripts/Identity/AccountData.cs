@@ -1,109 +1,172 @@
+using System;
+using System.Globalization;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.CoreItems;
+using WatKhaoWong.Saving;
+using WatKhaoWong.SceneManagement;
 
 namespace WatKhaoWong.Identity
 {
-    public class AccountData : MonoBehaviour
+    public class AccountData : MonoBehaviour, ISaveable
     {
-        #region --Properties-- (Inspector)
-        [field: Header("Account Stuffs")]
-        [field: SerializeField] public ProfileIcon DefaultProfileIcon { get; private set; }
+        #region --Fields-- (Inspector)
+        [Header("Account Stuffs")]
+        [SerializeField] private ProfileIcon _defaultProfileIcon;
+        [SerializeField] private string _defaultFirstName;
+        [SerializeField] private string _defaultLastName;
+        [SerializeField] private int _defaultLevel;
+        [SerializeField] private string _defaultMemberSince;
         #endregion
 
 
 
-        #region --Methods-- (Custom PUBLIC) ~LOAD User Data~
+        #region --Events-- (Delegate as Action)
+        public event Action OnAccountDataUpdated;
+        #endregion
+
+
+
+        #region --Fields-- (In Class)
+        private ProfileIcon _profileIcon;
+        private string _firstName;
+        private string _lastName;
+        private int _level;
+        private int _totalTMPoints;
+        private int _todayTMPoints;
+        private int _totalWonTMChallenge;
+        private string _memberSince;
+
+        private SavingWrapper _savingWrapper;
+        private NumberFormatInfo _nfi;
+        #endregion
+
+
+
+        #region --Methods-- (Built In)
+        private void Awake()
+        {
+            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
+        }
+
+        private void Start()
+        {
+            _nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            _nfi.NumberGroupSeparator = " ";
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Getter~
+        public ProfileIcon GetProfileIcon()
+        {
+            if (_profileIcon == null)
+                _profileIcon = _defaultProfileIcon;
+
+            return _profileIcon;
+        }
+
         public string GetUserNameText()
         {
-            // TODO fetch data from Server
-            return "Thanitsak Leuangsupornpong";
+            if (string.IsNullOrEmpty(_firstName) || string.IsNullOrEmpty(_lastName))
+            {
+                _firstName = _defaultFirstName;
+                _lastName = _defaultLastName;
+            }
+
+            return $"{_firstName} {_lastName}";
         }
 
-        public string GetUserLevelText()
+        public string GetLevelText()
         {
-            // TODO fetch data from Server
-            return "LV. 1";
+            if (_level == 0)
+                _level = _defaultLevel;
+
+            return $"LV. {_level.ToString("#,0", _nfi)}";
         }
 
-        public int GetAllTimeTMPoints()
-        {
-            // TODO fetch data from Server
-            return 88888888;
-        }
+        public string GetTotalTMPointsText() => $"{_totalTMPoints.ToString("#,0", _nfi)}";
 
-        public int GetTodayTMPoints()
-        {
-            // TODO fetch data from Server
-            return 108;
-        }
+        public string GetTodayTMPointsText() => $"{_todayTMPoints.ToString("#,0", _nfi)}";
 
-        public int GetTotalWonTMChallenge()
-        {
-            // TODO fetch data from Server
-            return 88888;
-        }
+        public string GetTotalWonTMChallengeText() => $"{_totalWonTMChallenge.ToString("#,0", _nfi)}";
 
         public string GetMemberSinceText()
         {
-            // TODO fetch data from Server
-            return "2/3/2001";
-        }
+            if (string.IsNullOrEmpty(_memberSince))
+                _memberSince = _defaultMemberSince;
 
-        public ProfileIcon GetProfileIcon()
-        {
-            // TODO SAVE CODE - TEMP CODE - have to change save method because InstaceID will be changed everytime we load UnityEditor.
-            // TODO fetch data from Server
-            string id = PlayerPrefs.GetString("AccountProfileIcon", DefaultProfileIcon.ItemID);
-
-            ProfileIcon icon = BaseItem.GetFromID(id) as ProfileIcon;
-
-            if (icon == null) return DefaultProfileIcon;
-
-            return icon;
+            return $"{_memberSince}";
         }
         #endregion
 
 
 
-        #region --Methods-- (Custom PUBLIC) ~SAVE User Data~
-        //public void SetUserNameText(string input)
-        //{
-        //    // TODO SAVE data TO server
-        //}
-
-        //public void SetUserLevelText(string input)
-        //{
-        //    // TODO SAVE data TO server
-        //}
-
-        //public void SetAllTimeTMPoints(int input)
-        //{
-        //    // TODO SAVE data TO server
-        //}
-
-        //public void SetTodayTMPoints(int input)
-        //{
-        //    // TODO SAVE data TO server
-        //}
-
-        //public void SetTotalWonTMChallenge(int input)
-        //{
-        //    // TODO SAVE data TO server
-        //}
-
-        //public void SetMemberSinceText(string input)
-        //{
-        //    // TODO SAVE data TO server
-        //}
-
-        public void SetProfileIcon(ProfileIcon icon)
+        #region --Methods-- (Custom PUBLIC) ~Setter~
+        public void SetFirstName(string input)
         {
-            // TODO SAVE CODE - TEMP CODE
-            PlayerPrefs.SetString("AccountProfileIcon", icon.ItemID);
+            _firstName = input;
+            
+            OnAccountDataUpdated?.Invoke();
+            _savingWrapper.Save();
+        }
 
-            // TODO SAVE data TO server
+        public void SetLastName(string input)
+        {
+            _lastName = input;
+
+            OnAccountDataUpdated?.Invoke();
+            _savingWrapper.Save();
+        }
+
+        public void SetLevelText(int input)
+        {
+            _level = input;
+
+            OnAccountDataUpdated?.Invoke();
+            _savingWrapper.Save();
+        }
+
+        public void SetTotalTMPointsText(int input)
+        {
+            _totalTMPoints = input;
+
+            OnAccountDataUpdated?.Invoke();
+            _savingWrapper.Save();
+        }
+
+        public void SetTodayTMPointsText(int input)
+        {
+            _todayTMPoints = input;
+
+            OnAccountDataUpdated?.Invoke();
+            _savingWrapper.Save();
+        }
+
+        public void SetTotalWonTMChallengeText(int input)
+        {
+            _totalWonTMChallenge = input;
+
+            OnAccountDataUpdated?.Invoke();
+            _savingWrapper.Save();
+        }
+
+        public void SetMemberSinceText(string input)
+        {
+            _memberSince = input;
+
+            OnAccountDataUpdated?.Invoke();
+            _savingWrapper.Save();
+        }
+
+        public void SetProfileIcon(ProfileIcon input)
+        {
+            _profileIcon = input;
+
+            OnAccountDataUpdated?.Invoke();
+            _savingWrapper.Save();
         }
         #endregion
 
@@ -141,8 +204,46 @@ namespace WatKhaoWong.Identity
                     rt.sizeDelta = new Vector2(rt.sizeDelta.x * multiplierRatioForDecorator, rt.sizeDelta.y * multiplierRatioForDecorator);
                 }
             }
-            
-            SetProfileIcon(newIcon);
+
+            // Don't Call "_savingWrapper.Save()" because at the beginning it will saves default value and the actual save file will be gone.
+            _profileIcon = newIcon; // Don't Call "SetProfileIcon()" because don't want "OnAccountDataUpdated?.Invoke()" to run. PREVENT Infinite Loop & Program Crashes.
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Interface)
+        object ISaveable.CaptureState()
+        {
+            Dictionary<string, object> data = new Dictionary<string, object>();
+            data["ProfileIcon"] = _profileIcon.ItemID;
+            data["FirstName"] = _firstName;
+            data["LastName"] = _lastName;
+            data["Level"] = _level;
+            data["TotalTMPoints"] = _totalTMPoints;
+            data["TodayTMPoints"] = _todayTMPoints;
+            data["TotalWonTMChallenge"] = _totalWonTMChallenge;
+            data["MemberSince"] = _memberSince;
+
+            return data;
+        }
+
+        void ISaveable.RestoreState(object state)
+        {
+            Dictionary<string, object> stateDict = (Dictionary<string, object>)state;
+
+            string id = (string)stateDict["ProfileIcon"];
+            _profileIcon = BaseItem.GetFromID(id) as ProfileIcon;
+
+            _firstName = (string)stateDict["FirstName"];
+            _lastName = (string)stateDict["LastName"];
+            _level = (int)stateDict["Level"];
+            _totalTMPoints = (int)stateDict["TotalTMPoints"];
+            _todayTMPoints = (int)stateDict["TodayTMPoints"];
+            _totalWonTMChallenge = (int)stateDict["TotalWonTMChallenge"];
+            _memberSince = (string)stateDict["MemberSince"];
+
+            OnAccountDataUpdated?.Invoke();
         }
         #endregion
 

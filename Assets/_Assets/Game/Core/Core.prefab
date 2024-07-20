@@ -578,6 +578,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2637654065332200263}
+  - component: {fileID: 6474094721529044221}
   - component: {fileID: 4749867448591421449}
   - component: {fileID: 6465570840427602857}
   m_Layer: 0
@@ -607,6 +608,19 @@ Transform:
   - {fileID: 1313416025136834623}
   m_Father: {fileID: 5923315315416972317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6474094721529044221
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009358291179130440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ea9374b509b70f4bba37e4a2ca8cf00, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uniqueIdentifier: cf7189db-614e-4b67-936b-3bc11f4403f5
 --- !u!114 &4749867448591421449
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,8 +633,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58799e86949114904b60eedc84f1d4bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <DefaultProfileIcon>k__BackingField: {fileID: 11400000, guid: 8299965814d1d4f66ad2fada5a936b95,
+  _defaultProfileIcon: {fileID: 11400000, guid: 208a81aee5eb24d40a16f974a4c2a4a5,
     type: 2}
+  _defaultFirstName: FirstName
+  _defaultLastName: LastName
+  _defaultLevel: 1
+  _defaultMemberSince: 01/01/2000
 --- !u!114 &6465570840427602857
 MonoBehaviour:
   m_ObjectHideFlags: 0

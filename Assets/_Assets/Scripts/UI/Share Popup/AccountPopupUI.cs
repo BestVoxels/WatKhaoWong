@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,7 +39,6 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Fields-- (In Class)
-        private byte _totalProfileIcon;
         private readonly List<ProfileIconUI> _profileIcons = new List<ProfileIconUI>();
 
         private AccountPopup _playerAccountPopup;
@@ -66,65 +64,77 @@ namespace WatKhaoWong.UI.SharePopup
             _closeButton.onClick.AddListener(Close);
             _modifyButton.onClick.AddListener(OnModifyButtonClicked);
 
-            foreach (Transform child in _profileIconUIParent)
-            {
-                if (child.TryGetComponent(out ProfileIconUI profileIcon))
-                {
-                    profileIcon.OnToggleChanged += OnToggleChanged;
+            PopulateProfileIconList();
+        }
 
-                    _profileIcons.Add(profileIcon);
-                    _totalProfileIcon++;
-                }
-            }
+        private void OnEnable()
+        {
+            UIRefresher.OnPopupRefreshed += RefreshUI;
         }
 
         private void Start()
         {
-            RefreshToggleStatusOnStart();
-
             RefreshUI();
+
+            SubscribeEachProfileIconWithOnToggleChanged(); // Must Run after RefreshToggleStatusUI() (only in the beginning) to avoid overriding save file of ProfileIconUI, overrided by its default state.
+        }
+
+        private void OnDisable()
+        {
+            UIRefresher.OnPopupRefreshed -= RefreshUI;
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PRIVATE)
-        /// <summary>
-        /// Turn on Toggle to matches with Player's selected ProfileIcon.
-        /// </summary>
-        private void RefreshToggleStatusOnStart()
-        {
-            ProfileIcon profileIcon = _account.GetProfileIcon();
-
-            List<ProfileIconUI> temp = _profileIcons.Where(
-                (ProfileIconUI p) =>
-                {
-                    bool result = p.Icon.ItemID.Equals(profileIcon.ItemID);
-                    if (result)
-                        p.Toggle.isOn = true;
-
-                    return result;
-                }
-            ).ToList();
-        }
-
         private void RefreshUI()
         {
+            RefreshToggleStatusUI();
+
             var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
             _account.UpdateProfileIcon(_icon, _account.GetProfileIcon(), MultiplierRatioForDecorator);
 
             _userNameText.text = _account.GetUserNameText();
-            _userLevelText.text = _account.GetUserLevelText();
+            _userLevelText.text = _account.GetLevelText();
 
-            _allTimeTMPointsText.text = _account.GetAllTimeTMPoints().ToString("#,0", nfi);
-            _todayTMPointsText.text = _account.GetTodayTMPoints().ToString("#,0", nfi);
+            _allTimeTMPointsText.text = _account.GetTotalTMPointsText();
+            _todayTMPointsText.text = _account.GetTodayTMPointsText();
 
-            _totalWonTMChallengeText.text = _account.GetTotalWonTMChallenge().ToString("#,0", nfi);
+            _totalWonTMChallengeText.text = _account.GetTotalWonTMChallengeText();
             _memberSinceText.text = _account.GetMemberSinceText();
 
-            _profilePicHeaderText.text = $"<#f8913f>{_totalProfileIcon.ToString("#,0", nfi)}</color>";
+            _profilePicHeaderText.text = $"<#f8913f>{_profileIcons.Count.ToString("#,0", nfi)}</color>";
+        }
+
+        private void PopulateProfileIconList()
+        {
+            foreach (Transform child in _profileIconUIParent)
+            {
+                if (child.TryGetComponent(out ProfileIconUI profileIcon))
+                    _profileIcons.Add(profileIcon);
+            }
+        }
+
+        /// <summary>
+        /// Turn on Toggle that matches with Player's selected ProfileIcon.
+        /// </summary>
+        private void RefreshToggleStatusUI()
+        {
+            ProfileIcon target = _account.GetProfileIcon();
+
+            _profileIcons.ForEach(eachIconUI =>
+            {
+                if (eachIconUI.Icon.ItemID.Equals(target.ItemID))
+                    eachIconUI.Toggle.isOn = true;
+            });
+        }
+
+        private void SubscribeEachProfileIconWithOnToggleChanged()
+        {
+            _profileIcons.ForEach(eachIconUI => eachIconUI.OnToggleChanged += OnToggleChangedByClick);
         }
         #endregion
 
@@ -137,7 +147,7 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Methods-- (Subscriber)
-        private void OnToggleChanged(ProfileIcon selectedProfileIcon, bool isOn)
+        private void OnToggleChangedByClick(ProfileIcon selectedProfileIcon, bool isOn)
         {
             if (isOn)
             {

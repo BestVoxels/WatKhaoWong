@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Utils.UI;
+using WatKhaoWong.Identity;
 using Firebase.Auth;
 
 namespace WatKhaoWong.SharePopup
@@ -67,6 +68,7 @@ namespace WatKhaoWong.SharePopup
 
         private StatusText _statusText;
         private VerifyPopup _verifyPopup;
+        private AccountRole _account;
         #endregion
 
 
@@ -76,6 +78,7 @@ namespace WatKhaoWong.SharePopup
         {
             _statusText = FindAnyObjectByType<StatusText>();
             _verifyPopup = GameObject.FindWithTag("Player").GetComponentInChildren<VerifyPopup>();
+            _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountRole>();
         }
         #endregion
 
@@ -146,6 +149,8 @@ namespace WatKhaoWong.SharePopup
             _statusText.Show(_statusSucceeded, _statusSucceededColor);
 
             _onLoginSucceeded?.Invoke(result.User);
+            _account.Role = EAccountRole.Member;
+
             _isRunningOnBackground = false;
         }
         #endregion

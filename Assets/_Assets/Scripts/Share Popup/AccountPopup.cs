@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Attributes;
+using WatKhaoWong.SceneManagement;
 
 namespace WatKhaoWong.SharePopup
 {
@@ -28,11 +29,28 @@ namespace WatKhaoWong.SharePopup
 
 
 
+        #region --Fields-- (In Class)
+        private SavingWrapper _savingWrapper;
+        #endregion
+
+
+
+        #region --Methods-- (Built In)
+        private void Awake()
+        {
+            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
+        }
+        #endregion
+
+
+
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
         public void OnAccountProfileChangedByClick()
         {
             OnProfileIconChangedByClick?.Invoke();
             _onAccountProfileChangedByClick?.Invoke();
+
+            _savingWrapper.Save();
         }
         #endregion
     }

@@ -1,10 +1,11 @@
 using System;
 using UnityEngine;
 using Firebase.Auth;
+using WatKhaoWong.Saving;
 
 namespace WatKhaoWong.Identity
 {
-    public class AccountRole : MonoBehaviour
+    public class AccountRole : MonoBehaviour, ISaveable
     {
         #region --Events-- (Delegate as Action)
         public event Action OnRoleChanged;
@@ -41,10 +42,21 @@ namespace WatKhaoWong.Identity
             FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged;
         }
 
-        private void Start()
-        {
-            AssignUserRole();
-        }
+        //private void Update()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.G))
+        //    {
+        //        Role = EAccountRole.Guest;
+        //    }
+        //    if (Input.GetKeyDown(KeyCode.M))
+        //    {
+        //        Role = EAccountRole.Member;
+        //    }
+        //    if (Input.GetKeyDown(KeyCode.A))
+        //    {
+        //        Role = EAccountRole.Admin;
+        //    }
+        //}
 
         private void OnDisable()
         {
@@ -55,22 +67,33 @@ namespace WatKhaoWong.Identity
 
 
         #region --Methods-- (Custom PRIVATE)
-        private void AssignUserRole()
+        private void SetRoleToGuestIfNoAuthen()
         {
             if (FirebaseAuth.DefaultInstance.CurrentUser == null)
                 Role = EAccountRole.Guest;
+        }
+        #endregion
 
-            if (FirebaseAuth.DefaultInstance.CurrentUser != null)
-                Role = EAccountRole.Member;
 
-            // TODO set Role to 'Admin' this have to load from Server
+
+        #region --Methods-- (Interface)
+        object ISaveable.CaptureState()
+        {
+            return Role;
+        }
+
+        void ISaveable.RestoreState(object state)
+        {
+            Role = (EAccountRole)state;
+
+            SetRoleToGuestIfNoAuthen();
         }
         #endregion
 
 
 
         #region --Methods-- (Subscriber)
-        private void HandleStateChanged(object obj, EventArgs args) => AssignUserRole();
+        private void HandleStateChanged(object obj, EventArgs args) => SetRoleToGuestIfNoAuthen();
         #endregion
     }
 }

@@ -25,6 +25,7 @@ namespace WatKhaoWong.SharePopup
 
             Debug.LogWarning("Click \"Logout\" Button!");
 
+            // NO NEED to manually set AccountRole back to Guest. Because it has "FirebaseAuth.DefaultInstance.StateChanged" that subscribed with "SetRoleToGuestIfNoAuthen()".
             FirebaseAuth.DefaultInstance.SignOut();
 
             _onLogoutButtonClick?.Invoke();

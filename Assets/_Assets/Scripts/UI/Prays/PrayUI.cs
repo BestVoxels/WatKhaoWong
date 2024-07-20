@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System.Globalization;
 using TMPro;
 using WatKhaoWong.Prays;
 using WatKhaoWong.Identity;
@@ -71,8 +70,6 @@ namespace WatKhaoWong.UI.Prays
 
         private void OnEnable()
         {
-            RefreshUI();
-
             UIRefresher.OnPrayRefreshed += RefreshUI;
         }
 
@@ -108,14 +105,11 @@ namespace WatKhaoWong.UI.Prays
 
         private void RefreshUI()
         {
-            var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
-            nfi.NumberGroupSeparator = " ";
-
             _account.UpdateProfileIcon(_icon, _account.GetProfileIcon(), MultiplierRatioForDecorator);
 
             _userNameText.text = _account.GetUserNameText();
-            _allTimeTMPointsText.text = _account.GetAllTimeTMPoints().ToString("#,0", nfi);
-            _todayTMPointsText.text = _account.GetTodayTMPoints().ToString("#,0", nfi);
+            _allTimeTMPointsText.text = _account.GetTotalTMPointsText();
+            _todayTMPointsText.text = _account.GetTodayTMPointsText();
 
             _challengeText.text = _playerPray.GetChallengeText();
         }

@@ -23,13 +23,15 @@ namespace WatKhaoWong.UI
         public static event Action OnPrayRefreshed;
         public static event Action OnSettingRefreshed;
         public static event Action OnHistoryRefreshed;
+        public static event Action OnPopupRefreshed;
         public static event Action OnUIShowedHidByRoles;
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        private AccountRole _account;
+        private AccountData _accountData;
+        private AccountRole _accountRole;
         // TODO lets see what to subscribe to for HOME SYSTEM
         private UndoPopup _undoPopup;
         private NotificationPopup _notificationPopup;
@@ -45,7 +47,8 @@ namespace WatKhaoWong.UI
         {
             GameObject player = GameObject.FindWithTag("Player");
 
-            _account = player.GetComponentInChildren<AccountRole>();
+            _accountData = player.GetComponentInChildren<AccountData>();
+            _accountRole = player.GetComponentInChildren<AccountRole>();
             _undoPopup = player.GetComponentInChildren<UndoPopup>();
             _notificationPopup = player.GetComponentInChildren<NotificationPopup>();
             _accountPopup = player.GetComponentInChildren<AccountPopup>();
@@ -54,7 +57,8 @@ namespace WatKhaoWong.UI
         private void OnEnable()
         {
             // ACCOUNT ROLE SYSTEM
-            _account.OnRoleChanged += RefreshAllUI;
+            _accountData.OnAccountDataUpdated += RefreshAllUI;
+            _accountRole.OnRoleChanged += RefreshAllUI;
 
             // HOME SYSTEM
             // TODO lets see what to subscribe to for HOME SYSTEM
@@ -90,38 +94,45 @@ namespace WatKhaoWong.UI
             RefreshPrayUI();
             RefreshSettingUI();
             RefreshHistoryUI();
+            RefreshPopupUI();
             ShowHideUIByRoles();
-            print("Refreshed All UI");
+            //print("Refreshed All UI");
         }
 
         public static void RefreshHomeUI()
         {
             OnHomeRefreshed?.Invoke();
-            print("Refreshed Home UI " + OnHomeRefreshed?.GetInvocationList().Length);
+            //print("Refreshed Home UI " + OnHomeRefreshed?.GetInvocationList().Length);
         }
 
         public static void RefreshPrayUI()
         {
             OnPrayRefreshed?.Invoke();
-            print("Refreshed Pray UI " + OnPrayRefreshed?.GetInvocationList().Length);
+            //print("Refreshed Pray UI " + OnPrayRefreshed?.GetInvocationList().Length);
         }
 
         public static void RefreshSettingUI()
         {
             OnSettingRefreshed?.Invoke();
-            print("Refreshed Setting UI " + OnSettingRefreshed?.GetInvocationList().Length);
+            //print("Refreshed Setting UI " + OnSettingRefreshed?.GetInvocationList().Length);
         }
 
         public static void RefreshHistoryUI()
         {
             OnHistoryRefreshed?.Invoke();
-            print("Refreshed History UI " + OnHistoryRefreshed?.GetInvocationList().Length);
+            //print("Refreshed History UI " + OnHistoryRefreshed?.GetInvocationList().Length);
+        }
+
+        public static void RefreshPopupUI()
+        {
+            OnPopupRefreshed?.Invoke();
+            //print("Refreshed Popup UI " + OnPopupRefreshed?.GetInvocationList().Length);
         }
 
         public static void ShowHideUIByRoles()
         {
             OnUIShowedHidByRoles?.Invoke();
-            print("Showed Hid UI By Roles " + OnUIShowedHidByRoles?.GetInvocationList().Length);
+            //print("Showed Hid UI By Roles " + OnUIShowedHidByRoles?.GetInvocationList().Length);
         }
         #endregion
 
@@ -134,6 +145,8 @@ namespace WatKhaoWong.UI
             OnPrayRefreshed = null;
             OnSettingRefreshed = null;
             OnHistoryRefreshed = null;
+            OnPopupRefreshed = null;
+            OnUIShowedHidByRoles = null;
         }
         #endregion
     }

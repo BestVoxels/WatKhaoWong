@@ -11,6 +11,7 @@ namespace WatKhaoWong.Core
     /// class will spawn the prefab only once and set it to persist between
     /// scenes.
     ///
+    /// ***** PersistentObjectSpawner.cs script MUST Execute before default time under ‘Project Settings/Script Execution Order’. (Ex-Check from WatKhaoWong project) *****
     /// ***** if assign with 'PersistentObjects' prefab to create, No Need to Create EventSystem cuz it contains EventSystem gameObject underneath. *****
     /// </summary>
     public class PersistentObjectSpawner : MonoBehaviour
