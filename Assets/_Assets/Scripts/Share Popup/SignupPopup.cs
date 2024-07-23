@@ -77,7 +77,8 @@ namespace WatKhaoWong.SharePopup
 
         private StatusText _statusText;
         private VerifyPopup _verifyPopup;
-        private AccountRole _account;
+        private AccountRole _accountRole;
+        private AccountData _accountData;
         #endregion
 
 
@@ -85,9 +86,12 @@ namespace WatKhaoWong.SharePopup
         #region --Methods-- (Built In)
         private void Awake()
         {
+            GameObject player = GameObject.FindWithTag("Player");
+
             _statusText = FindAnyObjectByType<StatusText>();
-            _verifyPopup = GameObject.FindWithTag("Player").GetComponentInChildren<VerifyPopup>();
-            _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountRole>();
+            _verifyPopup = player.GetComponentInChildren<VerifyPopup>();
+            _accountRole = player.GetComponentInChildren<AccountRole>();
+            _accountData = player.GetComponentInChildren<AccountData>();
         }
         #endregion
 
@@ -112,8 +116,8 @@ namespace WatKhaoWong.SharePopup
         {
             Debug.LogWarning("Validate Texts Succeeded");
 
-            // TODO : Upload to Account.cs - 'firstName', 'lastName'
-            // ...
+            _accountData.SetFirstName(firstName);
+            _accountData.SetLastName(lastName);
 
             if (_isRunningOnBackground) return;
 
@@ -160,7 +164,7 @@ namespace WatKhaoWong.SharePopup
             _statusText.Show(_statusSucceeded, _statusSucceededColor);
 
             _onSignupSucceeded?.Invoke(result.User);
-            _account.Role = EAccountRole.Member;
+            _accountRole.Role = EAccountRole.Member;
 
             _isRunningOnBackground = false;
         }

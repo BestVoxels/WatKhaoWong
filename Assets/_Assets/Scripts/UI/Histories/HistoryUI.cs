@@ -27,23 +27,13 @@ namespace WatKhaoWong.UI.Histories
             _playerHistory = GameObject.FindWithTag("Player").GetComponentInChildren<History>();
 
             _backButton.onClick.AddListener(Back);
-        }
 
-        private void OnEnable()
-        {
-            RefreshUI();
-
-            UIRefresher.OnHistoryRefreshed += RefreshUI;
+            UIRefresher.OnHistoryRefreshed += RefreshUI; // Can't use OnDisable() to unsubscribe Since the attached GameObject will be closed / also can't use OnEnable() cuz without OnDisable() it will keep adding more and more
         }
 
         private void Start()
         {
             RefreshUI();
-        }
-
-        private void OnDisable()
-        {
-            UIRefresher.OnHistoryRefreshed -= RefreshUI;
         }
         #endregion
 

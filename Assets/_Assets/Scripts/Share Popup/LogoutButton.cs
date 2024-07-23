@@ -1,6 +1,7 @@
 using Firebase.Auth;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 namespace WatKhaoWong.SharePopup
 {
@@ -27,6 +28,9 @@ namespace WatKhaoWong.SharePopup
 
             // NO NEED to manually set AccountRole back to Guest. Because it has "FirebaseAuth.DefaultInstance.StateChanged" that subscribed with "SetRoleToGuestIfNoAuthen()".
             FirebaseAuth.DefaultInstance.SignOut();
+
+            // TODO (JUST Reload the Scene to make it reset back!) reset value back - especially on _AccountData.cs
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
             _onLogoutButtonClick?.Invoke();
         }

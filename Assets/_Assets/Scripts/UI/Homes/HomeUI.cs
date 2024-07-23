@@ -33,23 +33,13 @@ namespace WatKhaoWong.UI.Homes
             _historyButton.onClick.AddListener(History);
             _prayButton.onClick.AddListener(Pray);
             _settingButton.onClick.AddListener(Setting);
-        }
 
-        private void OnEnable()
-        {
-            RefreshUI();
-
-            UIRefresher.OnHomeRefreshed += RefreshUI;
+            UIRefresher.OnHomeRefreshed += RefreshUI; // Can't use OnDisable() to unsubscribe Since the attached GameObject will be closed / also can't use OnEnable() cuz without OnDisable() it will keep adding more and more
         }
 
         private void Start()
         {
             RefreshUI();
-        }
-
-        private void OnDisable()
-        {
-            UIRefresher.OnHomeRefreshed -= RefreshUI;
         }
         #endregion
 

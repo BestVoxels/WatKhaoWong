@@ -64,12 +64,9 @@ namespace WatKhaoWong.UI.SharePopup
             _closeButton.onClick.AddListener(Close);
             _modifyButton.onClick.AddListener(OnModifyButtonClicked);
 
-            PopulateProfileIconList();
-        }
+            UIRefresher.OnPopupRefreshed += RefreshUI; // Can't use OnDisable() to unsubscribe Since the attached GameObject will be closed / also can't use OnEnable() cuz without OnDisable() it will keep adding more and more
 
-        private void OnEnable()
-        {
-            UIRefresher.OnPopupRefreshed += RefreshUI;
+            PopulateProfileIconList();
         }
 
         private void Start()
@@ -77,11 +74,6 @@ namespace WatKhaoWong.UI.SharePopup
             RefreshUI();
 
             SubscribeEachProfileIconWithOnToggleChanged(); // Must Run after RefreshToggleStatusUI() (only in the beginning) to avoid overriding save file of ProfileIconUI, overrided by its default state.
-        }
-
-        private void OnDisable()
-        {
-            UIRefresher.OnPopupRefreshed -= RefreshUI;
         }
         #endregion
 

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Attributes;
+using WatKhaoWong.Identity;
 
 namespace WatKhaoWong.Prays
 {
@@ -47,19 +48,25 @@ namespace WatKhaoWong.Prays
 
 
         #region --Fields-- (In Class)
+        private int _tmPoints;
+
         private Coroutine _previousCoroutine;
+        private AccountData _accountData;
         #endregion
 
 
 
         #region --Properties-- (Computed)
-        public string StatusInfoTextDone => StatusInfoTextDoneBegin + TMPoints + StatusInfoTextDoneEnd;
+        public string StatusInfoTextDone => StatusInfoTextDoneBegin + _tmPoints + StatusInfoTextDoneEnd;
         #endregion
 
 
 
-        #region --Properties-- (Auto)
-        public int TMPoints { get; private set; } = 0;
+        #region --Methods-- (Built In)
+        private void Awake()
+        {
+            _accountData = GameObject.FindWithTag("Player").GetComponentInChildren<AccountData>();
+        }
         #endregion
 
 
@@ -71,7 +78,7 @@ namespace WatKhaoWong.Prays
 
             Debug.LogWarning($"Save Points ({tmPoints}) to TMPoints property under ConfirmPopup.cs");
 
-            TMPoints = tmPoints;
+            _tmPoints = tmPoints;
 
             _previousCoroutine = StartCoroutine(UploadToServerDelay());
         }
@@ -87,7 +94,7 @@ namespace WatKhaoWong.Prays
             if (_previousCoroutine != null)
                 StopCoroutine(_previousCoroutine);
 
-            TMPoints = 0;
+            _tmPoints = 0;
 
             _onUndoButtonClick?.Invoke();
         }
@@ -119,8 +126,8 @@ namespace WatKhaoWong.Prays
 
         private void UploadToServer()
         {
-            // TODO Upload to Server HERE!!! Pass in 'TMPoints' to it!!!
-            Debug.LogWarning($"Upload {TMPoints} Point to Server!!!");
+            Debug.LogWarning($"Upload {_tmPoints} Point to Server!!!");
+            _accountData.SetTotalTMPointsText(_tmPoints);
 
             _onUploadSucceed?.Invoke();
             OnUploadSucceed?.Invoke();
@@ -132,7 +139,7 @@ namespace WatKhaoWong.Prays
         #region --Methods-- (Override)
         public override void OnCloseButtonClick()
         {
-            TMPoints = 0;
+            _tmPoints = 0;
 
             base.OnCloseButtonClick();
         }

@@ -66,21 +66,13 @@ namespace WatKhaoWong.UI.Prays
             _doneButton.onClick.AddListener(Done);
             _playSoundButton.onClick.AddListener(PlaySound);
             _challengeButton.onClick.AddListener(StartChallenge);
-        }
 
-        private void OnEnable()
-        {
-            UIRefresher.OnPrayRefreshed += RefreshUI;
+            UIRefresher.OnPrayRefreshed += RefreshUI; // Can't use OnDisable() to unsubscribe Since the attached GameObject will be closed / also can't use OnEnable() cuz without OnDisable() it will keep adding more and more
         }
 
         private void Start()
         {
             RefreshUI();
-        }
-
-        private void OnDisable()
-        {
-            UIRefresher.OnPrayRefreshed -= RefreshUI;
         }
         #endregion
 

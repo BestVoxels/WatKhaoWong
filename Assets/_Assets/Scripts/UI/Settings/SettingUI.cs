@@ -51,23 +51,13 @@ namespace WatKhaoWong.UI.Settings
 
             _sfxSlider.onValueChanged.AddListener(SfxSliderValueChanged);
             _musicSlider.onValueChanged.AddListener(MusicSliderValueChanged);
-        }
 
-        private void OnEnable()
-        {
-            RefreshUI();
-
-            UIRefresher.OnSettingRefreshed += RefreshUI;
+            UIRefresher.OnSettingRefreshed += RefreshUI; // Can't use OnDisable() to unsubscribe Since the attached GameObject will be closed / also can't use OnEnable() cuz without OnDisable() it will keep adding more and more
         }
 
         private void Start()
         {
             RefreshUI();
-        }
-
-        private void OnDisable()
-        {
-            UIRefresher.OnSettingRefreshed -= RefreshUI;
         }
         #endregion
 
@@ -94,8 +84,8 @@ namespace WatKhaoWong.UI.Settings
             _sfxSlider.value = _playerSetting.LoadSfxValue();
             _musicSlider.value = _playerSetting.LoadMusicValue();
 
-            // TODO update these UI, wait for 'LanguagePopup' and 'NotificationPopup' classes
             _notificationStatusText.text = _notificationPopup.GetNotificationSwitchStatus();
+            // TODO update these UI, wait for 'LanguagePopup' classes
             //_languageStatusText.text = "";
             //_languageStatusIcon.sprite = ;
         }

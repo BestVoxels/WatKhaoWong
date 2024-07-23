@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Firebase.Auth;
 using UnityEngine;
 using WatKhaoWong.Saving;
 using WatKhaoWong.Utils;
@@ -40,9 +41,13 @@ namespace WatKhaoWong.SceneManagement
         {
             _savingSystem = new AutoInit<SavingSystem>(() => GetComponent<SavingSystem>()); // Use AutoInit so that when other classes use public methods in their Start() SavingSystem won't be null
 
-            SetCurrentSaveName(SaveFileName);
+            // ONLY Load Save from Server IF User is Authenticated
+            if (FirebaseAuth.DefaultInstance.CurrentUser != null)
+            {
+                SetCurrentSaveName(SaveFileName);
 
-            LoadAfterAwakeAndStart();
+                LoadAfterAwakeAndStart();
+            }
         }
 
         //private void Update()

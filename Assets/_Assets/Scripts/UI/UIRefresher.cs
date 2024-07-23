@@ -102,37 +102,37 @@ namespace WatKhaoWong.UI
         public static void RefreshHomeUI()
         {
             OnHomeRefreshed?.Invoke();
-            //print("Refreshed Home UI " + OnHomeRefreshed?.GetInvocationList().Length);
+            //print("Refreshed Home UI : " + OnHomeRefreshed?.GetInvocationList().Length);
         }
 
         public static void RefreshPrayUI()
         {
             OnPrayRefreshed?.Invoke();
-            //print("Refreshed Pray UI " + OnPrayRefreshed?.GetInvocationList().Length);
+            //print("Refreshed Pray UI : " + OnPrayRefreshed?.GetInvocationList().Length);
         }
 
         public static void RefreshSettingUI()
         {
             OnSettingRefreshed?.Invoke();
-            //print("Refreshed Setting UI " + OnSettingRefreshed?.GetInvocationList().Length);
+            //print("Refreshed Setting UI : " + OnSettingRefreshed?.GetInvocationList().Length);
         }
 
         public static void RefreshHistoryUI()
         {
             OnHistoryRefreshed?.Invoke();
-            //print("Refreshed History UI " + OnHistoryRefreshed?.GetInvocationList().Length);
+            //print("Refreshed History UI : " + OnHistoryRefreshed?.GetInvocationList().Length);
         }
 
         public static void RefreshPopupUI()
         {
             OnPopupRefreshed?.Invoke();
-            //print("Refreshed Popup UI " + OnPopupRefreshed?.GetInvocationList().Length);
+            //print("Refreshed Popup UI : " + OnPopupRefreshed?.GetInvocationList().Length);
         }
 
         public static void ShowHideUIByRoles()
         {
             OnUIShowedHidByRoles?.Invoke();
-            //print("Showed Hid UI By Roles " + OnUIShowedHidByRoles?.GetInvocationList().Length);
+            //print("Showed Hid UI By Roles : " + OnUIShowedHidByRoles?.GetInvocationList().Length);
         }
         #endregion
 

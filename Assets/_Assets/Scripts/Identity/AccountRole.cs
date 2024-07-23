@@ -66,10 +66,16 @@ namespace WatKhaoWong.Identity
 
 
 
+        #region --Methods-- (Custom PUBLIC)
+        public bool IsAuthenticated() => FirebaseAuth.DefaultInstance.CurrentUser != null;
+        #endregion
+
+
+
         #region --Methods-- (Custom PRIVATE)
         private void SetRoleToGuestIfNoAuthen()
         {
-            if (FirebaseAuth.DefaultInstance.CurrentUser == null)
+            if (!IsAuthenticated())
                 Role = EAccountRole.Guest;
         }
         #endregion
@@ -93,7 +99,10 @@ namespace WatKhaoWong.Identity
 
 
         #region --Methods-- (Subscriber)
-        private void HandleStateChanged(object obj, EventArgs args) => SetRoleToGuestIfNoAuthen();
+        private void HandleStateChanged(object obj, EventArgs args)
+        {
+            SetRoleToGuestIfNoAuthen();
+        }
         #endregion
     }
 }

@@ -1,14 +1,22 @@
 using UnityEngine;
 using UnityEngine.Events;
+using WatKhaoWong.Identity;
 
 namespace WatKhaoWong.Homes
 {
     public class Home : MonoBehaviour
     {
         #region --Fields-- (Inspector)
-        //[Header("Home Stuffs")]
-        // TODO CoverImage refresh time
-        // TODO about Welcome Text maybe?
+        [Header("Home Stuffs - Welcome Text")]
+        [TextArea]
+        [SerializeField] private string _welcomeTextForGuest;
+        [Space]
+        [TextArea]
+        [SerializeField] private string _welcomeTextForUser;
+
+        //[Space]
+        //[Header("Home Stuffs - Settings")]
+        //[SerializeField] private float _coverImageRefreshTime = 99999999f;
         #endregion
 
 
@@ -18,6 +26,25 @@ namespace WatKhaoWong.Homes
         [SerializeField] private UnityEvent _onHistoryButtonClick;
         [SerializeField] private UnityEvent _onPrayButtonClick;
         [SerializeField] private UnityEvent _onSettingButtonClick;
+        #endregion
+
+
+
+        #region --Fields-- (In Class)
+        private AccountData _accountData;
+        private AccountRole _accountRole;
+        #endregion
+
+
+
+        #region --Methods-- (Built In)
+        private void Awake()
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+
+            _accountData = player.GetComponentInChildren<AccountData>();
+            _accountRole = player.GetComponentInChildren<AccountRole>();
+        }
         #endregion
 
 
@@ -35,9 +62,14 @@ namespace WatKhaoWong.Homes
         #region --Methods-- (Custom PUBLIC) ~Welcome Text~
         public string GetWelcomeText()
         {
-            // TODO get username from somewhere, maybe central script???
+            string text;
+            
+            if (_accountRole.IsAuthenticated())
+                text = $"{_welcomeTextForUser}\n{_accountData.GetUserNameText()}";
+            else
+                text = _welcomeTextForGuest;
 
-            return "Welcome back !!! (username)";
+            return text;
         }
         #endregion
 
