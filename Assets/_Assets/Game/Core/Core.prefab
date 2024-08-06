@@ -633,12 +633,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58799e86949114904b60eedc84f1d4bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultProfileIcon: {fileID: 11400000, guid: c2ac1f107ef784c5ea99406cb9b6b13f,
-    type: 2}
   _defaultFirstName: FirstName
   _defaultLastName: LastName
+  _defaultMemberSince: no data
+  _defaultProfileIcon: {fileID: 11400000, guid: c2ac1f107ef784c5ea99406cb9b6b13f,
+    type: 2}
   _defaultLevel: 1
-  _defaultMemberSince: 01/01/2000
 --- !u!114 &6465570840427602857
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1928,7 +1928,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _uploadDelay: 8
+  _uploadDelay: 5
   <StatusHeaderTextDefault>k__BackingField: Uploading...
   <StatusInfoTextDefault>k__BackingField: Press Undo if you uplooad by mistake
   <StatusHeaderTextDone>k__BackingField: Uploaded!
@@ -2232,7 +2232,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _maximumPointInput: 1000
+  _maximumPointInput: 108
   <StatusTextDefault>k__BackingField: Enter your desired number!
   <StatusTextValid>k__BackingField: Good job!
   <StatusTextNoNegative>k__BackingField: Negative value is not allow!

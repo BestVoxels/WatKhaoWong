@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Identity;
+using Firebase.Auth;
 
 namespace WatKhaoWong.Homes
 {
@@ -32,7 +33,6 @@ namespace WatKhaoWong.Homes
 
         #region --Fields-- (In Class)
         private AccountData _accountData;
-        private AccountRole _accountRole;
         #endregion
 
 
@@ -43,7 +43,6 @@ namespace WatKhaoWong.Homes
             GameObject player = GameObject.FindWithTag("Player");
 
             _accountData = player.GetComponentInChildren<AccountData>();
-            _accountRole = player.GetComponentInChildren<AccountRole>();
         }
         #endregion
 
@@ -64,7 +63,7 @@ namespace WatKhaoWong.Homes
         {
             string text;
             
-            if (_accountRole.IsAuthenticated())
+            if (FirebaseAuth.DefaultInstance.CurrentUser != null)
                 text = $"{_welcomeTextForUser}\n{_accountData.GetUserNameText()}";
             else
                 text = _welcomeTextForGuest;

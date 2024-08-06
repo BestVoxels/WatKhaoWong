@@ -127,7 +127,8 @@ namespace WatKhaoWong.Prays
         private void UploadToServer()
         {
             Debug.LogWarning($"Upload {_tmPoints} Point to Server!!!");
-            _accountData.SetTotalTMPointsText(_tmPoints);
+            _accountData.AddTotalTMPoints(_tmPoints);
+            _accountData.AddTodayTMPoints(_tmPoints);
 
             _onUploadSucceed?.Invoke();
             OnUploadSucceed?.Invoke();

@@ -1,11 +1,11 @@
 using System;
 using UnityEngine;
 using Firebase.Auth;
-using WatKhaoWong.Saving;
+using WatKhaoWong.SceneManagement;
 
 namespace WatKhaoWong.Identity
 {
-    public class AccountRole : MonoBehaviour, ISaveable
+    public class AccountRole : MonoBehaviour
     {
         #region --Events-- (Delegate as Action)
         public event Action OnRoleChanged;
@@ -15,6 +15,8 @@ namespace WatKhaoWong.Identity
 
         #region --Fields-- (In Class)
         [SerializeField] private EAccountRole _role = EAccountRole.Member;
+
+        private SavingWrapper _savingWrapper;
         #endregion
 
 
@@ -27,6 +29,8 @@ namespace WatKhaoWong.Identity
             set
             {
                 _role = value; // Role MUST be changed before calls "OnRoleChanged?.Invoke()" so UI can update properly.
+
+                _savingWrapper.Save(ESaveName.Role, (int)_role);
                 print("***Role Changed***");
 
                 OnRoleChanged?.Invoke();
@@ -37,6 +41,11 @@ namespace WatKhaoWong.Identity
 
 
         #region --Methods-- (Built In)
+        private void Awake()
+        {
+            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
+        }
+
         private void OnEnable()
         {
             FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged;
@@ -66,34 +75,34 @@ namespace WatKhaoWong.Identity
 
 
 
-        #region --Methods-- (Custom PUBLIC)
-        public bool IsAuthenticated() => FirebaseAuth.DefaultInstance.CurrentUser != null;
-        #endregion
-
-
-
         #region --Methods-- (Custom PRIVATE)
+        private void AssignUserRole()
+        {
+            LoadSave();
+
+            SetRoleToGuestIfNoAuthen();
+        }
+
+        private async void LoadSave()
+        {
+            var data = await _savingWrapper.Load(ESaveName.Role);
+
+            if (data != null)
+                Role = (EAccountRole)int.Parse(data.Value.ToString());
+        }
+
         private void SetRoleToGuestIfNoAuthen()
         {
             if (!IsAuthenticated())
                 Role = EAccountRole.Guest;
         }
+
+        private bool IsAuthenticated() => FirebaseAuth.DefaultInstance.CurrentUser != null;
         #endregion
 
 
 
         #region --Methods-- (Interface)
-        object ISaveable.CaptureState()
-        {
-            return Role;
-        }
-
-        void ISaveable.RestoreState(object state)
-        {
-            Role = (EAccountRole)state;
-
-            SetRoleToGuestIfNoAuthen();
-        }
         #endregion
 
 
@@ -101,7 +110,7 @@ namespace WatKhaoWong.Identity
         #region --Methods-- (Subscriber)
         private void HandleStateChanged(object obj, EventArgs args)
         {
-            SetRoleToGuestIfNoAuthen();
+            AssignUserRole(); // Don't have to LoadSave() on Awake() because it will be called once after FirebaseAuth instance is created.
         }
         #endregion
     }

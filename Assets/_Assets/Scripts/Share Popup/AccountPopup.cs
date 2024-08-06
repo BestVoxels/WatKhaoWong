@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Attributes;
-using WatKhaoWong.SceneManagement;
 
 namespace WatKhaoWong.SharePopup
 {
@@ -30,16 +29,11 @@ namespace WatKhaoWong.SharePopup
 
 
         #region --Fields-- (In Class)
-        private SavingWrapper _savingWrapper;
         #endregion
 
 
 
         #region --Methods-- (Built In)
-        private void Awake()
-        {
-            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
-        }
         #endregion
 
 
@@ -49,8 +43,6 @@ namespace WatKhaoWong.SharePopup
         {
             OnProfileIconChangedByClick?.Invoke();
             _onAccountProfileChangedByClick?.Invoke();
-
-            _savingWrapper.Save();
         }
         #endregion
     }

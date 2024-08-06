@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Identity;
 using WatKhaoWong.Utils.UI;
+using WatKhaoWong.SceneManagement;
 
 namespace WatKhaoWong.SharePopup
 {
@@ -75,10 +76,11 @@ namespace WatKhaoWong.SharePopup
         #region --Fields-- (In Class)
         private bool _isRunningOnBackground = false;
 
-        private StatusText _statusText;
         private VerifyPopup _verifyPopup;
         private AccountRole _accountRole;
         private AccountData _accountData;
+        private StatusText _statusText;
+        private SavingWrapper _savingWrapper;
         #endregion
 
 
@@ -88,10 +90,11 @@ namespace WatKhaoWong.SharePopup
         {
             GameObject player = GameObject.FindWithTag("Player");
 
-            _statusText = FindAnyObjectByType<StatusText>();
             _verifyPopup = player.GetComponentInChildren<VerifyPopup>();
             _accountRole = player.GetComponentInChildren<AccountRole>();
             _accountData = player.GetComponentInChildren<AccountData>();
+            _statusText = FindAnyObjectByType<StatusText>();
+            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
         }
         #endregion
 
@@ -116,8 +119,13 @@ namespace WatKhaoWong.SharePopup
         {
             Debug.LogWarning("Validate Texts Succeeded");
 
-            _accountData.SetFirstName(firstName);
-            _accountData.SetLastName(lastName);
+            // Can't just call _savingWrapper.SaveWithoutAuth() without Subscribe to _onSignupSucceeded BECAUSE have to wait for 'CurrentUser.UserId' otherwise can't get Path to save.
+            _onSignupSucceeded.AddListener((FirebaseUser user) =>
+            {
+                _accountData.SetFirstName(firstName);
+                _accountData.SetLastName(lastName);
+                _accountData.SetMemberSinceText(DateTime.Now);
+            });
 
             if (_isRunningOnBackground) return;
 

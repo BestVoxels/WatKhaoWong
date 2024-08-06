@@ -4,20 +4,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.CoreItems;
-using WatKhaoWong.Saving;
 using WatKhaoWong.SceneManagement;
+using Firebase.Auth;
 
 namespace WatKhaoWong.Identity
 {
-    public class AccountData : MonoBehaviour, ISaveable
+    public class AccountData : MonoBehaviour
     {
         #region --Fields-- (Inspector)
         [Header("Account Stuffs")]
-        [SerializeField] private ProfileIcon _defaultProfileIcon;
         [SerializeField] private string _defaultFirstName;
         [SerializeField] private string _defaultLastName;
-        [SerializeField] private int _defaultLevel;
         [SerializeField] private string _defaultMemberSince;
+        [SerializeField] private ProfileIcon _defaultProfileIcon;
+        [SerializeField] private int _defaultLevel;
         #endregion
 
 
@@ -29,14 +29,15 @@ namespace WatKhaoWong.Identity
 
 
         #region --Fields-- (In Class)
-        private ProfileIcon _profileIcon;
         private string _firstName;
         private string _lastName;
+        private DateTime? _memberSince = null;
+        private ProfileIcon _profileIcon = null;
         private int _level;
         private int _totalTMPoints;
         private int _todayTMPoints;
         private int _totalWonTMChallenge;
-        private string _memberSince;
+        private DateTime _firstUploadTimeOfDay;
 
         private SavingWrapper _savingWrapper;
         private NumberFormatInfo _nfi;
@@ -50,24 +51,26 @@ namespace WatKhaoWong.Identity
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
         }
 
+        private void OnEnable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged; // This will trigger on Start() too so don't have to call LoadSave() on Start()
+        }
+
         private void Start()
         {
             _nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             _nfi.NumberGroupSeparator = " ";
+        }
+
+        private void OnDisable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PUBLIC) ~Getter~
-        public ProfileIcon GetProfileIcon()
-        {
-            if (_profileIcon == null)
-                _profileIcon = _defaultProfileIcon;
-
-            return _profileIcon;
-        }
-
         public string GetUserNameText()
         {
             if (string.IsNullOrEmpty(_firstName) || string.IsNullOrEmpty(_lastName))
@@ -77,6 +80,23 @@ namespace WatKhaoWong.Identity
             }
 
             return $"{_firstName} {_lastName}";
+        }
+
+        public string GetMemberSinceText()
+        {
+            if (_memberSince == null)
+                return $"{_defaultMemberSince}";
+
+
+            return $"{_memberSince:d/M/yyyy}";
+        }
+
+        public ProfileIcon GetProfileIcon()
+        {
+            if (_profileIcon == null)
+                _profileIcon = _defaultProfileIcon;
+
+            return _profileIcon;
         }
 
         public string GetLevelText()
@@ -92,14 +112,6 @@ namespace WatKhaoWong.Identity
         public string GetTodayTMPointsText() => $"{_todayTMPoints.ToString("#,0", _nfi)}";
 
         public string GetTotalWonTMChallengeText() => $"{_totalWonTMChallenge.ToString("#,0", _nfi)}";
-
-        public string GetMemberSinceText()
-        {
-            if (string.IsNullOrEmpty(_memberSince))
-                _memberSince = _defaultMemberSince;
-
-            return $"{_memberSince}";
-        }
         #endregion
 
 
@@ -108,65 +120,75 @@ namespace WatKhaoWong.Identity
         public void SetFirstName(string input)
         {
             _firstName = input;
-            
+
+            _savingWrapper.Save(ESaveName.FirstName, _firstName);
             OnAccountDataUpdated?.Invoke();
-            _savingWrapper.Save();
         }
 
         public void SetLastName(string input)
         {
             _lastName = input;
 
+            _savingWrapper.Save(ESaveName.LastName, _lastName);
             OnAccountDataUpdated?.Invoke();
-            _savingWrapper.Save();
         }
 
-        public void SetLevelText(int input)
-        {
-            _level = input;
-
-            OnAccountDataUpdated?.Invoke();
-            _savingWrapper.Save();
-        }
-
-        public void SetTotalTMPointsText(int input)
-        {
-            _totalTMPoints = input;
-
-            OnAccountDataUpdated?.Invoke();
-            _savingWrapper.Save();
-        }
-
-        public void SetTodayTMPointsText(int input)
-        {
-            _todayTMPoints = input;
-
-            OnAccountDataUpdated?.Invoke();
-            _savingWrapper.Save();
-        }
-
-        public void SetTotalWonTMChallengeText(int input)
-        {
-            _totalWonTMChallenge = input;
-
-            OnAccountDataUpdated?.Invoke();
-            _savingWrapper.Save();
-        }
-
-        public void SetMemberSinceText(string input)
+        public void SetMemberSinceText(DateTime input)
         {
             _memberSince = input;
 
+            _savingWrapper.Save(ESaveName.MemberSince, _memberSince.ToString());
             OnAccountDataUpdated?.Invoke();
-            _savingWrapper.Save();
         }
 
         public void SetProfileIcon(ProfileIcon input)
         {
             _profileIcon = input;
 
+            _savingWrapper.Save(ESaveName.ProfileIconID, _profileIcon.ItemID);
             OnAccountDataUpdated?.Invoke();
-            _savingWrapper.Save();
+        }
+
+        public void SetLevelText(int input)
+        {
+            _level = input;
+
+            _savingWrapper.Save(ESaveName.Level, _level);
+            OnAccountDataUpdated?.Invoke();
+        }
+
+        public void AddTotalTMPoints(int input)
+        {
+            _totalTMPoints += input;
+
+            _savingWrapper.Save(ESaveName.TotalTMPoint, _totalTMPoints);
+            OnAccountDataUpdated?.Invoke();
+        }
+
+        public void AddTodayTMPoints(int input)
+        {
+            if (input <= 0) return;
+
+            ResetTMPointsDaily();
+
+            if (_todayTMPoints == 0)
+            {
+                _firstUploadTimeOfDay = DateTime.Now;
+                _savingWrapper.Save(ESaveName.FirstUploadTimeOfDay, DateTime.Now.ToString());
+            }
+
+            _todayTMPoints += input;
+            _savingWrapper.Save(ESaveName.TodayTMPoint, _todayTMPoints);
+
+            OnAccountDataUpdated?.Invoke();
+        }
+
+        public void AddTotalWonTMChallenge(int input)
+        {
+            _totalWonTMChallenge += input;
+
+            _savingWrapper.Save(ESaveName.ChallengeWon, _totalWonTMChallenge);
+            OnAccountDataUpdated?.Invoke();
         }
         #endregion
 
@@ -212,38 +234,82 @@ namespace WatKhaoWong.Identity
 
 
 
-        #region --Methods-- (Interface)
-        object ISaveable.CaptureState()
+        #region --Methods-- (Custom PRIVATE)
+        public void ResetTMPointsDaily()
         {
-            Dictionary<string, object> data = new Dictionary<string, object>();
-            data["ProfileIcon"] = _profileIcon.ItemID;
-            data["FirstName"] = _firstName;
-            data["LastName"] = _lastName;
-            data["Level"] = _level;
-            data["TotalTMPoints"] = _totalTMPoints;
-            data["TodayTMPoints"] = _todayTMPoints;
-            data["TotalWonTMChallenge"] = _totalWonTMChallenge;
-            data["MemberSince"] = _memberSince;
+            if (_firstUploadTimeOfDay.Date != DateTime.Today && _todayTMPoints > 0)
+            {
+                _todayTMPoints = 0;
 
-            return data;
+                _savingWrapper.ForceSave(ESaveName.TodayTMPoint, 0);
+                OnAccountDataUpdated?.Invoke();
+            }
         }
 
-        void ISaveable.RestoreState(object state)
+        private async void LoadSave()
         {
-            Dictionary<string, object> stateDict = (Dictionary<string, object>)state;
+            var data = await _savingWrapper.Load(ESaveName.FirstName);
+            if (data != null)
+                _firstName = data.Value.ToString();
 
-            string id = (string)stateDict["ProfileIcon"];
-            _profileIcon = BaseItem.GetFromID(id) as ProfileIcon;
+            data = await _savingWrapper.Load(ESaveName.LastName);
+            if (data != null)
+                _lastName = data.Value.ToString();
 
-            _firstName = (string)stateDict["FirstName"];
-            _lastName = (string)stateDict["LastName"];
-            _level = (int)stateDict["Level"];
-            _totalTMPoints = (int)stateDict["TotalTMPoints"];
-            _todayTMPoints = (int)stateDict["TodayTMPoints"];
-            _totalWonTMChallenge = (int)stateDict["TotalWonTMChallenge"];
-            _memberSince = (string)stateDict["MemberSince"];
+            data = await _savingWrapper.Load(ESaveName.MemberSince);
+            if (data != null)
+            {
+                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                _memberSince = result;
+            }
+
+            data = await _savingWrapper.Load(ESaveName.ProfileIconID);
+            if (data != null)
+            {
+                string id = data.Value.ToString();
+                _profileIcon = BaseItem.GetFromID(id) as ProfileIcon;
+            }
+
+            data = await _savingWrapper.Load(ESaveName.Level);
+            if (data != null)
+                _level = int.Parse(data.Value.ToString());
+
+            data = await _savingWrapper.Load(ESaveName.TotalTMPoint);
+            if (data != null)
+                _totalTMPoints = int.Parse(data.Value.ToString());
+
+            data = await _savingWrapper.Load(ESaveName.TodayTMPoint);
+            if (data != null)
+                _todayTMPoints = int.Parse(data.Value.ToString());
+
+            data = await _savingWrapper.Load(ESaveName.ChallengeWon);
+            if (data != null)
+                _totalWonTMChallenge = int.Parse(data.Value.ToString());
+
+            data = await _savingWrapper.Load(ESaveName.FirstUploadTimeOfDay);
+            if (data != null)
+            {
+                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                    _firstUploadTimeOfDay = result;
+
+                ResetTMPointsDaily();
+            }
 
             OnAccountDataUpdated?.Invoke();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Interface)
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber)
+        private void HandleStateChanged(object obj, EventArgs args)
+        {
+            LoadSave(); // Don't have to LoadSave() on Awake() because it will be called once after FirebaseAuth instance is created.
         }
         #endregion
 

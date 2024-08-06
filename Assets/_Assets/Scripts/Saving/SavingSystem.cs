@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using Firebase.Database;
 
 namespace WatKhaoWong.Saving
 {
@@ -12,141 +9,95 @@ namespace WatKhaoWong.Saving
     /// methods to save and restore a scene.
     ///
     /// This component should be created once and shared between all subsequent scenes.
+    ///
+    /// Firebase Database Note - You can get an instance by calling 'DefaultInstance' . To access a location in the database and read or write data, use 'GetReference()'
     /// </summary>
     public class SavingSystem : MonoBehaviour
     {
+        #region --Fields-- (In Class)
+        private FirebaseDatabase _database;
+        #endregion
+
+
+
+        #region --Methods-- (Built In)
+        private void Awake()
+        {
+            //DatabaseReference root = FirebaseDatabase.DefaultInstance.RootReference;
+            _database = FirebaseDatabase.DefaultInstance;
+        }
+        #endregion
+
+
+
         #region --Methods-- (Custom PUBLIC)
         /// <summary>
-        /// Will load the last scene that was saved and restore the state. This
-        /// must be run as a coroutine.
+        /// Save Value to Firebase Database.
         /// </summary>
-        /// <param name="saveFile">The save file to consult for loading.</param>
-        public IEnumerator LoadLastScene(string saveFile)
+        public void Save(string path, object saveValue)
         {
-            Dictionary<string, object> state = LoadFile(saveFile);
-            int buildIndex = SceneManager.GetActiveScene().buildIndex;
-            if (state.ContainsKey("lastSceneBuildIndex"))
+            Debug.Log($"Called \"Save();\" value of ({saveValue}) with path ({path})");
+
+            _database.GetReference(path).SetValueAsync(saveValue);
+        }
+
+        /// <summary>
+        /// Load Value from Firebase Database.
+        /// </summary>
+        public async Task<DataSnapshot> Load(string path)
+        {
+            Debug.Log($"Called \"Load();\" with path ({path})");
+
+            DataSnapshot data = null;
+            try
             {
-                buildIndex = (int)state["lastSceneBuildIndex"];
+                data = await _database.GetReference(path).GetValueAsync();
+            }
+            catch (Firebase.FirebaseException e)
+            {
+                Debug.LogError($"Load Save from database encountered an Error : ({e.ErrorCode}) {e.Message}");
             }
 
-            yield return SceneManager.LoadSceneAsync(buildIndex); // ***if this method get call in Awake(), this Line Completed after all Awake() but before all Start()***
-            //yield return Transition.Instance.LoadAsynchronously(buildIndex); // ***This one will be called after Awake() & Start() because we aren't doing 'yield return' with SceneManager.LoadSceneAsync so the time is not pause, in Transition.LoadAsynchronously()***
+            if (data != null && data.Exists == false) return null; // Have to check if SaveExists() and return null, so other class can check using 'null', ex-AccountData.cs
 
-            yield return null; // make sure that all others scripts initialize properly first, before load data
-
-            RestoreState(state);
+            return data;
         }
 
         /// <summary>
-        /// Load the state in the given save file.
-        /// Load after all scripts' Awake() and Start() methods. To make sure that all others scripts initialize properly first, before load data
+        /// Delete Value from Firebase Database.
         /// </summary>
-        public IEnumerator LoadAfterAwakeAndStart(string saveFile)
+        public void Delete(string path)
         {
-            yield return null; // make sure that all others scripts initialize properly first, before load data
-            
-            RestoreState(LoadFile(saveFile));
+            Debug.Log($"Called \"Delete();\" with path ({path})");
+
+            _database.GetReference(path).RemoveValueAsync();
         }
 
         /// <summary>
-        /// Save the current scene to the provided save file.
+        /// Check if Save Exists.
+        /// Don't call this as checker for call 'Load()' because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
         /// </summary>
-        public void Save(string saveFile)
+        public async Task<bool> SaveExists(string path)
         {
-            Dictionary<string, object> state = LoadFile(saveFile);
-            CaptureState(state);
-            SaveFile(saveFile, state);
-        }
+            Debug.Log($"Called \"SaveExists(); + Load()\" with path ({path})");
 
-        /// <summary>
-        /// Delete the state in the given save file.
-        /// </summary>
-        public void Delete(string saveFile)
-        {
-            File.Delete(GetPathFromSaveFile(saveFile));
-        }
-
-        /// <summary>
-        /// Load the state in the given save file.
-        /// </summary>
-        public void Load(string saveFile)
-        {
-            RestoreState(LoadFile(saveFile));
-        }
-
-        public bool SaveFileExists(string saveFile)
-        {
-            string path = GetPathFromSaveFile(saveFile);
-            return File.Exists(path);
-        }
-
-        public IEnumerable<string> ListSaves()
-        {
-            foreach (string eachPath in Directory.EnumerateFiles(Application.persistentDataPath))
+            DataSnapshot data = null;
+            try
             {
-                if (Path.GetExtension(eachPath) == ".sav")
-                {
-                    yield return Path.GetFileNameWithoutExtension(eachPath);
-                }
+                data = await _database.GetReference(path).GetValueAsync();
             }
+            catch (Firebase.FirebaseException e)
+            {
+                Debug.LogError($"Load Save from database encountered an Error : ({e.ErrorCode}) {e.Message}");
+            }
+
+            return data.Exists;
         }
         #endregion
 
         
 
         #region --Methods-- (Custom PRIVATE)
-        private Dictionary<string, object> LoadFile(string saveFile)
-        {
-            string path = GetPathFromSaveFile(saveFile);
-            if (!File.Exists(path))
-            {
-                return new Dictionary<string, object>();
-            }
-            using (FileStream stream = File.Open(path, FileMode.Open))
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                return (Dictionary<string, object>)formatter.Deserialize(stream);
-            }
-        }
-
-        private void SaveFile(string saveFile, Dictionary<string, object> state)
-        {
-            string path = GetPathFromSaveFile(saveFile);
-            print("Saving to " + path);
-            using (FileStream stream = File.Open(path, FileMode.Create))
-            {
-                BinaryFormatter formatter = new BinaryFormatter();
-                formatter.Serialize(stream, state);
-            }
-        }
-
-        private void CaptureState(Dictionary<string, object> state)
-        {
-            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
-            {
-                state[saveable.GetUniqueIdentifier()] = saveable.CaptureState();
-            }
-
-            state["lastSceneBuildIndex"] = SceneManager.GetActiveScene().buildIndex;
-        }
-
-        private void RestoreState(Dictionary<string, object> state)
-        {
-            foreach (SaveableEntity saveable in FindObjectsOfType<SaveableEntity>())
-            {
-                string id = saveable.GetUniqueIdentifier();
-                if (state.ContainsKey(id))
-                {
-                    saveable.RestoreState(state[id]);
-                }
-            }
-        }
-
-        private string GetPathFromSaveFile(string saveFile)
-        {
-            return Path.Combine(Application.persistentDataPath, saveFile + ".sav");
-        }
         #endregion
     }
 }

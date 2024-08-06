@@ -6,6 +6,17 @@ using UnityEngine.Events;
 
 namespace WatKhaoWong.Core
 {
+    /// <summary>
+    /// *****
+    /// FirebaseInit.cs script SHOULD Execute before default time under ‘Project Settings/Script Execution Order’. (Ex-Check from WatKhaoWong project)
+    /// Reason is because WITHOUT calling "CheckAndFixDependenciesAsync()" we CAN NOT call "FirebaseCATEGORY.DefaultInstance" on some Android Device.
+    /// Also might encounter ERROR MESSAGE as below.
+    /// *****
+    /// 
+    /// ERROR MESSAGE:
+    /// InvalidOperationException: Don't call Firebase functions before CheckDependencies has finished
+    /// Firebase.FirebaseApp.ThrowIfCheckDependenciesRunning () (at /home/runner/work/firebase-unity-sdk/firebase-unity-sdk/linux_unity/app/swig/Firebase.App_fixed.cs:2571)
+    /// </summary>
     public class FirebaseInit : MonoBehaviour
     {
         #region --Events-- (UnityEvent)
@@ -18,7 +29,6 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Built In)
         private void Awake()
         {
-            // NOTE : WITHOUT calling "CheckAndFixDependenciesAsync()" we CAN NOT call "FirebaseCATEGORY.DefaultInstance"
             FirebaseApp.CheckAndFixDependenciesAsync().ContinueWithOnMainThread(task =>
             {
                 if (task.Exception != null)

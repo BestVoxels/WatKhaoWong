@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using WatKhaoWong.SharePopup;
 using WatKhaoWong.Utils.UI;
 using WatKhaoWong.Identity;
+using WatKhaoWong.SceneManagement;
 
 namespace WatKhaoWong.UI.SharePopup
 {
@@ -44,6 +45,7 @@ namespace WatKhaoWong.UI.SharePopup
         private AccountPopup _playerAccountPopup;
         private AccountData _account;
         private StatusText _statusText;
+        private SavingWrapper _savingWrapper;
         #endregion
 
 
@@ -60,6 +62,7 @@ namespace WatKhaoWong.UI.SharePopup
             _playerAccountPopup = GameObject.FindWithTag("Player").GetComponentInChildren<AccountPopup>();
             _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountData>();
             _statusText = FindAnyObjectByType<StatusText>();
+            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
 
             _closeButton.onClick.AddListener(Close);
             _modifyButton.onClick.AddListener(OnModifyButtonClicked);
@@ -144,9 +147,9 @@ namespace WatKhaoWong.UI.SharePopup
             if (isOn)
             {
                 _account.UpdateProfileIcon(_icon, selectedProfileIcon, MultiplierRatioForDecorator);
+                _savingWrapper.Save(ESaveName.ProfileIconID, selectedProfileIcon.ItemID);
 
                 _playerAccountPopup.OnAccountProfileChangedByClick();
-
             }
         }
 
