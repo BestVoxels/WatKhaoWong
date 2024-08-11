@@ -30,7 +30,7 @@ namespace WatKhaoWong.Identity
             {
                 _role = value; // Role MUST be changed before calls "OnRoleChanged?.Invoke()" so UI can update properly.
 
-                _savingWrapper.Save(ESaveName.Role, (int)_role);
+                _savingWrapper.Save(ESaveName.Role, _role.ToString());
                 print("***Role Changed***");
 
                 OnRoleChanged?.Invoke();
@@ -88,7 +88,7 @@ namespace WatKhaoWong.Identity
             var data = await _savingWrapper.Load(ESaveName.Role);
 
             if (data != null)
-                Role = (EAccountRole)int.Parse(data.Value.ToString());
+                Role = (EAccountRole)Enum.Parse(typeof(EAccountRole), data.Value.ToString());
         }
 
         private void SetRoleToGuestIfNoAuthen()
