@@ -702,6 +702,7 @@ GameObject:
   - component: {fileID: 61260733965321111}
   - component: {fileID: 3977480043003350093}
   - component: {fileID: 2257901876237492976}
+  - component: {fileID: 100224748807216795}
   m_Layer: 5
   m_Name: Row
   m_TagString: Untagged
@@ -905,6 +906,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates: []
+--- !u!114 &100224748807216795
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4012190262487524399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6a49d4a66264d1291e036643486f24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rowType: 1
+  _rowEventTrigger: {fileID: 2257901876237492976}
+  _firstRankGameObject: {fileID: 7809488958393841516}
+  _secondRankGameObject: {fileID: 6596264244995447684}
+  _thirdRankGameObject: {fileID: 5955911054047085035}
+  _rankText: {fileID: 4525227211659026187}
+  _icon:
+    backgroundImage: {fileID: 4274170420323964766}
+    iconImage: {fileID: 5742330942115522873}
+    aspectRatioFitter: {fileID: 8096614720847832893}
+    iconRect: {fileID: 2525576857247227918}
+    decoratorSpawnParent: {fileID: 2823253180261894917}
+  _userNameText: {fileID: 6140583746365802886}
+  _levelText: {fileID: 2387273147175872806}
+  _scoreText: {fileID: 9161682083440191050}
 --- !u!1 &4332100799956300420
 GameObject:
   m_ObjectHideFlags: 0
