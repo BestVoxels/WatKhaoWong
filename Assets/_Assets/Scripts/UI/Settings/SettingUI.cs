@@ -52,7 +52,7 @@ namespace WatKhaoWong.UI.Settings
             _sfxSlider.onValueChanged.AddListener(SfxSliderValueChanged);
             _musicSlider.onValueChanged.AddListener(MusicSliderValueChanged);
 
-            UIRefresher.OnSettingRefreshed += RefreshUI; // Can't use OnDisable() to unsubscribe Since the attached GameObject will be closed / also can't use OnEnable() cuz without OnDisable() it will keep adding more and more
+            UIRefresher.OnSettingRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
 
         private void Start()

@@ -67,7 +67,7 @@ namespace WatKhaoWong.UI.Prays
             _playSoundButton.onClick.AddListener(PlaySound);
             _challengeButton.onClick.AddListener(StartChallenge);
 
-            UIRefresher.OnPrayRefreshed += RefreshUI; // Can't use OnDisable() to unsubscribe Since the attached GameObject will be closed / also can't use OnEnable() cuz without OnDisable() it will keep adding more and more
+            UIRefresher.OnPrayRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
 
         private void Start()
