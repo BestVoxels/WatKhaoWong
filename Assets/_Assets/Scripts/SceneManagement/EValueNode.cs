@@ -1,9 +1,9 @@
 namespace WatKhaoWong.SceneManagement
 {
     /// <summary>
-    /// ***** IMPORTANT!!! Add new 'ESaveName' also Add new 'Switch() Case' at 'SavingWrapper.cs' *****
+    /// ***** IMPORTANT!!! Add new 'ENode' also Add new 'Switch() Case' at 'SavingWrapper.cs' *****
     /// </summary>
-    public enum ESaveName
+    public enum EValueNode
     {
         FirstName,
         LastName,

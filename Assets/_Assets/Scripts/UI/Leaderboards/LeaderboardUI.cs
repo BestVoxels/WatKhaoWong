@@ -55,6 +55,26 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
 
+        #region --Methods-- (Custom PRIVATE) ~Row~
+        private async void BuildRowList()
+        {
+            await foreach (var each in _leaderboard.GetRows())
+            {
+                RowUI createdPrefab = Instantiate(_rowPrefab, _spawnParent);
+                print(each.Key.ToString());
+                createdPrefab.Setup(each.Child("Stats/FirstName").Value.ToString(), each.Child("Points/TotalTMPoint").Value.ToString());
+            }
+        }
+
+        private void ClearRowList()
+        {
+            foreach (Transform eachChild in _spawnParent)
+                Destroy(eachChild.gameObject);
+        }
+        #endregion
+
+
+
         #region --Methods-- (Custom PRIVATE) ~FilterButtons~
         private void SetupFilterButtonsUI()
         {
@@ -79,6 +99,11 @@ namespace WatKhaoWong.UI.Leaderboards
         private void RefreshUI()
         {
             UpdateFilterButtonsUI();
+
+            // Row
+            ClearRowList();
+
+            BuildRowList();
         }
         #endregion
     }

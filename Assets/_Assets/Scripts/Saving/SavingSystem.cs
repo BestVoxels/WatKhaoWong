@@ -37,7 +37,7 @@ namespace WatKhaoWong.Saving
         public void Save(string path, object saveValue)
         {
             Debug.Log($"Called \"Save();\" value of ({saveValue}) with path ({path})");
-
+            
             _database.GetReference(path).SetValueAsync(saveValue);
         }
 
@@ -52,6 +52,29 @@ namespace WatKhaoWong.Saving
             try
             {
                 data = await _database.GetReference(path).GetValueAsync();
+            }
+            catch (Firebase.FirebaseException e)
+            {
+                Debug.LogError($"Load Save from database encountered an Error : ({e.ErrorCode}) {e.Message}");
+            }
+
+            if (data != null && data.Exists == false) return null; // Have to check if SaveExists() and return null, so other class can check using 'null', ex-AccountData.cs
+
+            return data;
+        }
+
+        /// <summary>
+        /// Load Bunches of Values from Firebase Database.
+        /// Sort by Child Value, for more details check 'OrderByChild vs OrderByKey vs OrderByValue - ChatGPT link' under 'C# DOC' NOTE
+        /// </summary>
+        public async Task<DataSnapshot> LoadAndSortByChildValue(string path, string childNode, int limitNumber)
+        {
+            Debug.Log($"Called \"LoadAndSortByChildValue();\" with path ({path}) and sort by child value of ({childNode})");
+
+            DataSnapshot data = null;
+            try
+            {
+                data = await _database.GetReference(path).OrderByChild(childNode).LimitToLast(limitNumber).GetValueAsync();
             }
             catch (Firebase.FirebaseException e)
             {

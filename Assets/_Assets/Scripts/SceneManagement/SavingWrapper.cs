@@ -1,4 +1,6 @@
 using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using WatKhaoWong.Saving;
 using WatKhaoWong.Utils;
@@ -55,24 +57,24 @@ namespace WatKhaoWong.SceneManagement
         //{
         //    if (Input.GetKeyDown(KeyCode.S))
         //    {
-        //        Save(ESaveName.Level, 2);
+        //        Save(EValueNode.Level, 2);
         //    }
 
         //    if (Input.GetKeyDown(KeyCode.L))
         //    {
-        //        DataSnapshot result = await Load(ESaveName.Level);
+        //        DataSnapshot result = await Load(EValueNode.Level);
         //        if (result == null) return;
         //        print($"Key : {result.Key} / Value : {result.Value}");
         //    }
 
         //    if (Input.GetKeyDown(KeyCode.D))
         //    {
-        //        Delete(ESaveName.Level);
+        //        Delete(EValueNode.Level);
         //    }
 
         //    if (Input.GetKeyDown(KeyCode.E))
         //    {
-        //        bool result = await SaveExists(ESaveName.Level);
+        //        bool result = await SaveExists(EValueNode.Level);
         //        print($"Is Exist Result : {result}");
         //    }
         //}
@@ -87,9 +89,9 @@ namespace WatKhaoWong.SceneManagement
         /// 2. Can't create Path if Guest User or (Not Authenticated) save to database
         /// MAKE SURE you know the sequence of the code that use this method.
         /// </summary>
-        public void ForceSave(ESaveName saveName, object saveValue)
+        public void ForceSave(EValueNode valueNode, object saveValue)
         {
-            _savingSystem.value.Save(GetCurrentUserPath(saveName), saveValue);
+            _savingSystem.value.Save(GetCurrentUserPath(valueNode), saveValue);
         }
 
         /// <summary>
@@ -98,37 +100,56 @@ namespace WatKhaoWong.SceneManagement
         /// 1. It won't Save on Start()
         /// 2. It won't Save if User is not Authenticated
         /// </summary>
-        public void Save(ESaveName saveName, object saveValue)
+        public void Save(EValueNode valueNode, object saveValue)
         {
             if (!IsAuthenticated()) return;
             if (IsSaveProtectionOnStartActive()) return; // Avoid Override Save file with Default Values of UI or Player Default State.
 
-            _savingSystem.value.Save(GetCurrentUserPath(saveName), saveValue);
+            _savingSystem.value.Save(GetCurrentUserPath(valueNode), saveValue);
         }
 
-        public async Task<DataSnapshot> Load(ESaveName saveName)
+        public async Task<DataSnapshot> Load(EValueNode valueNode)
         {
             if (!IsAuthenticated()) return null;
             // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
 
-            return await _savingSystem.value.Load(GetCurrentUserPath(saveName));
+            return await _savingSystem.value.Load(GetCurrentUserPath(valueNode));
         }
 
-        public void Delete(ESaveName saveName)
+        public async IAsyncEnumerable<DataSnapshot> LoadAndSortByChildValue(EValueNode valueNode, int limitNumber)
+        {
+            if (!IsAuthenticated()) yield break;
+            // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
+
+            DataSnapshot dataSnapshot = await _savingSystem.value.LoadAndSortByChildValue(EParentNode.Users.ToString(), GetValueNodePath(valueNode), limitNumber);
+
+            if (dataSnapshot == null)
+            {
+                Debug.LogWarning("Can't Load Child Value, maybe path is Wrong. 'dataSnapshot' is equals to 'null'.");
+                yield break;
+            }
+
+            foreach (DataSnapshot each in dataSnapshot.Children.Reverse()) // Call 'Reverse()' to makes it Descending
+            {
+                yield return each;
+            }
+        }
+
+        public void Delete(EValueNode valueNode)
         {
             if (!IsAuthenticated()) return;
 
-            _savingSystem.value.Delete(GetCurrentUserPath(saveName));
+            _savingSystem.value.Delete(GetCurrentUserPath(valueNode));
         }
 
         /// <summary>
         /// Don't call this as checker for call 'Load()' because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
         /// </summary>
-        public async Task<bool> SaveExists(ESaveName saveName)
+        public async Task<bool> SaveExists(EValueNode valueNode)
         {
             if (!IsAuthenticated()) return false;
 
-            return await _savingSystem.value.SaveExists(GetCurrentUserPath(saveName));
+            return await _savingSystem.value.SaveExists(GetCurrentUserPath(valueNode));
         }
         #endregion
 
@@ -143,61 +164,69 @@ namespace WatKhaoWong.SceneManagement
 
 
         #region --Methods-- (Custom PRIVATE) ~Path Builder as JSON Tree Structure Example Above~
-        private string GetCurrentUserPath(ESaveName saveName)
+        private string GetCurrentUserPath(EValueNode valueNode)
         {
-            EPath? path = GetEPath(saveName); // this will assigned with first element which is 'EPath.Progression'
+            string path = GetValueNodePath(valueNode);
 
-            if (path == null) return string.Empty;
-            if (CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
+            if (path == null || CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
 
-            return Path.Combine("Users", CurrentUserID, path.ToString(), saveName.ToString());
+            return Path.Combine("Users", CurrentUserID, path);
         }
 
         //// EXAMPLE of getting Other User Path
-        //private string GetOtherUserPath(string otherUserID, ESaveName saveName)
+        //private string GetOtherUserPath(string otherUserID, EValueNode valueNode)
         //{
-        //    EPath? path = GetEPath(saveName); // this will assigned with first element which is 'EPath.Progression'
+        //    string path = GetValueNodePath(valueNode);
 
-        //    if (path == null) return string.Empty;
+        //    if (path == null || CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
 
-        //    return Path.Combine("Users", otherUserID, path.ToString(), saveName.ToString());
+        //    return Path.Combine("Users", otherUserID, path);
         //}
 
-        private EPath? GetEPath(ESaveName saveName)
+        private string GetValueNodePath(EValueNode valueNode)
         {
-            EPath? path = null;
+            EParentNode? parentNode = GetParentNode(valueNode);
 
-            switch (saveName)
+            if (parentNode == null) return null;
+
+            return Path.Combine(parentNode.ToString(), valueNode.ToString());
+        }
+
+        private EParentNode? GetParentNode(EValueNode valueNode)
+        {
+            EParentNode? parentNode = null;
+
+            switch (valueNode)
             {
-                case ESaveName.FirstName:
-                case ESaveName.LastName:
-                case ESaveName.MemberSince:
-                case ESaveName.ProfileIconID:
-                case ESaveName.Role:
-                    path = EPath.Stats;
+                case EValueNode.FirstName:
+                case EValueNode.LastName:
+                case EValueNode.MemberSince:
+                case EValueNode.ProfileIconID:
+                case EValueNode.Role:
+                    parentNode = EParentNode.Stats;
                     break;
 
-                case ESaveName.Level:
-                case ESaveName.XP:
-                    path = EPath.Progression;
+                case EValueNode.Level:
+                case EValueNode.XP:
+                    parentNode = EParentNode.Progression;
                     break;
 
-                case ESaveName.TodayTMPoint:
-                case ESaveName.TotalTMPoint:
-                case ESaveName.ChallengeWon:
-                case ESaveName.FirstUploadTimeOfDay:
-                    path = EPath.Points;
+                case EValueNode.TodayTMPoint:
+                case EValueNode.TotalTMPoint:
+                case EValueNode.ChallengeWon:
+                case EValueNode.FirstUploadTimeOfDay:
+                    parentNode = EParentNode.Points;
                     break;
 
                 default:
-                    path = null;
+                    parentNode = null;
                     break;
             }
 
-            if (path == null)
-                Debug.LogError("Can't build Path because 'EPath' value is null. (Return Empty Path as Empty String)");
+            if (parentNode == null)
+                Debug.LogError("Can't build Path because 'EParentNode' value is null. (Return Empty Path as Empty String)");
 
-            return path;
+            return parentNode;
         }
         #endregion
     }

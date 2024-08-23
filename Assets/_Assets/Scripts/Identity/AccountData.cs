@@ -121,7 +121,7 @@ namespace WatKhaoWong.Identity
         {
             _firstName = input;
 
-            _savingWrapper.Save(ESaveName.FirstName, _firstName);
+            _savingWrapper.Save(EValueNode.FirstName, _firstName);
             OnAccountDataUpdated?.Invoke();
         }
 
@@ -129,7 +129,7 @@ namespace WatKhaoWong.Identity
         {
             _lastName = input;
 
-            _savingWrapper.Save(ESaveName.LastName, _lastName);
+            _savingWrapper.Save(EValueNode.LastName, _lastName);
             OnAccountDataUpdated?.Invoke();
         }
 
@@ -137,7 +137,7 @@ namespace WatKhaoWong.Identity
         {
             _memberSince = input;
 
-            _savingWrapper.Save(ESaveName.MemberSince, _memberSince.ToString());
+            _savingWrapper.Save(EValueNode.MemberSince, _memberSince.ToString());
             OnAccountDataUpdated?.Invoke();
         }
 
@@ -145,7 +145,7 @@ namespace WatKhaoWong.Identity
         {
             _profileIcon = input;
 
-            _savingWrapper.Save(ESaveName.ProfileIconID, _profileIcon.ItemID);
+            _savingWrapper.Save(EValueNode.ProfileIconID, _profileIcon.ItemID);
             OnAccountDataUpdated?.Invoke();
         }
 
@@ -153,7 +153,7 @@ namespace WatKhaoWong.Identity
         {
             _level = input;
 
-            _savingWrapper.Save(ESaveName.Level, _level);
+            _savingWrapper.Save(EValueNode.Level, _level);
             OnAccountDataUpdated?.Invoke();
         }
 
@@ -161,7 +161,7 @@ namespace WatKhaoWong.Identity
         {
             _totalTMPoints += input;
 
-            _savingWrapper.Save(ESaveName.TotalTMPoint, _totalTMPoints);
+            _savingWrapper.Save(EValueNode.TotalTMPoint, _totalTMPoints);
             OnAccountDataUpdated?.Invoke();
         }
 
@@ -174,11 +174,11 @@ namespace WatKhaoWong.Identity
             if (_todayTMPoints == 0)
             {
                 _firstUploadTimeOfDay = DateTime.Now;
-                _savingWrapper.Save(ESaveName.FirstUploadTimeOfDay, DateTime.Now.ToString());
+                _savingWrapper.Save(EValueNode.FirstUploadTimeOfDay, DateTime.Now.ToString());
             }
 
             _todayTMPoints += input;
-            _savingWrapper.Save(ESaveName.TodayTMPoint, _todayTMPoints);
+            _savingWrapper.Save(EValueNode.TodayTMPoint, _todayTMPoints);
 
             OnAccountDataUpdated?.Invoke();
         }
@@ -187,7 +187,7 @@ namespace WatKhaoWong.Identity
         {
             _totalWonTMChallenge += input;
 
-            _savingWrapper.Save(ESaveName.ChallengeWon, _totalWonTMChallenge);
+            _savingWrapper.Save(EValueNode.ChallengeWon, _totalWonTMChallenge);
             OnAccountDataUpdated?.Invoke();
         }
         #endregion
@@ -241,52 +241,52 @@ namespace WatKhaoWong.Identity
             {
                 _todayTMPoints = 0;
 
-                _savingWrapper.ForceSave(ESaveName.TodayTMPoint, 0);
+                _savingWrapper.ForceSave(EValueNode.TodayTMPoint, 0);
                 OnAccountDataUpdated?.Invoke();
             }
         }
 
         private async void LoadSave()
         {
-            var data = await _savingWrapper.Load(ESaveName.FirstName);
+            var data = await _savingWrapper.Load(EValueNode.FirstName);
             if (data != null)
                 _firstName = data.Value.ToString();
 
-            data = await _savingWrapper.Load(ESaveName.LastName);
+            data = await _savingWrapper.Load(EValueNode.LastName);
             if (data != null)
                 _lastName = data.Value.ToString();
 
-            data = await _savingWrapper.Load(ESaveName.MemberSince);
+            data = await _savingWrapper.Load(EValueNode.MemberSince);
             if (data != null)
             {
                 if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
                 _memberSince = result;
             }
 
-            data = await _savingWrapper.Load(ESaveName.ProfileIconID);
+            data = await _savingWrapper.Load(EValueNode.ProfileIconID);
             if (data != null)
             {
                 string id = data.Value.ToString();
                 _profileIcon = BaseItem.GetFromID(id) as ProfileIcon;
             }
 
-            data = await _savingWrapper.Load(ESaveName.Level);
+            data = await _savingWrapper.Load(EValueNode.Level);
             if (data != null)
                 _level = int.Parse(data.Value.ToString());
 
-            data = await _savingWrapper.Load(ESaveName.TotalTMPoint);
+            data = await _savingWrapper.Load(EValueNode.TotalTMPoint);
             if (data != null)
                 _totalTMPoints = int.Parse(data.Value.ToString());
 
-            data = await _savingWrapper.Load(ESaveName.TodayTMPoint);
+            data = await _savingWrapper.Load(EValueNode.TodayTMPoint);
             if (data != null)
                 _todayTMPoints = int.Parse(data.Value.ToString());
 
-            data = await _savingWrapper.Load(ESaveName.ChallengeWon);
+            data = await _savingWrapper.Load(EValueNode.ChallengeWon);
             if (data != null)
                 _totalWonTMChallenge = int.Parse(data.Value.ToString());
 
-            data = await _savingWrapper.Load(ESaveName.FirstUploadTimeOfDay);
+            data = await _savingWrapper.Load(EValueNode.FirstUploadTimeOfDay);
             if (data != null)
             {
                 if (DateTime.TryParse(data.Value.ToString(), out DateTime result))

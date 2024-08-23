@@ -70,11 +70,15 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Methods-- (Custom PUBLIC)
-        public void Setup(AccountData account, ushort rankNumber)
+        public void Setup(string name, string score) // AccountData account, ushort rankNumber
         {
-            UpdateRankUI(rankNumber);
+            // TODO temp Setup()
+            _userNameText.text = name;
+            _scoreText.text = score;
 
-            RefreshUI(account);
+            //UpdateRankUI(rankNumber);
+
+            //RefreshUI(account);
         }
         #endregion
 
@@ -83,6 +87,12 @@ namespace WatKhaoWong.UI.Leaderboards
         #region --Methods-- (Custom PRIVATE)
         private void UpdateRankUI(ushort rankNumber)
         {
+            if (rankNumber == default)
+            {
+                Debug.LogError("CUSTOM Error : RowUI.cs is created BUT havn't Setup() yet! Must call Setup() method first!");
+                return;
+            }
+
             // CloseAllRankUI
             _firstRankGameObject.SetActive(false);
             _secondRankGameObject.SetActive(false);
@@ -111,6 +121,12 @@ namespace WatKhaoWong.UI.Leaderboards
 
         private void RefreshUI(AccountData account)
         {
+            if (account == default)
+            {
+                Debug.LogError("CUSTOM Error : RowUI.cs is created BUT havn't Setup() yet! Must call Setup() method first!");
+                return;
+            }
+
             account.UpdateProfileIcon(_icon, account.GetProfileIcon(), MultiplierRatioForDecorator);
 
             _userNameText.text = account.GetUserNameText();

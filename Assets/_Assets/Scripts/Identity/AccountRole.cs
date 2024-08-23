@@ -30,7 +30,7 @@ namespace WatKhaoWong.Identity
             {
                 _role = value; // Role MUST be changed before calls "OnRoleChanged?.Invoke()" so UI can update properly.
 
-                _savingWrapper.Save(ESaveName.Role, _role.ToString());
+                _savingWrapper.Save(EValueNode.Role, _role.ToString());
                 print("***Role Changed***");
 
                 OnRoleChanged?.Invoke();
@@ -85,7 +85,7 @@ namespace WatKhaoWong.Identity
 
         private async void LoadSave()
         {
-            var data = await _savingWrapper.Load(ESaveName.Role);
+            var data = await _savingWrapper.Load(EValueNode.Role);
 
             if (data != null)
                 Role = (EAccountRole)Enum.Parse(typeof(EAccountRole), data.Value.ToString());
