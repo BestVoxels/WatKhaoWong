@@ -13,6 +13,8 @@ namespace WatKhaoWong.Identity
 
         public ProfileIconItem GetProfileIcon();
 
+        public EUserRole GetRole();
+
         public string GetLevelText();
 
         public string GetTotalTMPointsText();

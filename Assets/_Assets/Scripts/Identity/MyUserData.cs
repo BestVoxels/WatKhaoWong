@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using WatKhaoWong.CoreItems;
 using WatKhaoWong.SceneManagement;
+using WatKhaoWong.Utils.Core;
 using Firebase.Auth;
 
 namespace WatKhaoWong.Identity
@@ -92,6 +93,15 @@ namespace WatKhaoWong.Identity
             OnMyUserDataUpdated?.Invoke();
         }
 
+        public void SetRole(EUserRole role)
+        {
+            print("***Role Changed***");
+            _data.Role = role;
+
+            _savingWrapper.Save(EValueNode.Role, _data.Role.ToString());
+            OnMyUserDataUpdated?.Invoke();
+        }
+
         public void SetLevelText(int input)
         {
             _data.Level = input;
@@ -149,6 +159,12 @@ namespace WatKhaoWong.Identity
             }
         }
 
+        private void SetRoleToGuestIfNoAuthen()
+        {
+            if (!FirebaseUtils.IsAuthenticated())
+                _data.Role = EUserRole.Guest;
+        }
+
         private async void LoadSave()
         {
             var data = await _savingWrapper.Load(EValueNode.FirstName);
@@ -171,6 +187,13 @@ namespace WatKhaoWong.Identity
             {
                 string id = data.Value.ToString();
                 _data.ProfileIcon = BaseItem.GetFromID(id) as ProfileIconItem;
+            }
+
+            data = await _savingWrapper.Load(EValueNode.Role);
+            if (data != null)
+            {
+                string roleString = data.Value.ToString();
+                _data.Role = (EUserRole)Enum.Parse(typeof(EUserRole), roleString);
             }
 
             data = await _savingWrapper.Load(EValueNode.Level);
@@ -233,6 +256,8 @@ namespace WatKhaoWong.Identity
             return _data.GetProfileIcon();
         }
 
+        public EUserRole GetRole() => _data.GetRole();
+
         public string GetLevelText()
         {
             if (_data.Level == 0)
@@ -260,9 +285,14 @@ namespace WatKhaoWong.Identity
 
 
         #region --Methods-- (Subscriber)
+        /// <summary>
+        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake().
+        /// </summary>
         private void HandleStateChanged(object obj, EventArgs args)
         {
-            LoadSave(); // Don't have to LoadSave() on Awake() because it will be called once after FirebaseAuth instance is created.
+            LoadSave(); // So Don't have to call on Awake()
+
+            SetRoleToGuestIfNoAuthen(); // So Don't have to call on Awake()
         }
         #endregion
     }

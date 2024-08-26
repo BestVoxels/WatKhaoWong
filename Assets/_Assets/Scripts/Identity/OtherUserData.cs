@@ -33,6 +33,10 @@ namespace WatKhaoWong.Identity
             string id = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.ProfileIconID)).Value.ToString();
             _data.ProfileIcon = BaseItem.GetFromID(id) as ProfileIconItem;
 
+            string roleString = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.Role)).Value.ToString();
+            if (roleString != null)
+                _data.Role = (EUserRole)Enum.Parse(typeof(EUserRole), roleString);
+
             var data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.Level)).Value;
             if (data != null)
                 _data.Level = int.Parse(data.ToString());
@@ -59,6 +63,8 @@ namespace WatKhaoWong.Identity
         public string GetMemberSinceText() => _data.GetMemberSinceText();
 
         public ProfileIconItem GetProfileIcon() => _data.GetProfileIcon();
+
+        public EUserRole GetRole() => _data.GetRole();
 
         public string GetLevelText() => _data.GetLevelText();
 

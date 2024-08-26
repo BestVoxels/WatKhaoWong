@@ -5,7 +5,6 @@ using UnityEngine.Events;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Identity;
 using WatKhaoWong.Utils.UI;
-using WatKhaoWong.SceneManagement;
 
 namespace WatKhaoWong.SharePopup
 {
@@ -77,10 +76,8 @@ namespace WatKhaoWong.SharePopup
         private bool _isRunningOnBackground = false;
 
         private VerifyPopup _verifyPopup;
-        private AccountRole _accountRole;
         private MyUserData _myUserData;
         private StatusText _statusText;
-        private SavingWrapper _savingWrapper;
         #endregion
 
 
@@ -91,10 +88,8 @@ namespace WatKhaoWong.SharePopup
             GameObject player = GameObject.FindWithTag("Player");
 
             _verifyPopup = player.GetComponentInChildren<VerifyPopup>();
-            _accountRole = player.GetComponentInChildren<AccountRole>();
             _myUserData = player.GetComponentInChildren<MyUserData>();
             _statusText = FindAnyObjectByType<StatusText>();
-            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
         }
         #endregion
 
@@ -172,7 +167,7 @@ namespace WatKhaoWong.SharePopup
             _statusText.Show(_statusSucceeded, _statusSucceededColor);
 
             _onSignupSucceeded?.Invoke(result.User);
-            _accountRole.Role = EUserRole.Member;
+            _myUserData.SetRole(EUserRole.Member);
 
             _isRunningOnBackground = false;
         }

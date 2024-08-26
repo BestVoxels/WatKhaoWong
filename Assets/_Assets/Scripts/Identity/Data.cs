@@ -30,6 +30,7 @@ namespace WatKhaoWong.Identity
         internal string LastName { get; set; }
         internal DateTime? MemberSince { get; set; } = null;
         internal ProfileIconItem ProfileIcon { get; set; } = null;
+        internal EUserRole Role { get; set; } = EUserRole.Guest;
         internal int Level { get; set; } = 1;
         internal int TotalTMPoints { get; set; }
         internal int TodayTMPoints { get; set; }
@@ -44,7 +45,7 @@ namespace WatKhaoWong.Identity
         {
         }
 
-        internal Data(string firstName, string lastName, DateTime? memberSince, ProfileIconItem profileIcon, int level, int totalTMPoints, int todayTMPoints, int totalWonTMChallenge, DateTime firstUploadTimeOfDay)
+        internal Data(string firstName, string lastName, DateTime? memberSince, ProfileIconItem profileIcon, EUserRole role, int level, int totalTMPoints, int todayTMPoints, int totalWonTMChallenge, DateTime firstUploadTimeOfDay)
         {
             _nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             _nfi.NumberGroupSeparator = " ";
@@ -53,6 +54,7 @@ namespace WatKhaoWong.Identity
             LastName = lastName;
             MemberSince = memberSince;
             ProfileIcon = profileIcon;
+            Role = role;
             Level = level;
             TotalTMPoints = totalTMPoints;
             TodayTMPoints = todayTMPoints;
@@ -69,6 +71,8 @@ namespace WatKhaoWong.Identity
         internal string GetMemberSinceText() => $"{MemberSince:d/M/yyyy}";
 
         internal ProfileIconItem GetProfileIcon() => ProfileIcon;
+
+        internal EUserRole GetRole() => Role;
 
         internal string GetLevelText() => $"LV. {Level.ToString("#,0", _nfi)}";
 

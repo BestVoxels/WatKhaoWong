@@ -16,7 +16,7 @@ namespace WatKhaoWong.Core
 
 
         #region --Fields-- (In Class)
-        private AccountRole _account;
+        private IUserData _userData;
         #endregion
 
 
@@ -24,7 +24,7 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountRole>();
+            _userData = GameObject.FindWithTag("Player").GetComponentInChildren<IUserData>();
         }
 
         private void OnEnable()
@@ -53,7 +53,7 @@ namespace WatKhaoWong.Core
         {
             foreach (UIItem each in _showUIByRoles)
             {
-                if (each.targetRoles.Contains(_account.Role))
+                if (each.targetRoles.Contains(_userData.GetRole()))
                     each.uI.SetActive(true);
             }
         }
@@ -62,7 +62,7 @@ namespace WatKhaoWong.Core
         {
             foreach (UIItem each in _hideUIByRoles)
             {
-                if (each.targetRoles.Contains(_account.Role))
+                if (each.targetRoles.Contains(_userData.GetRole()))
                     each.uI.SetActive(false);
             }
         }

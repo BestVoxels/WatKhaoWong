@@ -75,7 +75,7 @@ namespace WatKhaoWong.SharePopup
         private string _typedCode;
 
         private StatusText _statusText;
-        private AccountRole _account;
+        private MyUserData _myUserData;
         #endregion
 
 
@@ -96,7 +96,7 @@ namespace WatKhaoWong.SharePopup
         private void Awake()
         {
             _statusText = FindAnyObjectByType<StatusText>();
-            _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountRole>();
+            _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
         }
         #endregion
 
@@ -274,7 +274,7 @@ namespace WatKhaoWong.SharePopup
 
             _onCallerSucceeded?.Invoke(result.User); // Pass back to the caller
             _onVerifySucceeded?.Invoke(result.User); // Call To Close Verfication Popup UI
-            _account.Role = EUserRole.Member;
+            _myUserData.SetRole(EUserRole.Member);
 
             _isRunningOnBackground = false;
         }

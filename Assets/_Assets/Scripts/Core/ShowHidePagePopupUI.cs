@@ -34,7 +34,7 @@ namespace WatKhaoWong.Core
         private Coroutine _previousCoroutine;
         private static byte s_popupDepth = 0;
 
-        private AccountRole _account;
+        private IUserData _userData;
         #endregion
 
 
@@ -42,7 +42,7 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountRole>();
+            _userData = GameObject.FindWithTag("Player").GetComponentInChildren<IUserData>();
         }
 
         private void Start()
@@ -144,13 +144,13 @@ namespace WatKhaoWong.Core
 
         public void OpenPopupIfGuest(Animator popupAnimator)
         {
-            if (_account.Role == EUserRole.Guest)
+            if (_userData.GetRole() == EUserRole.Guest)
                 OpenPopup(popupAnimator);
         }
 
         public void OpenPopupIfNotGuest(Animator popupAnimator)
         {
-            if (_account.Role != EUserRole.Guest)
+            if (_userData.GetRole() != EUserRole.Guest)
                 OpenPopup(popupAnimator);
         }
         #endregion

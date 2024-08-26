@@ -32,7 +32,6 @@ namespace WatKhaoWong.UI
 
         #region --Fields-- (In Class)
         private MyUserData _myUserData;
-        private AccountRole _accountRole;
         private UndoPopup _undoPopup;
         private NotificationPopup _notificationPopup;
         private AccountPopup _accountPopup;
@@ -46,7 +45,6 @@ namespace WatKhaoWong.UI
             GameObject player = GameObject.FindWithTag("Player");
 
             _myUserData = player.GetComponentInChildren<MyUserData>();
-            _accountRole = player.GetComponentInChildren<AccountRole>();
             _undoPopup = player.GetComponentInChildren<UndoPopup>();
             _notificationPopup = player.GetComponentInChildren<NotificationPopup>();
             _accountPopup = player.GetComponentInChildren<AccountPopup>();
@@ -56,7 +54,6 @@ namespace WatKhaoWong.UI
         {
             // IDENTITY SYSTEM
             _myUserData.OnMyUserDataUpdated += RefreshAllUI; // Just Refresh All cuz even LeaderboardUI still has to (MeRowUI will show correct result when MyUserData is loaded)
-            _accountRole.OnRoleChanged += RefreshAllUI;
 
             // HOME SYSTEM
             // TODO lets see what to subscribe to for HOME SYSTEM
