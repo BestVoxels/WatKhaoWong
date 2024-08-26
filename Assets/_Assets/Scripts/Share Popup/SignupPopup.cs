@@ -78,7 +78,7 @@ namespace WatKhaoWong.SharePopup
 
         private VerifyPopup _verifyPopup;
         private AccountRole _accountRole;
-        private AccountData _accountData;
+        private MyUserData _myUserData;
         private StatusText _statusText;
         private SavingWrapper _savingWrapper;
         #endregion
@@ -92,7 +92,7 @@ namespace WatKhaoWong.SharePopup
 
             _verifyPopup = player.GetComponentInChildren<VerifyPopup>();
             _accountRole = player.GetComponentInChildren<AccountRole>();
-            _accountData = player.GetComponentInChildren<AccountData>();
+            _myUserData = player.GetComponentInChildren<MyUserData>();
             _statusText = FindAnyObjectByType<StatusText>();
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
         }
@@ -122,9 +122,9 @@ namespace WatKhaoWong.SharePopup
             // Can't just call _savingWrapper.SaveWithoutAuth() without Subscribe to _onSignupSucceeded BECAUSE have to wait for 'CurrentUser.UserId' otherwise can't get Path to save.
             _onSignupSucceeded.AddListener((FirebaseUser user) =>
             {
-                _accountData.SetFirstName(firstName);
-                _accountData.SetLastName(lastName);
-                _accountData.SetMemberSinceText(DateTime.Now);
+                _myUserData.SetFirstName(firstName);
+                _myUserData.SetLastName(lastName);
+                _myUserData.SetMemberSinceText(DateTime.Now);
             });
 
             if (_isRunningOnBackground) return;

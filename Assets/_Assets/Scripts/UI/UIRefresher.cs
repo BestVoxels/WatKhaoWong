@@ -24,19 +24,17 @@ namespace WatKhaoWong.UI
         public static event Action OnSettingRefreshed;
         public static event Action OnHistoryRefreshed;
         public static event Action OnPopupRefreshed;
+        public static event Action OnLeaderboardRefreshed;
         public static event Action OnUIShowedHidByRoles;
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        private AccountData _accountData;
+        private MyUserData _myUserData;
         private AccountRole _accountRole;
-        // TODO lets see what to subscribe to for HOME SYSTEM
         private UndoPopup _undoPopup;
         private NotificationPopup _notificationPopup;
-        // TODO lets see what to subscribe to for SETTING SYSTEM -> probably last one is _languagePopup
-        // TODO lets see what to subscribe to for HISTORY SYSTEM
         private AccountPopup _accountPopup;
         #endregion
 
@@ -47,7 +45,7 @@ namespace WatKhaoWong.UI
         {
             GameObject player = GameObject.FindWithTag("Player");
 
-            _accountData = player.GetComponentInChildren<AccountData>();
+            _myUserData = player.GetComponentInChildren<MyUserData>();
             _accountRole = player.GetComponentInChildren<AccountRole>();
             _undoPopup = player.GetComponentInChildren<UndoPopup>();
             _notificationPopup = player.GetComponentInChildren<NotificationPopup>();
@@ -56,8 +54,8 @@ namespace WatKhaoWong.UI
 
         private void OnEnable()
         {
-            // ACCOUNT ROLE SYSTEM
-            _accountData.OnAccountDataUpdated += RefreshAllUI;
+            // IDENTITY SYSTEM
+            _myUserData.OnMyUserDataUpdated += RefreshAllUI; // Just Refresh All cuz even LeaderboardUI still has to (MeRowUI will show correct result when MyUserData is loaded)
             _accountRole.OnRoleChanged += RefreshAllUI;
 
             // HOME SYSTEM
@@ -95,6 +93,7 @@ namespace WatKhaoWong.UI
             RefreshSettingUI();
             RefreshHistoryUI();
             RefreshPopupUI();
+            RefreshLeaderboardUI();
             ShowHideUIByRoles();
             //print("Refreshed All UI");
         }
@@ -129,6 +128,12 @@ namespace WatKhaoWong.UI
             //print("Refreshed Popup UI : " + OnPopupRefreshed?.GetInvocationList().Length);
         }
 
+        public static void RefreshLeaderboardUI()
+        {
+            OnLeaderboardRefreshed?.Invoke();
+            //print("Refreshed Leaderboard UI : " + OnLeaderboardRefreshed?.GetInvocationList().Length);
+        }
+
         public static void ShowHideUIByRoles()
         {
             OnUIShowedHidByRoles?.Invoke();
@@ -146,6 +151,7 @@ namespace WatKhaoWong.UI
             OnSettingRefreshed = null;
             OnHistoryRefreshed = null;
             OnPopupRefreshed = null;
+            OnLeaderboardRefreshed = null;
             OnUIShowedHidByRoles = null;
         }
         #endregion

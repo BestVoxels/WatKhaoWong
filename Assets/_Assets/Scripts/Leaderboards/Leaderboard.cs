@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using WatKhaoWong.SceneManagement;
+using WatKhaoWong.Identity;
 using Firebase.Database;
+using Firebase.Auth;
 
 namespace WatKhaoWong.Leaderboards
 {
@@ -39,7 +41,10 @@ namespace WatKhaoWong.Leaderboards
 
 
         #region --Fields-- (In Class)
-        private List<DataSnapshot> _allTimeRows = null;
+        private List<DataSnapshot> _allTimeRows = new List<DataSnapshot>();
+        private ushort _myUserRank = 9999;
+        private bool _isMeInLeaderboard = false;
+        private bool _isAsyncRunning = false;
 
         private SavingWrapper _savingWrapper;
         #endregion
@@ -72,14 +77,27 @@ namespace WatKhaoWong.Leaderboards
 
 
         #region --Methods-- (Custom PUBLIC)
-        public async IAsyncEnumerable<DataSnapshot> GetRows()
+        public ushort GetMyUserRank()
         {
+            if (_isMeInLeaderboard == false)
+                _myUserRank = (ushort)_maxRowNumber;
+
+            return _myUserRank;
+        }
+
+        public bool IsMeInLeaderboard() => _isMeInLeaderboard;
+
+        public async IAsyncEnumerable<OtherUserData> GetRows()
+        {
+            if (_isAsyncRunning) yield break; // Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.
+
+            _isAsyncRunning = true;
             switch (Category)
             {
                 case ECategory.AllTime:
-                    await foreach (DataSnapshot each in GetAllTimeRows())
+                    await foreach (DataSnapshot eachData in GetAllTimeRows())
                     {
-                        yield return each;
+                        yield return new OtherUserData(eachData);
                     }
                     break;
 
@@ -89,6 +107,7 @@ namespace WatKhaoWong.Leaderboards
                 case ECategory.Challenge:
                     break;
             }
+            _isAsyncRunning = false;
         }
         #endregion
 
@@ -98,13 +117,18 @@ namespace WatKhaoWong.Leaderboards
         private async IAsyncEnumerable<DataSnapshot> GetAllTimeRows()
         {
             // *** First Initialize List & also Return Asynchronous one by one when loaded from server. ***
-            if (_allTimeRows == null)
+            if (_allTimeRows.Count == 0)
             {
-                print("First Time init List");
-                _allTimeRows = new List<DataSnapshot>();
-
+                ushort index = 0;
                 await foreach (DataSnapshot each in _savingWrapper.LoadAndSortByChildValue(EValueNode.TotalTMPoint, _maxRowNumber))
                 {
+                    ++index;
+                    if (each.Key.Equals(FirebaseAuth.DefaultInstance.CurrentUser.UserId))  //TODO maybe using SavingWrapper.GetUserName as static method. this will check for authenticated status
+                    {
+                        _myUserRank = index;
+                        _isMeInLeaderboard = true;
+                    }
+                    
                     _allTimeRows.Add(each);
 
                     yield return each;

@@ -1,5 +1,6 @@
 using UnityEngine;
 using WatKhaoWong.Leaderboards;
+using WatKhaoWong.Identity;
 
 namespace WatKhaoWong.UI.Leaderboards
 {
@@ -10,6 +11,7 @@ namespace WatKhaoWong.UI.Leaderboards
         [SerializeField] private GameObject _countDownTimerGameObject;
         [SerializeField] private GameObject _noChallengePanel;
         [SerializeField] private Transform _tabsTransform;
+        [SerializeField] private RowUI _myRowUI;
 
         [Space]
 
@@ -21,7 +23,10 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Fields-- (In Class)
+        private bool _isAsyncRunning = false;
+
         private Leaderboard _leaderboard;
+        private MyUserData _myUserData;
         #endregion
 
 
@@ -30,10 +35,11 @@ namespace WatKhaoWong.UI.Leaderboards
         private void Awake()
         {
             _leaderboard = GameObject.FindWithTag("Player").GetComponentInChildren<Leaderboard>();
+            _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
 
-            _leaderboard.OnCategoryChanged += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
+            _leaderboard.OnCategoryChanged += RefreshUI;
 
-            // TODO have to deal with UIRefresher.cs
+            UIRefresher.OnLeaderboardRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
 
         private void Start()
@@ -56,17 +62,33 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Methods-- (Custom PRIVATE) ~Row~
-        private async void BuildRowList()
+        private async void BuildRows()
         {
-            await foreach (var each in _leaderboard.GetRows())
+            if (_isAsyncRunning) return; // Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.
+
+            ushort rowCounter = 1;
+
+            _isAsyncRunning = true;
+            await foreach (OtherUserData otherUserData in _leaderboard.GetRows())
             {
                 RowUI createdPrefab = Instantiate(_rowPrefab, _spawnParent);
-                print(each.Key.ToString());
-                createdPrefab.Setup(each.Child("Stats/FirstName").Value.ToString(), each.Child("Points/TotalTMPoint").Value.ToString());
+
+                createdPrefab.Setup(otherUserData, rowCounter, RowUI.IsInLeaderboard.Yes);
+
+                ++rowCounter;
             }
+            
+            _isAsyncRunning = false;
         }
 
-        private void ClearRowList()
+        private void SetupMyRow()
+        {
+            RowUI.IsInLeaderboard isMeInLeaderboard = _leaderboard.IsMeInLeaderboard() ? RowUI.IsInLeaderboard.Yes : RowUI.IsInLeaderboard.No;
+
+            _myRowUI.Setup(_myUserData, _leaderboard.GetMyUserRank(), isMeInLeaderboard);
+        }
+
+        private void ClearRows()
         {
             foreach (Transform eachChild in _spawnParent)
                 Destroy(eachChild.gameObject);
@@ -101,9 +123,11 @@ namespace WatKhaoWong.UI.Leaderboards
             UpdateFilterButtonsUI();
 
             // Row
-            ClearRowList();
+            ClearRows();
 
-            BuildRowList();
+            BuildRows();
+
+            SetupMyRow();
         }
         #endregion
     }

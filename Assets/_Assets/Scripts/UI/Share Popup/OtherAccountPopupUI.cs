@@ -16,7 +16,7 @@ namespace WatKhaoWong.UI.SharePopup
 
         [Header("Account Popup UI Stuffs")]
         [Header("User Profile")]
-        [SerializeField] private AccountData.IconUI _icon;
+        [SerializeField] private ProfileIconInspector _icon;
         [Space]
         [SerializeField] private TMP_Text _userNameText;
         [SerializeField] private TMP_Text _userLevelText;
@@ -31,13 +31,14 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Fields-- (In Class)
+        private IUserData _userData;
         private OtherAccountPopup _otherAccountPopup;
         #endregion
 
 
 
         #region --Fields-- (Constant)
-        private const float MultiplierRatioForDecorator = 175f / 135f;  // Formula : Main Profile's Size (BIG) % Inventory Profile's Size (SMALL)
+        private const float MultiplierRatioForDecorator = 175f / 135f;  // Formula : [CHANGE THIS] OtherAccountPopupUI Profile's Size  %  [FIX] Inventory Profile's Size (original looks)
         #endregion
 
 
@@ -54,27 +55,29 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Methods-- (Custom PUBLIC)
-        public void Setup(AccountData account)
+        public void Setup(IUserData userData)
         {
-            RefreshUI(account);
+            _userData = userData;
+
+            RefreshUI();
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PRIVATE)
-        private void RefreshUI(AccountData account)
+        private void RefreshUI()
         {
-            account.UpdateProfileIcon(_icon, account.GetProfileIcon(), MultiplierRatioForDecorator);
+            _userData.UpdateProfileIcon(_icon, _userData.GetProfileIcon(), MultiplierRatioForDecorator);
 
-            _userNameText.text = account.GetUserNameText();
-            _userLevelText.text = account.GetLevelText();
+            _userNameText.text = _userData.GetUserNameText();
+            _userLevelText.text = _userData.GetLevelText();
 
-            _allTimeTMPointsText.text = account.GetTotalTMPointsText();
-            _todayTMPointsText.text = account.GetTodayTMPointsText();
+            _allTimeTMPointsText.text = _userData.GetTotalTMPointsText();
+            _todayTMPointsText.text = _userData.GetTodayTMPointsText();
 
-            _totalWonTMChallengeText.text = account.GetTotalWonTMChallengeText();
-            _memberSinceText.text = account.GetMemberSinceText();
+            _totalWonTMChallengeText.text = _userData.GetTotalWonTMChallengeText();
+            _memberSinceText.text = _userData.GetMemberSinceText();
         }
         #endregion
 

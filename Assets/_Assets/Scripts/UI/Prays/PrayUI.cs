@@ -17,7 +17,7 @@ namespace WatKhaoWong.UI.Prays
         [SerializeField] private EventTrigger _userProfileEventTrigger;
         [SerializeField] private EventTrigger _userStatsEventTrigger;
         [Space]
-        [SerializeField] private AccountData.IconUI _icon;
+        [SerializeField] private ProfileIconInspector _icon;
         [Space]
         [SerializeField] private TMP_Text _userNameText;
         [SerializeField] private TMP_Text _allTimeTMPointsText;
@@ -34,13 +34,13 @@ namespace WatKhaoWong.UI.Prays
 
         #region --Fields-- (In Class)
         private Pray _playerPray;
-        private AccountData _account;
+        private MyUserData _myUserData;
         #endregion
 
 
 
         #region --Fields-- (Constant)
-        private const float MultiplierRatioForDecorator = 165f / 135f;  // Formula : Main Profile's Size (BIG) % Inventory Profile's Size (SMALL)
+        private const float MultiplierRatioForDecorator = 160f / 135f;  // Formula : [CHANGE THIS] PrayUI Profile's Size  %  [FIX] Inventory Profile's Size (original looks)
         #endregion
 
 
@@ -49,7 +49,7 @@ namespace WatKhaoWong.UI.Prays
         private void Awake()
         {
             _playerPray = GameObject.FindWithTag("Player").GetComponentInChildren<Pray>();
-            _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountData>();
+            _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
 
             _backButton.onClick.AddListener(Back);
 
@@ -97,11 +97,11 @@ namespace WatKhaoWong.UI.Prays
 
         private void RefreshUI()
         {
-            _account.UpdateProfileIcon(_icon, _account.GetProfileIcon(), MultiplierRatioForDecorator);
+            _myUserData.UpdateProfileIcon(_icon, _myUserData.GetProfileIcon(), MultiplierRatioForDecorator);
 
-            _userNameText.text = _account.GetUserNameText();
-            _allTimeTMPointsText.text = _account.GetTotalTMPointsText();
-            _todayTMPointsText.text = _account.GetTodayTMPointsText();
+            _userNameText.text = _myUserData.GetUserNameText();
+            _allTimeTMPointsText.text = _myUserData.GetTotalTMPointsText();
+            _todayTMPointsText.text = _myUserData.GetTodayTMPointsText();
 
             _challengeText.text = _playerPray.GetChallengeText();
         }

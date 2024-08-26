@@ -3,11 +3,18 @@ using UnityEngine.EventSystems;
 using TMPro;
 using WatKhaoWong.Identity;
 using WatKhaoWong.Leaderboards;
+using WatKhaoWong.UI.SharePopup;
 
 namespace WatKhaoWong.UI.Leaderboards
 {
     public class RowUI : MonoBehaviour
     {
+        public enum IsInLeaderboard
+        {
+            Yes,
+            No
+        }
+
         private enum RowType
         {
             Myself,
@@ -31,7 +38,7 @@ namespace WatKhaoWong.UI.Leaderboards
         [SerializeField] private TMP_Text _rankText;
 
         [Header("Profile Icon")]
-        [SerializeField] private AccountData.IconUI _icon;
+        [SerializeField] private ProfileIconInspector _icon;
 
         [Header("Profile Name")]
         [SerializeField] private TMP_Text _userNameText;
@@ -45,12 +52,14 @@ namespace WatKhaoWong.UI.Leaderboards
 
         #region --Fields-- (In Class)
         private Row _row;
+        private IUserData _userData;
+        private OtherAccountPopupUI _otherAccountPopupUI;
         #endregion
 
 
 
         #region --Fields-- (Constant)
-        private const float MultiplierRatioForDecorator = 165f / 135f;  // Formula : Main Profile's Size (BIG) % Inventory Profile's Size (SMALL)
+        private const float MultiplierRatioForDecorator = 112f / 135f;  // Formula : [CHANGE THIS] RowUI Profile's Size  %  [FIX] Inventory Profile's Size (original looks)
         #endregion
 
 
@@ -59,6 +68,7 @@ namespace WatKhaoWong.UI.Leaderboards
         private void Awake()
         {
             _row = GameObject.FindWithTag("Player").GetComponentInChildren<Row>();
+            _otherAccountPopupUI = FindAnyObjectByType<OtherAccountPopupUI>(FindObjectsInactive.Include);
 
             EventTrigger.Entry entry = new EventTrigger.Entry();
             entry.eventID = EventTriggerType.PointerClick;
@@ -70,22 +80,36 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Methods-- (Custom PUBLIC)
-        public void Setup(string name, string score) // AccountData account, ushort rankNumber
+        public void Setup(IUserData userdata, ushort rankNumber, IsInLeaderboard isInLeaderboard)
         {
-            // TODO temp Setup()
-            _userNameText.text = name;
-            _scoreText.text = score;
+            _userData = userdata;
 
-            //UpdateRankUI(rankNumber);
+            RefreshUI();
 
-            //RefreshUI(account);
+            UpdateRankUI(rankNumber, isInLeaderboard);
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PRIVATE)
-        private void UpdateRankUI(ushort rankNumber)
+        private void RefreshUI()
+        {
+            if (_userData == default)
+            {
+                Debug.LogError("CUSTOM Error : RowUI.cs is created BUT havn't Setup() yet! Must call Setup() method first!");
+                return;
+            }
+
+            _userData.UpdateProfileIcon(_icon, _userData.GetProfileIcon(), MultiplierRatioForDecorator);
+
+            _userNameText.text = _userData.GetUserNameText();
+            _levelText.text = _userData.GetLevelText();
+
+            _scoreText.text = _userData.GetTotalTMPointsText();
+        }
+
+        private void UpdateRankUI(ushort rankNumber, IsInLeaderboard isInLeaderboard)
         {
             if (rankNumber == default)
             {
@@ -100,39 +124,29 @@ namespace WatKhaoWong.UI.Leaderboards
             _rankText.gameObject.SetActive(false);
 
             // Open Accordingly
-            if (rankNumber == 1)
+            if (rankNumber == 1 && isInLeaderboard == IsInLeaderboard.Yes)
             {
                 _firstRankGameObject.SetActive(true);
             }
-            else if (rankNumber == 2)
+            else if (rankNumber == 2 && isInLeaderboard == IsInLeaderboard.Yes)
             {
                 _secondRankGameObject.SetActive(true);
             }
-            else if (rankNumber == 3)
+            else if (rankNumber == 3 && isInLeaderboard == IsInLeaderboard.Yes)
             {
                 _thirdRankGameObject.SetActive(true);
             }
             else
             {
                 _rankText.gameObject.SetActive(true);
-                _rankText.text = rankNumber.ToString();
+
+                string rank = rankNumber.ToString();
+
+                if (_rowType == RowType.Myself && isInLeaderboard == IsInLeaderboard.No)
+                    rank = $">{rankNumber}";
+
+                _rankText.text = rank;
             }
-        }
-
-        private void RefreshUI(AccountData account)
-        {
-            if (account == default)
-            {
-                Debug.LogError("CUSTOM Error : RowUI.cs is created BUT havn't Setup() yet! Must call Setup() method first!");
-                return;
-            }
-
-            account.UpdateProfileIcon(_icon, account.GetProfileIcon(), MultiplierRatioForDecorator);
-
-            _userNameText.text = account.GetUserNameText();
-            _levelText.text = account.GetLevelText();
-
-            _scoreText.text = account.GetTotalTMPointsText();
         }
         #endregion
 
@@ -148,6 +162,7 @@ namespace WatKhaoWong.UI.Leaderboards
                     break;
 
                 case RowType.OtherUser:
+                    _otherAccountPopupUI.Setup(_userData);
                     _row.OnClickOtherUserRow();
                     break;
             }

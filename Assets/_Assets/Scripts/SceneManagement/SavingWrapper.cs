@@ -122,7 +122,7 @@ namespace WatKhaoWong.SceneManagement
             // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
 
             DataSnapshot dataSnapshot = await _savingSystem.value.LoadAndSortByChildValue(EParentNode.Users.ToString(), GetValueNodePath(valueNode), limitNumber);
-
+            
             if (dataSnapshot == null)
             {
                 Debug.LogWarning("Can't Load Child Value, maybe path is Wrong. 'dataSnapshot' is equals to 'null'.");
@@ -155,35 +155,8 @@ namespace WatKhaoWong.SceneManagement
 
 
 
-        #region --Methods-- (Custom PRIVATE)
-        private bool IsAuthenticated() => FirebaseAuth.DefaultInstance.CurrentUser != null;
-
-        private bool IsSaveProtectionOnStartActive() => _saveProtectionOnStartInSeconds > Time.time;
-        #endregion
-
-
-
-        #region --Methods-- (Custom PRIVATE) ~Path Builder as JSON Tree Structure Example Above~
-        private string GetCurrentUserPath(EValueNode valueNode)
-        {
-            string path = GetValueNodePath(valueNode);
-
-            if (path == null || CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
-
-            return Path.Combine("Users", CurrentUserID, path);
-        }
-
-        //// EXAMPLE of getting Other User Path
-        //private string GetOtherUserPath(string otherUserID, EValueNode valueNode)
-        //{
-        //    string path = GetValueNodePath(valueNode);
-
-        //    if (path == null || CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
-
-        //    return Path.Combine("Users", otherUserID, path);
-        //}
-
-        private string GetValueNodePath(EValueNode valueNode)
+        #region --Methods-- (Custom PUBLIC) ~Useful Utility~
+        public static string GetValueNodePath(EValueNode valueNode)
         {
             EParentNode? parentNode = GetParentNode(valueNode);
 
@@ -192,7 +165,7 @@ namespace WatKhaoWong.SceneManagement
             return Path.Combine(parentNode.ToString(), valueNode.ToString());
         }
 
-        private EParentNode? GetParentNode(EValueNode valueNode)
+        public static EParentNode? GetParentNode(EValueNode valueNode)
         {
             EParentNode? parentNode = null;
 
@@ -228,6 +201,37 @@ namespace WatKhaoWong.SceneManagement
 
             return parentNode;
         }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE)
+        private bool IsAuthenticated() => FirebaseAuth.DefaultInstance.CurrentUser != null;
+
+        private bool IsSaveProtectionOnStartActive() => _saveProtectionOnStartInSeconds > Time.time;
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE) ~Path Builder as JSON Tree Structure Example Above~
+        private string GetCurrentUserPath(EValueNode valueNode)
+        {
+            string path = GetValueNodePath(valueNode);
+
+            if (path == null || CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
+
+            return Path.Combine("Users", CurrentUserID, path);
+        }
+
+        //// EXAMPLE of getting Other User Path
+        //private string GetOtherUserPath(string otherUserID, EValueNode valueNode)
+        //{
+        //    string path = GetValueNodePath(valueNode);
+
+        //    if (path == null || CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
+
+        //    return Path.Combine("Users", otherUserID, path);
+        //}
         #endregion
     }
 }

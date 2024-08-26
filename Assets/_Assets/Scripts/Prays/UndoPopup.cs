@@ -51,7 +51,7 @@ namespace WatKhaoWong.Prays
         private int _tmPoints;
 
         private Coroutine _previousCoroutine;
-        private AccountData _accountData;
+        private MyUserData _myUserData;
         #endregion
 
 
@@ -65,7 +65,7 @@ namespace WatKhaoWong.Prays
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _accountData = GameObject.FindWithTag("Player").GetComponentInChildren<AccountData>();
+            _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
         }
         #endregion
 
@@ -127,8 +127,8 @@ namespace WatKhaoWong.Prays
         private void UploadToServer()
         {
             Debug.LogWarning($"Upload {_tmPoints} Point to Server!!!");
-            _accountData.AddTotalTMPoints(_tmPoints);
-            _accountData.AddTodayTMPoints(_tmPoints);
+            _myUserData.AddTotalTMPoints(_tmPoints);
+            _myUserData.AddTodayTMPoints(_tmPoints);
 
             _onUploadSucceed?.Invoke();
             OnUploadSucceed?.Invoke();

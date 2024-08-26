@@ -32,7 +32,7 @@ namespace WatKhaoWong.Homes
 
 
         #region --Fields-- (In Class)
-        private AccountData _accountData;
+        private MyUserData _myUserData;
         #endregion
 
 
@@ -42,7 +42,7 @@ namespace WatKhaoWong.Homes
         {
             GameObject player = GameObject.FindWithTag("Player");
 
-            _accountData = player.GetComponentInChildren<AccountData>();
+            _myUserData = player.GetComponentInChildren<MyUserData>();
         }
         #endregion
 
@@ -64,7 +64,7 @@ namespace WatKhaoWong.Homes
             string text;
             
             if (FirebaseAuth.DefaultInstance.CurrentUser != null)
-                text = $"{_welcomeTextForUser}\n{_accountData.GetUserNameText()}";
+                text = $"{_welcomeTextForUser}\n{_myUserData.GetUserNameText()}";
             else
                 text = _welcomeTextForGuest;
 

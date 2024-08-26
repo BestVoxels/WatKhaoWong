@@ -20,7 +20,7 @@ namespace WatKhaoWong.UI.SharePopup
 
         [Header("Account Popup UI Stuffs")]
         [Header("User Profile")]
-        [SerializeField] private AccountData.IconUI _icon;
+        [SerializeField] private ProfileIconInspector _icon;
         [Space]
         [SerializeField] private TMP_Text _userNameText;
         [SerializeField] private TMP_Text _userLevelText;
@@ -42,8 +42,8 @@ namespace WatKhaoWong.UI.SharePopup
         #region --Fields-- (In Class)
         private readonly List<ProfileIconUI> _profileIcons = new List<ProfileIconUI>();
 
-        private AccountPopup _playerAccountPopup;
-        private AccountData _account;
+        private AccountPopup _accountPopup;
+        private MyUserData _myUserData;
         private StatusText _statusText;
         private SavingWrapper _savingWrapper;
         #endregion
@@ -51,7 +51,7 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Fields-- (Constant)
-        private const float MultiplierRatioForDecorator = 175f / 135f;  // Formula : Main Profile's Size (BIG) % Inventory Profile's Size (SMALL)
+        private const float MultiplierRatioForDecorator = 175f / 135f;  // Formula : [CHANGE THIS] AccountPopupUI Profile's Size  %  [FIX] Inventory Profile's Size (original looks)
         #endregion
 
 
@@ -59,8 +59,8 @@ namespace WatKhaoWong.UI.SharePopup
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _playerAccountPopup = GameObject.FindWithTag("Player").GetComponentInChildren<AccountPopup>();
-            _account = GameObject.FindWithTag("Player").GetComponentInChildren<AccountData>();
+            _accountPopup = GameObject.FindWithTag("Player").GetComponentInChildren<AccountPopup>();
+            _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
             _statusText = FindAnyObjectByType<StatusText>();
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
 
@@ -90,16 +90,16 @@ namespace WatKhaoWong.UI.SharePopup
             var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
-            _account.UpdateProfileIcon(_icon, _account.GetProfileIcon(), MultiplierRatioForDecorator);
+            _myUserData.UpdateProfileIcon(_icon, _myUserData.GetProfileIcon(), MultiplierRatioForDecorator);
 
-            _userNameText.text = _account.GetUserNameText();
-            _userLevelText.text = _account.GetLevelText();
+            _userNameText.text = _myUserData.GetUserNameText();
+            _userLevelText.text = _myUserData.GetLevelText();
 
-            _allTimeTMPointsText.text = _account.GetTotalTMPointsText();
-            _todayTMPointsText.text = _account.GetTodayTMPointsText();
+            _allTimeTMPointsText.text = _myUserData.GetTotalTMPointsText();
+            _todayTMPointsText.text = _myUserData.GetTodayTMPointsText();
 
-            _totalWonTMChallengeText.text = _account.GetTotalWonTMChallengeText();
-            _memberSinceText.text = _account.GetMemberSinceText();
+            _totalWonTMChallengeText.text = _myUserData.GetTotalWonTMChallengeText();
+            _memberSinceText.text = _myUserData.GetMemberSinceText();
 
             _profilePicHeaderText.text = $"<#f8913f>{_profileIcons.Count.ToString("#,0", nfi)}</color>";
         }
@@ -118,7 +118,7 @@ namespace WatKhaoWong.UI.SharePopup
         /// </summary>
         private void RefreshToggleStatusUI()
         {
-            ProfileIcon target = _account.GetProfileIcon();
+            ProfileIconItem target = _myUserData.GetProfileIcon();
 
             _profileIcons.ForEach(eachIconUI =>
             {
@@ -136,26 +136,26 @@ namespace WatKhaoWong.UI.SharePopup
 
 
         #region --Methods-- (Subscriber) ~Popup Header UI~
-        private void Close() => _playerAccountPopup.OnCloseButtonClick();
+        private void Close() => _accountPopup.OnCloseButtonClick();
         #endregion
 
 
 
         #region --Methods-- (Subscriber)
-        private void OnToggleChangedByClick(ProfileIcon selectedProfileIcon, bool isOn)
+        private void OnToggleChangedByClick(ProfileIconItem selectedProfileIcon, bool isOn)
         {
             if (isOn)
             {
-                _account.UpdateProfileIcon(_icon, selectedProfileIcon, MultiplierRatioForDecorator);
+                _myUserData.UpdateProfileIcon(_icon, selectedProfileIcon, MultiplierRatioForDecorator);
                 _savingWrapper.Save(EValueNode.ProfileIconID, selectedProfileIcon.ItemID);
 
-                _playerAccountPopup.OnAccountProfileChangedByClick();
+                _accountPopup.OnAccountProfileChangedByClick();
             }
         }
 
         private void OnModifyButtonClicked()
         {
-            _statusText.Show(_playerAccountPopup.StatusInformUser, _playerAccountPopup.StatusInformUserColor);
+            _statusText.Show(_accountPopup.StatusInformUser, _accountPopup.StatusInformUserColor);
         }
         #endregion
     }
