@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Firebase.Auth;
 using WatKhaoWong.SceneManagement;
+using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.Identity
 {
@@ -93,11 +94,9 @@ namespace WatKhaoWong.Identity
 
         private void SetRoleToGuestIfNoAuthen()
         {
-            if (!IsAuthenticated())
+            if (!FirebaseUtils.IsAuthenticated())
                 Role = EUserRole.Guest;
         }
-
-        private bool IsAuthenticated() => FirebaseAuth.DefaultInstance.CurrentUser != null;
         #endregion
 
 

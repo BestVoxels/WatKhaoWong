@@ -4,8 +4,8 @@ using System.Linq;
 using UnityEngine;
 using WatKhaoWong.Saving;
 using WatKhaoWong.Utils;
+using WatKhaoWong.Utils.Core;
 using System.Threading.Tasks;
-using Firebase.Auth;
 using Firebase.Database;
 
 namespace WatKhaoWong.SceneManagement
@@ -28,21 +28,6 @@ namespace WatKhaoWong.SceneManagement
 
         #region --Fields-- (In Class)
         private AutoInit<SavingSystem> _savingSystem;
-        #endregion
-
-
-
-        #region --Properties-- (Computed)
-        // Using private Property to PREVENT getting 'null' value if it doesn't authenticated on Start(). This way it will gets value when it needs, no need to initialize on Start().
-        private string CurrentUserID
-        {
-            get
-            {
-                if (IsAuthenticated()) return FirebaseAuth.DefaultInstance.CurrentUser.UserId;
-
-                return null;
-            }
-        }
         #endregion
 
 
@@ -102,7 +87,7 @@ namespace WatKhaoWong.SceneManagement
         /// </summary>
         public void Save(EValueNode valueNode, object saveValue)
         {
-            if (!IsAuthenticated()) return;
+            if (!FirebaseUtils.IsAuthenticated()) return;
             if (IsSaveProtectionOnStartActive()) return; // Avoid Override Save file with Default Values of UI or Player Default State.
 
             _savingSystem.value.Save(GetCurrentUserPath(valueNode), saveValue);
@@ -110,7 +95,7 @@ namespace WatKhaoWong.SceneManagement
 
         public async Task<DataSnapshot> Load(EValueNode valueNode)
         {
-            if (!IsAuthenticated()) return null;
+            if (!FirebaseUtils.IsAuthenticated()) return null;
             // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
 
             return await _savingSystem.value.Load(GetCurrentUserPath(valueNode));
@@ -118,7 +103,7 @@ namespace WatKhaoWong.SceneManagement
 
         public async IAsyncEnumerable<DataSnapshot> LoadAndSortByChildValue(EValueNode valueNode, int limitNumber)
         {
-            if (!IsAuthenticated()) yield break;
+            if (!FirebaseUtils.IsAuthenticated()) yield break;
             // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
 
             DataSnapshot dataSnapshot = await _savingSystem.value.LoadAndSortByChildValue(EParentNode.Users.ToString(), GetValueNodePath(valueNode), limitNumber);
@@ -137,7 +122,7 @@ namespace WatKhaoWong.SceneManagement
 
         public void Delete(EValueNode valueNode)
         {
-            if (!IsAuthenticated()) return;
+            if (!FirebaseUtils.IsAuthenticated()) return;
 
             _savingSystem.value.Delete(GetCurrentUserPath(valueNode));
         }
@@ -147,7 +132,7 @@ namespace WatKhaoWong.SceneManagement
         /// </summary>
         public async Task<bool> SaveExists(EValueNode valueNode)
         {
-            if (!IsAuthenticated()) return false;
+            if (!FirebaseUtils.IsAuthenticated()) return false;
 
             return await _savingSystem.value.SaveExists(GetCurrentUserPath(valueNode));
         }
@@ -206,8 +191,6 @@ namespace WatKhaoWong.SceneManagement
 
 
         #region --Methods-- (Custom PRIVATE)
-        private bool IsAuthenticated() => FirebaseAuth.DefaultInstance.CurrentUser != null;
-
         private bool IsSaveProtectionOnStartActive() => _saveProtectionOnStartInSeconds > Time.time;
         #endregion
 
@@ -218,9 +201,9 @@ namespace WatKhaoWong.SceneManagement
         {
             string path = GetValueNodePath(valueNode);
 
-            if (path == null || CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
+            if (path == null || FirebaseUtils.CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
 
-            return Path.Combine("Users", CurrentUserID, path);
+            return Path.Combine("Users", FirebaseUtils.CurrentUserID, path);
         }
 
         //// EXAMPLE of getting Other User Path

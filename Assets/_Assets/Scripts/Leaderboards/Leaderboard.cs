@@ -4,7 +4,7 @@ using UnityEngine;
 using WatKhaoWong.SceneManagement;
 using WatKhaoWong.Identity;
 using Firebase.Database;
-using Firebase.Auth;
+using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.Leaderboards
 {
@@ -123,7 +123,7 @@ namespace WatKhaoWong.Leaderboards
                 await foreach (DataSnapshot each in _savingWrapper.LoadAndSortByChildValue(EValueNode.TotalTMPoint, _maxRowNumber))
                 {
                     ++index;
-                    if (each.Key.Equals(FirebaseAuth.DefaultInstance.CurrentUser.UserId))  //TODO maybe using SavingWrapper.GetUserName as static method. this will check for authenticated status
+                    if (each.Key.Equals(FirebaseUtils.CurrentUserID))
                     {
                         _myUserRank = index;
                         _isMeInLeaderboard = true;

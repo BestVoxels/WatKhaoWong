@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Identity;
-using Firebase.Auth;
+using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.Homes
 {
@@ -63,7 +63,7 @@ namespace WatKhaoWong.Homes
         {
             string text;
             
-            if (FirebaseAuth.DefaultInstance.CurrentUser != null)
+            if (FirebaseUtils.IsAuthenticated())
                 text = $"{_welcomeTextForUser}\n{_myUserData.GetUserNameText()}";
             else
                 text = _welcomeTextForGuest;
