@@ -1,6 +1,6 @@
 namespace WatKhaoWong.Identity
 {
-    public enum EAccountRole
+    public enum EUserRole
     {
         Admin,
         Member,

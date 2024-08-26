@@ -172,7 +172,7 @@ namespace WatKhaoWong.SharePopup
             _statusText.Show(_statusSucceeded, _statusSucceededColor);
 
             _onSignupSucceeded?.Invoke(result.User);
-            _accountRole.Role = EAccountRole.Member;
+            _accountRole.Role = EUserRole.Member;
 
             _isRunningOnBackground = false;
         }

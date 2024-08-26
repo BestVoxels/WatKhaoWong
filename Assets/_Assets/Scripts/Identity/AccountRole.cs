@@ -14,7 +14,7 @@ namespace WatKhaoWong.Identity
 
 
         #region --Fields-- (In Class)
-        [SerializeField] private EAccountRole _role = EAccountRole.Member;
+        [SerializeField] private EUserRole _role = EUserRole.Member;
 
         private SavingWrapper _savingWrapper;
         #endregion
@@ -22,7 +22,7 @@ namespace WatKhaoWong.Identity
 
 
         #region --Properties-- (With Backing Fields)
-        public EAccountRole Role
+        public EUserRole Role
         {
             get => _role;
 
@@ -88,13 +88,13 @@ namespace WatKhaoWong.Identity
             var data = await _savingWrapper.Load(EValueNode.Role);
 
             if (data != null)
-                Role = (EAccountRole)Enum.Parse(typeof(EAccountRole), data.Value.ToString());
+                Role = (EUserRole)Enum.Parse(typeof(EUserRole), data.Value.ToString());
         }
 
         private void SetRoleToGuestIfNoAuthen()
         {
             if (!IsAuthenticated())
-                Role = EAccountRole.Guest;
+                Role = EUserRole.Guest;
         }
 
         private bool IsAuthenticated() => FirebaseAuth.DefaultInstance.CurrentUser != null;

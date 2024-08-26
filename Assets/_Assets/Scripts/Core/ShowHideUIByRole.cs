@@ -75,7 +75,7 @@ namespace WatKhaoWong.Core
         private class UIItem
         {
             public GameObject uI;
-            public List<EAccountRole> targetRoles = new List<EAccountRole>();
+            public List<EUserRole> targetRoles = new List<EUserRole>();
         }
         #endregion
     }

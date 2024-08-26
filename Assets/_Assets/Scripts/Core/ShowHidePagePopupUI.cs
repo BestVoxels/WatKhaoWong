@@ -144,13 +144,13 @@ namespace WatKhaoWong.Core
 
         public void OpenPopupIfGuest(Animator popupAnimator)
         {
-            if (_account.Role == EAccountRole.Guest)
+            if (_account.Role == EUserRole.Guest)
                 OpenPopup(popupAnimator);
         }
 
         public void OpenPopupIfNotGuest(Animator popupAnimator)
         {
-            if (_account.Role != EAccountRole.Guest)
+            if (_account.Role != EUserRole.Guest)
                 OpenPopup(popupAnimator);
         }
         #endregion

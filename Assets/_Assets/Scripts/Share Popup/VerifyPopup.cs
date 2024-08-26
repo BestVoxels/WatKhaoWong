@@ -274,7 +274,7 @@ namespace WatKhaoWong.SharePopup
 
             _onCallerSucceeded?.Invoke(result.User); // Pass back to the caller
             _onVerifySucceeded?.Invoke(result.User); // Call To Close Verfication Popup UI
-            _account.Role = EAccountRole.Member;
+            _account.Role = EUserRole.Member;
 
             _isRunningOnBackground = false;
         }
