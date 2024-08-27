@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.UI;
 using TMPro;
 using WatKhaoWong.Identity;
 using WatKhaoWong.Leaderboards;
@@ -27,7 +27,7 @@ namespace WatKhaoWong.UI.Leaderboards
         [Header("Row UI Stuffs")]
         [SerializeField] private RowType _rowType = RowType.OtherUser;
         [Space]
-        [SerializeField] private EventTrigger _rowEventTrigger;
+        [SerializeField] private Button _rowButton;
 
         [Space]
 
@@ -70,10 +70,7 @@ namespace WatKhaoWong.UI.Leaderboards
             _row = GameObject.FindWithTag("Player").GetComponentInChildren<Row>();
             _otherAccountPopupUI = FindAnyObjectByType<OtherAccountPopupUI>(FindObjectsInactive.Include);
 
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerClick;
-            entry.callback.AddListener((BaseEventData data) => RowClick((PointerEventData)data));
-            _rowEventTrigger.triggers.Add(entry);
+            _rowButton.onClick.AddListener(RowClick);
         }
         #endregion
 
@@ -153,7 +150,7 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Methods-- (Subscriber)
-        private void RowClick(PointerEventData data)
+        private void RowClick()
         {
             switch (_rowType)
             {

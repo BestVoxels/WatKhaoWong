@@ -93,7 +93,9 @@ namespace WatKhaoWong.Utils.UI
 
             // INCASE there is 'button' component, CHECK if 'button' TARGET GRAPHIC is ITSELF 'current attached Image', WHICH IS WRONG, MUST be CHILD IMAGE
             var button = GetComponent<UnityEngine.UI.Button>();
-            if (button && image && button.targetGraphic.transform.Equals(image.transform))
+            if (button && image &&
+                button.transition == UnityEngine.UI.Selectable.Transition.ColorTint &&
+                button.targetGraphic.transform.Equals(image.transform))
             {
                 Debug.LogError($"Wrong 'Target Graphic' field on 'Button' component, MUST be child image NOT itself image. USE 'GameObjectsToBeAnimated' instead. Under '{gameObject.name}' GameObject.");
                 hasError = true;

@@ -583,7 +583,6 @@ GameObject:
   - component: {fileID: 2637654065332200263}
   - component: {fileID: 6474094721529044221}
   - component: {fileID: 4749867448591421449}
-  - component: {fileID: 6465570840427602857}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -643,19 +642,6 @@ MonoBehaviour:
   _defaultProfileIcon: {fileID: 11400000, guid: c2ac1f107ef784c5ea99406cb9b6b13f,
     type: 2}
   _defaultLevel: 1
---- !u!114 &6465570840427602857
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2009358291179130440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff81b02c78aff4dd9a6eddd393699027, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _role: 1
 --- !u!1 &2463763845362812804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1871,7 +1857,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6443f226a0029421da188d93056598a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <Category>k__BackingField: 0
+  _category: 0
+  _maxRowNumber: 100
   <SelectedColor>k__BackingField:
     serializedVersion: 2
     rgba: 4287001699
