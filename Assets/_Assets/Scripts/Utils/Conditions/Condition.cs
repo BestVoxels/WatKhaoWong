@@ -14,7 +14,7 @@ namespace WatKhaoWong.Utils.Conditions
 
         #region --Methods-- (Custom PUBLIC)
         // Take all the Predicate and AND them together ex. "Predicate1 && Predicate2 && Predicate3"
-        public bool Check(IEnumerable<IPredicateEvaluator> evaluators)
+        public bool Check(IEnumerable<IConditionEvaluator> evaluators)
         {
             if (!HasCondition()) return true; // will return True by default when condition is empty. If No Guard Check like this, Bug Occurs by : Start New Game -> pick up items -> Save&Quit -> Click Continue Save, now drag pickup item to slot will throw error.
 
@@ -54,7 +54,7 @@ namespace WatKhaoWong.Utils.Conditions
 
             #region --Methods-- (Custom PUBLIC)
             // Take all the Predicate and OR them together ex. "Predicate1 || Predicate2 || Predicate3"
-            public bool Check(IEnumerable<IPredicateEvaluator> evaluators)
+            public bool Check(IEnumerable<IConditionEvaluator> evaluators)
             {
                 foreach (Predicate eachPredOR in _or)
                 {
@@ -70,29 +70,29 @@ namespace WatKhaoWong.Utils.Conditions
         private class Predicate
         {
             #region --Fields-- (Inspector)
-            [SerializeField] private EPredicateName _methodName;
-            [SerializeField] private string[] _parameters;
+            [SerializeField] private EConditionType _conditionType;
+            [SerializeField] private EConditionValue[] _conditionValues;
             [SerializeField] private bool _negate = false;
             #endregion
 
 
 
             #region --Properties-- (With Backing Fields)
-            public EPredicateName MethodName { get { return _methodName; } }
-            public string[] Parameters { get { return _parameters; } }
+            public EConditionType ConditionType { get { return _conditionType; } }
+            public EConditionValue[] ConditionValues { get { return _conditionValues; } }
             public bool Negate { get { return _negate; } }
             #endregion
 
 
 
             #region --Methods-- (Custom PUBLIC)
-            public bool Check(IEnumerable<IPredicateEvaluator> evaluators)
+            public bool Check(IEnumerable<IConditionEvaluator> evaluators)
             {
                 if (evaluators == null) return true;
 
-                foreach (IPredicateEvaluator eachEvaluator in evaluators)
+                foreach (IConditionEvaluator eachEvaluator in evaluators)
                 {
-                    bool? result = eachEvaluator.Evaluate(_methodName, _parameters); // Debug 'eachEvaluator.ToString()' to see where each one is from.
+                    bool? result = eachEvaluator.Evaluate(_conditionType, _conditionValues); // Debug 'eachEvaluator.ToString()' to see where each one is from.
 
                     if (result == null) continue;
                     if (_negate) result = !result;
