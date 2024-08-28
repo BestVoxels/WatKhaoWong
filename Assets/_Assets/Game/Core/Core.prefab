@@ -1002,6 +1002,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _hasChallenge: 0
   <StatusMissingLengthTG>k__BackingField: Please choose any option from 'How Long?'
     section
   <StatusMissingLengthTGColor>k__BackingField:
@@ -1857,7 +1858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6443f226a0029421da188d93056598a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _category: 0
+  _defaultCategory: 0
   _maxRowNumber: 100
   <SelectedColor>k__BackingField:
     serializedVersion: 2
@@ -2191,7 +2192,7 @@ GameObject:
   - component: {fileID: 4423133681883869042}
   - component: {fileID: 2919888357329305596}
   m_Layer: 0
-  m_Name: Show Hide UI By UserRole
+  m_Name: Show Hide UI By Condition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2224,20 +2225,96 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 34585a0e3bf0b584087b5e5381131734, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showUIByRoles:
-  - uI: {fileID: 0}
-    targetRoles: 0000000001000000
-  - uI: {fileID: 0}
-    targetRoles: 0000000001000000
-  - uI: {fileID: 0}
-    targetRoles: 00000000
-  _hideUIByRoles:
-  - uI: {fileID: 0}
-    targetRoles: 02000000
-  - uI: {fileID: 0}
-    targetRoles: 02000000
-  - uI: {fileID: 0}
-    targetRoles: 0100000002000000
+  _showUIByCondition:
+  - gameObjectsUI:
+    - {fileID: 0}
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 4
+          _conditionValues: 01000000
+          _negate: 0
+        - _conditionType: 4
+          _conditionValues: 02000000
+          _negate: 0
+  - gameObjectsUI:
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 4
+          _conditionValues: 01000000
+          _negate: 0
+      - _or:
+        - _conditionType: 1
+          _conditionValues: 00000000
+          _negate: 1
+  - gameObjectsUI:
+    - {fileID: 0}
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 19
+          _conditionValues: 06000000
+          _negate: 0
+  - gameObjectsUI:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 1
+          _conditionValues: 00000000
+          _negate: 0
+  _hideUIByCondition:
+  - gameObjectsUI:
+    - {fileID: 0}
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 4
+          _conditionValues: 03000000
+          _negate: 0
+  - gameObjectsUI:
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 4
+          _conditionValues: 02000000
+          _negate: 0
+        - _conditionType: 4
+          _conditionValues: 03000000
+          _negate: 0
+        - _conditionType: 1
+          _conditionValues: 00000000
+          _negate: 0
+  - gameObjectsUI:
+    - {fileID: 0}
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 19
+          _conditionValues: 04000000
+          _negate: 0
+        - _conditionType: 19
+          _conditionValues: 05000000
+          _negate: 0
+  - gameObjectsUI:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 1
+          _conditionValues: 00000000
+          _negate: 1
 --- !u!1 &7852682835446303578
 GameObject:
   m_ObjectHideFlags: 0

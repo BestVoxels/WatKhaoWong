@@ -4,6 +4,7 @@ using WatKhaoWong.Prays;
 using WatKhaoWong.Settings;
 using WatKhaoWong.SharePopup;
 using WatKhaoWong.Identity;
+using WatKhaoWong.Leaderboards;
 
 namespace WatKhaoWong.UI
 {
@@ -35,6 +36,8 @@ namespace WatKhaoWong.UI
         private UndoPopup _undoPopup;
         private NotificationPopup _notificationPopup;
         private AccountPopup _accountPopup;
+        private Leaderboard _leaderboard;
+        private ChallengePopup _challengePopup;
         #endregion
 
 
@@ -48,6 +51,8 @@ namespace WatKhaoWong.UI
             _undoPopup = player.GetComponentInChildren<UndoPopup>();
             _notificationPopup = player.GetComponentInChildren<NotificationPopup>();
             _accountPopup = player.GetComponentInChildren<AccountPopup>();
+            _leaderboard = player.GetComponentInChildren<Leaderboard>();
+            _challengePopup = player.GetComponentInChildren<ChallengePopup>();
         }
 
         private void OnEnable()
@@ -70,6 +75,10 @@ namespace WatKhaoWong.UI
 
             // SHARE POPUP SYSTEM
             _accountPopup.OnProfileIconChangedByClick += () => { RefreshPrayUI(); };
+
+            // LEADERBOARD SYSTEM
+            _leaderboard.OnCategoryChanged += ShowHideUIByRoles;
+            _challengePopup.OnHasChallengeChanged += ShowHideUIByRoles;
         }
 
         private void OnDisable()

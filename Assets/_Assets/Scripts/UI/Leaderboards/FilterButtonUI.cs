@@ -8,7 +8,7 @@ namespace WatKhaoWong.UI.Leaderboards
     {
         #region --Fields-- (Inspector)
         [Header("Filter Settings")]
-        [SerializeField] private ECategory _category;
+        [SerializeField] private ELeaderboardCategory _category;
 
         [Space]
 

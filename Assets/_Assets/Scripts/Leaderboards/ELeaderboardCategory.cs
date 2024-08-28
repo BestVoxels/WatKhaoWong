@@ -1,6 +1,6 @@
 namespace WatKhaoWong.Leaderboards
 {
-    public enum ECategory
+    public enum ELeaderboardCategory
     {
         AllTime,
         Today,

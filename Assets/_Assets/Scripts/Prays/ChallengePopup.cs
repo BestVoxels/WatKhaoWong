@@ -1,11 +1,20 @@
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Attributes;
+using WatKhaoWong.Utils.Conditions;
 
 namespace WatKhaoWong.Prays
 {
-    public class ChallengePopup : Popup
+    public class ChallengePopup : Popup, IConditionEvaluator
     {
+        #region --Fields-- (Inspector)
+        [Header("Challenge Settings - Debugger Purpose")]
+        [SerializeField] private bool _hasChallenge;
+        #endregion
+
+
+
         #region --Properties-- (Inspector)
         [field: Header("Challenge Popup Status Text")]
         [field: SerializeField] public string StatusMissingLengthTG { get; private set; } = "Please choose any option from 'How Long?' section";
@@ -35,6 +44,45 @@ namespace WatKhaoWong.Prays
 
 
 
+        #region --Events-- (Delegate as Action)
+        public event Action OnHasChallengeChanged;
+        #endregion
+
+
+
+        #region --Properties-- (With Backing Fields)
+        public bool HasChallenge
+        {
+            get => _hasChallenge;
+
+            set
+            {
+                _hasChallenge = value;
+
+                OnHasChallengeChanged?.Invoke();
+            }
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Built In)
+        // ------
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.Escape))
+                HasChallenge = !HasChallenge;
+        }
+        // ------
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC)
+        #endregion
+
+
+
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
         public void OnCancelButtonClick()
         {
@@ -55,6 +103,21 @@ namespace WatKhaoWong.Prays
             Debug.LogWarning("CANT Click \"Confirm\" Button! on Popup");
 
             _onConfirmButtonCantClick?.Invoke();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Interface)
+        bool? IConditionEvaluator.Evaluate(EConditionType conditionType, EConditionValue[] conditionValues)
+        {
+            switch (conditionType)
+            {
+                case EConditionType.HasChallenge:
+                    return HasChallenge;
+            }
+
+            return null;
         }
         #endregion
     }

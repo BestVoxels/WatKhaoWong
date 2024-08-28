@@ -1,22 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
-using WatKhaoWong.Identity;
+using WatKhaoWong.Utils.Conditions;
 using WatKhaoWong.UI;
 
 namespace WatKhaoWong.Core
 {
-    public class ShowHideUIByRole : MonoBehaviour
+    public class ShowHideUIByCondition : MonoBehaviour
     {
         #region --Fields-- (Inspector)
         [Header("General Settings")]
-        [SerializeField] private UIItem[] _showUIByRoles;
-        [SerializeField] private UIItem[] _hideUIByRoles;
+        [SerializeField] private UIItem[] _showUIByCondition;
+        [SerializeField] private UIItem[] _hideUIByCondition;
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        private IUserData _userData;
+        private IConditionEvaluator[] _conditionsEvaluator;
         #endregion
 
 
@@ -24,7 +24,7 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _userData = GameObject.FindWithTag("Player").GetComponentInChildren<IUserData>();
+            _conditionsEvaluator = GameObject.FindWithTag("Player").GetComponentsInChildren<IConditionEvaluator>();
         }
 
         private void OnEnable()
@@ -51,19 +51,19 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Custom PRIVATE)
         private void ShowUI()
         {
-            foreach (UIItem each in _showUIByRoles)
+            foreach (UIItem each in _showUIByCondition)
             {
-                if (each.targetRoles.Contains(_userData.GetRole()))
-                    each.uI.SetActive(true);
+                if (each.condition.Check(_conditionsEvaluator))
+                    each.gameObjectsUI.ForEach(gameObject => gameObject.SetActive(true));
             }
         }
 
         private void HideUI()
         {
-            foreach (UIItem each in _hideUIByRoles)
+            foreach (UIItem each in _hideUIByCondition)
             {
-                if (each.targetRoles.Contains(_userData.GetRole()))
-                    each.uI.SetActive(false);
+                if (each.condition.Check(_conditionsEvaluator))
+                    each.gameObjectsUI.ForEach(gameObject => gameObject.SetActive(false));
             }
         }
         #endregion
@@ -74,8 +74,8 @@ namespace WatKhaoWong.Core
         [System.Serializable]
         private class UIItem
         {
-            public GameObject uI;
-            public List<EUserRole> targetRoles = new List<EUserRole>();
+            public List<GameObject> gameObjectsUI = new();
+            public Condition condition;
         }
         #endregion
     }

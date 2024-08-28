@@ -3,6 +3,7 @@ using UnityEngine;
 using WatKhaoWong.CoreItems;
 using WatKhaoWong.SceneManagement;
 using WatKhaoWong.Utils.Core;
+using WatKhaoWong.Utils.Conditions;
 using Firebase.Auth;
 
 namespace WatKhaoWong.Identity
@@ -14,7 +15,7 @@ namespace WatKhaoWong.Identity
     /// ALSO 'MyUserData.cs' & 'OtherUserData.cs' implement interface 'IUserData.cs' to use Polymorphism concept, so both classes can be under 'IUserData.cs'.
     /// --------
     /// </summary>
-    public class MyUserData : MonoBehaviour, IUserData
+    public class MyUserData : MonoBehaviour, IUserData, IConditionEvaluator
     {
         #region --Fields-- (Inspector)
         [Header("Account Stuffs")]
@@ -279,6 +280,26 @@ namespace WatKhaoWong.Identity
         public void UpdateProfileIcon(ProfileIconInspector oldUI, ProfileIconItem newIcon, float multiplierRatioForDecorator)
         {
             _data.UpdateProfileIcon(oldUI, newIcon, multiplierRatioForDecorator);
+        }
+
+        bool? IConditionEvaluator.Evaluate(EConditionType conditionType, EConditionValue[] conditionValues)
+        {
+            switch (conditionType)
+            {
+                case EConditionType.IsMyUserRoleEquals:
+                    byte stringStartIndex = (byte)EConditionType.IsMyUserRoleEquals;
+                    string enumString = conditionValues[0].ToString()[stringStartIndex..];
+
+                    if (!Enum.TryParse(enumString, true, out EUserRole result))
+                        return false;
+
+                    return GetRole() == result;
+
+                case EConditionType.IsAuthenticated:
+                    return FirebaseUtils.IsAuthenticated();
+            }
+
+            return null;
         }
         #endregion
 

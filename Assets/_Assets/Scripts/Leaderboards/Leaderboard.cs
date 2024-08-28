@@ -5,14 +5,15 @@ using WatKhaoWong.SceneManagement;
 using WatKhaoWong.Identity;
 using Firebase.Database;
 using WatKhaoWong.Utils.Core;
+using WatKhaoWong.Utils.Conditions;
 
 namespace WatKhaoWong.Leaderboards
 {
-    public class Leaderboard : MonoBehaviour
+    public class Leaderboard : MonoBehaviour, IConditionEvaluator
     {
         #region --Fields-- (Inspector)
         [Header("Leaderboard Settings")]
-        [SerializeField] private ECategory _category;
+        [SerializeField] private ELeaderboardCategory _defaultCategory;
         [Range(1, 200)]
         [SerializeField] private int _maxRowNumber = 100;
         #endregion
@@ -52,13 +53,13 @@ namespace WatKhaoWong.Leaderboards
 
 
         #region --Properties-- (With Backing Fields)
-        public ECategory Category
+        public ELeaderboardCategory Category
         {
-            get => _category;
+            get => _defaultCategory;
 
             set
             {
-                _category = value;
+                _defaultCategory = value;
 
                 OnCategoryChanged?.Invoke();
             }
@@ -94,17 +95,17 @@ namespace WatKhaoWong.Leaderboards
             _isAsyncRunning = true;
             switch (Category)
             {
-                case ECategory.AllTime:
+                case ELeaderboardCategory.AllTime:
                     await foreach (DataSnapshot eachData in GetAllTimeRows())
                     {
                         yield return new OtherUserData(eachData);
                     }
                     break;
 
-                case ECategory.Today:
+                case ELeaderboardCategory.Today:
                     break;
 
-                case ECategory.Challenge:
+                case ELeaderboardCategory.Challenge:
                     break;
             }
             _isAsyncRunning = false;
@@ -140,6 +141,27 @@ namespace WatKhaoWong.Leaderboards
             // *** Return List as Synchronous ***
             foreach (DataSnapshot each in _allTimeRows)
                 yield return each;
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Interface)
+        bool? IConditionEvaluator.Evaluate(EConditionType conditionType, EConditionValue[] conditionValues)
+        {
+            switch (conditionType)
+            {
+                case EConditionType.IsLeaderboardCategoryEquals:
+                    byte stringStartIndex = (byte)EConditionType.IsLeaderboardCategoryEquals;
+                    string enumString = conditionValues[0].ToString()[stringStartIndex..];
+
+                    if (!Enum.TryParse(enumString, true, out ELeaderboardCategory result))
+                        return false;
+
+                    return Category == result;
+            }
+
+            return null;
         }
         #endregion
     }
