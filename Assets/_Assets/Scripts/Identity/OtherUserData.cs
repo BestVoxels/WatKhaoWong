@@ -20,24 +20,37 @@ namespace WatKhaoWong.Identity
 
 
 
+        #region --Fields-- (Constant)
+        private const string DefaultProfileIconID = "ffa11251-7731-400e-94ec-ef2c11e177bc"; // 'Character Empty' Item
+        #endregion
+
+
+
         #region --Constructors-- (PUBLIC)
         public OtherUserData(DataSnapshot bigData)
         {
-            _data.FirstName = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.FirstName)).Value.ToString();
+            var data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.FirstName)).Value;
+            if (data != null)
+                _data.FirstName = data.ToString();
 
-            _data.LastName = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.LastName)).Value.ToString();
+            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.LastName)).Value;
+            if (data != null)
+                _data.LastName = data.ToString();
 
-            if (DateTime.TryParse(bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.MemberSince)).Value.ToString(), out DateTime result))
-                _data.MemberSince = result;
+            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.MemberSince)).Value;
+            if (data != null)
+                if (DateTime.TryParse(data.ToString(), out DateTime result))
+                    _data.MemberSince = result;
 
-            string id = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.ProfileIconID)).Value.ToString();
-            _data.ProfileIcon = BaseItem.GetFromID(id) as ProfileIconItem;
+            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.ProfileIconID)).Value;
+            if (data != null)
+                _data.ProfileIcon = BaseItem.GetFromID(data.ToString()) as ProfileIconItem;
 
-            string roleString = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.Role)).Value.ToString();
-            if (roleString != null)
-                _data.Role = (EUserRole)Enum.Parse(typeof(EUserRole), roleString);
+            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.Role)).Value;
+            if (data != null)
+                _data.Role = (EUserRole)Enum.Parse(typeof(EUserRole), data.ToString());
 
-            var data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.Level)).Value;
+            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.Level)).Value;
             if (data != null)
                 _data.Level = int.Parse(data.ToString());
 
@@ -62,7 +75,13 @@ namespace WatKhaoWong.Identity
 
         public string GetMemberSinceText() => _data.GetMemberSinceText();
 
-        public ProfileIconItem GetProfileIcon() => _data.GetProfileIcon();
+        public ProfileIconItem GetProfileIcon()
+        {
+            if (_data.ProfileIcon == null)
+                _data.ProfileIcon = BaseItem.GetFromID(DefaultProfileIconID.ToString()) as ProfileIconItem;
+
+            return _data.GetProfileIcon();
+        }
 
         public EUserRole GetRole() => _data.GetRole();
 
