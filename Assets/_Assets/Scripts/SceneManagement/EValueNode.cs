@@ -1,7 +1,7 @@
 namespace WatKhaoWong.SceneManagement
 {
     /// <summary>
-    /// ***** IMPORTANT!!! Add new 'ENode' also Add new 'Switch() Case' at 'SavingWrapper.cs' *****
+    /// ***** IMPORTANT!!! When Add new enum also Add new 'Switch() Case' at 'SavingWrapper.cs' *****
     /// </summary>
     public enum EValueNode
     {
@@ -14,7 +14,7 @@ namespace WatKhaoWong.SceneManagement
         XP,
         TodayTMPoint,
         TotalTMPoint,
-        ChallengeWon,
-        FirstUploadTimeOfDay
+        ChallengeTMWon,
+        FirstUploadTimeOfDayTM
     }
 }

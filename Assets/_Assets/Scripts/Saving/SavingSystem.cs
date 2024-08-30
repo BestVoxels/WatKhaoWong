@@ -100,7 +100,7 @@ namespace WatKhaoWong.Saving
         /// Check if Save Exists.
         /// Don't call this as checker for call 'Load()' because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
         /// </summary>
-        public async Task<bool> SaveExists(string path)
+        public async Task<bool> IsSaveExists(string path)
         {
             Debug.Log($"Called \"SaveExists(); + Load()\" with path ({path})");
 

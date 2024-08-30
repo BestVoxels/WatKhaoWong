@@ -77,11 +77,11 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Methods-- (Custom PUBLIC)
-        public void Setup(IUserData userdata, ushort rankNumber, IsInLeaderboard isInLeaderboard)
+        public void Setup(IUserData userdata, ushort rankNumber, ELeaderboardCategory category, IsInLeaderboard isInLeaderboard)
         {
             _userData = userdata;
 
-            RefreshUI();
+            RefreshUI(category);
 
             UpdateRankUI(rankNumber, isInLeaderboard);
         }
@@ -90,7 +90,7 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Methods-- (Custom PRIVATE)
-        private void RefreshUI()
+        private void RefreshUI(ELeaderboardCategory category)
         {
             if (_userData == default)
             {
@@ -103,7 +103,13 @@ namespace WatKhaoWong.UI.Leaderboards
             _userNameText.text = _userData.GetUserNameText();
             _levelText.text = _userData.GetLevelText();
 
-            _scoreText.text = _userData.GetTotalTMPointsText();
+            _scoreText.text = category switch
+            {
+                ELeaderboardCategory.AllTime => _userData.GetTotalTMPointsText(),
+                ELeaderboardCategory.Today => _userData.GetTodayTMPointsText(),
+                ELeaderboardCategory.Challenge => "temp challenge score",
+                _ => _row.DefaultNullScoreText
+            };
         }
 
         private void UpdateRankUI(ushort rankNumber, IsInLeaderboard isInLeaderboard)

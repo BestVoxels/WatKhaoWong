@@ -147,7 +147,7 @@ namespace WatKhaoWong.UI.SharePopup
             if (isOn)
             {
                 _myUserData.UpdateProfileIcon(_icon, selectedProfileIcon, MultiplierRatioForDecorator);
-                _savingWrapper.Save(EValueNode.ProfileIconID, selectedProfileIcon.ItemID);
+                _savingWrapper.Save(ECategoryNode.Users, EValueNode.ProfileIconID, selectedProfileIcon.ItemID);
 
                 _accountPopup.OnAccountProfileChangedByClick();
             }

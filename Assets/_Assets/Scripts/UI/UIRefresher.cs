@@ -77,7 +77,8 @@ namespace WatKhaoWong.UI
             _accountPopup.OnProfileIconChangedByClick += () => { RefreshPrayUI(); };
 
             // LEADERBOARD SYSTEM
-            _leaderboard.OnCategoryChanged += ShowHideUIByRoles;
+            _leaderboard.OnLeaderboardCategoryChanged += ShowHideUIByRoles;
+            _leaderboard.OnLeaderboardScoreUpdated += RefreshLeaderboardUI;
             _challengePopup.OnHasChallengeChanged += ShowHideUIByRoles;
         }
 

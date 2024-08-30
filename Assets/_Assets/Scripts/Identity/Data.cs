@@ -35,7 +35,7 @@ namespace WatKhaoWong.Identity
         internal int TotalTMPoints { get; set; }
         internal int TodayTMPoints { get; set; }
         internal int TotalWonTMChallenge { get; set; }
-        internal DateTime FirstUploadTimeOfDay { get; set; }
+        internal DateTime FirstUploadTimeOfDayTM { get; set; }
         #endregion
 
 
@@ -59,7 +59,7 @@ namespace WatKhaoWong.Identity
             TotalTMPoints = totalTMPoints;
             TodayTMPoints = todayTMPoints;
             TotalWonTMChallenge = totalWonTMChallenge;
-            FirstUploadTimeOfDay = firstUploadTimeOfDay;
+            FirstUploadTimeOfDayTM = firstUploadTimeOfDay;
         }
         #endregion
 

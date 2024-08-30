@@ -29,40 +29,40 @@ namespace WatKhaoWong.Identity
         #region --Constructors-- (PUBLIC)
         public OtherUserData(DataSnapshot bigData)
         {
-            var data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.FirstName)).Value;
+            var data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.FirstName)).Value;
             if (data != null)
                 _data.FirstName = data.ToString();
 
-            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.LastName)).Value;
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.LastName)).Value;
             if (data != null)
                 _data.LastName = data.ToString();
 
-            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.MemberSince)).Value;
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.MemberSince)).Value;
             if (data != null)
                 if (DateTime.TryParse(data.ToString(), out DateTime result))
                     _data.MemberSince = result;
 
-            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.ProfileIconID)).Value;
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.ProfileIconID)).Value;
             if (data != null)
                 _data.ProfileIcon = BaseItem.GetFromID(data.ToString()) as ProfileIconItem;
 
-            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.Role)).Value;
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.Role)).Value;
             if (data != null)
                 _data.Role = (EUserRole)Enum.Parse(typeof(EUserRole), data.ToString());
 
-            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.Level)).Value;
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.Level)).Value;
             if (data != null)
                 _data.Level = int.Parse(data.ToString());
 
-            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.TotalTMPoint)).Value;
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.TotalTMPoint)).Value;
             if (data != null)
                 _data.TotalTMPoints = int.Parse(data.ToString());
 
-            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.TodayTMPoint)).Value;
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.TodayTMPoint)).Value;
             if (data != null)
                 _data.TodayTMPoints = int.Parse(data.ToString());
 
-            data = bigData.Child(SavingWrapper.GetValueNodePath(EValueNode.ChallengeWon)).Value;
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.ChallengeTMWon)).Value;
             if (data != null)
                 _data.TotalWonTMChallenge = int.Parse(data.ToString());
         }

@@ -37,7 +37,7 @@ namespace WatKhaoWong.UI.Leaderboards
             _leaderboard = GameObject.FindWithTag("Player").GetComponentInChildren<Leaderboard>();
             _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
 
-            _leaderboard.OnCategoryChanged += RefreshUI;
+            _leaderboard.OnLeaderboardCategoryChanged += RefreshUI;
 
             UIRefresher.OnLeaderboardRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
@@ -73,7 +73,7 @@ namespace WatKhaoWong.UI.Leaderboards
             {
                 RowUI createdPrefab = Instantiate(_rowPrefab, _spawnParent);
 
-                createdPrefab.Setup(otherUserData, rowCounter, RowUI.IsInLeaderboard.Yes);
+                createdPrefab.Setup(otherUserData, rowCounter, _leaderboard.Category, RowUI.IsInLeaderboard.Yes);
 
                 ++rowCounter;
             }
@@ -85,7 +85,7 @@ namespace WatKhaoWong.UI.Leaderboards
         {
             RowUI.IsInLeaderboard isMeInLeaderboard = _leaderboard.IsMeInLeaderboard() ? RowUI.IsInLeaderboard.Yes : RowUI.IsInLeaderboard.No;
 
-            _myRowUI.Setup(_myUserData, _leaderboard.GetMyUserRank(), isMeInLeaderboard);
+            _myRowUI.Setup(_myUserData, _leaderboard.GetMyUserRank(), _leaderboard.Category, isMeInLeaderboard);
         }
 
         private void ClearRows()

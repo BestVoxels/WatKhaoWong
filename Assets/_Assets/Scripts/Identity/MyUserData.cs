@@ -30,6 +30,7 @@ namespace WatKhaoWong.Identity
 
         #region --Events-- (Delegate as Action)
         public event Action OnMyUserDataUpdated;
+        public event Action<int> OnTodayTMPointsAdded;
         #endregion
 
 
@@ -66,7 +67,7 @@ namespace WatKhaoWong.Identity
         {
             _data.FirstName = input;
 
-            _savingWrapper.Save(EValueNode.FirstName, _data.FirstName);
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.FirstName, _data.FirstName);
             OnMyUserDataUpdated?.Invoke();
         }
 
@@ -74,7 +75,7 @@ namespace WatKhaoWong.Identity
         {
             _data.LastName = input;
 
-            _savingWrapper.Save(EValueNode.LastName, _data.LastName);
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.LastName, _data.LastName);
             OnMyUserDataUpdated?.Invoke();
         }
 
@@ -82,7 +83,7 @@ namespace WatKhaoWong.Identity
         {
             _data.MemberSince = input;
 
-            _savingWrapper.Save(EValueNode.MemberSince, _data.MemberSince.ToString());
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.MemberSince, _data.MemberSince.ToString());
             OnMyUserDataUpdated?.Invoke();
         }
 
@@ -90,7 +91,7 @@ namespace WatKhaoWong.Identity
         {
             _data.ProfileIcon = input;
 
-            _savingWrapper.Save(EValueNode.ProfileIconID, _data.ProfileIcon.ItemID);
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.ProfileIconID, _data.ProfileIcon.ItemID);
             OnMyUserDataUpdated?.Invoke();
         }
 
@@ -99,7 +100,7 @@ namespace WatKhaoWong.Identity
             print("***Role Changed***");
             _data.Role = role;
 
-            _savingWrapper.Save(EValueNode.Role, _data.Role.ToString());
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.Role, _data.Role.ToString());
             OnMyUserDataUpdated?.Invoke();
         }
 
@@ -107,7 +108,7 @@ namespace WatKhaoWong.Identity
         {
             _data.Level = input;
 
-            _savingWrapper.Save(EValueNode.Level, _data.Level);
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.Level, _data.Level);
             OnMyUserDataUpdated?.Invoke();
         }
 
@@ -115,7 +116,7 @@ namespace WatKhaoWong.Identity
         {
             _data.TotalTMPoints += input;
 
-            _savingWrapper.Save(EValueNode.TotalTMPoint, _data.TotalTMPoints);
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TotalTMPoint, _data.TotalTMPoints);
             OnMyUserDataUpdated?.Invoke();
         }
 
@@ -125,23 +126,20 @@ namespace WatKhaoWong.Identity
 
             ResetTMPointsDaily();
 
-            if (_data.TodayTMPoints == 0)
-            {
-                _data.FirstUploadTimeOfDay = DateTime.Now;
-                _savingWrapper.Save(EValueNode.FirstUploadTimeOfDay, DateTime.Now.ToString());
-            }
+            AssignUploadTime();
 
             _data.TodayTMPoints += input;
-            _savingWrapper.Save(EValueNode.TodayTMPoint, _data.TodayTMPoints);
-
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TodayTMPoint, _data.TodayTMPoints);
             OnMyUserDataUpdated?.Invoke();
+
+            OnTodayTMPointsAdded?.Invoke(_data.TodayTMPoints);
         }
 
         public void AddTotalWonTMChallenge(int input)
         {
             _data.TotalWonTMChallenge += input;
 
-            _savingWrapper.Save(EValueNode.ChallengeWon, _data.TotalWonTMChallenge);
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.ChallengeTMWon, _data.TotalWonTMChallenge);
             OnMyUserDataUpdated?.Invoke();
         }
         #endregion
@@ -151,12 +149,23 @@ namespace WatKhaoWong.Identity
         #region --Methods-- (Custom PRIVATE)
         private void ResetTMPointsDaily()
         {
-            if (_data.FirstUploadTimeOfDay.Date != DateTime.Today && _data.TodayTMPoints > 0)
+            if (_data.FirstUploadTimeOfDayTM == default) return;
+
+            if (_data.FirstUploadTimeOfDayTM.Date != DateTime.Today && _data.TodayTMPoints > 0)
             {
                 _data.TodayTMPoints = 0;
 
-                _savingWrapper.ForceSave(EValueNode.TodayTMPoint, 0);
+                _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.TodayTMPoint, 0);
                 OnMyUserDataUpdated?.Invoke();
+            }
+        }
+
+        private void AssignUploadTime()
+        {
+            if (_data.TodayTMPoints == 0)
+            {
+                _data.FirstUploadTimeOfDayTM = DateTime.Now;
+                _savingWrapper.Save(ECategoryNode.Users, EValueNode.FirstUploadTimeOfDayTM, DateTime.Now.ToString());
             }
         }
 
@@ -168,56 +177,56 @@ namespace WatKhaoWong.Identity
 
         private async void LoadSave()
         {
-            var data = await _savingWrapper.Load(EValueNode.FirstName);
+            var data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.FirstName);
             if (data != null)
                 _data.FirstName = data.Value.ToString();
 
-            data = await _savingWrapper.Load(EValueNode.LastName);
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.LastName);
             if (data != null)
                 _data.LastName = data.Value.ToString();
 
-            data = await _savingWrapper.Load(EValueNode.MemberSince);
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.MemberSince);
             if (data != null)
             {
                 if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
                 _data.MemberSince = result;
             }
 
-            data = await _savingWrapper.Load(EValueNode.ProfileIconID);
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.ProfileIconID);
             if (data != null)
             {
                 string id = data.Value.ToString();
                 _data.ProfileIcon = BaseItem.GetFromID(id) as ProfileIconItem;
             }
 
-            data = await _savingWrapper.Load(EValueNode.Role);
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.Role);
             if (data != null)
             {
                 string roleString = data.Value.ToString();
                 _data.Role = (EUserRole)Enum.Parse(typeof(EUserRole), roleString);
             }
 
-            data = await _savingWrapper.Load(EValueNode.Level);
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.Level);
             if (data != null)
                 _data.Level = int.Parse(data.Value.ToString());
 
-            data = await _savingWrapper.Load(EValueNode.TotalTMPoint);
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.TotalTMPoint);
             if (data != null)
                 _data.TotalTMPoints = int.Parse(data.Value.ToString());
 
-            data = await _savingWrapper.Load(EValueNode.TodayTMPoint);
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.TodayTMPoint);
             if (data != null)
                 _data.TodayTMPoints = int.Parse(data.Value.ToString());
 
-            data = await _savingWrapper.Load(EValueNode.ChallengeWon);
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.ChallengeTMWon);
             if (data != null)
                 _data.TotalWonTMChallenge = int.Parse(data.Value.ToString());
 
-            data = await _savingWrapper.Load(EValueNode.FirstUploadTimeOfDay);
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.FirstUploadTimeOfDayTM);
             if (data != null)
             {
                 if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
-                    _data.FirstUploadTimeOfDay = result;
+                    _data.FirstUploadTimeOfDayTM = result;
 
                 ResetTMPointsDaily();
             }

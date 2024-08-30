@@ -6,6 +6,7 @@ using WatKhaoWong.Identity;
 using Firebase.Database;
 using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Utils.Conditions;
+using Firebase.Auth;
 
 namespace WatKhaoWong.Leaderboards
 {
@@ -36,18 +37,24 @@ namespace WatKhaoWong.Leaderboards
 
 
         #region --Events-- (Delegate as Action)
-        public event Action OnCategoryChanged;
+        public event Action OnLeaderboardCategoryChanged;
+        public event Action OnLeaderboardScoreUpdated;
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        private List<DataSnapshot> _allTimeRows = new List<DataSnapshot>();
-        private ushort _myUserRank = 9999;
-        private bool _isMeInLeaderboard = false;
         private bool _isAsyncRunning = false;
 
+        private ushort _myUserRank = 9999;
+        private bool _isMeInLeaderboard = false;
+        private List<DataSnapshot> _allTimeRows = new();
+
+        private List<DataSnapshot> _todayRows = new();
+        private DateTime _leaderboardFirstUploadTimeOfDayTM;
+
         private SavingWrapper _savingWrapper;
+        private MyUserData _myUserData;
         #endregion
 
 
@@ -61,7 +68,7 @@ namespace WatKhaoWong.Leaderboards
             {
                 _defaultCategory = value;
 
-                OnCategoryChanged?.Invoke();
+                OnLeaderboardCategoryChanged?.Invoke();
             }
         }
         #endregion
@@ -72,12 +79,30 @@ namespace WatKhaoWong.Leaderboards
         private void Awake()
         {
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
+            _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
+        }
+
+        private void OnEnable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged; // This will trigger on Start() too so don't have to call LoadSave() on Start()
+            _myUserData.OnTodayTMPointsAdded += AddTodayTMPointsToLeaderboard;
+        }
+
+        private void OnDisable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
+            _myUserData.OnTodayTMPointsAdded -= AddTodayTMPointsToLeaderboard;
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PUBLIC)
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Leaderboard~
         public ushort GetMyUserRank()
         {
             if (_isMeInLeaderboard == false)
@@ -93,21 +118,25 @@ namespace WatKhaoWong.Leaderboards
             if (_isAsyncRunning) yield break; // Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.
 
             _isAsyncRunning = true;
-            switch (Category)
+
+            IAsyncEnumerable<DataSnapshot> rows = Category switch
             {
-                case ELeaderboardCategory.AllTime:
-                    await foreach (DataSnapshot eachData in GetAllTimeRows())
-                    {
-                        yield return new OtherUserData(eachData);
-                    }
-                    break;
+                ELeaderboardCategory.AllTime => GetAllTimeRows(),
+                ELeaderboardCategory.Today => GetTodayRows(),
+                ELeaderboardCategory.Challenge => null,
+                _ => null
+            };
 
-                case ELeaderboardCategory.Today:
-                    break;
-
-                case ELeaderboardCategory.Challenge:
-                    break;
+            if (rows == null)
+            {
+                Debug.LogError("Error : Can't fetch data to display rows on learderboard. Because 'rows' is null.");
+                _isAsyncRunning = false;
+                yield break;
             }
+
+            await foreach (DataSnapshot eachData in rows)
+                yield return new OtherUserData(eachData);
+
             _isAsyncRunning = false;
         }
         #endregion
@@ -121,7 +150,7 @@ namespace WatKhaoWong.Leaderboards
             if (_allTimeRows.Count == 0)
             {
                 ushort index = 0;
-                await foreach (DataSnapshot each in _savingWrapper.LoadAndSortByChildValue(EValueNode.TotalTMPoint, _maxRowNumber))
+                await foreach (DataSnapshot each in _savingWrapper.LoadAndSortByChildValue(ECategoryNode.Users, EValueNode.TotalTMPoint, _maxRowNumber))
                 {
                     ++index;
                     if (each.Key.Equals(FirebaseUtils.CurrentUserID))
@@ -141,6 +170,68 @@ namespace WatKhaoWong.Leaderboards
             // *** Return List as Synchronous ***
             foreach (DataSnapshot each in _allTimeRows)
                 yield return each;
+        }
+
+        private async IAsyncEnumerable<DataSnapshot> GetTodayRows()
+        {
+            // *** First Initialize List & also Return Asynchronous one by one when loaded from server. ***
+            if (_todayRows.Count == 0)
+            {
+                ushort index = 0;
+                await foreach (DataSnapshot eachDataOnlyHasKey in _savingWrapper.LoadAndSortByChildValue(ECategoryNode.LeaderboardTMToday, EValueNode.TodayTMPoint, _maxRowNumber))
+                {
+                    ++index;
+                    if (eachDataOnlyHasKey.Key.Equals(FirebaseUtils.CurrentUserID))
+                    {
+                        _myUserRank = index;
+                        _isMeInLeaderboard = true;
+                    }
+
+                    // On Server Side: 'each' ONLY has Key, it has no data inside
+                    DataSnapshot fullDataSnapshot = await _savingWrapper.LoadOtherUser(eachDataOnlyHasKey.Key);
+                    _todayRows.Add(fullDataSnapshot);
+
+                    yield return fullDataSnapshot;
+                }
+
+                yield break; // Important to stop here because 'await' will resume call and if we don't end here it will run code below too.
+            }
+
+            // *** Return List as Synchronous ***
+            foreach (DataSnapshot each in _todayRows)
+                yield return each;
+        }
+
+        private async void LoadSave()
+        {
+            var data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM);
+            if (data != null)
+            {
+                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                    _leaderboardFirstUploadTimeOfDayTM = result;
+
+                DeleteTodayTMLeaderboardDaily();
+            }
+        }
+
+        private void DeleteTodayTMLeaderboardDaily()
+        {
+            if (_leaderboardFirstUploadTimeOfDayTM == default) return;
+
+            if (_leaderboardFirstUploadTimeOfDayTM.Date != DateTime.Today)// && check if Leaderboard is EMPTY)
+            {
+                _savingWrapper.ForceDeleteLeaderboardTMToday();
+            }
+        }
+
+        private async void AssignUploadTime()
+        {
+            bool isTMStatsExist = await _savingWrapper.IsSaveExists(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM);
+            if (!isTMStatsExist)
+            {
+                _leaderboardFirstUploadTimeOfDayTM = DateTime.Now;
+                _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM, DateTime.Now.ToString());
+            }
         }
         #endregion
 
@@ -162,6 +253,34 @@ namespace WatKhaoWong.Leaderboards
             }
 
             return null;
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber)
+        /// <summary>
+        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake().
+        /// </summary>
+        private void HandleStateChanged(object obj, EventArgs args)
+        {
+            LoadSave(); // So Don't have to call on Awake()
+        }
+
+        private void AddTodayTMPointsToLeaderboard(int score)
+        {
+            if (score <= 0) return;
+
+            DeleteTodayTMLeaderboardDaily();
+
+            AssignUploadTime();
+
+            // Add score to leaderboard
+            _savingWrapper.Save(ECategoryNode.LeaderboardTMToday, EValueNode.TodayTMPoint, score);
+
+            // Clear Lists so that it has to fetch from database again.
+            _todayRows = new();
+            OnLeaderboardScoreUpdated?.Invoke();
         }
         #endregion
     }

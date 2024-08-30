@@ -7,6 +7,7 @@ using WatKhaoWong.Utils;
 using WatKhaoWong.Utils.Core;
 using System.Threading.Tasks;
 using Firebase.Database;
+using System;
 
 namespace WatKhaoWong.SceneManagement
 {
@@ -42,24 +43,24 @@ namespace WatKhaoWong.SceneManagement
         //{
         //    if (Input.GetKeyDown(KeyCode.S))
         //    {
-        //        Save(EValueNode.Level, 2);
+        //        Save(ECategoryNode.Users, EValueNode.Level, 2);
         //    }
 
         //    if (Input.GetKeyDown(KeyCode.L))
         //    {
-        //        DataSnapshot result = await Load(EValueNode.Level);
+        //        DataSnapshot result = await Load(ECategoryNode.Users, EValueNode.Level);
         //        if (result == null) return;
         //        print($"Key : {result.Key} / Value : {result.Value}");
         //    }
 
         //    if (Input.GetKeyDown(KeyCode.D))
         //    {
-        //        Delete(EValueNode.Level);
+        //        Delete(ECategoryNode.Users, EValueNode.Level);
         //    }
 
         //    if (Input.GetKeyDown(KeyCode.E))
         //    {
-        //        bool result = await SaveExists(EValueNode.Level);
+        //        bool result = await IsSaveExists(ECategoryNode.Users, EValueNode.Level);
         //        print($"Is Exist Result : {result}");
         //    }
         //}
@@ -74,9 +75,9 @@ namespace WatKhaoWong.SceneManagement
         /// 2. Can't create Path if Guest User or (Not Authenticated) save to database
         /// MAKE SURE you know the sequence of the code that use this method.
         /// </summary>
-        public void ForceSave(EValueNode valueNode, object saveValue)
+        public void ForceSave(ECategoryNode categoryNode, EValueNode valueNode, object saveValue)
         {
-            _savingSystem.value.Save(GetCurrentUserPath(valueNode), saveValue);
+            _savingSystem.value.Save(GetPath(categoryNode, valueNode), saveValue);
         }
 
         /// <summary>
@@ -85,28 +86,36 @@ namespace WatKhaoWong.SceneManagement
         /// 1. It won't Save on Start()
         /// 2. It won't Save if User is not Authenticated
         /// </summary>
-        public void Save(EValueNode valueNode, object saveValue)
+        public void Save(ECategoryNode categoryNode, EValueNode valueNode, object saveValue)
         {
             if (!FirebaseUtils.IsAuthenticated()) return;
             if (IsSaveProtectionOnStartActive()) return; // Avoid Override Save file with Default Values of UI or Player Default State.
 
-            _savingSystem.value.Save(GetCurrentUserPath(valueNode), saveValue);
+            _savingSystem.value.Save(GetPath(categoryNode, valueNode), saveValue);
         }
 
-        public async Task<DataSnapshot> Load(EValueNode valueNode)
+        public async Task<DataSnapshot> Load(ECategoryNode categoryNode, EValueNode valueNode)
         {
             if (!FirebaseUtils.IsAuthenticated()) return null;
             // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
 
-            return await _savingSystem.value.Load(GetCurrentUserPath(valueNode));
+            return await _savingSystem.value.Load(GetPath(categoryNode, valueNode));
         }
 
-        public async IAsyncEnumerable<DataSnapshot> LoadAndSortByChildValue(EValueNode valueNode, int limitNumber)
+        public async Task<DataSnapshot> LoadOtherUser(string otherUserID)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return null;
+            // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
+
+            return await _savingSystem.value.Load(Path.Combine(ECategoryNode.Users.ToString(), otherUserID));
+        }
+
+        public async IAsyncEnumerable<DataSnapshot> LoadAndSortByChildValue(ECategoryNode categoryNode, EValueNode valueNode, int limitNumber)
         {
             if (!FirebaseUtils.IsAuthenticated()) yield break;
             // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
 
-            DataSnapshot dataSnapshot = await _savingSystem.value.LoadAndSortByChildValue(EParentNode.Users.ToString(), GetValueNodePath(valueNode), limitNumber);
+            DataSnapshot dataSnapshot = await _savingSystem.value.LoadAndSortByChildValue(categoryNode.ToString(), GetValueNodePath(categoryNode, valueNode), limitNumber);
             
             if (dataSnapshot == null)
             {
@@ -120,34 +129,44 @@ namespace WatKhaoWong.SceneManagement
             }
         }
 
-        public void Delete(EValueNode valueNode)
+        public void Delete(ECategoryNode categoryNode, EValueNode valueNode)
         {
             if (!FirebaseUtils.IsAuthenticated()) return;
 
-            _savingSystem.value.Delete(GetCurrentUserPath(valueNode));
+            _savingSystem.value.Delete(GetPath(categoryNode, valueNode));
+        }
+
+        public void ForceDeleteLeaderboardTMToday()
+        {
+            _savingSystem.value.Delete(ECategoryNode.LeaderboardTMToday.ToString());
         }
 
         /// <summary>
         /// Don't call this as checker for call 'Load()' because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
         /// </summary>
-        public async Task<bool> SaveExists(EValueNode valueNode)
+        public async Task<bool> IsSaveExists(ECategoryNode categoryNode, EValueNode valueNode)
         {
             if (!FirebaseUtils.IsAuthenticated()) return false;
 
-            return await _savingSystem.value.SaveExists(GetCurrentUserPath(valueNode));
+            return await _savingSystem.value.IsSaveExists(GetPath(categoryNode, valueNode));
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PUBLIC) ~Useful Utility~
-        public static string GetValueNodePath(EValueNode valueNode)
+        public static string GetValueNodePath(ECategoryNode categoryNode, EValueNode valueNode)
         {
-            EParentNode? parentNode = GetParentNode(valueNode);
+            // ONLY 'Users' category that needs ParentNode
+            if (categoryNode == ECategoryNode.Users)
+            {
+                EParentNode? parentNode = GetParentNode(valueNode);
+                if (parentNode == null) return null;
 
-            if (parentNode == null) return null;
+                return Path.Combine(parentNode.ToString(), valueNode.ToString());
+            }
 
-            return Path.Combine(parentNode.ToString(), valueNode.ToString());
+            return Path.Combine(valueNode.ToString());
         }
 
         public static EParentNode? GetParentNode(EValueNode valueNode)
@@ -171,9 +190,9 @@ namespace WatKhaoWong.SceneManagement
 
                 case EValueNode.TodayTMPoint:
                 case EValueNode.TotalTMPoint:
-                case EValueNode.ChallengeWon:
-                case EValueNode.FirstUploadTimeOfDay:
-                    parentNode = EParentNode.Points;
+                case EValueNode.ChallengeTMWon:
+                case EValueNode.FirstUploadTimeOfDayTM:
+                    parentNode = EParentNode.TMPoints;
                     break;
 
                 default:
@@ -197,24 +216,20 @@ namespace WatKhaoWong.SceneManagement
 
 
         #region --Methods-- (Custom PRIVATE) ~Path Builder as JSON Tree Structure Example Above~
-        private string GetCurrentUserPath(EValueNode valueNode)
+        private string GetPath(ECategoryNode categoryNode, EValueNode valueNode)
         {
-            string path = GetValueNodePath(valueNode);
+            string valueNodePath = GetValueNodePath(categoryNode, valueNode);
+            if (valueNodePath == null) Debug.LogError("Can't create Path. ValueNodePath is null! Maybe because Parent Node is null.");
 
-            if (path == null || FirebaseUtils.CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
+            // ONLY 'LeaderboardStats' Category does NOT NEED userID in path.
+            if (categoryNode == ECategoryNode.LeaderboardStats)
+            {
+                return Path.Combine(ECategoryNode.LeaderboardStats.ToString(), valueNodePath);
+            }
 
-            return Path.Combine("Users", FirebaseUtils.CurrentUserID, path);
+            if (FirebaseUtils.CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
+            return Path.Combine(categoryNode.ToString(), FirebaseUtils.CurrentUserID, valueNodePath);
         }
-
-        //// EXAMPLE of getting Other User Path
-        //private string GetOtherUserPath(string otherUserID, EValueNode valueNode)
-        //{
-        //    string path = GetValueNodePath(valueNode);
-
-        //    if (path == null || CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
-
-        //    return Path.Combine("Users", otherUserID, path);
-        //}
         #endregion
     }
 }

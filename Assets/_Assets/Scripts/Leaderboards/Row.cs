@@ -5,6 +5,13 @@ namespace WatKhaoWong.Leaderboards
 {
     public class Row : MonoBehaviour
     {
+        #region --Properties-- (Inspector)
+        [field: Header("Row Settings")]
+        [field: SerializeField] public string DefaultNullScoreText { get; private set; } = "null";
+        #endregion
+
+
+
         #region --Events-- (UnityEvent)
         [Header("Row UI Event")]
         [SerializeField] private UnityEvent _onClickMyselfRow;
