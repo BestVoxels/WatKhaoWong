@@ -36,8 +36,6 @@ namespace WatKhaoWong.Prays
         {
             if (result <= 0) return;
 
-            Debug.LogWarning($"Save Points ({result}) to _tempTMPoints field under ConfirmPopup.cs");
-
             _tempTMPoints = result;
         }
         #endregion
@@ -47,8 +45,6 @@ namespace WatKhaoWong.Prays
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
         public void OnCancelButtonClick()
         {
-            Debug.LogWarning("Click \"Cancel\" Button! on Popup");
-
             _tempTMPoints = 0;
 
             _onCancelButtonClick?.Invoke();
@@ -56,8 +52,6 @@ namespace WatKhaoWong.Prays
 
         public void OnConfirmButtonClick()
         {
-            Debug.LogWarning("Click \"Confirm\" Button! on Popup");
-
             _undoPopup.StartUploadToServer(_tempTMPoints);
 
             _onConfirmButtonClick?.Invoke();

@@ -98,22 +98,16 @@ namespace WatKhaoWong.SharePopup
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
         public void OnInformTextClick()
         {
-            Debug.LogWarning("Click \"Inform Text\" UI!");
-
             _onInformTextClick?.Invoke();
         }
 
         public void OnLoginTextClick()
         {
-            Debug.LogWarning("Click \"Login Text\" UI!");
-
             _onLoginTextClick?.Invoke();
         }
 
         public void OnValidateSucceeded(EAuthType authType, string firstName, string lastName, string phoneNumber, string email, string password)
         {
-            Debug.LogWarning("Validate Texts Succeeded");
-
             // Can't just call _savingWrapper.SaveWithoutAuth() without Subscribe to _onSignupSucceeded BECAUSE have to wait for 'CurrentUser.UserId' otherwise can't get Path to save.
             _onSignupSucceeded.AddListener((FirebaseUser user) =>
             {
@@ -136,8 +130,6 @@ namespace WatKhaoWong.SharePopup
 
         public void OnValidateFailed()
         {
-            Debug.LogWarning("Validate Texts Failed");
-
             _onValidateTextFailed?.Invoke();
         }
         #endregion
@@ -163,7 +155,6 @@ namespace WatKhaoWong.SharePopup
                 _isRunningOnBackground = false;
             }
 
-            Debug.Log($"Successfully registered user {result.User.Email}");
             _statusText.Show(_statusSucceeded, _statusSucceededColor);
 
             _onSignupSucceeded?.Invoke(result.User);

@@ -97,7 +97,6 @@ namespace WatKhaoWong.Identity
 
         public void SetRole(EUserRole role)
         {
-            print("***Role Changed***");
             _data.Role = role;
 
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.Role, _data.Role.ToString());

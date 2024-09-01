@@ -84,23 +84,16 @@ namespace WatKhaoWong.SharePopup
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
         public void OnSignupTextClick()
         {
-            Debug.LogWarning("Click \"Signup Text\" UI!");
-
             _onSignupTextClick?.Invoke();
         }
 
         public void OnForgotTextClick()
         {
-            Debug.LogWarning("Click \"Forgot Text\" UI!");
-
             _onForgotTextClick?.Invoke();
         }
 
         public void OnValidateSucceeded(EAuthType authType, string phoneNumber, string email, string password)
         {
-            Debug.LogWarning("Validate Texts Succeeded");
-
-
             if (_isRunningOnBackground) return;
 
             if (authType == EAuthType.PhoneNumber)
@@ -115,8 +108,6 @@ namespace WatKhaoWong.SharePopup
 
         public void OnValidateFailed()
         {
-            Debug.LogWarning("Validate Texts Failed");
-
             _onValidateTextFailed?.Invoke();
         }
         #endregion
@@ -142,7 +133,6 @@ namespace WatKhaoWong.SharePopup
                 _isRunningOnBackground = false;
             }
 
-            Debug.Log($"Successfully Logged in user {result.User.Email}");
             _statusText.Show(_statusSucceeded, _statusSucceededColor);
 
             _onLoginSucceeded?.Invoke(result.User);

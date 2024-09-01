@@ -64,22 +64,16 @@ namespace WatKhaoWong.Prays
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
         public void OnCancelButtonClick()
         {
-            Debug.LogWarning("Click \"Cancel\" Button! on Popup");
-
             _onCancelButtonClick?.Invoke();
         }
 
         public void OnOkButtonClick()
         {
-            Debug.LogWarning("Click \"OK\" Button! on Popup");
-
             _onOkButtonClick?.Invoke();
         }
 
         public void OnOkButtonCantClick()
         {
-            Debug.LogWarning("CANT Click \"OK\" Button! on Popup");
-
             _onOkButtonCantClick?.Invoke();
         }
         #endregion

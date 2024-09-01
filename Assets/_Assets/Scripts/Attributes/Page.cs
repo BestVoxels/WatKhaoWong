@@ -15,8 +15,6 @@ namespace WatKhaoWong.Attributes
         #region --Methods-- (Custom PUBLIC) ~Page Header UI~
         public void OnBackButtonClick()
         {
-            Debug.LogWarning("Click \"Back\" Button!");
-
             _onBackButtonClick?.Invoke();
         }
         #endregion

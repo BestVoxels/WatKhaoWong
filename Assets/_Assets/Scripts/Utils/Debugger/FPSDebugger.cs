@@ -116,8 +116,8 @@ namespace WatKhaoWong.Utils.Debugger
 
             _targetFPSIndexer = (byte)(_targetFPSIndexer == _targetFPSValues.Length - 1 ? 0 : ++_targetFPSIndexer);
 
-            print($"Application.targetFrameRate : {Application.targetFrameRate}");
-            print($"_targetFPSIndexer : {_targetFPSIndexer}");
+            //print($"Application.targetFrameRate : {Application.targetFrameRate}");
+            //print($"_targetFPSIndexer : {_targetFPSIndexer}");
         }
 
         private void UpdateVsync()
@@ -126,8 +126,8 @@ namespace WatKhaoWong.Utils.Debugger
 
             _vsyncIndexer = (byte)(_vsyncIndexer == _vsyncValues.Length - 1 ? 0 : ++_vsyncIndexer);
 
-            print($"QualitySettings.vSyncCount : {QualitySettings.vSyncCount}");
-            print($"_vsyncIndexer : {_vsyncIndexer}");
+            //print($"QualitySettings.vSyncCount : {QualitySettings.vSyncCount}");
+            //print($"_vsyncIndexer : {_vsyncIndexer}");
         }
         #endregion
     }

@@ -147,8 +147,8 @@ namespace Michsky.MUIP
         {
             Selection.activeObject = Resources.Load("MUIP Manager");
 
-            if (Selection.activeObject == null)
-                Debug.Log("<b>[Modern UI Pack]</b>Can't find a file named 'MUIP Manager'. Make sure you have 'MUIP Manager' file in Resources folder.");
+            //if (Selection.activeObject == null)
+            //    Debug.Log("<b>[Modern UI Pack]</b>Can't find a file named 'MUIP Manager'. Make sure you have 'MUIP Manager' file in Resources folder.");
         }
 
         [MenuItem("GameObject/Modern UI Pack/Button/Standard", false, 8)]

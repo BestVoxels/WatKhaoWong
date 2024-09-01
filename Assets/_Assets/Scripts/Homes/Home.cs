@@ -77,22 +77,16 @@ namespace WatKhaoWong.Homes
         #region --Methods-- (Custom PUBLIC) ~Page UI Buttons~
         public void OnHistoryButtonClick()
         {
-            Debug.Log("Click \"History\" Button!");
-
             _onHistoryButtonClick?.Invoke();
         }
 
         public void OnPrayButtonClick()
         {
-            Debug.Log("Click \"Pray\" Button!");
-
             _onPrayButtonClick?.Invoke();
         }
 
         public void OnSettingButtonClick()
         {
-            Debug.Log("Click \"Setting\" Button!");
-
             _onSettingButtonClick?.Invoke();
         }
         #endregion

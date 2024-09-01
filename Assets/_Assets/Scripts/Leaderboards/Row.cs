@@ -23,15 +23,11 @@ namespace WatKhaoWong.Leaderboards
         #region --Methods-- (Custom PUBLIC) ~UI~
         public void OnClickMyselfRow()
         {
-            Debug.LogWarning("Click \"Myself Row\" UI!");
-
             _onClickMyselfRow?.Invoke();
         }
 
         public void OnClickOtherUserRow()
         {
-            Debug.LogWarning("Click \"Other User Row\" UI!");
-
             _onClickOtherUserRow?.Invoke();
         }
         #endregion

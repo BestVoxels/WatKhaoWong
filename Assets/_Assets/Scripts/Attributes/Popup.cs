@@ -15,8 +15,6 @@ namespace WatKhaoWong.Attributes
         #region --Methods-- (Custom PUBLIC) ~Page Header UI~
         public virtual void OnCloseButtonClick()
         {
-            Debug.LogWarning("Click \"Close\" Button! on Popup");
-
             _onCloseButtonClick?.Invoke();
         }
         #endregion

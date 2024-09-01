@@ -30,36 +30,26 @@ namespace WatKhaoWong.Prays
         #region --Methods-- (Custom PUBLIC) ~Page UI Buttons~
         public void OnUserProfileClick()
         {
-            Debug.LogWarning("Click \"User Profile (Icon & Username)\" UI!");
-
             _onUserProfileClick?.Invoke();
         }
 
         public void OnUserStatsClick()
         {
-            Debug.LogWarning("Click \"User Stats (All Time & Today)\" UI!");
-
             _onUserStatsClick?.Invoke();
         }
 
         public void OnDoneButtonClick()
         {
-            Debug.LogWarning("Click \"Done\" Button!");
-
             _onDoneButtonClick?.Invoke();
         }
 
         public void OnPlaySoundButtonClick()
         {
-            Debug.LogWarning("Click \"Sound\" Button!");
-
             _onPlaySoundButtonClick?.Invoke();
         }
 
         public void OnChallengeButtonClick()
         {
-            Debug.LogWarning("Click \"Start Challenge\" Button!");
-
             _onChallengeButtonClick?.Invoke();
         }
         #endregion

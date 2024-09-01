@@ -18,22 +18,16 @@ namespace WatKhaoWong.Settings
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
         public void OnWatKhaoWongButtonClick()
         {
-            Debug.LogWarning("Click \"WatKhaoWong\" Button! on Popup");
-
             _onWatKhaoWongButtonClick?.Invoke();
         }
 
         public void OnNaraiSongritButtonClick()
         {
-            Debug.LogWarning("Click \"NaraiSongrit\" Button! on Popup");
-
             _onNaraiSongritButtonClick?.Invoke();
         }
 
         public void OnBestVoxelsButtonClick()
         {
-            Debug.LogWarning("Click \"BestVoxels\" Button! on Popup");
-
             _onBestVoxelsButtonClick?.Invoke();
         }
         #endregion

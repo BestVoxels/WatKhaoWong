@@ -76,8 +76,6 @@ namespace WatKhaoWong.Prays
         {
             if (tmPoints <= 0) return;
 
-            Debug.LogWarning($"Save Points ({tmPoints}) to TMPoints property under ConfirmPopup.cs");
-
             _tmPoints = tmPoints;
 
             _previousCoroutine = StartCoroutine(UploadToServerDelay());
@@ -89,8 +87,6 @@ namespace WatKhaoWong.Prays
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
         public void OnUndoButtonClick()
         {
-            Debug.LogWarning("Click \"Undo\" Button! on Popup");
-
             if (_previousCoroutine != null)
                 StopCoroutine(_previousCoroutine);
 
@@ -126,7 +122,6 @@ namespace WatKhaoWong.Prays
 
         private void UploadToServer()
         {
-            Debug.LogWarning($"Upload {_tmPoints} Point to Server!!!");
             _myUserData.AddTotalTMPoints(_tmPoints);
             _myUserData.AddTodayTMPoints(_tmPoints);
 

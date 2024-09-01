@@ -545,15 +545,15 @@ namespace Michsky.MUIP
         {
             if (EditorUtility.DisplayDialog("Reset to defaults", "Are you sure you want to reset UI Manager values to default?", "Yes", "Cancel"))
             {
-                try
-                {
+                //try
+                //{
                     Preset defaultPreset = Resources.Load<Preset>("UI Manager Presets/Default");
                     defaultPreset.ApplyTo(Resources.Load("MUIP Manager"));
                     Selection.activeObject = null;
-                    Debug.Log("<b>[UI Manager]</b> Resetting successful.");
-                }
+                    //Debug.Log("<b>[UI Manager]</b> Resetting successful.");
+                //}
 
-                catch { Debug.LogWarning("<b>[UI Manager]</b> Resetting failed. Default preset seems to be missing"); }
+                //catch { Debug.LogWarning("<b>[UI Manager]</b> Resetting failed. Default preset seems to be missing"); }
             }    
         }
     }

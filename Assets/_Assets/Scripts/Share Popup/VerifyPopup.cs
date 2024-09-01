@@ -105,24 +105,18 @@ namespace WatKhaoWong.SharePopup
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
         public void OnInformTextClick()
         {
-            Debug.LogWarning("Click \"Inform Text\" UI!");
-
             ResendCode();
             _onInformTextClick?.Invoke();
         }
 
         public void OnResendTextClick()
         {
-            Debug.LogWarning("Click \"Resend Text\" UI!");
-
             ResendCode();
             _onResendTextClick?.Invoke();
         }
 
         public void OnValidateSucceeded(string typedCode)
         {
-            Debug.LogWarning("Validate Code Succeeded");
-
             _typedCode = typedCode;
 
             // Guard check for _caller if they are null, before LETTING SignupOrLoginAsyncWithPhoneNumber() use
@@ -139,8 +133,6 @@ namespace WatKhaoWong.SharePopup
 
         public void OnValidateFailed()
         {
-            Debug.LogWarning("Validate Code Failed");
-
             _onValidateTextFailed?.Invoke();
         }
         #endregion
@@ -269,7 +261,6 @@ namespace WatKhaoWong.SharePopup
                 _isRunningOnBackground = false;
             }
 
-            Debug.Log($"Succeeded! : user {result.User.PhoneNumber} / {result.User.ProviderId}");
             _statusText.Show(_callerStatusSucceeded, _callerStatusSucceededColor);
 
             _onCallerSucceeded?.Invoke(result.User); // Pass back to the caller

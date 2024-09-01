@@ -90,7 +90,7 @@ namespace Michsky.MUIP
             }
 
             if (selectedSpriteIndex != -1) { UpdateSpriteSize(selectedSpriteIndex, preferredSize); }
-            else { Debug.Log("<b>[Icon Manager]</b> Cannot find an icon named '" + newSprite + "'"); }
+            //else { Debug.Log("<b>[Icon Manager]</b> Cannot find an icon named '" + newSprite + "'"); }
         }
     }
 }

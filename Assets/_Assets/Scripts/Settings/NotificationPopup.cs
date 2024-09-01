@@ -103,8 +103,6 @@ namespace WatKhaoWong.Settings
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
         public void OnNotificationSwitchClick()
         {
-            Debug.Log("Click \"Notification\" Switch!");
-
             OnNotificationSwitchChanged?.Invoke();
             _onNotificationSwitchClick?.Invoke();
         }

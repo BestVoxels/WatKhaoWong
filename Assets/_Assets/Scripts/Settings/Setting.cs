@@ -47,36 +47,26 @@ namespace WatKhaoWong.Settings
         #region --Methods-- (Custom PUBLIC) ~Page UI Buttons~
         public void OnAccountButtonClick()
         {
-            Debug.Log("Click \"Account\" Button!");
-
             _onAccountButtonClick?.Invoke();
         }
 
         public void OnNotificationButtonClick()
         {
-            Debug.Log("Click \"Notification\" Button!");
-
             _onNotificationButtonClick?.Invoke();
         }
 
         public void OnLanguageButtonClick()
         {
-            Debug.Log("Click \"Language\" Button!");
-
             _onLanguageButtonClick?.Invoke();
         }
 
         public void OnSupportButtonClick()
         {
-            Debug.Log("Click \"Support\" Button!");
-
             _onSupportButtonClick?.Invoke();
         }
 
         public void OnCreditsButtonClick()
         {
-            Debug.Log("Click \"Credits\" Button!");
-
             _onCreditsButtonClick?.Invoke();
         }
         #endregion
