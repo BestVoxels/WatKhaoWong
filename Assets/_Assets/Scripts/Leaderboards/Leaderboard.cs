@@ -45,6 +45,7 @@ namespace WatKhaoWong.Leaderboards
 
         #region --Fields-- (In Class)
         private bool _isAsyncRunning = false;
+        private bool _isLeaderboardTMTodayExists = false;
 
         private ushort _myUserRank = 9999;
         private bool _isMeInLeaderboard = false;
@@ -204,6 +205,8 @@ namespace WatKhaoWong.Leaderboards
 
         private async void LoadSave()
         {
+            _isLeaderboardTMTodayExists = await _savingWrapper.IsLeaderboardTMTodayExists();
+
             var data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM);
             if (data != null)
             {
@@ -218,16 +221,16 @@ namespace WatKhaoWong.Leaderboards
         {
             if (_leaderboardFirstUploadTimeOfDayTM == default) return;
 
-            if (_leaderboardFirstUploadTimeOfDayTM.Date != DateTime.Today)// && check if Leaderboard is EMPTY)
+            if (_leaderboardFirstUploadTimeOfDayTM.Date != DateTime.Today && _isLeaderboardTMTodayExists)
             {
                 _savingWrapper.ForceDeleteLeaderboardTMToday();
+                _isLeaderboardTMTodayExists = false;
             }
         }
 
-        private async void AssignUploadTime()
+        private void AssignUploadTime()
         {
-            bool isTMStatsExist = await _savingWrapper.IsSaveExists(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM);
-            if (!isTMStatsExist)
+            if (!_isLeaderboardTMTodayExists)
             {
                 _leaderboardFirstUploadTimeOfDayTM = DateTime.Now;
                 _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM, DateTime.Now.ToString());

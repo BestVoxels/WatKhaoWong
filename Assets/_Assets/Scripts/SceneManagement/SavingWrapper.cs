@@ -150,6 +150,13 @@ namespace WatKhaoWong.SceneManagement
 
             return await _savingSystem.value.IsSaveExists(GetPath(categoryNode, valueNode));
         }
+
+        public async Task<bool> IsLeaderboardTMTodayExists()
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return false;
+
+            return await _savingSystem.value.IsSaveExists(ECategoryNode.LeaderboardTMToday.ToString());
+        }
         #endregion
 
 
