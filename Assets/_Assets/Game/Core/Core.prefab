@@ -1792,6 +1792,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31f3ad086fe084e00829e1b99fab5307, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <NullRankText>k__BackingField: no rank
+  <NullScoreText>k__BackingField: no score
+  <NotInLeaderboardTextBegin>k__BackingField: '>'
+  <ShowRankIfNotInLeaderboard>k__BackingField: 1
+  <NotInLeaderboardTextEnd>k__BackingField: 
   _onClickMyselfRow:
     m_PersistentCalls:
       m_Calls:
@@ -1866,9 +1871,11 @@ MonoBehaviour:
   <UnselectedColor>k__BackingField:
     serializedVersion: 2
     rgba: 4290687917
-  <NoChallengeText>k__BackingField: No active Challenge at the moment
-  <CountDownChallengeTextBegin>k__BackingField: 'Challenge ends in '
-  <CountDownChallengeTextEnd>k__BackingField: ' days!'
+  <NoAllTimeLeaderboardText>k__BackingField: No data for All Time leaderboard
+  <NoTodayLeaderboardText>k__BackingField: No data for Today leaderboard
+  <NoChallengeLeaderboardText>k__BackingField: No active Challenge at the moment
+  <ChallengeBannerTextBegin>k__BackingField: 'Challenge Ends in '
+  <ChallengeBannerTextEnd>k__BackingField: ' days!'
 --- !u!1 &7306031348881270002
 GameObject:
   m_ObjectHideFlags: 0

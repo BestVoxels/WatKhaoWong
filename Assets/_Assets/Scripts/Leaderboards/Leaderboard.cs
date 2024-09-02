@@ -16,7 +16,7 @@ namespace WatKhaoWong.Leaderboards
         [Header("Leaderboard Settings")]
         [SerializeField] private ELeaderboardCategory _defaultCategory;
         [Range(1, 200)]
-        [SerializeField] private int _maxRowNumber = 100;
+        [SerializeField] private ushort _maxRowNumber = 100;
         #endregion
 
 
@@ -29,9 +29,19 @@ namespace WatKhaoWong.Leaderboards
         [field: Space]
 
         [field: Header("Leaderboard Status Text")]
-        [field: SerializeField] public string NoChallengeText { get; private set; } = "No active Challenge at the moment";
-        [field: SerializeField] public string CountDownChallengeTextBegin { get; private set; } = $"Challenge ends in ";
-        [field: SerializeField] public string CountDownChallengeTextEnd { get; private set; } = $" days!";
+        [field: SerializeField] public string NoAllTimeLeaderboardText { get; private set; } = "No data for All Time leaderboard";
+        [field: SerializeField] public string NoTodayLeaderboardText { get; private set; } = "No data for Today leaderboard";
+        [field: SerializeField] public string NoChallengeLeaderboardText { get; private set; } = "No active Challenge at the moment";
+        [field: Space]
+        [field: Tooltip("Not likely to be shown.")]
+        [field: SerializeField] public string HasAllTimeLeaderboardText { get; private set; } = "Displaying data for All Time leaderboard";
+        [field: Tooltip("Not likely to be shown.")]
+        [field: SerializeField] public string HasTodayLeaderboardText { get; private set; } = "Displaying data for Today leaderboard";
+        [field: Tooltip("Not likely to be shown.")]
+        [field: SerializeField] public string HasChallengeLeaderboardText { get; private set; } = "Displaying data for the Active Challenge";
+        [field: Space]
+        [field: SerializeField] public string ChallengeBannerTextBegin { get; private set; } = $"Challenge ends in ";
+        [field: SerializeField] public string ChallengeBannerTextEnd { get; private set; } = $" days!";
         #endregion
 
 
@@ -44,15 +54,11 @@ namespace WatKhaoWong.Leaderboards
 
 
         #region --Fields-- (In Class)
+        private RecordCollection _records;
+
         private bool _isAsyncRunning = false;
-        private bool _isLeaderboardTMTodayExists = false;
-
-        private ushort _myUserRank = 9999;
-        private bool _isMeInLeaderboard = false;
-        private List<DataSnapshot> _allTimeRows = new();
-
-        private List<DataSnapshot> _todayRows = new();
         private DateTime _leaderboardFirstUploadTimeOfDayTM;
+        private bool _isLeaderboardTMTodayExists = false;
 
         private SavingWrapper _savingWrapper;
         private MyUserData _myUserData;
@@ -71,6 +77,20 @@ namespace WatKhaoWong.Leaderboards
 
                 OnLeaderboardCategoryChanged?.Invoke();
             }
+        }
+
+        // Doing this way to PREVENT Null Error from accessing Records. This way it will gets value when it needs, no need to initialize on Start().
+        private RecordCollection Records
+        {
+            get
+            {
+                if (_records == null)
+                    _records = new(_maxRowNumber);
+
+                return _records;
+            }
+
+            set => _records = value;
         }
         #endregion
 
@@ -104,15 +124,13 @@ namespace WatKhaoWong.Leaderboards
 
 
         #region --Methods-- (Custom PUBLIC) ~Leaderboard~
-        public ushort GetMyUserRank()
-        {
-            if (_isMeInLeaderboard == false)
-                _myUserRank = (ushort)_maxRowNumber;
+        public ushort GetMyRank() => Records[Category].MyRank;
 
-            return _myUserRank;
-        }
+        public ELeaderboardPresence GetMyPresence() => Records[Category].MyPresence;
 
-        public bool IsMeInLeaderboard() => _isMeInLeaderboard;
+        public bool IsLeaderboardExists() => Records[Category].IsLeaderboardExists;
+
+        public int GetChallengeDayLeft() => 10; // TODO return properly
 
         public async IAsyncEnumerable<OtherUserData> GetRows()
         {
@@ -122,8 +140,8 @@ namespace WatKhaoWong.Leaderboards
 
             IAsyncEnumerable<DataSnapshot> rows = Category switch
             {
-                ELeaderboardCategory.AllTime => GetAllTimeRows(),
-                ELeaderboardCategory.Today => GetTodayRows(),
+                ELeaderboardCategory.AllTime => GetRowsFromServer(ECategoryNode.Users, EValueNode.TotalTMPoint),
+                ELeaderboardCategory.Today => GetRowsFromServer(ECategoryNode.LeaderboardTMToday, EValueNode.TodayTMPoint),
                 ELeaderboardCategory.Challenge => null,
                 _ => null
             };
@@ -145,61 +163,38 @@ namespace WatKhaoWong.Leaderboards
 
 
         #region --Methods-- (Custom PRIVATE)
-        private async IAsyncEnumerable<DataSnapshot> GetAllTimeRows()
+        private async IAsyncEnumerable<DataSnapshot> GetRowsFromServer(ECategoryNode categoryNode, EValueNode valueNode)
         {
             // *** First Initialize List & also Return Asynchronous one by one when loaded from server. ***
-            if (_allTimeRows.Count == 0)
+            if (Records[Category].CachedRows.Count == 0)
             {
                 ushort index = 0;
-                await foreach (DataSnapshot each in _savingWrapper.LoadAndSortByChildValue(ECategoryNode.Users, EValueNode.TotalTMPoint, _maxRowNumber))
+                await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValue(categoryNode, valueNode, _maxRowNumber))
                 {
                     ++index;
-                    if (each.Key.Equals(FirebaseUtils.CurrentUserID))
+                    Records[Category].IsLeaderboardExists = true;
+
+                    if (eachData.Key.Equals(FirebaseUtils.CurrentUserID))
                     {
-                        _myUserRank = index;
-                        _isMeInLeaderboard = true;
-                    }
-                    
-                    _allTimeRows.Add(each);
-
-                    yield return each;
-                }
-
-                yield break; // Important to stop here because 'await' will resume call and if we don't end here it will run code below too.
-            }
-            
-            // *** Return List as Synchronous ***
-            foreach (DataSnapshot each in _allTimeRows)
-                yield return each;
-        }
-
-        private async IAsyncEnumerable<DataSnapshot> GetTodayRows()
-        {
-            // *** First Initialize List & also Return Asynchronous one by one when loaded from server. ***
-            if (_todayRows.Count == 0)
-            {
-                ushort index = 0;
-                await foreach (DataSnapshot eachDataOnlyHasKey in _savingWrapper.LoadAndSortByChildValue(ECategoryNode.LeaderboardTMToday, EValueNode.TodayTMPoint, _maxRowNumber))
-                {
-                    ++index;
-                    if (eachDataOnlyHasKey.Key.Equals(FirebaseUtils.CurrentUserID))
-                    {
-                        _myUserRank = index;
-                        _isMeInLeaderboard = true;
+                        Records[Category].MyRank = index;
+                        Records[Category].MyPresence = ELeaderboardPresence.Present;
                     }
 
-                    // On Server Side: 'each' ONLY has Key, it has no data inside
-                    DataSnapshot fullDataSnapshot = await _savingWrapper.LoadOtherUser(eachDataOnlyHasKey.Key);
-                    _todayRows.Add(fullDataSnapshot);
+                    DataSnapshot data = eachData;
+                    // IF data is from 'LeaderboardTMToday' or 'LeaderboardTMChallenge', 'eachData' ONLY has Key, it has no data inside
+                    if (categoryNode == ECategoryNode.LeaderboardTMToday) // TODO || categoryNode == ECategoryNode.LeaderboardTMChallenge
+                        data = await _savingWrapper.LoadOtherUser(eachData.Key);
 
-                    yield return fullDataSnapshot;
+                    Records[Category].CachedRows.Add(data);
+
+                    yield return data;
                 }
 
                 yield break; // Important to stop here because 'await' will resume call and if we don't end here it will run code below too.
             }
 
             // *** Return List as Synchronous ***
-            foreach (DataSnapshot each in _todayRows)
+            foreach (DataSnapshot each in Records[Category].CachedRows)
                 yield return each;
         }
 
@@ -282,8 +277,70 @@ namespace WatKhaoWong.Leaderboards
             _savingWrapper.Save(ECategoryNode.LeaderboardTMToday, EValueNode.TodayTMPoint, score);
 
             // Clear Lists so that it has to fetch from database again.
-            _todayRows = new();
+            Records[ELeaderboardCategory.Today].CachedRows.Clear();
             OnLeaderboardScoreUpdated?.Invoke();
+        }
+        #endregion
+
+
+
+        #region --Classes-- (Custom PRIVATE)
+        private class Record
+        {
+            private readonly ushort _maxRowNumber;
+            private ushort _myRank = 9999;
+
+            public ushort MyRank
+            {
+                get
+                {
+                    if (MyPresence == ELeaderboardPresence.Absent)
+                        _myRank = _maxRowNumber;
+
+                    return _myRank;
+                }
+                set => _myRank = value;
+            }
+
+            public ELeaderboardPresence MyPresence { get; set; } = ELeaderboardPresence.Absent;
+            public bool IsLeaderboardExists { get; set; } = false;
+            public List<DataSnapshot> CachedRows { get; private set; } = new();
+
+            public Record(ushort maxRowNumber)
+            {
+                _maxRowNumber = maxRowNumber;
+            }
+        }
+
+        private class RecordCollection
+        {
+            // Collection
+            private readonly Record[] _records = new Record[3];
+
+            // Indexer
+            public Record this[ELeaderboardCategory category]
+            {
+                get => _records[GetInt(category)];
+            }
+
+            // Constructor
+            public RecordCollection(ushort maxRowNumber)
+            {
+                for (byte i = 0; i < _records.Length; i++)
+                    _records[i] = new Record(maxRowNumber);
+            }
+
+            // Methods
+            private int GetInt(ELeaderboardCategory category)
+            {
+                return category switch
+                {
+                    ELeaderboardCategory.AllTime => 0,
+                    ELeaderboardCategory.Today => 1,
+                    ELeaderboardCategory.Challenge => 2,
+                    _ => -1
+                };
+            }
         }
         #endregion
     }

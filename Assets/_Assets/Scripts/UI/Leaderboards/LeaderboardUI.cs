@@ -1,3 +1,5 @@
+using TMPro;
+using System.Threading.Tasks;
 using UnityEngine;
 using WatKhaoWong.Leaderboards;
 using WatKhaoWong.Identity;
@@ -8,8 +10,9 @@ namespace WatKhaoWong.UI.Leaderboards
     {
         #region --Fields-- (Inspector)
         [Header("Leaderboard Stuffs")]
-        [SerializeField] private GameObject _countDownTimerGameObject;
-        [SerializeField] private GameObject _noChallengePanel;
+        [SerializeField] private TMP_Text _dataIndicatorText;
+        [SerializeField] private TMP_Text _countDownBannerText;
+        [Space]
         [SerializeField] private Transform _tabsTransform;
         [SerializeField] private RowUI _myRowUI;
 
@@ -62,7 +65,7 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Methods-- (Custom PRIVATE) ~Row~
-        private async void BuildRows()
+        private async Task BuildRows()
         {
             if (_isAsyncRunning) return; // Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.
 
@@ -73,19 +76,16 @@ namespace WatKhaoWong.UI.Leaderboards
             {
                 RowUI createdPrefab = Instantiate(_rowPrefab, _spawnParent);
 
-                createdPrefab.Setup(otherUserData, rowCounter, _leaderboard.Category, RowUI.IsInLeaderboard.Yes);
+                createdPrefab.Setup(otherUserData, rowCounter, _leaderboard.Category, ELeaderboardPresence.Present, _leaderboard.IsLeaderboardExists());
 
                 ++rowCounter;
             }
-            
             _isAsyncRunning = false;
         }
 
         private void SetupMyRow()
         {
-            RowUI.IsInLeaderboard isMeInLeaderboard = _leaderboard.IsMeInLeaderboard() ? RowUI.IsInLeaderboard.Yes : RowUI.IsInLeaderboard.No;
-
-            _myRowUI.Setup(_myUserData, _leaderboard.GetMyUserRank(), _leaderboard.Category, isMeInLeaderboard);
+            _myRowUI.Setup(_myUserData, _leaderboard.GetMyRank(), _leaderboard.Category, _leaderboard.GetMyPresence(), _leaderboard.IsLeaderboardExists());
         }
 
         private void ClearRows()
@@ -117,15 +117,42 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
 
+        #region --Methods-- (Custom PRIVATE) ~Texts~
+        private void UpdateTexts()
+        {
+            if (!_leaderboard.IsLeaderboardExists())
+                _dataIndicatorText.text = _leaderboard.Category switch
+                {
+                    ELeaderboardCategory.AllTime => _leaderboard.NoAllTimeLeaderboardText,
+                    ELeaderboardCategory.Today => _leaderboard.NoTodayLeaderboardText,
+                    ELeaderboardCategory.Challenge => _leaderboard.NoChallengeLeaderboardText,
+                    _ => ""
+                };
+            else
+                _dataIndicatorText.text = _leaderboard.Category switch
+                {
+                    ELeaderboardCategory.AllTime => _leaderboard.HasAllTimeLeaderboardText,
+                    ELeaderboardCategory.Today => _leaderboard.HasTodayLeaderboardText,
+                    ELeaderboardCategory.Challenge => _leaderboard.HasChallengeLeaderboardText,
+                    _ => ""
+                };
+
+            _countDownBannerText.text = $"{_leaderboard.ChallengeBannerTextBegin}{_leaderboard.GetChallengeDayLeft()}{_leaderboard.ChallengeBannerTextEnd}";
+        }
+        #endregion
+
+
+
         #region --Methods-- (Subscriber)
-        private void RefreshUI()
+        private async void RefreshUI()
         {
             UpdateFilterButtonsUI();
+            UpdateTexts();
 
             // Row
             ClearRows();
 
-            BuildRows();
+            await BuildRows(); // Have to call before 'SetupMyRow()' and have wait until it finished. So that it setup 'MyRank' properly.
 
             SetupMyRow();
         }

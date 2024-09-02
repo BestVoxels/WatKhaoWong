@@ -7,7 +7,17 @@ namespace WatKhaoWong.Leaderboards
     {
         #region --Properties-- (Inspector)
         [field: Header("Row Settings")]
-        [field: SerializeField] public string DefaultNullScoreText { get; private set; } = "null";
+        [field: Tooltip("Shows when Leaderboard is NOT Exists / Has no Data from Server.")]
+        [field: SerializeField] public string NullRankText { get; private set; } = "no rank";
+        [field: Tooltip("Shows when Leaderboard is NOT Exists / Has no Data from Server.")]
+        [field: SerializeField] public string NullScoreText { get; private set; } = "no score";
+        [field: Space]
+        [field: Tooltip("Shows when Leaderboard is Exists BUT user's score is not high enough to be in leaderboard.")]
+        [field: SerializeField] public string NotInLeaderboardTextBegin { get; private set; } = ">";
+        [field: Tooltip("Shows when Leaderboard is Exists BUT user's score is not high enough to be in leaderboard.")]
+        [field: SerializeField] public bool ShowRankIfNotInLeaderboard { get; private set; } = true;
+        [field: Tooltip("Shows when Leaderboard is Exists BUT user's score is not high enough to be in leaderboard.")]
+        [field: SerializeField] public string NotInLeaderboardTextEnd { get; private set; } = "";
         #endregion
 
 

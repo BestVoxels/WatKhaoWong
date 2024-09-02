@@ -9,12 +9,6 @@ namespace WatKhaoWong.UI.Leaderboards
 {
     public class RowUI : MonoBehaviour
     {
-        public enum IsInLeaderboard
-        {
-            Yes,
-            No
-        }
-
         private enum RowType
         {
             Myself,
@@ -77,20 +71,20 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Methods-- (Custom PUBLIC)
-        public void Setup(IUserData userdata, ushort rankNumber, ELeaderboardCategory category, IsInLeaderboard isInLeaderboard)
+        public void Setup(IUserData userdata, ushort rankNumber, ELeaderboardCategory category, ELeaderboardPresence myPresence, bool isLeaderboardExists)
         {
             _userData = userdata;
 
-            RefreshUI(category);
+            RefreshUI(category, isLeaderboardExists);
 
-            UpdateRankUI(rankNumber, isInLeaderboard);
+            UpdateRankUI(rankNumber, myPresence, isLeaderboardExists);
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PRIVATE)
-        private void RefreshUI(ELeaderboardCategory category)
+        private void RefreshUI(ELeaderboardCategory category, bool isLeaderboardExists)
         {
             if (_userData == default)
             {
@@ -108,11 +102,14 @@ namespace WatKhaoWong.UI.Leaderboards
                 ELeaderboardCategory.AllTime => _userData.GetTotalTMPointsText(),
                 ELeaderboardCategory.Today => _userData.GetTodayTMPointsText(),
                 ELeaderboardCategory.Challenge => "temp challenge score",
-                _ => _row.DefaultNullScoreText
+                _ => _row.NullScoreText
             };
+
+            if (!isLeaderboardExists)
+                _scoreText.text = _row.NullScoreText;
         }
 
-        private void UpdateRankUI(ushort rankNumber, IsInLeaderboard isInLeaderboard)
+        private void UpdateRankUI(ushort rankNumber, ELeaderboardPresence myPresence, bool isLeaderboardExists)
         {
             if (rankNumber == default)
             {
@@ -127,15 +124,15 @@ namespace WatKhaoWong.UI.Leaderboards
             _rankText.gameObject.SetActive(false);
 
             // Open Accordingly
-            if (rankNumber == 1 && isInLeaderboard == IsInLeaderboard.Yes)
+            if (rankNumber == 1 && myPresence == ELeaderboardPresence.Present)
             {
                 _firstRankGameObject.SetActive(true);
             }
-            else if (rankNumber == 2 && isInLeaderboard == IsInLeaderboard.Yes)
+            else if (rankNumber == 2 && myPresence == ELeaderboardPresence.Present)
             {
                 _secondRankGameObject.SetActive(true);
             }
-            else if (rankNumber == 3 && isInLeaderboard == IsInLeaderboard.Yes)
+            else if (rankNumber == 3 && myPresence == ELeaderboardPresence.Present)
             {
                 _thirdRankGameObject.SetActive(true);
             }
@@ -145,8 +142,16 @@ namespace WatKhaoWong.UI.Leaderboards
 
                 string rank = rankNumber.ToString();
 
-                if (_rowType == RowType.Myself && isInLeaderboard == IsInLeaderboard.No)
-                    rank = $">{rankNumber}";
+                if (_rowType == RowType.Myself && myPresence == ELeaderboardPresence.Absent)
+                {
+                    if (_row.ShowRankIfNotInLeaderboard)
+                        rank = $"{_row.NotInLeaderboardTextBegin}{rankNumber}{_row.NotInLeaderboardTextEnd}";
+                    else
+                        rank = $"{_row.NotInLeaderboardTextBegin}{_row.NotInLeaderboardTextEnd}";
+                }
+
+                if (!isLeaderboardExists)
+                    rank = _row.NullRankText;
 
                 _rankText.text = rank;
             }
