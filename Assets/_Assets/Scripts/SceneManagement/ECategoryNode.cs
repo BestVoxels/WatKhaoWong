@@ -8,6 +8,7 @@ namespace WatKhaoWong.SceneManagement
     {
         Users,
         LeaderboardStats,
-        LeaderboardTMToday
+        LeaderboardTMToday,
+        LeaderboardTMChallenge
     }
 }

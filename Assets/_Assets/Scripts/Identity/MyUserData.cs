@@ -134,6 +134,14 @@ namespace WatKhaoWong.Identity
             OnTodayTMPointsAdded?.Invoke(_data.TodayTMPoints);
         }
 
+        public void AddChallengeTMPointsText(int input)
+        {
+            _data.ChallengeTMPoints += input;
+
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.ChallengeTMPoint, _data.ChallengeTMPoints);
+            OnMyUserDataUpdated?.Invoke();
+        }
+
         public void AddTotalWonTMChallenge(int input)
         {
             _data.TotalWonTMChallenge += input;
@@ -217,6 +225,10 @@ namespace WatKhaoWong.Identity
             if (data != null)
                 _data.TodayTMPoints = int.Parse(data.Value.ToString());
 
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.ChallengeTMPoint);
+            if (data != null)
+                _data.ChallengeTMPoints = int.Parse(data.Value.ToString());
+
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.ChallengeTMWon);
             if (data != null)
                 _data.TotalWonTMChallenge = int.Parse(data.Value.ToString());
@@ -228,6 +240,15 @@ namespace WatKhaoWong.Identity
                     _data.FirstUploadTimeOfDayTM = result;
 
                 ResetTMPointsDaily();
+            }
+
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.FirstUploadTimeOfChallengeTM);
+            if (data != null)
+            {
+                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                    _data.FirstUploadTimeOfChallengeTM = result;
+
+                //ResetTMPointsAfterChallengeEnd();
             }
 
             OnMyUserDataUpdated?.Invoke();
@@ -278,6 +299,8 @@ namespace WatKhaoWong.Identity
         public string GetTotalTMPointsText() => _data.GetTotalTMPointsText();
 
         public string GetTodayTMPointsText() => _data.GetTodayTMPointsText();
+
+        public string GetChallengeTMPointsText() => _data.GetChallengeTMPointsText();
 
         public string GetTotalWonTMChallengeText() => _data.GetTotalWonTMChallengeText();
         #endregion

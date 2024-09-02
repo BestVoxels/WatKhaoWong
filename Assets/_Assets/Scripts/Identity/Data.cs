@@ -34,8 +34,10 @@ namespace WatKhaoWong.Identity
         internal int Level { get; set; } = 1;
         internal int TotalTMPoints { get; set; }
         internal int TodayTMPoints { get; set; }
+        internal int ChallengeTMPoints { get; set; }
         internal int TotalWonTMChallenge { get; set; }
         internal DateTime FirstUploadTimeOfDayTM { get; set; }
+        internal DateTime FirstUploadTimeOfChallengeTM { get; set; }
         #endregion
 
 
@@ -45,7 +47,7 @@ namespace WatKhaoWong.Identity
         {
         }
 
-        internal Data(string firstName, string lastName, DateTime? memberSince, ProfileIconItem profileIcon, EUserRole role, int level, int totalTMPoints, int todayTMPoints, int totalWonTMChallenge, DateTime firstUploadTimeOfDay)
+        internal Data(string firstName, string lastName, DateTime? memberSince, ProfileIconItem profileIcon, EUserRole role, int level, int totalTMPoints, int todayTMPoints, int challengeTMPoints, int totalWonTMChallenge, DateTime firstUploadTimeOfDayTM, DateTime firstUploadTimeOfChallengeTM)
         {
             _nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             _nfi.NumberGroupSeparator = " ";
@@ -58,8 +60,10 @@ namespace WatKhaoWong.Identity
             Level = level;
             TotalTMPoints = totalTMPoints;
             TodayTMPoints = todayTMPoints;
+            ChallengeTMPoints = challengeTMPoints;
             TotalWonTMChallenge = totalWonTMChallenge;
-            FirstUploadTimeOfDayTM = firstUploadTimeOfDay;
+            FirstUploadTimeOfDayTM = firstUploadTimeOfDayTM;
+            FirstUploadTimeOfChallengeTM = firstUploadTimeOfChallengeTM;
         }
         #endregion
 
@@ -79,6 +83,8 @@ namespace WatKhaoWong.Identity
         internal string GetTotalTMPointsText() => $"{TotalTMPoints.ToString("#,0", _nfi)}";
 
         internal string GetTodayTMPointsText() => $"{TodayTMPoints.ToString("#,0", _nfi)}";
+
+        internal string GetChallengeTMPointsText() => $"{ChallengeTMPoints.ToString("#,0", _nfi)}";
 
         internal string GetTotalWonTMChallengeText() => $"{TotalWonTMChallenge.ToString("#,0", _nfi)}";
         #endregion

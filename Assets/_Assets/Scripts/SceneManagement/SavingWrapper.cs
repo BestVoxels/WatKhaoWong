@@ -197,8 +197,10 @@ namespace WatKhaoWong.SceneManagement
 
                 case EValueNode.TodayTMPoint:
                 case EValueNode.TotalTMPoint:
+                case EValueNode.ChallengeTMPoint:
                 case EValueNode.ChallengeTMWon:
                 case EValueNode.FirstUploadTimeOfDayTM:
+                case EValueNode.FirstUploadTimeOfChallengeTM:
                     parentNode = EParentNode.TMPoints;
                     break;
 

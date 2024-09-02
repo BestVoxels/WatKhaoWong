@@ -14,7 +14,9 @@ namespace WatKhaoWong.SceneManagement
         XP,
         TodayTMPoint,
         TotalTMPoint,
+        ChallengeTMPoint,
         ChallengeTMWon,
-        FirstUploadTimeOfDayTM
+        FirstUploadTimeOfDayTM,
+        FirstUploadTimeOfChallengeTM
     }
 }

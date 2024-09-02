@@ -21,6 +21,8 @@ namespace WatKhaoWong.Identity
 
         public string GetTodayTMPointsText();
 
+        public string GetChallengeTMPointsText();
+
         public string GetTotalWonTMChallengeText();
 
         public void UpdateProfileIcon(ProfileIconInspector oldUI, ProfileIconItem newIcon, float multiplierRatioForDecorator);

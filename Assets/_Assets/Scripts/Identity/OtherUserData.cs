@@ -62,6 +62,10 @@ namespace WatKhaoWong.Identity
             if (data != null)
                 _data.TodayTMPoints = int.Parse(data.ToString());
 
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.ChallengeTMPoint)).Value;
+            if (data != null)
+                _data.ChallengeTMPoints = int.Parse(data.ToString());
+
             data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.ChallengeTMWon)).Value;
             if (data != null)
                 _data.TotalWonTMChallenge = int.Parse(data.ToString());
@@ -90,6 +94,8 @@ namespace WatKhaoWong.Identity
         public string GetTotalTMPointsText() => _data.GetTotalTMPointsText();
 
         public string GetTodayTMPointsText() => _data.GetTodayTMPointsText();
+
+        public string GetChallengeTMPointsText() => _data.GetChallengeTMPointsText();
 
         public string GetTotalWonTMChallengeText() => _data.GetTotalWonTMChallengeText();
         #endregion

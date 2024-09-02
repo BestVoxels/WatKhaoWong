@@ -182,7 +182,7 @@ namespace WatKhaoWong.Leaderboards
 
                     DataSnapshot data = eachData;
                     // IF data is from 'LeaderboardTMToday' or 'LeaderboardTMChallenge', 'eachData' ONLY has Key, it has no data inside
-                    if (categoryNode == ECategoryNode.LeaderboardTMToday) // TODO || categoryNode == ECategoryNode.LeaderboardTMChallenge
+                    if (categoryNode == ECategoryNode.LeaderboardTMToday || categoryNode == ECategoryNode.LeaderboardTMChallenge)
                         data = await _savingWrapper.LoadOtherUser(eachData.Key);
 
                     Records[Category].CachedRows.Add(data);
