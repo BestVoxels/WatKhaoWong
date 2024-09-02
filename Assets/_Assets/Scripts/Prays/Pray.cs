@@ -18,11 +18,7 @@ namespace WatKhaoWong.Prays
 
 
 
-        #region --Methods-- (Custom PUBLIC) ~Challenge~
-        public string GetChallengeText()
-        {
-            return "No Challenge Avaiable";
-        }
+        #region --Methods-- (Custom PUBLIC)
         #endregion
 
 

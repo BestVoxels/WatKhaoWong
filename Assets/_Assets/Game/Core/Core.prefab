@@ -1756,8 +1756,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9027074836127617407}
-  - component: {fileID: 3087279084121397941}
   - component: {fileID: 6919270540878621978}
+  - component: {fileID: 3087279084121397941}
   m_Layer: 0
   m_Name: Leaderboard System
   m_TagString: Untagged
@@ -1780,6 +1780,34 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2637654065332200263}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6919270540878621978
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7122087394019308341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6443f226a0029421da188d93056598a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultCategory: 0
+  _maxRowNumber: 100
+  <SelectedColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4287001699
+  <UnselectedColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4290687917
+  <NoAllTimeLeaderboardText>k__BackingField: No data for All Time leaderboard
+  <NoTodayLeaderboardText>k__BackingField: No data for Today leaderboard
+  <NoChallengeLeaderboardText>k__BackingField: No active Challenge at the moment
+  <HasAllTimeLeaderboardText>k__BackingField: Displaying data for All Time leaderboard
+  <HasTodayLeaderboardText>k__BackingField: Displaying data for Today leaderboard
+  <HasChallengeLeaderboardText>k__BackingField: Displaying data for the Active Challenge
+  <ChallengeBannerTextBegin>k__BackingField: 'Challenge Ends in '
+  <ChallengeBannerTextEnd>k__BackingField: ' days!'
 --- !u!114 &3087279084121397941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1851,31 +1879,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &6919270540878621978
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7122087394019308341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6443f226a0029421da188d93056598a5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultCategory: 0
-  _maxRowNumber: 100
-  <SelectedColor>k__BackingField:
-    serializedVersion: 2
-    rgba: 4287001699
-  <UnselectedColor>k__BackingField:
-    serializedVersion: 2
-    rgba: 4290687917
-  <NoAllTimeLeaderboardText>k__BackingField: No data for All Time leaderboard
-  <NoTodayLeaderboardText>k__BackingField: No data for Today leaderboard
-  <NoChallengeLeaderboardText>k__BackingField: No active Challenge at the moment
-  <ChallengeBannerTextBegin>k__BackingField: 'Challenge Ends in '
-  <ChallengeBannerTextEnd>k__BackingField: ' days!'
 --- !u!1 &7306031348881270002
 GameObject:
   m_ObjectHideFlags: 0

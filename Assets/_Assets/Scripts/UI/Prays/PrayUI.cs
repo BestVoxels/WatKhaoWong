@@ -22,11 +22,11 @@ namespace WatKhaoWong.UI.Prays
         [SerializeField] private TMP_Text _userNameText;
         [SerializeField] private TMP_Text _allTimeTMPointsText;
         [SerializeField] private TMP_Text _todayTMPointsText;
+        [SerializeField] private TMP_Text _challengeTMPointsText;
         [Space]
         [SerializeField] private Button _doneButton;
         [SerializeField] private Button _playSoundButton;
         [Space]
-        [SerializeField] private TMP_Text _challengeText;
         [SerializeField] private Button _challengeButton;
         #endregion
 
@@ -102,8 +102,7 @@ namespace WatKhaoWong.UI.Prays
             _userNameText.text = _myUserData.GetUserNameText();
             _allTimeTMPointsText.text = _myUserData.GetTotalTMPointsText();
             _todayTMPointsText.text = _myUserData.GetTodayTMPointsText();
-
-            _challengeText.text = _playerPray.GetChallengeText();
+            _challengeTMPointsText.text = _myUserData.GetChallengeTMPointsText();
         }
         #endregion
     }
