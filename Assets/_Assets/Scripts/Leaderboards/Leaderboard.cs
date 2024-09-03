@@ -51,6 +51,7 @@ namespace WatKhaoWong.Leaderboards
         #region --Events-- (Delegate as Action)
         public event Action OnLeaderboardCategoryChanged;
         public event Action OnLeaderboardScoreUpdated;
+        public event Action OnConditionIsLeaderboardExistsUpdated; // Important: 'IsLeaderboardExists' takes sometimes to get value. Once the value is updated, this will make all classes that use Condition.Check() to Evaluate using this 'IsLeaderboardExists' Condition again.
         #endregion
 
 
@@ -174,7 +175,11 @@ namespace WatKhaoWong.Leaderboards
                 await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValue(categoryNode, valueNode, _maxRowNumber))
                 {
                     ++index;
-                    Records[Category].IsLeaderboardExists = true;
+                    if (!IsLeaderboardExists())
+                    {
+                        Records[Category].IsLeaderboardExists = true;
+                        OnConditionIsLeaderboardExistsUpdated?.Invoke();
+                    }
 
                     if (eachData.Key.Equals(FirebaseUtils.CurrentUserID))
                     {

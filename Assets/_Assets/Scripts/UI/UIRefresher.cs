@@ -20,6 +20,7 @@ namespace WatKhaoWong.UI
     public class UIRefresher : MonoBehaviour
     {
         #region --Events-- (Delegate as Action)
+        public static event Action OnAllConditionCheckCalled;
         public static event Action OnHomeRefreshed;
         public static event Action OnPrayRefreshed;
         public static event Action OnSettingRefreshed;
@@ -77,9 +78,12 @@ namespace WatKhaoWong.UI
             _accountPopup.OnProfileIconChangedByClick += () => { RefreshPrayUI(); };
 
             // LEADERBOARD SYSTEM
-            _leaderboard.OnLeaderboardCategoryChanged += ShowHideUIByRoles;
+            _leaderboard.OnLeaderboardCategoryChanged += () => { RefreshLeaderboardUI(); ShowHideUIByRoles(); };
             _leaderboard.OnLeaderboardScoreUpdated += RefreshLeaderboardUI;
             _challengePopup.OnChallengeStartedStopped += ShowHideUIByRoles;
+
+            // CONDITION SYSTEM
+            _leaderboard.OnConditionIsLeaderboardExistsUpdated += CallAllConditionCheck;
         }
 
         private void OnDisable()
@@ -103,6 +107,12 @@ namespace WatKhaoWong.UI
             RefreshLeaderboardUI();
             ShowHideUIByRoles();
             //print("Refreshed All UI");
+        }
+
+        public static void CallAllConditionCheck()
+        {
+            OnAllConditionCheckCalled?.Invoke();
+            //print("CallAllConditionCheck : " + OnAllConditionCheckCalled?.GetInvocationList().Length);
         }
 
         public static void RefreshHomeUI()
@@ -153,6 +163,8 @@ namespace WatKhaoWong.UI
         #region --Methods-- (Custom PRIVATE)
         private void RemoveStaticDelegatesSubscribers()
         {
+            OnAllConditionCheckCalled = null;
+
             OnHomeRefreshed = null;
             OnPrayRefreshed = null;
             OnSettingRefreshed = null;

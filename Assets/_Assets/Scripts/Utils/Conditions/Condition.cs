@@ -7,7 +7,7 @@ namespace WatKhaoWong.Utils.Conditions
     public class Condition
     {
         #region --Fields-- (Inspector)
-        [SerializeField] private Disjunction[] _and;
+        [SerializeField] Level3[] _and4;
         #endregion
 
 
@@ -18,19 +18,23 @@ namespace WatKhaoWong.Utils.Conditions
         {
             if (!HasCondition()) return true; // will return True by default when condition is empty. If No Guard Check like this, Bug Occurs by : Start New Game -> pick up items -> Save&Quit -> Click Continue Save, now drag pickup item to slot will throw error.
 
-            foreach (Disjunction eachPredAND in _and)
+            foreach (Level3 eachPredAND in _and4)
             {
                 if (eachPredAND.Check(evaluators) == false) return false; // if one predicate is false everything is 'false'
             }
 
             return true; // when none are 'false' it means true
         }
+        #endregion
 
-        public bool HasCondition()
+
+
+        #region --Methods-- (Custom PRIVATE)
+        bool HasCondition()
         {
-            if (_and == null) return false;
+            if (_and4 == null) return false;
 
-            return _and.Length > 0;
+            return _and4.Length > 0;
         }
         #endregion
 
@@ -38,16 +42,10 @@ namespace WatKhaoWong.Utils.Conditions
 
         #region --Classes-- (Custom PRIVATE)
         [System.Serializable]
-        private class Disjunction
+        class Level3
         {
             #region --Fields-- (Inspector)
-            [SerializeField] private Predicate[] _or;
-            #endregion
-
-
-
-            #region --Properties-- (With Backing Fields)
-            public Predicate[] Or { get { return _or; } }
+            [SerializeField] Level2[] _or3;
             #endregion
 
 
@@ -56,7 +54,7 @@ namespace WatKhaoWong.Utils.Conditions
             // Take all the Predicate and OR them together ex. "Predicate1 || Predicate2 || Predicate3"
             public bool Check(IEnumerable<IConditionEvaluator> evaluators)
             {
-                foreach (Predicate eachPredOR in _or)
+                foreach (Level2 eachPredOR in _or3)
                 {
                     if (eachPredOR.Check(evaluators) == true) return true; // if one predicate is true everything is 'true'
                 }
@@ -67,20 +65,58 @@ namespace WatKhaoWong.Utils.Conditions
         }
 
         [System.Serializable]
-        private class Predicate
+        class Level2
         {
             #region --Fields-- (Inspector)
-            [SerializeField] private EConditionType _conditionType;
-            [SerializeField] private EConditionValue[] _conditionValues;
-            [SerializeField] private bool _negate = false;
+            [SerializeField] Level1[] _and2;
             #endregion
 
 
 
-            #region --Properties-- (With Backing Fields)
-            public EConditionType ConditionType { get { return _conditionType; } }
-            public EConditionValue[] ConditionValues { get { return _conditionValues; } }
-            public bool Negate { get { return _negate; } }
+            #region --Methods-- (Custom PUBLIC)
+            // Take all the Predicate and AND them together ex. "Predicate1 && Predicate2 && Predicate3"
+            public bool Check(IEnumerable<IConditionEvaluator> evaluators)
+            {
+                foreach (Level1 eachPredAND in _and2)
+                {
+                    if (eachPredAND.Check(evaluators) == false) return false; // if one predicate is false everything is 'false'
+                }
+
+                return true; // when none are 'false' it means true
+            }
+            #endregion
+        }
+
+        [System.Serializable]
+        class Level1
+        {
+            #region --Fields-- (Inspector)
+            [SerializeField] Predicate[] _or1;
+            #endregion
+
+
+
+            #region --Methods-- (Custom PUBLIC)
+            // Take all the Predicate and OR them together ex. "Predicate1 || Predicate2 || Predicate3"
+            public bool Check(IEnumerable<IConditionEvaluator> evaluators)
+            {
+                foreach (Predicate eachPredOR in _or1)
+                {
+                    if (eachPredOR.Check(evaluators) == true) return true; // if one predicate is true everything is 'true'
+                }
+
+                return false; // when none are 'true' it means false
+            }
+            #endregion
+        }
+
+        [System.Serializable]
+        class Predicate
+        {
+            #region --Fields-- (Inspector)
+            [SerializeField] EConditionType _conditionType;
+            [SerializeField] EConditionValue[] _conditionValues;
+            [SerializeField] bool _negate = false;
             #endregion
 
 

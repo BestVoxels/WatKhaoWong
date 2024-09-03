@@ -1800,9 +1800,9 @@ MonoBehaviour:
   <UnselectedColor>k__BackingField:
     serializedVersion: 2
     rgba: 4290687917
-  <NoAllTimeLeaderboardText>k__BackingField: Upload Now!\nBe the first on All Time
+  <NoAllTimeLeaderboardText>k__BackingField: Upload Now! Be the first on All Time
     Leaderboard
-  <NoTodayLeaderboardText>k__BackingField: Upload Now!\nBe the first on Today Leaderboard
+  <NoTodayLeaderboardText>k__BackingField: Upload Now! Be the first on Today Leaderboard
   <NoChallengeLeaderboardText>k__BackingField: No active Challenge at the moment
   <HasAllTimeLeaderboardText>k__BackingField: Displaying data for All Time leaderboard
   <HasTodayLeaderboardText>k__BackingField: Displaying data for Today leaderboard
@@ -2242,154 +2242,190 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     condition:
-      _and:
-      - _or:
-        - _conditionType: 4
-          _conditionValues: 01000000
-          _negate: 0
-        - _conditionType: 4
-          _conditionValues: 02000000
-          _negate: 0
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 4
+              _conditionValues: 01000000
+              _negate: 0
+            - _conditionType: 4
+              _conditionValues: 02000000
+              _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
     condition:
-      _and:
-      - _or:
-        - _conditionType: 1
-          _conditionValues: 00000000
-          _negate: 0
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 1
+              _conditionValues: 
+              _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
     condition:
-      _and:
-      - _or:
-        - _conditionType: 4
-          _conditionValues: 01000000
-          _negate: 0
-      - _or:
-        - _conditionType: 1
-          _conditionValues: 00000000
-          _negate: 1
-      - _or:
-        - _conditionType: 19
-          _conditionValues: 06000000
-          _negate: 0
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 4
+              _conditionValues: 01000000
+              _negate: 0
+          - _or1:
+            - _conditionType: 1
+              _conditionValues: 
+              _negate: 1
+          - _or1:
+            - _conditionType: 19
+              _conditionValues: 06000000
+              _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
     condition:
-      _and:
-      - _or:
-        - _conditionType: 20
-          _conditionValues: 00000000
-          _negate: 1
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 20
+              _conditionValues: 
+              _negate: 1
   - gameObjectsUI:
     - {fileID: 0}
     condition:
-      _and:
-      - _or:
-        - _conditionType: 19
-          _conditionValues: 06000000
-          _negate: 0
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 19
+              _conditionValues: 06000000
+              _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
     condition:
-      _and:
-      - _or:
-        - _conditionType: 21
-          _conditionValues: 
-          _negate: 0
-        - _conditionType: 22
-          _conditionValues: 
-          _negate: 0
-        - _conditionType: 23
-          _conditionValues: 
-          _negate: 0
-      - _or:
-        - _conditionType: 19
-          _conditionValues: 04000000
-          _negate: 0
-        - _conditionType: 19
-          _conditionValues: 05000000
-          _negate: 0
-        - _conditionType: 19
-          _conditionValues: 06000000
-          _negate: 0
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 19
+              _conditionValues: 04000000
+              _negate: 0
+          - _or1:
+            - _conditionType: 21
+              _conditionValues: 
+              _negate: 0
+        - _and2:
+          - _or1:
+            - _conditionType: 19
+              _conditionValues: 05000000
+              _negate: 0
+          - _or1:
+            - _conditionType: 22
+              _conditionValues: 
+              _negate: 0
+        - _and2:
+          - _or1:
+            - _conditionType: 19
+              _conditionValues: 06000000
+              _negate: 0
+          - _or1:
+            - _conditionType: 23
+              _conditionValues: 
+              _negate: 0
   _hideUIByCondition:
   - gameObjectsUI:
     - {fileID: 0}
     - {fileID: 0}
     condition:
-      _and:
-      - _or:
-        - _conditionType: 4
-          _conditionValues: 03000000
-          _negate: 0
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 4
+              _conditionValues: 03000000
+              _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
     condition:
-      _and:
-      - _or:
-        - _conditionType: 1
-          _conditionValues: 00000000
-          _negate: 1
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 1
+              _conditionValues: 
+              _negate: 1
   - gameObjectsUI:
     - {fileID: 0}
     condition:
-      _and:
-      - _or:
-        - _conditionType: 4
-          _conditionValues: 01000000
-          _negate: 1
-        - _conditionType: 1
-          _conditionValues: 00000000
-          _negate: 0
-        - _conditionType: 19
-          _conditionValues: 06000000
-          _negate: 1
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 4
+              _conditionValues: 01000000
+              _negate: 1
+            - _conditionType: 1
+              _conditionValues: 
+              _negate: 0
+            - _conditionType: 19
+              _conditionValues: 06000000
+              _negate: 1
   - gameObjectsUI:
     - {fileID: 0}
     condition:
-      _and:
-      - _or:
-        - _conditionType: 20
-          _conditionValues: 00000000
-          _negate: 0
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 20
+              _conditionValues: 
+              _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
     condition:
-      _and:
-      - _or:
-        - _conditionType: 19
-          _conditionValues: 06000000
-          _negate: 1
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 19
+              _conditionValues: 06000000
+              _negate: 1
   - gameObjectsUI:
     - {fileID: 0}
     condition:
-      _and:
-      - _or:
-        - _conditionType: 21
-          _conditionValues: 
-          _negate: 1
-        - _conditionType: 22
-          _conditionValues: 
-          _negate: 1
-        - _conditionType: 23
-          _conditionValues: 
-          _negate: 1
-      - _or:
-        - _conditionType: 19
-          _conditionValues: 04000000
-          _negate: 0
-        - _conditionType: 19
-          _conditionValues: 05000000
-          _negate: 0
-        - _conditionType: 19
-          _conditionValues: 06000000
-          _negate: 0
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 19
+              _conditionValues: 04000000
+              _negate: 0
+          - _or1:
+            - _conditionType: 21
+              _conditionValues: 
+              _negate: 1
+        - _and2:
+          - _or1:
+            - _conditionType: 19
+              _conditionValues: 05000000
+              _negate: 0
+          - _or1:
+            - _conditionType: 22
+              _conditionValues: 
+              _negate: 1
+        - _and2:
+          - _or1:
+            - _conditionType: 19
+              _conditionValues: 06000000
+              _negate: 0
+          - _or1:
+            - _conditionType: 23
+              _conditionValues: 
+              _negate: 1
 --- !u!1 &7852682835446303578
 GameObject:
   m_ObjectHideFlags: 0

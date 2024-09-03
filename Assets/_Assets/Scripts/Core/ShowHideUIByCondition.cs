@@ -11,6 +11,7 @@ namespace WatKhaoWong.Core
         [Header("General Settings")]
         [SerializeField] private UIItem[] _showUIByCondition;
         [SerializeField] private UIItem[] _hideUIByCondition;
+        //[SerializeField] private Condition _testCondition; // ---DEBUGGER PURPOSE--- search for 'EConditionType.cs | MyUserData.cs | ShowHideUIByCondition.cs'
         #endregion
 
 
@@ -31,6 +32,9 @@ namespace WatKhaoWong.Core
         {
             UIRefresher.OnUIShowedHidByRoles += ShowUI;
             UIRefresher.OnUIShowedHidByRoles += HideUI;
+
+            UIRefresher.OnAllConditionCheckCalled += ShowUI;
+            UIRefresher.OnAllConditionCheckCalled += HideUI;
         }
 
         private void Start()
@@ -43,7 +47,22 @@ namespace WatKhaoWong.Core
         {
             UIRefresher.OnUIShowedHidByRoles -= ShowUI;
             UIRefresher.OnUIShowedHidByRoles -= HideUI;
+
+            UIRefresher.OnAllConditionCheckCalled -= ShowUI;
+            UIRefresher.OnAllConditionCheckCalled -= HideUI;
         }
+
+        //// ---DEBUGGER PURPOSE--- search for 'EConditionType.cs | MyUserData.cs | ShowHideUIByCondition.cs'
+        //private void Update()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Space))
+        //    {
+        //        if (_testCondition.Check(_conditionsEvaluator))
+        //            print("Condition is TRUE");
+        //        else
+        //            print("Condition is FLASE");
+        //    }
+        //}
         #endregion
 
 

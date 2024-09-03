@@ -45,8 +45,6 @@ namespace WatKhaoWong.UI.Leaderboards
             _challenge = player.GetComponentInChildren<ChallengePopup>(); // TODO Challenge - change from "ChallengePopup.cs" to "Challenge.cs"
             _myUserData = player.GetComponentInChildren<MyUserData>();
 
-            _leaderboard.OnLeaderboardCategoryChanged += RefreshUI;
-
             UIRefresher.OnLeaderboardRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
 

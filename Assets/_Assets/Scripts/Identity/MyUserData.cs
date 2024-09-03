@@ -340,6 +340,13 @@ namespace WatKhaoWong.Identity
 
                 case EConditionType.HasChallengeTMWon:
                     return _data.TotalChallengeTMWon > 0;
+
+                //// ---DEBUGGER PURPOSE--- search for 'EConditionType.cs | MyUserData.cs | ShowHideUIByCondition.cs'
+                //case EConditionType.True:
+                //    return true;
+
+                //case EConditionType.False:
+                //    return false;
             }
 
             return null;
