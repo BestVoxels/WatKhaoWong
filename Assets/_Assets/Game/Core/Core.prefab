@@ -1002,7 +1002,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _hasChallenge: 0
+  _hasChallengeStarted: 0
   <StatusMissingLengthTG>k__BackingField: Please choose any option from 'How Long?'
     section
   <StatusMissingLengthTGColor>k__BackingField:
@@ -1800,14 +1800,16 @@ MonoBehaviour:
   <UnselectedColor>k__BackingField:
     serializedVersion: 2
     rgba: 4290687917
-  <NoAllTimeLeaderboardText>k__BackingField: No data for All Time leaderboard
-  <NoTodayLeaderboardText>k__BackingField: No data for Today leaderboard
+  <NoAllTimeLeaderboardText>k__BackingField: Upload Now!\nBe the first on All Time
+    Leaderboard
+  <NoTodayLeaderboardText>k__BackingField: Upload Now!\nBe the first on Today Leaderboard
   <NoChallengeLeaderboardText>k__BackingField: No active Challenge at the moment
   <HasAllTimeLeaderboardText>k__BackingField: Displaying data for All Time leaderboard
   <HasTodayLeaderboardText>k__BackingField: Displaying data for Today leaderboard
   <HasChallengeLeaderboardText>k__BackingField: Displaying data for the Active Challenge
-  <ChallengeBannerTextBegin>k__BackingField: 'Challenge Ends in '
-  <ChallengeBannerTextEnd>k__BackingField: ' days!'
+  <NoChallengeBannerText>k__BackingField: Wait for the Challenge to start & Win it!
+  <HasChallengeBannerTextBegin>k__BackingField: 'Challenge Ends in '
+  <HasChallengeBannerTextEnd>k__BackingField: ' days!'
 --- !u!114 &3087279084121397941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2250,6 +2252,16 @@ MonoBehaviour:
           _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 1
+          _conditionValues: 00000000
+          _negate: 0
+  - gameObjectsUI:
+    - {fileID: 0}
     condition:
       _and:
       - _or:
@@ -2260,8 +2272,19 @@ MonoBehaviour:
         - _conditionType: 1
           _conditionValues: 00000000
           _negate: 1
+      - _or:
+        - _conditionType: 19
+          _conditionValues: 06000000
+          _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 20
+          _conditionValues: 00000000
+          _negate: 1
+  - gameObjectsUI:
     - {fileID: 0}
     condition:
       _and:
@@ -2271,13 +2294,27 @@ MonoBehaviour:
           _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
     condition:
       _and:
       - _or:
-        - _conditionType: 1
-          _conditionValues: 00000000
+        - _conditionType: 21
+          _conditionValues: 
+          _negate: 0
+        - _conditionType: 22
+          _conditionValues: 
+          _negate: 0
+        - _conditionType: 23
+          _conditionValues: 
+          _negate: 0
+      - _or:
+        - _conditionType: 19
+          _conditionValues: 04000000
+          _negate: 0
+        - _conditionType: 19
+          _conditionValues: 05000000
+          _negate: 0
+        - _conditionType: 19
+          _conditionValues: 06000000
           _negate: 0
   _hideUIByCondition:
   - gameObjectsUI:
@@ -2291,32 +2328,6 @@ MonoBehaviour:
           _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
-    condition:
-      _and:
-      - _or:
-        - _conditionType: 4
-          _conditionValues: 02000000
-          _negate: 0
-        - _conditionType: 4
-          _conditionValues: 03000000
-          _negate: 0
-        - _conditionType: 1
-          _conditionValues: 00000000
-          _negate: 0
-  - gameObjectsUI:
-    - {fileID: 0}
-    - {fileID: 0}
-    condition:
-      _and:
-      - _or:
-        - _conditionType: 19
-          _conditionValues: 04000000
-          _negate: 0
-        - _conditionType: 19
-          _conditionValues: 05000000
-          _negate: 0
-  - gameObjectsUI:
-    - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
     condition:
@@ -2325,6 +2336,60 @@ MonoBehaviour:
         - _conditionType: 1
           _conditionValues: 00000000
           _negate: 1
+  - gameObjectsUI:
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 4
+          _conditionValues: 01000000
+          _negate: 1
+        - _conditionType: 1
+          _conditionValues: 00000000
+          _negate: 0
+        - _conditionType: 19
+          _conditionValues: 06000000
+          _negate: 1
+  - gameObjectsUI:
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 20
+          _conditionValues: 00000000
+          _negate: 0
+  - gameObjectsUI:
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 19
+          _conditionValues: 06000000
+          _negate: 1
+  - gameObjectsUI:
+    - {fileID: 0}
+    condition:
+      _and:
+      - _or:
+        - _conditionType: 21
+          _conditionValues: 
+          _negate: 1
+        - _conditionType: 22
+          _conditionValues: 
+          _negate: 1
+        - _conditionType: 23
+          _conditionValues: 
+          _negate: 1
+      - _or:
+        - _conditionType: 19
+          _conditionValues: 04000000
+          _negate: 0
+        - _conditionType: 19
+          _conditionValues: 05000000
+          _negate: 0
+        - _conditionType: 19
+          _conditionValues: 06000000
+          _negate: 0
 --- !u!1 &7852682835446303578
 GameObject:
   m_ObjectHideFlags: 0

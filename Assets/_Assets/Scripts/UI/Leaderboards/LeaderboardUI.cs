@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using WatKhaoWong.Leaderboards;
 using WatKhaoWong.Identity;
+using WatKhaoWong.Prays; // TODO Challenge - remove this namespace
 
 namespace WatKhaoWong.UI.Leaderboards
 {
@@ -29,6 +30,7 @@ namespace WatKhaoWong.UI.Leaderboards
         private bool _isAsyncRunning = false;
 
         private Leaderboard _leaderboard;
+        private ChallengePopup _challenge; // TODO Challenge - change from "ChallengePopup.cs" to "Challenge.cs"
         private MyUserData _myUserData;
         #endregion
 
@@ -37,8 +39,11 @@ namespace WatKhaoWong.UI.Leaderboards
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _leaderboard = GameObject.FindWithTag("Player").GetComponentInChildren<Leaderboard>();
-            _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
+            GameObject player = GameObject.FindWithTag("Player");
+
+            _leaderboard = player.GetComponentInChildren<Leaderboard>();
+            _challenge = player.GetComponentInChildren<ChallengePopup>(); // TODO Challenge - change from "ChallengePopup.cs" to "Challenge.cs"
+            _myUserData = player.GetComponentInChildren<MyUserData>();
 
             _leaderboard.OnLeaderboardCategoryChanged += RefreshUI;
 
@@ -137,7 +142,10 @@ namespace WatKhaoWong.UI.Leaderboards
                     _ => ""
                 };
 
-            _countDownBannerText.text = $"{_leaderboard.ChallengeBannerTextBegin}{_leaderboard.GetChallengeDayLeft()}{_leaderboard.ChallengeBannerTextEnd}";
+            if (_challenge.HasChallengeStarted)
+                _countDownBannerText.text = $"{_leaderboard.HasChallengeBannerTextBegin}{_leaderboard.GetChallengeDayLeft()}{_leaderboard.HasChallengeBannerTextEnd}";
+            else
+                _countDownBannerText.text = $"{_leaderboard.NoChallengeBannerText}";
         }
         #endregion
 

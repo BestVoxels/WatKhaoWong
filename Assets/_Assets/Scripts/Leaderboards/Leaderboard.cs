@@ -40,8 +40,10 @@ namespace WatKhaoWong.Leaderboards
         [field: Tooltip("Not likely to be shown.")]
         [field: SerializeField] public string HasChallengeLeaderboardText { get; private set; } = "Displaying data for the Active Challenge";
         [field: Space]
-        [field: SerializeField] public string ChallengeBannerTextBegin { get; private set; } = $"Challenge ends in ";
-        [field: SerializeField] public string ChallengeBannerTextEnd { get; private set; } = $" days!";
+        [field: SerializeField] public string NoChallengeBannerText { get; private set; } = $"Wait for the Challenge to start & Win it!";
+        [field: Space]
+        [field: SerializeField] public string HasChallengeBannerTextBegin { get; private set; } = $"Challenge Ends in ";
+        [field: SerializeField] public string HasChallengeBannerTextEnd { get; private set; } = $" days!";
         #endregion
 
 
@@ -248,6 +250,9 @@ namespace WatKhaoWong.Leaderboards
                         return false;
 
                     return Category == result;
+
+                case EConditionType.IsLeaderboardExists:
+                    return IsLeaderboardExists();
             }
 
             return null;

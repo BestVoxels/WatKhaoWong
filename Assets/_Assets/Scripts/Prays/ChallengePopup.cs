@@ -10,7 +10,7 @@ namespace WatKhaoWong.Prays
     {
         #region --Fields-- (Inspector)
         [Header("Challenge Settings - Debugger Purpose")]
-        [SerializeField] private bool _hasChallenge;
+        [SerializeField] private bool _hasChallengeStarted;
         #endregion
 
 
@@ -45,21 +45,21 @@ namespace WatKhaoWong.Prays
 
 
         #region --Events-- (Delegate as Action)
-        public event Action OnHasChallengeChanged;
+        public event Action OnChallengeStartedStopped;
         #endregion
 
 
 
         #region --Properties-- (With Backing Fields)
-        public bool HasChallenge
+        public bool HasChallengeStarted
         {
-            get => _hasChallenge;
+            get => _hasChallengeStarted;
 
             set
             {
-                _hasChallenge = value;
+                _hasChallengeStarted = value;
 
-                OnHasChallengeChanged?.Invoke();
+                OnChallengeStartedStopped?.Invoke();
             }
         }
         #endregion
@@ -71,7 +71,7 @@ namespace WatKhaoWong.Prays
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.Escape))
-                HasChallenge = !HasChallenge;
+                HasChallengeStarted = !HasChallengeStarted;
         }
         // ------
         #endregion
@@ -107,8 +107,8 @@ namespace WatKhaoWong.Prays
         {
             switch (conditionType)
             {
-                case EConditionType.HasChallenge:
-                    return HasChallenge;
+                case EConditionType.HasChallengeStarted:
+                    return HasChallengeStarted;
             }
 
             return null;

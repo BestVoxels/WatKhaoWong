@@ -23,7 +23,7 @@ namespace WatKhaoWong.Identity
 
         public string GetChallengeTMPointsText();
 
-        public string GetTotalWonTMChallengeText();
+        public string GetTotalChallengeTMWonText();
 
         public void UpdateProfileIcon(ProfileIconInspector oldUI, ProfileIconItem newIcon, float multiplierRatioForDecorator);
     }

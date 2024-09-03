@@ -68,7 +68,7 @@ namespace WatKhaoWong.Identity
 
             data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.ChallengeTMWon)).Value;
             if (data != null)
-                _data.TotalWonTMChallenge = int.Parse(data.ToString());
+                _data.TotalChallengeTMWon = int.Parse(data.ToString());
         }
         #endregion
 
@@ -97,7 +97,7 @@ namespace WatKhaoWong.Identity
 
         public string GetChallengeTMPointsText() => _data.GetChallengeTMPointsText();
 
-        public string GetTotalWonTMChallengeText() => _data.GetTotalWonTMChallengeText();
+        public string GetTotalChallengeTMWonText() => _data.GetTotalChallengeTMWonText();
         #endregion
 
 

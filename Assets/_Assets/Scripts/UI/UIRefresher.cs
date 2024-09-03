@@ -79,7 +79,7 @@ namespace WatKhaoWong.UI
             // LEADERBOARD SYSTEM
             _leaderboard.OnLeaderboardCategoryChanged += ShowHideUIByRoles;
             _leaderboard.OnLeaderboardScoreUpdated += RefreshLeaderboardUI;
-            _challengePopup.OnHasChallengeChanged += ShowHideUIByRoles;
+            _challengePopup.OnChallengeStartedStopped += ShowHideUIByRoles;
         }
 
         private void OnDisable()

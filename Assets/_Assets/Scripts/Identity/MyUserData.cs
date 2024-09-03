@@ -144,9 +144,9 @@ namespace WatKhaoWong.Identity
 
         public void AddTotalWonTMChallenge(int input)
         {
-            _data.TotalWonTMChallenge += input;
+            _data.TotalChallengeTMWon += input;
 
-            _savingWrapper.Save(ECategoryNode.Users, EValueNode.ChallengeTMWon, _data.TotalWonTMChallenge);
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.ChallengeTMWon, _data.TotalChallengeTMWon);
             OnMyUserDataUpdated?.Invoke();
         }
         #endregion
@@ -231,7 +231,7 @@ namespace WatKhaoWong.Identity
 
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.ChallengeTMWon);
             if (data != null)
-                _data.TotalWonTMChallenge = int.Parse(data.Value.ToString());
+                _data.TotalChallengeTMWon = int.Parse(data.Value.ToString());
 
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.FirstUploadTimeOfDayTM);
             if (data != null)
@@ -302,7 +302,7 @@ namespace WatKhaoWong.Identity
 
         public string GetChallengeTMPointsText() => _data.GetChallengeTMPointsText();
 
-        public string GetTotalWonTMChallengeText() => _data.GetTotalWonTMChallengeText();
+        public string GetTotalChallengeTMWonText() => _data.GetTotalChallengeTMWonText();
         #endregion
 
 
@@ -317,8 +317,8 @@ namespace WatKhaoWong.Identity
         {
             switch (conditionType)
             {
-                case EConditionType.IsMyUserRoleEquals:
-                    byte stringStartIndex = (byte)EConditionType.IsMyUserRoleEquals;
+                case EConditionType.IsRoleEquals:
+                    byte stringStartIndex = (byte)EConditionType.IsRoleEquals;
                     string enumString = conditionValues[0].ToString()[stringStartIndex..];
 
                     if (!Enum.TryParse(enumString, true, out EUserRole result))
@@ -328,6 +328,18 @@ namespace WatKhaoWong.Identity
 
                 case EConditionType.IsAuthenticated:
                     return FirebaseUtils.IsAuthenticated();
+
+                case EConditionType.HasAllTimeTMPoint:
+                    return _data.TotalTMPoints > 0;
+
+                case EConditionType.HasTodayTMPoint:
+                    return _data.TodayTMPoints > 0;
+
+                case EConditionType.HasChallengeTMPoint:
+                    return _data.ChallengeTMPoints > 0;
+
+                case EConditionType.HasChallengeTMWon:
+                    return _data.TotalChallengeTMWon > 0;
             }
 
             return null;

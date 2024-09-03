@@ -30,7 +30,7 @@ namespace WatKhaoWong.UI.SharePopup
         [SerializeField] private TMP_Text _allTimeTMPointsText;
         [SerializeField] private TMP_Text _todayTMPointsText;
         [SerializeField] private TMP_Text _challengeTMPointsText;
-        [SerializeField] private TMP_Text _totalWonTMChallengeText;
+        [SerializeField] private TMP_Text _totalChallengeTMWonText;
         [SerializeField] private TMP_Text _memberSinceText;
 
         [Header("User Inventory")]
@@ -100,7 +100,7 @@ namespace WatKhaoWong.UI.SharePopup
             _todayTMPointsText.text = _myUserData.GetTodayTMPointsText();
             _challengeTMPointsText.text = _myUserData.GetChallengeTMPointsText();
 
-            _totalWonTMChallengeText.text = _myUserData.GetTotalWonTMChallengeText();
+            _totalChallengeTMWonText.text = _myUserData.GetTotalChallengeTMWonText();
             _memberSinceText.text = _myUserData.GetMemberSinceText();
 
             _profilePicHeaderText.text = $"<#f8913f>{_profileIcons.Count.ToString("#,0", nfi)}</color>";

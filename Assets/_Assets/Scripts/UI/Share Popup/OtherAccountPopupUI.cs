@@ -25,7 +25,7 @@ namespace WatKhaoWong.UI.SharePopup
         [SerializeField] private TMP_Text _allTimeTMPointsText;
         [SerializeField] private TMP_Text _todayTMPointsText;
         [SerializeField] private TMP_Text _challengeTMPointsText;
-        [SerializeField] private TMP_Text _totalWonTMChallengeText;
+        [SerializeField] private TMP_Text _totalChallengeTMWonText;
         [SerializeField] private TMP_Text _memberSinceText;
         #endregion
 
@@ -78,7 +78,7 @@ namespace WatKhaoWong.UI.SharePopup
             _todayTMPointsText.text = _userData.GetTodayTMPointsText();
             _challengeTMPointsText.text = _userData.GetChallengeTMPointsText();
 
-            _totalWonTMChallengeText.text = _userData.GetTotalWonTMChallengeText();
+            _totalChallengeTMWonText.text = _userData.GetTotalChallengeTMWonText();
             _memberSinceText.text = _userData.GetMemberSinceText();
         }
         #endregion

@@ -12,9 +12,15 @@ namespace WatKhaoWong.Utils.Conditions
     /// </summary>
     public enum EConditionType : byte
     {
+        // THESE are ONLY for 'MyUser' since 'OtherUser' can't take into processing since 'OtherUser' doesn't attached on any GameObject in Scene.
         IsAuthenticated,
-        HasChallenge,
-        IsMyUserRoleEquals = 4,
-        IsLeaderboardCategoryEquals = 19
+        HasChallengeStarted,
+        IsRoleEquals = 4,
+        IsLeaderboardCategoryEquals = 19,
+        IsLeaderboardExists,
+        HasAllTimeTMPoint,
+        HasTodayTMPoint,
+        HasChallengeTMPoint,
+        HasChallengeTMWon
     }
 }
