@@ -286,8 +286,8 @@ namespace WatKhaoWong.Leaderboards
             // Add score to leaderboard
             _savingWrapper.Save(ECategoryNode.LeaderboardTMToday, EValueNode.TodayTMPoint, score);
 
-            // Clear Lists so that it has to fetch from database again.
-            Records[ELeaderboardCategory.Today].CachedRows.Clear();
+            // Clear All Record Category CachedRows so that it has to fetch from database again. Why all? IF 'today score' updated, that means 'alltime score' has to be updated as well.
+            Records.ClearAllCachedRows();
             OnLeaderboardScoreUpdated?.Invoke();
         }
         #endregion
@@ -338,6 +338,13 @@ namespace WatKhaoWong.Leaderboards
             {
                 for (byte i = 0; i < _records.Length; i++)
                     _records[i] = new Record(maxRowNumber);
+            }
+
+            // PUBLIC Methods
+            public void ClearAllCachedRows()
+            {
+                foreach (Record each in _records)
+                    each.CachedRows.Clear();
             }
 
             // Methods

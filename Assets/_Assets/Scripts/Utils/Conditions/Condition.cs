@@ -7,6 +7,8 @@ namespace WatKhaoWong.Utils.Conditions
     public class Condition
     {
         #region --Fields-- (Inspector)
+        [TextArea]
+        [SerializeField] string _conditionText;
         [SerializeField] Level3[] _and4;
         #endregion
 
