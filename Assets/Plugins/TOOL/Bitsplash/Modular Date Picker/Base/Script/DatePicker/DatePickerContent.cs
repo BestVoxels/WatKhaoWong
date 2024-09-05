@@ -47,11 +47,13 @@ namespace Bitsplash.DatePicker
         [SerializeField]
         private bool allowEmptySelection = false;
 
-        [SerializeField]
-        private DateTime startDate = new DateTime(1960,1,1);
+        [Tooltip("Month/Day/Year")]
+        [SerializeField] private string _startCalendarDate = "1/1/2024";
+        [Tooltip("Month/Day/Year")]
+        [SerializeField] private string _endCalendarDate = "12/31/2050";
 
-        [SerializeField]
-        private DateTime endDate = new DateTime(2030, 12, 31);
+        private DateTime startDate = new DateTime(1960,1,1);  // This will be overrided with '_startCalendarDate' // My Code
+        private DateTime endDate = new DateTime(2030, 12, 31); // This will be override with '_endCalendarDate' // My Code
 
         void ValidateYear()
         {
@@ -425,8 +427,18 @@ namespace Bitsplash.DatePicker
             HookEvents();
             EnsureInput();
             GenerateCells();
-          //  if (AllowEmptySelection == false)
-          //      SelectOne(DateTime.Today);
+            //  if (AllowEmptySelection == false)
+            //      SelectOne(DateTime.Today);
+
+            if (DateTime.TryParse(_startCalendarDate, out DateTime startDateResult))
+            {
+                startDate = startDateResult;
+            }
+
+            if (DateTime.TryParse(_endCalendarDate, out DateTime endDateResult))
+            {
+                endDate = endDateResult;
+            }
         }
 
         public void Update()

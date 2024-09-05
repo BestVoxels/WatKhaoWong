@@ -29,8 +29,13 @@ namespace Bitsplash.DatePicker
                 mMarkerColors.Add(pair.Key.Date, pair.Value);
             RefreshSelection();
         }
-        public void SetMarkerColor(DateTime date, Color color)
+        public void SetMarkerColor(DateTime date, Color color = default)
         {
+            StandardDatePickerCell standardDatePickerCell = cellPrefab as StandardDatePickerCell; // My Code
+            
+            if (standardDatePickerCell != null && color.r == 0 && color.g == 0 && color.b == 0 && color.a == 0) // My Code
+                color = standardDatePickerCell.MarkColor;
+
             mMarkerColors[date.Date] = color;
             RefreshSelection();
         }
@@ -75,12 +80,17 @@ namespace Bitsplash.DatePicker
             for (int i = 0; i < mCells.Length; i++)
             {
                 var date = mCells[i].DayValue.Date;
+
                 bool withinMonth = date.Month == DisplayDate.Month && date.Year == DisplayDate.Year;
+
                 Color markerColor;
+
                 if (mMarkerColors.TryGetValue(date, out markerColor) == false)
                     markerColor = new Color(0f, 0f, 0f, 0f);
+
                 if (mCells[i].MarkerColor != markerColor)
                     mCells[i].MarkerColor = markerColor;
+
                 if ((mSelection.Contains(date) || mDragSelectionRange.Contains(date)) && withinMonth)
                 {
                     if (mCells[i].CellSelected == false)

@@ -31,9 +31,7 @@ namespace Bitsplash.DatePicker.Tutorials
             {
                 
                 int newYear = int.Parse(YearText.text);
-                if (newYear < 1800 && newYear > 2025)
-                    Debug.Log("Invalid year");
-                else
+                if (newYear >= 1800 || newYear <= 2025)
                 {
                     Picker.Content.SetYear(newYear); // set the display year for the datepicker
                 }

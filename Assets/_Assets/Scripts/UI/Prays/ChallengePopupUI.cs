@@ -1,8 +1,10 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Prays;
 using WatKhaoWong.UI.Toggles;
 using WatKhaoWong.Utils.UI;
+using Bitsplash.DatePicker;
 
 namespace WatKhaoWong.UI.Prays
 {
@@ -13,16 +15,19 @@ namespace WatKhaoWong.UI.Prays
         [SerializeField] private Button _closeButton;
 
         [Header("Challenge Popup UI Stuffs")]
-        [SerializeField] private ToggleGroup _lengthTG;
-        [SerializeField] private ToggleGroup _nowOrLaterTG;
-        [SerializeField] private ToggleGroup _delayDurationTG;
+        [SerializeField] private DatePickerSettings _datePickerStart;
+        [SerializeField] private DatePickerSettings _datePickerEnd;
         [Space]
-        [SerializeField] private Toggle _nowToggle;
+        //[SerializeField] private ToggleGroup _lengthTG;
+        //[SerializeField] private ToggleGroup _nowOrLaterTG;
+        //[SerializeField] private ToggleGroup _delayDurationTG;
+        //[Space]
+        //[SerializeField] private Toggle _nowToggle;
         [Space]
         [SerializeField] private Button _cancelButton;
         [SerializeField] private Button _confirmButton;
         [Space]
-        [SerializeField] private GameObject[] _delayUIGameObjects;
+        //[SerializeField] private GameObject[] _delayUIGameObjects;
         #endregion
 
 
@@ -50,7 +55,13 @@ namespace WatKhaoWong.UI.Prays
             _cancelButton.onClick.AddListener(Cancel);
             _confirmButton.onClick.AddListener(Confirm);
 
-            _nowToggle.onValueChanged.AddListener(RefreshDelayUI);
+            //_nowToggle.onValueChanged.AddListener(RefreshDelayUI);
+        }
+
+        private void Start()
+        {
+            _datePickerStart.Content.SetMarkerColor(DateTime.Now);
+            _datePickerEnd.Content.SetMarkerColor(DateTime.Now);
         }
         #endregion
 
@@ -61,32 +72,32 @@ namespace WatKhaoWong.UI.Prays
         {
             if (IsToggleGroupsEmpty()) return false;
 
-            foreach (Toggle each in _lengthTG.ActiveToggles())
-            {
-                TimeLengthToggle toggle = each.GetComponentInChildren<TimeLengthToggle>();
-                if (!toggle) return false;
+            //foreach (Toggle each in _lengthTG.ActiveToggles())
+            //{
+            //    TimeLengthToggle toggle = each.GetComponentInChildren<TimeLengthToggle>();
+            //    if (!toggle) return false;
 
-                _lengthTimeValue = toggle.GetTimeValue();
-            }
+            //    _lengthTimeValue = toggle.GetTimeValue();
+            //}
 
-            foreach (Toggle each in _nowOrLaterTG.ActiveToggles())
-            {
-                NowOrLaterToggle toggle = each.GetComponentInChildren<NowOrLaterToggle>();
-                if (!toggle) return false;
+            //foreach (Toggle each in _nowOrLaterTG.ActiveToggles())
+            //{
+            //    NowOrLaterToggle toggle = each.GetComponentInChildren<NowOrLaterToggle>();
+            //    if (!toggle) return false;
 
-                _nowOrLaterValue = toggle.NowOrLater;
-            }
+            //    _nowOrLaterValue = toggle.NowOrLater;
+            //}
 
-            if (!_isNowToggleTicked)
-            {
-                foreach (Toggle each in _delayDurationTG.ActiveToggles())
-                {
-                    TimeLengthToggle toggle = each.GetComponentInChildren<TimeLengthToggle>();
-                    if (!toggle) return false;
+            //if (!_isNowToggleTicked)
+            //{
+            //    foreach (Toggle each in _delayDurationTG.ActiveToggles())
+            //    {
+            //        TimeLengthToggle toggle = each.GetComponentInChildren<TimeLengthToggle>();
+            //        if (!toggle) return false;
 
-                    _delayTimeValue = toggle.GetTimeValue();
-                }
-            }
+            //        _delayTimeValue = toggle.GetTimeValue();
+            //    }
+            //}
 
             return true;
         }
@@ -95,24 +106,24 @@ namespace WatKhaoWong.UI.Prays
         {
             bool isEmpty = false;
 
-            if (!_lengthTG.AnyTogglesOn())
-            {
-                _statusText.Show(_playerChallengePopup.StatusMissingLengthTG, _playerChallengePopup.StatusMissingLengthTGColor);
+            //if (!_lengthTG.AnyTogglesOn())
+            //{
+            //    _statusText.Show(_playerChallengePopup.StatusMissingLengthTG, _playerChallengePopup.StatusMissingLengthTGColor);
 
-                isEmpty = true;
-            }
-            if (!_nowOrLaterTG.AnyTogglesOn())
-            {
-                _statusText.Show(_playerChallengePopup.StatusMissingNowOrLaterTG, _playerChallengePopup.StatusMissingNowOrLaterTGColor);
+            //    isEmpty = true;
+            //}
+            //if (!_nowOrLaterTG.AnyTogglesOn())
+            //{
+            //    _statusText.Show(_playerChallengePopup.StatusMissingNowOrLaterTG, _playerChallengePopup.StatusMissingNowOrLaterTGColor);
 
-                isEmpty = true;
-            }
-            if (!_delayDurationTG.AnyTogglesOn() && !_isNowToggleTicked)
-            {
-                _statusText.Show(_playerChallengePopup.StatusMissingDelayDurationTG, _playerChallengePopup.StatusMissingDelayDurationTGColor);
+            //    isEmpty = true;
+            //}
+            //if (!_delayDurationTG.AnyTogglesOn() && !_isNowToggleTicked)
+            //{
+            //    _statusText.Show(_playerChallengePopup.StatusMissingDelayDurationTG, _playerChallengePopup.StatusMissingDelayDurationTGColor);
 
-                isEmpty = true;
-            }
+            //    isEmpty = true;
+            //}
 
             return isEmpty;
         }
@@ -181,8 +192,8 @@ namespace WatKhaoWong.UI.Prays
         {
             _isNowToggleTicked = tickedStatus;
 
-            foreach (GameObject each in _delayUIGameObjects)
-                each.SetActive(!tickedStatus);
+            //foreach (GameObject each in _delayUIGameObjects)
+            //    each.SetActive(!tickedStatus);
         }
         #endregion
     }

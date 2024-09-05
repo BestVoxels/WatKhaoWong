@@ -24,6 +24,7 @@ namespace Bitsplash.DatePicker
         public Color DisabledTextColor;
 
         public Sprite MarkSprite;
+        public Color MarkColor; // My Code
         [NonSerialized]
         public Color MarkSelectedColor = new Color(0f,0f,0f,0f);
 
