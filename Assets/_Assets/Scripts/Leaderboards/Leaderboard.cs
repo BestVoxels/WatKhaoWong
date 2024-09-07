@@ -133,8 +133,6 @@ namespace WatKhaoWong.Leaderboards
 
         public bool IsLeaderboardExists() => Records[Category].IsLeaderboardExists;
 
-        public int GetChallengeDayLeft() => 10; // TODO return properly
-
         public async IAsyncEnumerable<OtherUserData> GetRows()
         {
             if (_isAsyncRunning) yield break; // Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.

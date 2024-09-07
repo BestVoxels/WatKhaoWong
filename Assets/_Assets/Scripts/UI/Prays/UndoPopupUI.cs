@@ -44,13 +44,13 @@ namespace WatKhaoWong.UI.Prays
             RefreshUIDefault();
 
             _playerUndoPopup.OnUploading += UpdateStatus;
-            _playerUndoPopup.OnUploadSucceed += RefreshUIDone;
+            _playerUndoPopup.OnUploadSucceeded += RefreshUIDone;
         }
 
         private void OnDisable()
         {
             _playerUndoPopup.OnUploading -= UpdateStatus;
-            _playerUndoPopup.OnUploadSucceed -= RefreshUIDone;
+            _playerUndoPopup.OnUploadSucceeded -= RefreshUIDone;
         }
         #endregion
 

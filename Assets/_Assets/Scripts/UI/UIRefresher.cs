@@ -65,7 +65,7 @@ namespace WatKhaoWong.UI
             // TODO lets see what to subscribe to for HOME SYSTEM
 
             // PRAY SYSTEM
-            _undoPopup.OnUploadSucceed += () => { RefreshPrayUI(); };
+            _undoPopup.OnUploadSucceeded += () => { RefreshPrayUI(); };
 
             // SETTING SYSTEM
             _notificationPopup.OnNotificationSwitchChanged += () => { RefreshSettingUI(); };

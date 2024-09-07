@@ -1,10 +1,10 @@
+using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Prays;
-using WatKhaoWong.UI.Toggles;
-using WatKhaoWong.Utils.UI;
 using Bitsplash.DatePicker;
+using WatKhaoWong.Utils.UI;
 
 namespace WatKhaoWong.UI.Prays
 {
@@ -18,28 +18,23 @@ namespace WatKhaoWong.UI.Prays
         [SerializeField] private DatePickerSettings _datePickerStart;
         [SerializeField] private DatePickerSettings _datePickerEnd;
         [Space]
-        //[SerializeField] private ToggleGroup _lengthTG;
-        //[SerializeField] private ToggleGroup _nowOrLaterTG;
-        //[SerializeField] private ToggleGroup _delayDurationTG;
-        //[Space]
-        //[SerializeField] private Toggle _nowToggle;
+        [SerializeField] private TMP_Text _startDateText;
+        [SerializeField] private TMP_Text _endDateText;
+        [SerializeField] private TMP_Text _durationText;
         [Space]
         [SerializeField] private Button _cancelButton;
         [SerializeField] private Button _confirmButton;
-        [Space]
-        //[SerializeField] private GameObject[] _delayUIGameObjects;
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        private bool _isNowToggleTicked;
-        private int _lengthTimeValue;
-        private ENowOrLater _nowOrLaterValue;
-        private int _delayTimeValue;
+        private DateTime _startDate;
+        private DateTime _endDate;
+        private TimeSpan _duration;
 
-        private ChallengePopup _playerChallengePopup;
         private StatusText _statusText;
+        private ChallengePopup _challengePopup;
         #endregion
 
 
@@ -47,7 +42,7 @@ namespace WatKhaoWong.UI.Prays
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _playerChallengePopup = GameObject.FindWithTag("Player").GetComponentInChildren<ChallengePopup>();
+            _challengePopup = GameObject.FindWithTag("Player").GetComponentInChildren<ChallengePopup>();
             _statusText = FindAnyObjectByType<StatusText>();
 
             _closeButton.onClick.AddListener(Close);
@@ -55,117 +50,55 @@ namespace WatKhaoWong.UI.Prays
             _cancelButton.onClick.AddListener(Cancel);
             _confirmButton.onClick.AddListener(Confirm);
 
-            //_nowToggle.onValueChanged.AddListener(RefreshDelayUI);
+            _datePickerStart.Content.OnSelectionChanged.AddListener(SelectedDateOnStartCalendar);
+            //_datePickerStart.Content.OnDisplayChanged.AddListener(() => print("StartCalendar: Calls when Click Change Month or Year"));
+            
+            _datePickerEnd.Content.OnSelectionChanged.AddListener(SelectedDateOnEndCalendar);
+            //_datePickerEnd.Content.OnDisplayChanged.AddListener(() => print("EndCalendar: Calls when Click Change Month or Year"));
         }
 
         private void Start()
         {
             _datePickerStart.Content.SetMarkerColor(DateTime.Now);
             _datePickerEnd.Content.SetMarkerColor(DateTime.Now);
+
+            RefreshUI();
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PRIVATE)
-        private bool ValidateChallengePopup()
+        private void RefreshUI()
         {
-            if (IsToggleGroupsEmpty()) return false;
+            _startDateText.text = $"{_challengePopup.StartDateFormatBegin}{GetStartDateString()}{_challengePopup.StartDateFormatEnd}";
 
-            //foreach (Toggle each in _lengthTG.ActiveToggles())
-            //{
-            //    TimeLengthToggle toggle = each.GetComponentInChildren<TimeLengthToggle>();
-            //    if (!toggle) return false;
+            _endDateText.text = $"{_challengePopup.EndDateFormatBegin}{GetEndDateString()}{_challengePopup.EndDateFormatEnd}";
 
-            //    _lengthTimeValue = toggle.GetTimeValue();
-            //}
-
-            //foreach (Toggle each in _nowOrLaterTG.ActiveToggles())
-            //{
-            //    NowOrLaterToggle toggle = each.GetComponentInChildren<NowOrLaterToggle>();
-            //    if (!toggle) return false;
-
-            //    _nowOrLaterValue = toggle.NowOrLater;
-            //}
-
-            //if (!_isNowToggleTicked)
-            //{
-            //    foreach (Toggle each in _delayDurationTG.ActiveToggles())
-            //    {
-            //        TimeLengthToggle toggle = each.GetComponentInChildren<TimeLengthToggle>();
-            //        if (!toggle) return false;
-
-            //        _delayTimeValue = toggle.GetTimeValue();
-            //    }
-            //}
-
-            return true;
+            _durationText.text = $"{_challengePopup.DurationFormatBegin}{GetDurationString()}{_challengePopup.DurationFormatEnd}";
         }
 
-        private bool IsToggleGroupsEmpty()
+        private string GetStartDateString() => (_startDate == default) ? "-" : $"<u>{_startDate:dddd, MMMM d, yyyy\nHH:mm}</u>";
+
+        private string GetEndDateString() => (_endDate == default) ? "-" : $"<u>{_endDate:dddd, MMMM d, yyyy\nHH:mm}</u>";
+
+        private string GetDurationString()
         {
-            bool isEmpty = false;
+            if (_duration == default)
+                return "-";
 
-            //if (!_lengthTG.AnyTogglesOn())
-            //{
-            //    _statusText.Show(_playerChallengePopup.StatusMissingLengthTG, _playerChallengePopup.StatusMissingLengthTGColor);
+            int totalDays = (int)Math.Round(_duration.TotalDays, MidpointRounding.AwayFromZero);
 
-            //    isEmpty = true;
-            //}
-            //if (!_nowOrLaterTG.AnyTogglesOn())
-            //{
-            //    _statusText.Show(_playerChallengePopup.StatusMissingNowOrLaterTG, _playerChallengePopup.StatusMissingNowOrLaterTGColor);
-
-            //    isEmpty = true;
-            //}
-            //if (!_delayDurationTG.AnyTogglesOn() && !_isNowToggleTicked)
-            //{
-            //    _statusText.Show(_playerChallengePopup.StatusMissingDelayDurationTG, _playerChallengePopup.StatusMissingDelayDurationTGColor);
-
-            //    isEmpty = true;
-            //}
-
-            return isEmpty;
+            return $"<u>{totalDays} day{S(totalDays)}</u>";
         }
 
-        // TODO MOVE THIS METHOD to ChallengePopup.cs to let that class do its Logic Job!!!!! Only Validation UI is needed to be done here!!!!!!!!! Change it fast!!!! xD
-        private void UploadToServer()
-        {
-            bool isUploaded = false;
-            switch (_nowOrLaterValue)
-            {
-                case ENowOrLater.Now:
-                    // TODO UPLOAD to server NOW using '_lengthTimeValue'  |  ASSIGN 'isUploaded' to correct value
-                    Debug.LogWarning($"START Challenge NOW, talk to server using {_lengthTimeValue}");
-                    isUploaded = true;
-                    break;
-
-                case ENowOrLater.Later:
-                    // TODO UPLOAD to server LATER using '_lengthTimeValue' & '_delayTimeValue'  |  ASSIGN 'isUploaded' to correct value
-                    Debug.LogWarning($"START Challenge LATER, talk to server using {_lengthTimeValue} & {_delayTimeValue}");
-                    isUploaded = true;
-                    break;
-
-                default:
-                    Debug.LogError("Something Wrong! Active Toggle ISN'T either 'Now' or 'Later'!");
-                    break;
-            }
-
-            if (isUploaded)
-            {
-                _statusText.Show(_playerChallengePopup.StatusUploadSucceed, _playerChallengePopup.StatusUploadSucceedColor);
-            }
-            else
-            {
-                _statusText.Show(_playerChallengePopup.StatusUploadFail, _playerChallengePopup.StatusUploadFailColor);
-            }
-        }
+        private string S(int input) => input > 1 ? "s" : "";
         #endregion
 
 
 
         #region --Methods-- (Subscriber) ~Popup Header UI~
-        private void Close() => _playerChallengePopup.OnCloseButtonClick();
+        private void Close() => _challengePopup.OnCloseButtonClick();
         #endregion
 
 
@@ -173,27 +106,43 @@ namespace WatKhaoWong.UI.Prays
         #region --Methods-- (Subscriber)
         private void Cancel()
         {
-            _playerChallengePopup.OnCancelButtonClick();
+            _challengePopup.OnCancelButtonClick();
         }
 
         private void Confirm()
         {
-            if (ValidateChallengePopup())
+            if (_challengePopup.ValidateChallengePopup(_startDate, _endDate))
             {
-                UploadToServer();
+                _challengePopup.CreateChallenge(_startDate, _endDate, _duration);
 
-                _playerChallengePopup.OnConfirmButtonClick();
+                _challengePopup.OnConfirmButtonClick();
+
+                _statusText.Show(_challengePopup.StatusCreateSucceeded, _challengePopup.StatusCreateSucceededColor);
             }
             else
-                _playerChallengePopup.OnConfirmButtonCantClick();
+            {
+                _challengePopup.OnConfirmButtonCantClick();
+
+                _statusText.Show(_challengePopup.StatusCreateFailed, _challengePopup.StatusCreateFailedColor);
+            }
         }
 
-        private void RefreshDelayUI(bool tickedStatus)
+        private void SelectedDateOnStartCalendar()
         {
-            _isNowToggleTicked = tickedStatus;
+            _startDate = _datePickerStart.Content.Selection.GetItem(0); // To get multiple Date, check 'SelectionTutorial.cs' line 60
+            _duration = _challengePopup.GetChallengeDuration(_startDate, _endDate);
+            _challengePopup.ValidateStartDate(_startDate, _endDate);
 
-            //foreach (GameObject each in _delayUIGameObjects)
-            //    each.SetActive(!tickedStatus);
+            RefreshUI();
+        }
+
+        private void SelectedDateOnEndCalendar()
+        {
+            _endDate = _datePickerEnd.Content.Selection.GetItem(0); // To get multiple Date, check 'SelectionTutorial.cs' line 60
+            _duration = _challengePopup.GetChallengeDuration(_startDate, _endDate);
+            _challengePopup.ValidateEndDate(_startDate, _endDate);
+
+            RefreshUI();
         }
         #endregion
     }

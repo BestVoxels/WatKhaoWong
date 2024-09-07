@@ -141,7 +141,7 @@ namespace WatKhaoWong.UI.Leaderboards
                 };
 
             if (_challenge.HasChallengeStarted)
-                _countDownBannerText.text = $"{_leaderboard.HasChallengeBannerTextBegin}{_leaderboard.GetChallengeDayLeft()}{_leaderboard.HasChallengeBannerTextEnd}";
+                _countDownBannerText.text = $"{_leaderboard.HasChallengeBannerTextBegin}{_challenge.GetChallengeEndDaysLeft()}{_leaderboard.HasChallengeBannerTextEnd}";
             else
                 _countDownBannerText.text = $"{_leaderboard.NoChallengeBannerText}";
         }

@@ -41,7 +41,7 @@ namespace WatKhaoWong.Prays
 
 
         #region --Events-- (Delegate as Action)
-        public event Action OnUploadSucceed;
+        public event Action OnUploadSucceeded;
         public event Action<float> OnUploading;
         #endregion
 
@@ -126,7 +126,7 @@ namespace WatKhaoWong.Prays
             _myUserData.AddTodayTMPoints(_tmPoints);
 
             _onUploadSucceed?.Invoke();
-            OnUploadSucceed?.Invoke();
+            OnUploadSucceeded?.Invoke();
         }
         #endregion
 

@@ -1003,29 +1003,53 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _hasChallengeStarted: 0
-  <StatusMissingLengthTG>k__BackingField: Please choose any option from 'How Long?'
-    section
-  <StatusMissingLengthTGColor>k__BackingField:
-    serializedVersion: 2
-    rgba: 4285887999
-  <StatusMissingNowOrLaterTG>k__BackingField: Please choose any option from 'Start
-    Challenge Now or Later?' section
-  <StatusMissingNowOrLaterTGColor>k__BackingField:
-    serializedVersion: 2
-    rgba: 4285887999
-  <StatusMissingDelayDurationTG>k__BackingField: Please choose any option from 'Delay
-    Duration' section
-  <StatusMissingDelayDurationTGColor>k__BackingField:
-    serializedVersion: 2
-    rgba: 4285887999
-  <StatusUploadSucceed>k__BackingField: Uploaded! Challenge is now set!
-  <StatusUploadSucceedColor>k__BackingField:
+  <StatusCreateSucceeded>k__BackingField: The challenge has been created successfully.
+    Have fun!
+  <StatusCreateSucceededColor>k__BackingField:
     serializedVersion: 2
     rgba: 4288011303
-  <StatusUploadFail>k__BackingField: Failed! Couldn't Upload to Server somehow!
-  <StatusUploadFailColor>k__BackingField:
+  <StatusCreateFailed>k__BackingField: Creation failed. Please try again.
+  <StatusCreateFailedColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
+  _statusStartDateIsNull: Please select a Start Date on the first calendar.
+  _statusStartDateIsNullColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusStartDateIsInPast: "The Start Date cannot be in the past. Please select
+    today\u2019s date or a date in the future."
+  _statusStartDateIsInPastColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusStartDateIsAfterEndDate: The Start Date cannot be after the End Date. Please
+    select a date earlier than the End Date.
+  _statusStartDateIsAfterEndDateColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusEndDateIsNull: Please select an End Date on the second calendar.
+  _statusEndDateIsNullColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusEndDateIsInPast: The End Date cannot be in the past. Please select a date
+    in the future.
+  _statusEndDateIsInPastColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusEndDateIsBeforeStartDate: The End Date cannot be before the Start Date.
+    Please select a date after the Start Date.
+  _statusEndDateIsBeforeStartDateColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusBothDateIsSameDate: The Start Date and End Date cannot be the same date!
+  _statusBothDateIsSameDateColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StartDateFormatBegin>k__BackingField: 'Start Date: '
+  <StartDateFormatEnd>k__BackingField: 
+  <EndDateFormatBegin>k__BackingField: 'End Date: '
+  <EndDateFormatEnd>k__BackingField: 
+  <DurationFormatBegin>k__BackingField: 'Challenge Duration: '
+  <DurationFormatEnd>k__BackingField: 
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
