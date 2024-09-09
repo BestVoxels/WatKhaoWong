@@ -24,11 +24,11 @@ namespace WatKhaoWong.Challenges
         #endregion
         #region --Fields-- (Inspector)
         [field: Header("Challenge Popup - Status Text")]
-        [field: SerializeField] public string StatusCreateSucceeded { get; private set; } = "The challenge has been created successfully. Have fun!";
-        [field: SerializeField] public Color32 StatusCreateSucceededColor { get; private set; }
-        [field: Space]
-        [field: SerializeField] public string StatusCreateFailed { get; private set; } = "Creation failed. Please try again.";
+        [field: SerializeField] public string StatusCreateFailed { get; private set; } = "Creation failed.";
         [field: SerializeField] public Color32 StatusCreateFailedColor { get; private set; }
+        [Space]
+        [SerializeField] private string _statusCreateSucceeded = "The challenge has been created successfully!";
+        [SerializeField] private Color32 _statusCreateSucceededColor;
         [Space]
         [Space]
         [Space]
@@ -90,6 +90,10 @@ namespace WatKhaoWong.Challenges
 
 
         #region --Fields-- (In Class)
+        private DateTime _startDate;
+        private DateTime _endDate;
+        private TimeSpan _duration;
+
         private StatusText _statusText;
         #endregion
 
@@ -202,21 +206,18 @@ namespace WatKhaoWong.Challenges
             return true;
         }
 
-        // TODO move to "Challenge.cs"
-        private DateTime _startDate; // TODO has to load from server.
-        private DateTime _endDate; // TODO has to load from server.
-        private TimeSpan _duration; // TODO has to load from server.
-
-        public void CreateChallenge(DateTime startDate, DateTime endDate, TimeSpan duration)
+        public void SetDataAwaitConfirmation(DateTime startDate, DateTime endDate, TimeSpan duration)
         {
-            HasChallengeStarted = true;
-
             _startDate = startDate;
             _endDate = endDate;
             _duration = duration;
-
-            // ...coding...
         }
+        #endregion
+
+        // TODO move to "Challenge.cs"
+        //private DateTime _startDate; // TODO has to load from server.
+        //private DateTime _endDate; // TODO has to load from server.
+        //private TimeSpan _duration; // TODO has to load from server.
 
         public void StartChallenge()
         {
@@ -244,7 +245,6 @@ namespace WatKhaoWong.Challenges
 
             return (int)Math.Round(daysLeft.TotalDays, MidpointRounding.AwayFromZero);
         }
-        #endregion
 
 
 
@@ -264,6 +264,20 @@ namespace WatKhaoWong.Challenges
             _onConfirmButtonCantClick?.Invoke();
         }
         #endregion
+
+
+
+        #region --Methods-- (Subscriber) ~UnityEvent~
+        public void CreateChallenge()
+        {
+            _statusText.Show(_statusCreateSucceeded, _statusCreateSucceededColor);
+
+            HasChallengeStarted = true;
+
+            // TODO USE "_startDate", "_endDate", and "_duration" fields. Add on "Challenge Pending List"
+        }
+        #endregion
+
 
 
         // TODO move to "Challenge.cs"

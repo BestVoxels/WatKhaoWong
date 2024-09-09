@@ -113,11 +113,9 @@ namespace WatKhaoWong.UI.Challenges
         {
             if (_challengePopup.ValidateChallengePopup(_startDate, _endDate))
             {
-                _challengePopup.CreateChallenge(_startDate, _endDate, _duration);
+                _challengePopup.SetDataAwaitConfirmation(_startDate, _endDate, _duration);
 
                 _challengePopup.OnConfirmButtonClick();
-
-                _statusText.Show(_challengePopup.StatusCreateSucceeded, _challengePopup.StatusCreateSucceededColor);
             }
             else
             {

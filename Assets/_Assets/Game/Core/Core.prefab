@@ -980,15 +980,14 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _hasChallengeStarted: 0
-  <StatusCreateSucceeded>k__BackingField: The challenge has been created successfully.
-    Have fun!
-  <StatusCreateSucceededColor>k__BackingField:
-    serializedVersion: 2
-    rgba: 4288011303
-  <StatusCreateFailed>k__BackingField: Creation failed. Please try again.
+  <StatusCreateFailed>k__BackingField: Creation failed.
   <StatusCreateFailedColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
+  _statusCreateSucceeded: The challenge has been created successfully!
+  _statusCreateSucceededColor:
+    serializedVersion: 2
+    rgba: 4288011303
   _statusStartDateIsNull: Please select a Start Date on the first calendar.
   _statusStartDateIsNullColor:
     serializedVersion: 2
@@ -1045,6 +1044,18 @@ MonoBehaviour:
   _onConfirmButtonClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: OpenPopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 2823740306085062417}
         m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: ClosePopup
@@ -1484,28 +1495,90 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _onCloseButtonClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   <TitleText>k__BackingField: Confirm?
-  <InfoText>k__BackingField: Please make sure the challenge is correctly setup.
+  <InfoText>k__BackingField: Please ensure the Challenge is properly configured
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4283651013
   _onStartForSetupUI:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.CorePopups.ConfirmPopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: Setup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 7738477549814004901}
+          m_ObjectArgumentAssemblyTypeName: WatKhaoWong.CorePopups.ConfirmPopup,
+            Assembly-WatKhaoWong-CorePopups
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _onCancelButtonClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: OpenPopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _onConfirmButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4429167203931236604}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 0
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4899190914145397675}
+        m_TargetAssemblyTypeName: WatKhaoWong.Challenges.ChallengeCreationPopup,
+          Assembly-WatKhaoWong-Challenges
+        m_MethodName: CreateChallenge
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
