@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3672484629506604567}
   - component: {fileID: 3581642504408918807}
   m_Layer: 0
-  m_Name: Signup Popup System
+  m_Name: Signup Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -198,7 +198,7 @@ GameObject:
   - component: {fileID: 2170721723159614036}
   - component: {fileID: 1124505776989597800}
   m_Layer: 0
-  m_Name: Settings Credits Popup System
+  m_Name: Credits Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 6712304440810370011}
   - component: {fileID: 1677259490705401639}
   m_Layer: 0
-  m_Name: Account Popup System
+  m_Name: Account Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -276,7 +276,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1313416025136834623}
+  m_Father: {fileID: 6412060474225977998}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1677259490705401639
 MonoBehaviour:
@@ -293,8 +293,8 @@ MonoBehaviour:
   _onCloseButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4956454277919580197}
-        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
+      - m_Target: {fileID: 8705845222389736811}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: ClosePopup
         m_Mode: 2
         m_Arguments:
@@ -394,7 +394,7 @@ MonoBehaviour:
   _onAccountButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4956454277919580197}
+      - m_Target: {fileID: 8705845222389736811}
         m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: OpenPopupIfNotGuest
         m_Mode: 2
@@ -516,7 +516,7 @@ GameObject:
   - component: {fileID: 1313416025136834623}
   - component: {fileID: 4956454277919580197}
   m_Layer: 0
-  m_Name: Share Popup System
+  m_Name: Authentication System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -535,8 +535,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6712304440810370011}
-  - {fileID: 6762792756581011537}
   - {fileID: 3672484629506604567}
   - {fileID: 6365214590018219571}
   - {fileID: 7423408979919273027}
@@ -568,10 +566,6 @@ MonoBehaviour:
     isShowOnStart: 0
   - animator: {fileID: 0}
     isShowOnStart: 0
-  - animator: {fileID: 0}
-    isShowOnStart: 0
-  - animator: {fileID: 0}
-    isShowOnStart: 0
 --- !u!1 &2009358291179130440
 GameObject:
   m_ObjectHideFlags: 0
@@ -582,7 +576,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2637654065332200263}
   - component: {fileID: 6474094721529044221}
-  - component: {fileID: 4749867448591421449}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -608,7 +601,9 @@ Transform:
   - {fileID: 8200222152408351853}
   - {fileID: 251800662036913830}
   - {fileID: 1313416025136834623}
+  - {fileID: 6412060474225977998}
   - {fileID: 9027074836127617407}
+  - {fileID: 547467516478111935}
   m_Father: {fileID: 5923315315416972317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6474094721529044221
@@ -624,24 +619,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uniqueIdentifier: cf7189db-614e-4b67-936b-3bc11f4403f5
---- !u!114 &4749867448591421449
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2009358291179130440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58799e86949114904b60eedc84f1d4bc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _defaultFirstName: FirstName
-  _defaultLastName: LastName
-  _defaultMemberSince: no data
-  _defaultProfileIcon: {fileID: 11400000, guid: c2ac1f107ef784c5ea99406cb9b6b13f,
-    type: 2}
-  _defaultLevel: 1
 --- !u!1 &2463763845362812804
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,7 +931,7 @@ GameObject:
   - component: {fileID: 2926500131778524872}
   - component: {fileID: 4899190914145397675}
   m_Layer: 0
-  m_Name: Pray Challenge Popup System
+  m_Name: Challenge Creation Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -973,7 +950,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 8200222152408351853}
+  m_Father: {fileID: 547467516478111935}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4899190914145397675
 MonoBehaviour:
@@ -990,8 +967,8 @@ MonoBehaviour:
   _onCloseButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4397910582779905581}
-        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: ClosePopup
         m_Mode: 2
         m_Arguments:
@@ -1053,8 +1030,8 @@ MonoBehaviour:
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4397910582779905581}
-        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: ClosePopup
         m_Mode: 2
         m_Arguments:
@@ -1068,8 +1045,8 @@ MonoBehaviour:
   _onConfirmButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4397910582779905581}
-        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: ClosePopup
         m_Mode: 2
         m_Arguments:
@@ -1117,7 +1094,6 @@ Transform:
   - {fileID: 7953368218725561682}
   - {fileID: 6874158055001494262}
   - {fileID: 3221843498232537315}
-  - {fileID: 2926500131778524872}
   m_Father: {fileID: 2637654065332200263}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3476639795763182727
@@ -1162,7 +1138,7 @@ MonoBehaviour:
   _onUserProfileClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4956454277919580197}
+      - m_Target: {fileID: 8705845222389736811}
         m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: OpenPopupIfNotGuest
         m_Mode: 2
@@ -1189,7 +1165,7 @@ MonoBehaviour:
   _onUserStatsClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4956454277919580197}
+      - m_Target: {fileID: 8705845222389736811}
         m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: OpenPopupIfNotGuest
         m_Mode: 2
@@ -1243,21 +1219,6 @@ MonoBehaviour:
   _onPlaySoundButtonClick:
     m_PersistentCalls:
       m_Calls: []
-  _onChallengeButtonClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4397910582779905581}
-        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
-        m_MethodName: OpenPopup
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &4397910582779905581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1277,8 +1238,6 @@ MonoBehaviour:
     animator: {fileID: 0}
     isShowOnStart: 0
   _popups:
-  - animator: {fileID: 0}
-    isShowOnStart: 0
   - animator: {fileID: 0}
     isShowOnStart: 0
   - animator: {fileID: 0}
@@ -1340,7 +1299,7 @@ GameObject:
   - component: {fileID: 274610429982252243}
   - component: {fileID: 2713540295551581792}
   m_Layer: 0
-  m_Name: Settings Language Popup System
+  m_Name: Language Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1479,6 +1438,37 @@ MonoBehaviour:
     animator: {fileID: 0}
     isShowOnStart: 0
   _popups: []
+--- !u!1 &5909602575756774240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3008752406558780018}
+  m_Layer: 0
+  m_Name: '[Challenge System] Confirm Popup'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3008752406558780018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5909602575756774240}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 547467516478111935}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6008341982099111722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1490,7 +1480,7 @@ GameObject:
   - component: {fileID: 5691466238723910595}
   - component: {fileID: 7025401772511450966}
   m_Layer: 0
-  m_Name: Logout Button System
+  m_Name: Logout Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1537,7 +1527,7 @@ GameObject:
   - component: {fileID: 4093619250642013008}
   - component: {fileID: 5660254912490754542}
   m_Layer: 0
-  m_Name: Settings Notification Popup System
+  m_Name: Notification Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1609,7 +1599,7 @@ GameObject:
   - component: {fileID: 6365214590018219571}
   - component: {fileID: 6324599813706716512}
   m_Layer: 0
-  m_Name: Login Popup System
+  m_Name: Login Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1771,6 +1761,82 @@ MonoBehaviour:
   _onValidateTextFailed:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &6325179408576210219
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6412060474225977998}
+  - component: {fileID: 3850235362167256106}
+  - component: {fileID: 8705845222389736811}
+  m_Layer: 0
+  m_Name: Identities System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6412060474225977998
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6325179408576210219}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6712304440810370011}
+  - {fileID: 6762792756581011537}
+  m_Father: {fileID: 2637654065332200263}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3850235362167256106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6325179408576210219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58799e86949114904b60eedc84f1d4bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _defaultFirstName: FirstName
+  _defaultLastName: LastName
+  _defaultMemberSince: no data
+  _defaultProfileIcon: {fileID: 11400000, guid: c2ac1f107ef784c5ea99406cb9b6b13f,
+    type: 2}
+  _defaultLevel: 1
+--- !u!114 &8705845222389736811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6325179408576210219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57fcdb414b3242fd9646a8f1842a6b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _page:
+    animator: {fileID: 0}
+    isShowOnStart: 0
+  _dim:
+    animator: {fileID: 0}
+    isShowOnStart: 0
+  _popups:
+  - animator: {fileID: 0}
+    isShowOnStart: 0
+  - animator: {fileID: 0}
+    isShowOnStart: 0
 --- !u!1 &7122087394019308341
 GameObject:
   m_ObjectHideFlags: 0
@@ -1834,6 +1900,21 @@ MonoBehaviour:
   <NoChallengeBannerText>k__BackingField: Wait for the Challenge to start & Win it!
   <HasChallengeBannerTextBegin>k__BackingField: 'Challenge Ends in '
   <HasChallengeBannerTextEnd>k__BackingField: ' days!'
+  _onChallengeButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: OpenPopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &3087279084121397941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1916,7 +1997,7 @@ GameObject:
   - component: {fileID: 6874158055001494262}
   - component: {fileID: 2459277859981094913}
   m_Layer: 0
-  m_Name: Pray Confirm Popup System
+  m_Name: '[Pray System] Confirm Popup'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2029,7 +2110,7 @@ GameObject:
   - component: {fileID: 3221843498232537315}
   - component: {fileID: 1905388332688856388}
   m_Layer: 0
-  m_Name: Pray Undo Popup System
+  m_Name: Undo Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2124,7 +2205,7 @@ GameObject:
   - component: {fileID: 3547641287673499957}
   - component: {fileID: 2877384778960014764}
   m_Layer: 0
-  m_Name: Settings Support Popup System
+  m_Name: Support Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2527,7 +2608,7 @@ GameObject:
   - component: {fileID: 7953368218725561682}
   - component: {fileID: 8164852885833228178}
   m_Layer: 0
-  m_Name: Pray Input Popup System
+  m_Name: Input Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2627,6 +2708,61 @@ MonoBehaviour:
   _onOkButtonCantClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &8535508301120170199
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 547467516478111935}
+  - component: {fileID: 2823740306085062417}
+  m_Layer: 0
+  m_Name: Challenge System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &547467516478111935
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8535508301120170199}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2926500131778524872}
+  - {fileID: 3008752406558780018}
+  m_Father: {fileID: 2637654065332200263}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2823740306085062417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8535508301120170199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57fcdb414b3242fd9646a8f1842a6b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _page:
+    animator: {fileID: 0}
+    isShowOnStart: 0
+  _dim:
+    animator: {fileID: 0}
+    isShowOnStart: 0
+  _popups:
+  - animator: {fileID: 0}
+    isShowOnStart: 0
 --- !u!1 &8716340488134315387
 GameObject:
   m_ObjectHideFlags: 0
@@ -2638,7 +2774,7 @@ GameObject:
   - component: {fileID: 6762792756581011537}
   - component: {fileID: 6383029194986688540}
   m_Layer: 0
-  m_Name: Other Account Popup System
+  m_Name: Other Account Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2652,12 +2788,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8716340488134315387}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1313416025136834623}
+  m_Father: {fileID: 6412060474225977998}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6383029194986688540
 MonoBehaviour:
@@ -2674,7 +2810,7 @@ MonoBehaviour:
   _onCloseButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4956454277919580197}
+      - m_Target: {fileID: 8705845222389736811}
         m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: ClosePopup
         m_Mode: 2
@@ -2697,7 +2833,7 @@ GameObject:
   - component: {fileID: 7423408979919273027}
   - component: {fileID: 3124304986050759144}
   m_Layer: 0
-  m_Name: Verify Popup System
+  m_Name: Verify Popup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

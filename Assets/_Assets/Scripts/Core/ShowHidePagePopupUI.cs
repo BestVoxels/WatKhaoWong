@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections;
-using WatKhaoWong.Identity;
+using WatKhaoWong.Identities;
 
 namespace WatKhaoWong.Core
 {

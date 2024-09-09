@@ -1,9 +1,10 @@
 using TMPro;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.UI;
 using WatKhaoWong.Leaderboards;
-using WatKhaoWong.Identity;
-using WatKhaoWong.Prays; // TODO Challenge - remove this namespace
+using WatKhaoWong.Identities;
+using WatKhaoWong.Challenges; // TODO Challenge - remove this namespace
 
 namespace WatKhaoWong.UI.Leaderboards
 {
@@ -13,6 +14,8 @@ namespace WatKhaoWong.UI.Leaderboards
         [Header("Leaderboard Stuffs")]
         [SerializeField] private TMP_Text _dataIndicatorText;
         [SerializeField] private TMP_Text _countDownBannerText;
+        [Space]
+        [SerializeField] private Button _challengeButton;
         [Space]
         [SerializeField] private Transform _tabsTransform;
         [SerializeField] private RowUI _myRowUI;
@@ -30,7 +33,7 @@ namespace WatKhaoWong.UI.Leaderboards
         private bool _isAsyncRunning = false;
 
         private Leaderboard _leaderboard;
-        private ChallengePopup _challenge; // TODO Challenge - change from "ChallengePopup.cs" to "Challenge.cs"
+        private ChallengeCreationPopup _challenge; // TODO Challenge - change from "ChallengePopup.cs" to "Challenge.cs"
         private MyUserData _myUserData;
         #endregion
 
@@ -42,8 +45,10 @@ namespace WatKhaoWong.UI.Leaderboards
             GameObject player = GameObject.FindWithTag("Player");
 
             _leaderboard = player.GetComponentInChildren<Leaderboard>();
-            _challenge = player.GetComponentInChildren<ChallengePopup>(); // TODO Challenge - change from "ChallengePopup.cs" to "Challenge.cs"
+            _challenge = player.GetComponentInChildren<ChallengeCreationPopup>(); // TODO Challenge - change from "ChallengePopup.cs" to "Challenge.cs"
             _myUserData = player.GetComponentInChildren<MyUserData>();
+
+            _challengeButton.onClick.AddListener(StartChallenge);
 
             UIRefresher.OnLeaderboardRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
@@ -162,6 +167,8 @@ namespace WatKhaoWong.UI.Leaderboards
 
             SetupMyRow();
         }
+
+        private void StartChallenge() => _leaderboard.OnChallengeButtonClick();
         #endregion
     }
 }

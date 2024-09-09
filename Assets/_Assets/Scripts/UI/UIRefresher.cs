@@ -1,9 +1,9 @@
 using System;
 using UnityEngine;
 using WatKhaoWong.Prays;
+using WatKhaoWong.Challenges;
 using WatKhaoWong.Settings;
-using WatKhaoWong.SharePopup;
-using WatKhaoWong.Identity;
+using WatKhaoWong.Identities;
 using WatKhaoWong.Leaderboards;
 
 namespace WatKhaoWong.UI
@@ -38,7 +38,7 @@ namespace WatKhaoWong.UI
         private NotificationPopup _notificationPopup;
         private AccountPopup _accountPopup;
         private Leaderboard _leaderboard;
-        private ChallengePopup _challengePopup;
+        private ChallengeCreationPopup _challengePopup;
         #endregion
 
 
@@ -53,7 +53,7 @@ namespace WatKhaoWong.UI
             _notificationPopup = player.GetComponentInChildren<NotificationPopup>();
             _accountPopup = player.GetComponentInChildren<AccountPopup>();
             _leaderboard = player.GetComponentInChildren<Leaderboard>();
-            _challengePopup = player.GetComponentInChildren<ChallengePopup>();
+            _challengePopup = player.GetComponentInChildren<ChallengeCreationPopup>();
         }
 
         private void OnEnable()

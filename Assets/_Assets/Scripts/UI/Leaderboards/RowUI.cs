@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using WatKhaoWong.Identity;
+using WatKhaoWong.Identities;
 using WatKhaoWong.Leaderboards;
-using WatKhaoWong.UI.SharePopup;
+using WatKhaoWong.UI.Identities;
 
 namespace WatKhaoWong.UI.Leaderboards
 {

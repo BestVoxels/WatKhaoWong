@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Attributes;
-using WatKhaoWong.Identity;
+using WatKhaoWong.Identities;
 
 namespace WatKhaoWong.Prays
 {

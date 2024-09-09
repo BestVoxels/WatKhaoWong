@@ -13,7 +13,6 @@ namespace WatKhaoWong.Prays
         [Space]
         [SerializeField] private UnityEvent _onDoneButtonClick;
         [SerializeField] private UnityEvent _onPlaySoundButtonClick;
-        [SerializeField] private UnityEvent _onChallengeButtonClick;
         #endregion
 
 
@@ -42,11 +41,6 @@ namespace WatKhaoWong.Prays
         public void OnPlaySoundButtonClick()
         {
             _onPlaySoundButtonClick?.Invoke();
-        }
-
-        public void OnChallengeButtonClick()
-        {
-            _onChallengeButtonClick?.Invoke();
         }
         #endregion
     }

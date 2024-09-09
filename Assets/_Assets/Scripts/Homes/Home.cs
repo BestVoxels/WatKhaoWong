@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
-using WatKhaoWong.Identity;
+using WatKhaoWong.Identities;
 using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.Homes

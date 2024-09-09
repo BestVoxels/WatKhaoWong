@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using TMPro;
 using WatKhaoWong.Prays;
-using WatKhaoWong.Identity;
+using WatKhaoWong.Identities;
 
 namespace WatKhaoWong.UI.Prays
 {
@@ -26,8 +26,6 @@ namespace WatKhaoWong.UI.Prays
         [Space]
         [SerializeField] private Button _doneButton;
         [SerializeField] private Button _playSoundButton;
-        [Space]
-        [SerializeField] private Button _challengeButton;
         #endregion
 
 
@@ -65,7 +63,6 @@ namespace WatKhaoWong.UI.Prays
 
             _doneButton.onClick.AddListener(Done);
             _playSoundButton.onClick.AddListener(PlaySound);
-            _challengeButton.onClick.AddListener(StartChallenge);
 
             UIRefresher.OnPrayRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
@@ -92,8 +89,6 @@ namespace WatKhaoWong.UI.Prays
         private void Done() => _playerPray.OnDoneButtonClick();
 
         private void PlaySound() => _playerPray.OnPlaySoundButtonClick();
-
-        private void StartChallenge() => _playerPray.OnChallengeButtonClick();
 
         private void RefreshUI()
         {

@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using System;
 using UnityEngine;
 using WatKhaoWong.SceneManagement;
-using WatKhaoWong.Identity;
+using WatKhaoWong.Identities;
 using Firebase.Database;
 using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Utils.Conditions;
 using Firebase.Auth;
+using UnityEngine.Events;
 
 namespace WatKhaoWong.Leaderboards
 {
@@ -44,6 +45,13 @@ namespace WatKhaoWong.Leaderboards
         [field: Space]
         [field: SerializeField] public string HasChallengeBannerTextBegin { get; private set; } = $"Challenge Ends in ";
         [field: SerializeField] public string HasChallengeBannerTextEnd { get; private set; } = $" days!";
+        #endregion
+
+
+
+        #region --Events-- (UnityEvent)
+        [Header("Leaderboard Event")]
+        [SerializeField] private UnityEvent _onChallengeButtonClick;
         #endregion
 
 
@@ -122,6 +130,15 @@ namespace WatKhaoWong.Leaderboards
 
 
         #region --Methods-- (Custom PUBLIC)
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~UI Buttons~
+        public void OnChallengeButtonClick()
+        {
+            _onChallengeButtonClick?.Invoke();
+        }
         #endregion
 
 

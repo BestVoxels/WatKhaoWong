@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using WatKhaoWong.Prays;
+using WatKhaoWong.CorePopups;
 
 namespace WatKhaoWong.UI.Prays
 {
