@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.CorePopups;
@@ -11,6 +12,9 @@ namespace WatKhaoWong.UI.CorePopups
         [SerializeField] private Button _closeButton;
 
         [Header("Confirm Popup UI Stuffs")]
+        [SerializeField] private TMP_Text _titleText;
+        [SerializeField] private TMP_Text _infoText;
+        [Space]
         [SerializeField] private Button _cancelButton;
         [SerializeField] private Button _confirmButton;
         #endregion
@@ -18,7 +22,7 @@ namespace WatKhaoWong.UI.CorePopups
 
 
         #region --Fields-- (In Class)
-        private ConfirmPopup _playerConfirmPopup;
+        private ConfirmPopup _confirmPopup;
         #endregion
 
 
@@ -26,8 +30,6 @@ namespace WatKhaoWong.UI.CorePopups
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _playerConfirmPopup = GameObject.FindWithTag("Player").GetComponentInChildren<ConfirmPopup>();
-
             _closeButton.onClick.AddListener(Close);
 
             _cancelButton.onClick.AddListener(Cancel);
@@ -37,8 +39,28 @@ namespace WatKhaoWong.UI.CorePopups
 
 
 
+        #region --Methods-- (Subscriber) ~UnityEvent~
+        public void Setup(ConfirmPopup confirmPopup)
+        {
+            if (!_confirmButton)
+            {
+                Debug.LogError($"Custom Error: No 'ConfirmPopup' component assigned to the UI. Please assign on {gameObject.name}");
+                return;
+            }
+
+            _confirmPopup = confirmPopup;
+
+            _titleText.text = _confirmPopup.TitleText;
+
+            _infoText.text = _confirmPopup.InfoText;
+            _infoText.color = _confirmPopup.InfoTextColor;
+        }
+        #endregion
+
+
+
         #region --Methods-- (Subscriber) ~Popup Header UI~
-        private void Close() => _playerConfirmPopup.OnCloseButtonClick();
+        private void Close() => _confirmPopup.OnCloseButtonClick();
         #endregion
 
 
@@ -46,12 +68,12 @@ namespace WatKhaoWong.UI.CorePopups
         #region --Methods-- (Subscriber)
         private void Cancel()
         {
-            _playerConfirmPopup.OnCancelButtonClick();
+            _confirmPopup.OnCancelButtonClick();
         }
 
         private void Confirm()
         {
-            _playerConfirmPopup.OnConfirmButtonClick();
+            _confirmPopup.OnConfirmButtonClick();
         }
         #endregion
     }

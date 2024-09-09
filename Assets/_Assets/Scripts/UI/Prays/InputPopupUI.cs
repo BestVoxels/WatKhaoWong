@@ -2,7 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using WatKhaoWong.Prays;
-using WatKhaoWong.CorePopups;
 
 namespace WatKhaoWong.UI.Prays
 {
@@ -26,7 +25,7 @@ namespace WatKhaoWong.UI.Prays
         private int _result = 0;
 
         private InputPopup _playerInputPopup;
-        private ConfirmPopup _playerConfirmPopup;
+        private UndoPopup _playerUndoPopup;
         #endregion
 
 
@@ -35,7 +34,7 @@ namespace WatKhaoWong.UI.Prays
         private void Awake()
         {
             _playerInputPopup = GameObject.FindWithTag("Player").GetComponentInChildren<InputPopup>();
-            _playerConfirmPopup = GameObject.FindWithTag("Player").GetComponentInChildren<ConfirmPopup>();
+            _playerUndoPopup = GameObject.FindWithTag("Player").GetComponentInChildren<UndoPopup>();
 
             _closeButton.onClick.AddListener(Close);
 
@@ -66,7 +65,7 @@ namespace WatKhaoWong.UI.Prays
         {
             if (_isValidated)
             {
-                _playerConfirmPopup.SaveToTempPlace(_result);
+                _playerUndoPopup.SetDataAwaitConfirmation(_result);
 
                 _playerInputPopup.OnOkButtonClick();
             }

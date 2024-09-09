@@ -72,13 +72,11 @@ namespace WatKhaoWong.Prays
 
 
         #region --Methods-- (Custom PUBLIC)
-        public void StartUploadToServer(int tmPoints)
+        public void SetDataAwaitConfirmation(int result)
         {
-            if (tmPoints <= 0) return;
+            if (result <= 0) return;
 
-            _tmPoints = tmPoints;
-
-            _previousCoroutine = StartCoroutine(UploadToServerDelay());
+            _tmPoints = result;
         }
         #endregion
 
@@ -138,6 +136,15 @@ namespace WatKhaoWong.Prays
             _tmPoints = 0;
 
             base.OnCloseButtonClick();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber) ~UnityEvent~
+        public void StartUploadToServer()
+        {
+            _previousCoroutine = StartCoroutine(UploadToServerDelay());
         }
         #endregion
     }
