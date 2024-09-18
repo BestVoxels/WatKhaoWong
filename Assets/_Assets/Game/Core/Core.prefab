@@ -1449,6 +1449,142 @@ MonoBehaviour:
     animator: {fileID: 0}
     isShowOnStart: 0
   _popups: []
+--- !u!1 &5906627867459830105
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4759269892348508849}
+  - component: {fileID: 5638490840288634396}
+  m_Layer: 0
+  m_Name: '[Challenge Pending] Confirm Popup'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4759269892348508849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5906627867459830105}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 547467516478111935}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5638490840288634396
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5906627867459830105}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a47fa6504fc44f59da0d81b6d6e1ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onCloseButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  <TitleText>k__BackingField: Are you sure you want to delete this challenge?
+  <InfoText>k__BackingField: This action cannot be undone. Do you want to proceed
+    with deleting the pending challenge?
+  <InfoTextColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4283651013
+  _onStartForSetupUI:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.CorePopups.ConfirmPopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: Setup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 5638490840288634396}
+          m_ObjectArgumentAssemblyTypeName: WatKhaoWong.CorePopups.ConfirmPopup,
+            Assembly-WatKhaoWong-CorePopups
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCancelButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: OpenPopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onConfirmButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2823740306085062417}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4899190914145397675}
+        m_TargetAssemblyTypeName: WatKhaoWong.Challenges.ChallengeCreationPopup,
+          Assembly-WatKhaoWong-Challenges
+        m_MethodName: CreateChallenge
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5909602575756774240
 GameObject:
   m_ObjectHideFlags: 0
@@ -1460,7 +1596,7 @@ GameObject:
   - component: {fileID: 3008752406558780018}
   - component: {fileID: 7738477549814004901}
   m_Layer: 0
-  m_Name: '[Challenge System] Confirm Popup'
+  m_Name: '[Challenge Creation] Confirm Popup'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2888,6 +3024,8 @@ Transform:
   m_Children:
   - {fileID: 2926500131778524872}
   - {fileID: 3008752406558780018}
+  - {fileID: 3683819987599218782}
+  - {fileID: 4759269892348508849}
   m_Father: {fileID: 2637654065332200263}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2823740306085062417
@@ -3114,6 +3252,37 @@ MonoBehaviour:
   _onValidateTextFailed:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &8983441613738632392
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3683819987599218782}
+  m_Layer: 0
+  m_Name: Challenge Pending Popup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3683819987599218782
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8983441613738632392}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 547467516478111935}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8803156098798840112
 PrefabInstance:
   m_ObjectHideFlags: 0

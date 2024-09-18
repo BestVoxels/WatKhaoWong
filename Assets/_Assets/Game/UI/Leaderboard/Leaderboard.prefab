@@ -619,6 +619,7 @@ RectTransform:
   m_Children:
   - {fileID: 547215085138735006}
   - {fileID: 6400139099933600838}
+  - {fileID: 7439855381043609505}
   m_Father: {fileID: 3648232727626471571}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -3785,11 +3786,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Create Challenge Button
       objectReference: {fileID: 0}
-    - target: {fileID: 3078733134412946548, guid: de0a1848707c24d58b78301d898bb3ed,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4462,4 +4458,138 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6288369399244311356, guid: e137ff56481694b909c5ad2f366be7fd,
     type: 3}
   m_PrefabInstance: {fileID: 6986609701161496790}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &8729404361629563131
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 9105320882535160750}
+    m_Modifications:
+    - target: {fileID: 1530791873953404735, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_text
+      value: Pending Challenge
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 620.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 125
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3078733134412946548, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_Name
+      value: Pending Challenge Button
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: de0a1848707c24d58b78301d898bb3ed, type: 3}
+--- !u!224 &7439855381043609505 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 8729404361629563131}
   m_PrefabAsset: {fileID: 0}
