@@ -18,18 +18,8 @@ namespace WatKhaoWong.CorePopups
 
         #region --Events-- (UnityEvent)
         [Header("Confirm Popup UI Event")]
-        [SerializeField] private UnityEvent _onStartForSetupUI;
         [SerializeField] private UnityEvent _onCancelButtonClick;
         [SerializeField] private UnityEvent _onConfirmButtonClick;
-        #endregion
-
-
-
-        #region --Methods-- (Built In)
-        private void Start()
-        {
-            _onStartForSetupUI?.Invoke();
-        }
         #endregion
 
 

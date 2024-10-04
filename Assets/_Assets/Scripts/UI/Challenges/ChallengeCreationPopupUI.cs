@@ -14,7 +14,7 @@ namespace WatKhaoWong.UI.Challenges
         [Header("Popup Header UI Stuffs")]
         [SerializeField] private Button _closeButton;
 
-        [Header("Challenge Popup UI Stuffs")]
+        [Header("Challenge Creation Popup UI Stuffs")]
         [SerializeField] private DatePickerSettings _datePickerStart;
         [SerializeField] private DatePickerSettings _datePickerEnd;
         [Space]
@@ -34,7 +34,8 @@ namespace WatKhaoWong.UI.Challenges
         private TimeSpan _duration;
 
         private StatusText _statusText;
-        private ChallengeCreationPopup _challengePopup;
+        private ChallengeCreationPopup _challengeCreation;
+        private Challenge _challenge;
         #endregion
 
 
@@ -42,7 +43,8 @@ namespace WatKhaoWong.UI.Challenges
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _challengePopup = GameObject.FindWithTag("Player").GetComponentInChildren<ChallengeCreationPopup>();
+            _challengeCreation = GameObject.FindWithTag("Player").GetComponentInChildren<ChallengeCreationPopup>();
+            _challenge = GameObject.FindWithTag("Player").GetComponentInChildren<Challenge>();
             _statusText = FindAnyObjectByType<StatusText>();
 
             _closeButton.onClick.AddListener(Close);
@@ -71,34 +73,18 @@ namespace WatKhaoWong.UI.Challenges
         #region --Methods-- (Custom PRIVATE)
         private void RefreshUI()
         {
-            _startDateText.text = $"{_challengePopup.StartDateFormatBegin}{GetStartDateString()}{_challengePopup.StartDateFormatEnd}";
+            _startDateText.text = $"{_challengeCreation.StartDateFormatBegin}{_challenge.FormatDateString(_startDate, _challengeCreation.DateStringFormat)}{_challengeCreation.StartDateFormatEnd}";
 
-            _endDateText.text = $"{_challengePopup.EndDateFormatBegin}{GetEndDateString()}{_challengePopup.EndDateFormatEnd}";
+            _endDateText.text = $"{_challengeCreation.EndDateFormatBegin}{_challenge.FormatDateString(_endDate, _challengeCreation.DateStringFormat)}{_challengeCreation.EndDateFormatEnd}";
 
-            _durationText.text = $"{_challengePopup.DurationFormatBegin}{GetDurationString()}{_challengePopup.DurationFormatEnd}";
+            _durationText.text = $"{_challengeCreation.DurationFormatBegin}{_challenge.FormatDurationString(_duration)}{_challengeCreation.DurationFormatEnd}";
         }
-
-        private string GetStartDateString() => (_startDate == default) ? "-" : $"<u>{_startDate:dddd, MMMM d, yyyy\nHH:mm}</u>";
-
-        private string GetEndDateString() => (_endDate == default) ? "-" : $"<u>{_endDate:dddd, MMMM d, yyyy\nHH:mm}</u>";
-
-        private string GetDurationString()
-        {
-            if (_duration == default)
-                return "-";
-
-            int totalDays = (int)Math.Round(_duration.TotalDays, MidpointRounding.AwayFromZero);
-
-            return $"<u>{totalDays} day{S(totalDays)}</u>";
-        }
-
-        private string S(int input) => input > 1 ? "s" : "";
         #endregion
 
 
 
         #region --Methods-- (Subscriber) ~Popup Header UI~
-        private void Close() => _challengePopup.OnCloseButtonClick();
+        private void Close() => _challengeCreation.OnCloseButtonClick();
         #endregion
 
 
@@ -106,30 +92,30 @@ namespace WatKhaoWong.UI.Challenges
         #region --Methods-- (Subscriber)
         private void Cancel()
         {
-            _challengePopup.OnCancelButtonClick();
+            _challengeCreation.OnCancelButtonClick();
         }
 
         private void Confirm()
         {
-            if (_challengePopup.ValidateChallengePopup(_startDate, _endDate))
+            if (_challengeCreation.ValidateChallengePopup(_startDate, _endDate))
             {
-                _challengePopup.SetDataAwaitConfirmation(_startDate, _endDate, _duration);
+                _challengeCreation.SetDataAwaitConfirmation(_startDate, _endDate, _duration);
 
-                _challengePopup.OnConfirmButtonClick();
+                _challengeCreation.OnConfirmButtonClick();
             }
             else
             {
-                _challengePopup.OnConfirmButtonCantClick();
+                _challengeCreation.OnConfirmButtonCantClick();
 
-                _statusText.Show(_challengePopup.StatusCreateFailed, _challengePopup.StatusCreateFailedColor);
+                _statusText.Show(_challengeCreation.StatusCreateFailed, _challengeCreation.StatusCreateFailedColor);
             }
         }
 
         private void SelectedDateOnStartCalendar()
         {
             _startDate = _datePickerStart.Content.Selection.GetItem(0); // To get multiple Date, check 'SelectionTutorial.cs' line 60
-            _duration = _challengePopup.GetChallengeDuration(_startDate, _endDate);
-            _challengePopup.ValidateStartDate(_startDate, _endDate);
+            _duration = _challengeCreation.GetChallengeDuration(_startDate, _endDate);
+            _challengeCreation.ValidateStartDate(_startDate, _endDate);
 
             RefreshUI();
         }
@@ -137,8 +123,8 @@ namespace WatKhaoWong.UI.Challenges
         private void SelectedDateOnEndCalendar()
         {
             _endDate = _datePickerEnd.Content.Selection.GetItem(0); // To get multiple Date, check 'SelectionTutorial.cs' line 60
-            _duration = _challengePopup.GetChallengeDuration(_startDate, _endDate);
-            _challengePopup.ValidateEndDate(_startDate, _endDate);
+            _duration = _challengeCreation.GetChallengeDuration(_startDate, _endDate);
+            _challengeCreation.ValidateEndDate(_startDate, _endDate);
 
             RefreshUI();
         }

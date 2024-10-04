@@ -727,7 +727,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _dataIndicatorText: {fileID: 7272836926543002425}
   _countDownBannerText: {fileID: 1068699905802788146}
-  _challengeButton: {fileID: 3135194883554721069}
   _tabsTransform: {fileID: 4609970753687523528}
   _myRowUI: {fileID: 4684788400343662124}
   _rowPrefab: {fileID: 100224748807216795, guid: e137ff56481694b909c5ad2f366be7fd,
@@ -3784,25 +3783,13 @@ PrefabInstance:
     - target: {fileID: 3078733134412946548, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
       propertyPath: m_Name
-      value: Create Challenge Button
+      value: Challenge Creation Button
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de0a1848707c24d58b78301d898bb3ed, type: 3}
---- !u!114 &3135194883554721069 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7874844878017582641, guid: de0a1848707c24d58b78301d898bb3ed,
-    type: 3}
-  m_PrefabInstance: {fileID: 5101279387105127196}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &6400139099933600838 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
@@ -4580,7 +4567,7 @@ PrefabInstance:
     - target: {fileID: 3078733134412946548, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
       propertyPath: m_Name
-      value: Pending Challenge Button
+      value: Challenge Pending Button
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

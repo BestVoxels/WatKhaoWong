@@ -38,7 +38,6 @@ namespace WatKhaoWong.UI
         private NotificationPopup _notificationPopup;
         private AccountPopup _accountPopup;
         private Leaderboard _leaderboard;
-        private ChallengeCreationPopup _challengePopup;
         #endregion
 
 
@@ -53,7 +52,6 @@ namespace WatKhaoWong.UI
             _notificationPopup = player.GetComponentInChildren<NotificationPopup>();
             _accountPopup = player.GetComponentInChildren<AccountPopup>();
             _leaderboard = player.GetComponentInChildren<Leaderboard>();
-            _challengePopup = player.GetComponentInChildren<ChallengeCreationPopup>();
         }
 
         private void OnEnable()
@@ -80,7 +78,8 @@ namespace WatKhaoWong.UI
             // LEADERBOARD SYSTEM
             _leaderboard.OnLeaderboardCategoryChanged += () => { RefreshLeaderboardUI(); ShowHideUIByRoles(); };
             _leaderboard.OnLeaderboardScoreUpdated += RefreshLeaderboardUI;
-            _challengePopup.OnChallengeStartedStopped += ShowHideUIByRoles;
+            Challenge.OnStatusChanged += ShowHideUIByRoles;
+            Challenge.OnStatusChanged += RefreshPopupUI;
 
             // CONDITION SYSTEM
             _leaderboard.OnConditionIsLeaderboardExistsUpdated += CallAllConditionCheck;
@@ -88,6 +87,9 @@ namespace WatKhaoWong.UI
 
         private void OnDisable()
         {
+            Challenge.OnStatusChanged -= ShowHideUIByRoles;
+            Challenge.OnStatusChanged -= RefreshPopupUI;
+
             // NONE of the Above Delegates are static so don't have to Unsubscribe to make it more clean / Also can't Unsubscribe anonymous function
 
             RemoveStaticDelegatesSubscribers();

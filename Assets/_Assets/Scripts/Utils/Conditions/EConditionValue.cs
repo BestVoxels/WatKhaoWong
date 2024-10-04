@@ -13,7 +13,10 @@ namespace WatKhaoWong.Utils.Conditions
         RoleGuest,
         LeaderboardCategoryAllTime,
         LeaderboardCategoryToday,
-        LeaderboardCategoryChallenge
+        LeaderboardCategoryChallenge,
+        ChallengeStatusNone,
+        ChallengeStatusPending,
+        ChallengeStatusLive
         // More Value here... - check RPG project for example could also be number like 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, ...
     }
 }

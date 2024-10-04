@@ -14,7 +14,7 @@ namespace WatKhaoWong.Utils.Conditions
     {
         // THESE are ONLY for 'MyUser' since 'OtherUser' can't take into processing since 'OtherUser' doesn't attached on any GameObject in Scene.
         IsAuthenticated,
-        HasChallengeStarted,
+        IsChallengeStatusEquals = 15,
         IsRoleEquals = 4,
         IsLeaderboardCategoryEquals = 19,
         IsLeaderboardExists,

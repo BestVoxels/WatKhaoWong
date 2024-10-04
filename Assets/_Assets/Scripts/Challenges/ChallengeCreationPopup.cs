@@ -2,12 +2,11 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Attributes;
-using WatKhaoWong.Utils.Conditions;
 using WatKhaoWong.Utils.UI;
 
 namespace WatKhaoWong.Challenges
 {
-    public class ChallengeCreationPopup : Popup, IConditionEvaluator
+    public class ChallengeCreationPopup : Popup
     {
         public enum ShowStatus
         {
@@ -17,13 +16,8 @@ namespace WatKhaoWong.Challenges
 
 
 
-        // TODO move to "Challenge.cs"
         #region --Fields-- (Inspector)
-        [Header("Challenge Settings - Debugger Purpose")]
-        [SerializeField] private bool _hasChallengeStarted;
-        #endregion
-        #region --Fields-- (Inspector)
-        [field: Header("Challenge Popup - Status Text")]
+        [field: Header("Challenge Creation Popup - Status Text")]
         [field: SerializeField] public string StatusCreateFailed { get; private set; } = "Creation failed.";
         [field: SerializeField] public Color32 StatusCreateFailedColor { get; private set; }
         [Space]
@@ -61,7 +55,9 @@ namespace WatKhaoWong.Challenges
 
 
         #region --Properties-- (Inspector)
-        [field: Header("Challenge Popup - Settings")]
+        [field: Header("Challenge Creation Popup - Settings")]
+        [field: SerializeField] public string DateStringFormat { get; private set; } = "dddd, MMMM d, yyyy\nHH:mm";
+        [field: Space]
         [field: SerializeField] public string StartDateFormatBegin { get; private set; } = "Start Date: ";
         [field: SerializeField] public string StartDateFormatEnd { get; private set; } = "";
         [field: Space]
@@ -75,16 +71,10 @@ namespace WatKhaoWong.Challenges
 
 
         #region --Events-- (UnityEvent)
-        [Header("Challenge Popup UI Event")]
+        [Header("Challenge Creation Popup UI Event")]
         [SerializeField] private UnityEvent _onCancelButtonClick;
         [SerializeField] private UnityEvent _onConfirmButtonClick;
         [SerializeField] private UnityEvent _onConfirmButtonCantClick;
-        #endregion
-
-
-        // TODO move to "Challenge.cs"
-        #region --Events-- (Delegate as Action)
-        public event Action OnChallengeStartedStopped;
         #endregion
 
 
@@ -95,23 +85,7 @@ namespace WatKhaoWong.Challenges
         private TimeSpan _duration;
 
         private StatusText _statusText;
-        #endregion
-
-
-
-        // TODO move to "Challenge.cs"
-        #region --Properties-- (With Backing Fields)
-        public bool HasChallengeStarted  // TODO make it as Enum for better understanding and easier for checking - ChallengeStatus: None, Pending, Live
-        {
-            get => _hasChallengeStarted;
-
-            set
-            {
-                _hasChallengeStarted = value;
-
-                OnChallengeStartedStopped?.Invoke();
-            }
-        }
+        private Challenge _challenge;
         #endregion
 
 
@@ -119,18 +93,9 @@ namespace WatKhaoWong.Challenges
         #region --Methods-- (Built In)
         private void Awake()
         {
+            _challenge = GameObject.FindWithTag("Player").GetComponentInChildren<Challenge>();
             _statusText = FindAnyObjectByType<StatusText>();
         }
-
-        // TODO move to "Challenge.cs"
-        // ------
-        private void Update()
-        {
-
-            if (Input.GetKeyDown(KeyCode.Escape))
-                HasChallengeStarted = !HasChallengeStarted;
-        }
-        // ------
         #endregion
 
 
@@ -214,38 +179,6 @@ namespace WatKhaoWong.Challenges
         }
         #endregion
 
-        // TODO move to "Challenge.cs"
-        //private DateTime _startDate; // TODO has to load from server.
-        //private DateTime _endDate; // TODO has to load from server.
-        //private TimeSpan _duration; // TODO has to load from server.
-
-        public void StartChallenge()
-        {
-            if (HasChallengeStarted) return;
-
-            HasChallengeStarted = true;
-
-            // ...coding...
-        }
-
-        public int GetChallengeEndDaysLeft()
-        {
-            if (!HasChallengeStarted || DateTime.Today < _startDate.Date) return -1; // Challenge is not yet started
-
-            TimeSpan daysLeft = _endDate.Date - DateTime.Today;
-
-            return (int)Math.Round(daysLeft.TotalDays, MidpointRounding.AwayFromZero);
-        }
-
-        public int GetChallengeStartDaysLeft()
-        {
-            if (HasChallengeStarted || DateTime.Today >= _startDate.Date) return -1; // Challenge is already started
-
-            TimeSpan daysLeft = _startDate.Date - DateTime.Today;
-
-            return (int)Math.Round(daysLeft.TotalDays, MidpointRounding.AwayFromZero);
-        }
-
 
 
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
@@ -272,25 +205,7 @@ namespace WatKhaoWong.Challenges
         {
             _statusText.Show(_statusCreateSucceeded, _statusCreateSucceededColor);
 
-            HasChallengeStarted = true;
-
-            // TODO USE "_startDate", "_endDate", and "_duration" fields. Add on "Challenge Pending List"
-        }
-        #endregion
-
-
-
-        // TODO move to "Challenge.cs"
-        #region --Methods-- (Interface)
-        bool? IConditionEvaluator.Evaluate(EConditionType conditionType, EConditionValue[] conditionValues)
-        {
-            switch (conditionType)
-            {
-                case EConditionType.HasChallengeStarted:
-                    return HasChallengeStarted;
-            }
-
-            return null;
+            _challenge.CreatePendingChallenge(_startDate, _endDate, _duration);
         }
         #endregion
     }

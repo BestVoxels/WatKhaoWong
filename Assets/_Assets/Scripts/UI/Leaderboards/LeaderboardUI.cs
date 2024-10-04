@@ -1,10 +1,9 @@
 using TMPro;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
 using WatKhaoWong.Leaderboards;
 using WatKhaoWong.Identities;
-using WatKhaoWong.Challenges; // TODO Challenge - remove this namespace
+using WatKhaoWong.Challenges;
 
 namespace WatKhaoWong.UI.Leaderboards
 {
@@ -14,8 +13,6 @@ namespace WatKhaoWong.UI.Leaderboards
         [Header("Leaderboard Stuffs")]
         [SerializeField] private TMP_Text _dataIndicatorText;
         [SerializeField] private TMP_Text _countDownBannerText;
-        [Space]
-        [SerializeField] private Button _challengeButton;
         [Space]
         [SerializeField] private Transform _tabsTransform;
         [SerializeField] private RowUI _myRowUI;
@@ -33,7 +30,7 @@ namespace WatKhaoWong.UI.Leaderboards
         private bool _isAsyncRunning = false;
 
         private Leaderboard _leaderboard;
-        private ChallengeCreationPopup _challenge; // TODO Challenge - change from "ChallengePopup.cs" to "Challenge.cs"
+        private Challenge _challenge;
         private MyUserData _myUserData;
         #endregion
 
@@ -45,10 +42,8 @@ namespace WatKhaoWong.UI.Leaderboards
             GameObject player = GameObject.FindWithTag("Player");
 
             _leaderboard = player.GetComponentInChildren<Leaderboard>();
-            _challenge = player.GetComponentInChildren<ChallengeCreationPopup>(); // TODO Challenge - change from "ChallengePopup.cs" to "Challenge.cs"
+            _challenge = player.GetComponentInChildren<Challenge>();
             _myUserData = player.GetComponentInChildren<MyUserData>();
-
-            _challengeButton.onClick.AddListener(StartChallenge);
 
             UIRefresher.OnLeaderboardRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
@@ -145,10 +140,13 @@ namespace WatKhaoWong.UI.Leaderboards
                     _ => ""
                 };
 
-            if (_challenge.HasChallengeStarted)
-                _countDownBannerText.text = $"{_leaderboard.HasChallengeBannerTextBegin}{_challenge.GetChallengeEndDaysLeft()}{_leaderboard.HasChallengeBannerTextEnd}";
-            else
-                _countDownBannerText.text = $"{_leaderboard.NoChallengeBannerText}";
+            _countDownBannerText.text = Challenge.Status switch
+            {
+                EChallengeStatus.None => $"{_leaderboard.NoChallengeBannerText}",
+                EChallengeStatus.Pending => $"{_challenge.GetChallengeStartDaysLeft()}",
+                EChallengeStatus.Live => $"{_leaderboard.HasChallengeBannerTextBegin}{_challenge.GetChallengeEndDaysLeft()}{_leaderboard.HasChallengeBannerTextEnd}",
+                _ => ""
+            };
         }
         #endregion
 
@@ -167,8 +165,6 @@ namespace WatKhaoWong.UI.Leaderboards
 
             SetupMyRow();
         }
-
-        private void StartChallenge() => _leaderboard.OnChallengeButtonClick();
         #endregion
     }
 }
