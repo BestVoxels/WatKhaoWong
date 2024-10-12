@@ -2117,6 +2117,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _defaultCategory: 0
   _maxRowNumber: 100
+  _rewardWinnerMaxRowNumber: 1
+  _recordWinnerMaxRowNumber: 3
   <SelectedColor>k__BackingField:
     serializedVersion: 2
     rgba: 4287001699
@@ -2689,6 +2691,7 @@ MonoBehaviour:
               _negate: 1
   - gameObjectsUI:
     - {fileID: 0}
+    - {fileID: 0}
     condition:
       _conditionText: (IsLeaderboardCategoryEquals == Challenge)
       _and4:
@@ -2833,6 +2836,7 @@ MonoBehaviour:
               _conditionValues: 
               _negate: 0
   - gameObjectsUI:
+    - {fileID: 0}
     - {fileID: 0}
     condition:
       _conditionText: (IsLeaderboardCategoryEquals != Challenge)
