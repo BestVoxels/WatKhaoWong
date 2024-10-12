@@ -122,6 +122,7 @@ namespace WatKhaoWong.Prays
         {
             _myUserData.AddTotalTMPoints(_tmPoints);
             _myUserData.AddTodayTMPoints(_tmPoints);
+            _myUserData.AddChallengeTMPointsText(_tmPoints);
 
             _onUploadSucceed?.Invoke();
             OnUploadSucceeded?.Invoke();

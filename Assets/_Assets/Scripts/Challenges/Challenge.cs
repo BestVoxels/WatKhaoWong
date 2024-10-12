@@ -1,7 +1,10 @@
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Utils.Conditions;
+using WatKhaoWong.SceneManagement;
+using Firebase.Auth;
 
 namespace WatKhaoWong.Challenges
 {
@@ -21,7 +24,7 @@ namespace WatKhaoWong.Challenges
 
 
         #region --Events-- (Delegate as Action)
-        public static event Action OnStatusChanged;
+        public event Action OnDataUpdated;
         #endregion
 
 
@@ -30,94 +33,53 @@ namespace WatKhaoWong.Challenges
         private DateTime _startDate;
         private DateTime _endDate;
         private TimeSpan _duration;
+        private EChallengeStatus _status;
 
-        private static EChallengeStatus _status;
+        private SavingWrapper _savingWrapper;
         #endregion
 
 
 
-        #region --Properties-- (With Backing Fields)
-        public DateTime StartDate
-        {
-            get
-            {
-                // TODO has to load from server.
-
-                return _startDate;
-            }
-
-            private set
-            {
-                _startDate = value;
-
-                // TODO upload data to server.
-            }
-        }
-
-        public DateTime EndDate
-        {
-            get
-            {
-                // TODO has to load from server.
-
-                return _endDate;
-            }
-
-            private set
-            {
-                _endDate = value;
-
-                // TODO upload data to server.
-            }
-        }
-
-        public TimeSpan Duration
-        {
-            get
-            {
-                // TODO has to load from server.
-
-                return _duration;
-            }
-
-            private set
-            {
-                _duration = value;
-
-                // TODO upload data to server.
-            }
-        }
-
-
-        public static EChallengeStatus Status
-        {
-            get => _status;
-
-            private set
-            {
-                _status = value;
-
-                OnStatusChanged?.Invoke();
-            }
-        }
+        #region --Properties-- (Auto)
+        // IMPORTANT : LoadSave() on MyUserData.cs & Leaderboard.cs will use 'IsSaveLoaded' to check and wait
+        // until Challenge.cs' LoadSave() is fully loaded because they use some value here to check in their condition.
+        // If don't do this, we can't guarantee Challenge.cs' LoadSave() will loaded prior and value they use to check
+        // will be wrong and trigger 'DeleteChallengeLeaderboard', 'DeleteChallengePoints' and more disaster...
+        public TaskCompletionSource<bool> LoadCompletionSource { get; } = new TaskCompletionSource<bool>();
         #endregion
 
 
 
         #region --Methods-- (Built In)
-        // ------
-        private void Update()
+        private void Awake()
         {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-                Status = EChallengeStatus.None;
-
-            if (Input.GetKeyDown(KeyCode.Alpha2))
-                Status = EChallengeStatus.Pending;
-
-            if (Input.GetKeyDown(KeyCode.Alpha3))
-                Status = EChallengeStatus.Live;
+            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
         }
-        // ------
+
+        private void OnEnable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged; // This will trigger on Start() too so don't have to call LoadSave() on Start()
+        }
+
+        //private void Update()
+        //{
+        //    if (Input.GetKeyDown(KeyCode.Alpha1))
+        //        Status = EChallengeStatus.None;
+
+        //    if (Input.GetKeyDown(KeyCode.Alpha2))
+        //        Status = EChallengeStatus.Pending;
+
+        //    if (Input.GetKeyDown(KeyCode.Alpha3))
+        //        Status = EChallengeStatus.Live;
+
+        //    if (Input.GetKeyDown(KeyCode.KeypadEnter))
+        //        print(_status);
+        //}
+
+        private void OnDisable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
+        }
         #endregion
 
 
@@ -125,49 +87,48 @@ namespace WatKhaoWong.Challenges
         #region --Methods-- (Custom PUBLIC)
         public void CreatePendingChallenge(DateTime startDate, DateTime endDate, TimeSpan duration)
         {
-            if (Status == EChallengeStatus.Pending) return;
+            if (_status == EChallengeStatus.Pending) return;
 
-            StartDate = startDate;
-            EndDate = endDate;
-            Duration = duration;
+            SetStartDate(startDate);
+            SetEndDate(endDate);
+            SetDuration(duration);
+            SetStatus(EChallengeStatus.Pending);
 
-            Status = EChallengeStatus.Pending; // Put this line last after all info got assigned so UI can update properly.
+            AutoLiveChallenge(); // when Admin choose StartDate is Today Date.
+
+            OnDataUpdated?.Invoke();
         }
 
         public void DeletePendingChallenge()
         {
-            if (Status != EChallengeStatus.Pending) return;
+            if (_status != EChallengeStatus.Pending) return;
 
-            StartDate = default;
-            EndDate = default;
-            Duration = default;
+            SetStartDate(default);
+            SetEndDate(default);
+            SetDuration(default);
+            SetStatus(EChallengeStatus.None);
 
-            Status = EChallengeStatus.None; // Put this line last after all info got assigned so UI can update properly.
+            OnDataUpdated?.Invoke();
         }
 
-        public void LiveChallenge()
-        {
-            if (Status == EChallengeStatus.Live) return;
+        public bool CanLiveNow() => DateTime.Now >= _startDate && DateTime.Now <= _endDate;
 
-            // TODO live ...coding...
-
-            Status = EChallengeStatus.Live; // Put this line last after all info got assigned so UI can update properly.
-        }
+        public bool CanLive(DateTime compareTime) => compareTime >= _startDate && compareTime <= _endDate;
 
         public int GetChallengeEndDaysLeft()
         {
-            if (Status == EChallengeStatus.None || DateTime.Today < StartDate.Date) return -1; // Challenge is not yet started
+            if (_status != EChallengeStatus.Live || !CanLiveNow()) return -1; // Challenge is not yet started
 
-            TimeSpan daysLeft = EndDate.Date - DateTime.Today;
+            TimeSpan daysLeft = _endDate.Date - DateTime.Today;
 
             return (int)Math.Round(daysLeft.TotalDays, MidpointRounding.AwayFromZero);
         }
 
         public int GetChallengeStartDaysLeft()
         {
-            if (Status == EChallengeStatus.Live || DateTime.Today >= StartDate.Date) return -1; // Challenge is already started
+            if (_status == EChallengeStatus.Live || CanLiveNow()) return -1; // Challenge is already started
 
-            TimeSpan daysLeft = StartDate.Date - DateTime.Today;
+            TimeSpan daysLeft = _startDate.Date - DateTime.Today;
 
             return (int)Math.Round(daysLeft.TotalDays, MidpointRounding.AwayFromZero);
         }
@@ -175,7 +136,21 @@ namespace WatKhaoWong.Challenges
 
 
 
-        #region --Methods-- (Custom PUBLIC) ~Text Formatter~
+        #region --Methods-- (Custom PUBLIC) ~Getter~
+        public DateTime GetStartDate() => _startDate;
+
+        public DateTime GetEndDate() => _endDate;
+
+        public TimeSpan GetDuration() => _duration;
+
+        public EChallengeStatus GetStatus() => _status;
+
+        public string GetID() => $"({_startDate:d-M-yyyy HH-mm-ss}) -> ({_endDate:d-M-yyyy HH-mm-ss})";
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~For Displaying~
         public string FormatDateString(DateTime date, string format) => (date == default) ? "-" : $"<u>{date.ToString(format)}</u>";
 
         public string FormatDurationString(TimeSpan duration)
@@ -186,6 +161,14 @@ namespace WatKhaoWong.Challenges
             int totalDays = (int)Math.Round(duration.TotalDays, MidpointRounding.AwayFromZero);
 
             return $"<u>{totalDays} day{S(totalDays)}</u>";
+        }
+
+        public string DaysString(int days)
+        {
+            if (days < 0)
+                return "? day";
+
+            return $"{days} day{S(days)}";
         }
 
         public string S(int input) => input > 1 ? "s" : "";
@@ -207,6 +190,145 @@ namespace WatKhaoWong.Challenges
 
 
 
+        #region --Methods-- (Custom PRIVATE) ~Setter~
+        private void SetStartDate(DateTime input)
+        {
+            _startDate = input;
+
+            _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMStartDate, _startDate.ToString());
+        }
+
+        private void SetEndDate(DateTime input)
+        {
+            _endDate = input;
+
+            _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMEndDate, _endDate.ToString());
+        }
+
+        private void SetDuration(TimeSpan input)
+        {
+            _duration = input;
+
+            _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMDuration, _duration.ToString());
+        }
+
+        private void SetStatus(EChallengeStatus input)
+        {
+            _status = input;
+
+            _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMStatus, _status.ToString());
+        }
+
+        // Need ForceSave() so that it can save on Start for AutoLive() or AutoEnd().
+        private void SetStartDateForceSave(DateTime input)
+        {
+            _startDate = input;
+
+            _savingWrapper.ForceSave(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMStartDate, _startDate.ToString());
+        }
+
+        private void SetEndDateForceSave(DateTime input)
+        {
+            _endDate = input;
+
+            _savingWrapper.ForceSave(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMEndDate, _endDate.ToString());
+        }
+
+        private void SetDurationForceSave(TimeSpan input)
+        {
+            _duration = input;
+
+            _savingWrapper.ForceSave(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMDuration, _duration.ToString());
+        }
+
+        private void SetStatusForceSave(EChallengeStatus input)
+        {
+            _status = input;
+
+            _savingWrapper.ForceSave(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMStatus, _status.ToString());
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE)
+        private void AutoLiveChallenge()
+        {
+            if (_status == EChallengeStatus.Pending && CanLiveNow())
+                LiveChallenge();
+        }
+
+        private void AutoEndChallenge()
+        {
+            if (_status == EChallengeStatus.Live && !CanLiveNow())
+                EndChallenge();
+        }
+
+        private void LiveChallenge()
+        {
+            if (_status == EChallengeStatus.Live) return;
+
+            SetStatusForceSave(EChallengeStatus.Live);
+
+            OnDataUpdated?.Invoke();
+        }
+
+        private void EndChallenge()
+        {
+            if (_status == EChallengeStatus.None) return;
+
+            SetStartDateForceSave(default);
+            SetEndDateForceSave(default);
+            SetDurationForceSave(default);
+            SetStatusForceSave(EChallengeStatus.None);
+
+            OnDataUpdated?.Invoke();
+        }
+
+        private async void LoadSave()
+        {
+            var data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMStartDate);
+            if (data != null)
+            {
+                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                    _startDate = result;
+            }
+
+            data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMEndDate);
+            if (data != null)
+            {
+                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                    _endDate = result;
+            }
+
+            data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMDuration);
+            if (data != null)
+            {
+                if (TimeSpan.TryParse(data.Value.ToString(), out TimeSpan result))
+                    _duration = result;
+            }
+
+            data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMStatus);
+            if (data != null)
+            {
+                string statusString = data.Value.ToString();
+                _status = (EChallengeStatus)Enum.Parse(typeof(EChallengeStatus), statusString);
+            }
+
+            LoadCompletionSource.TrySetResult(true);
+
+            // Wait a little before change state so that MyUserData.cs or Leaderboard.cs can use loaded data first. If AutoLive() or AutoEnd() run the loaded data might get changed.
+            await Task.Delay(1500); // 1.5 sec
+
+            AutoLiveChallenge();
+            AutoEndChallenge();
+
+            OnDataUpdated?.Invoke();
+        }
+        #endregion
+
+
+
         #region --Methods-- (Interface)
         bool? IConditionEvaluator.Evaluate(EConditionType conditionType, EConditionValue[] conditionValues)
         {
@@ -219,10 +341,22 @@ namespace WatKhaoWong.Challenges
                     if (!Enum.TryParse(enumString, true, out EChallengeStatus result))
                         return false;
 
-                    return Status == result;
+                    return _status == result;
             }
 
             return null;
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber)
+        /// <summary>
+        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake().
+        /// </summary>
+        private void HandleStateChanged(object obj, EventArgs args)
+        {
+            LoadSave(); // So Don't have to call on Awake()
         }
         #endregion
     }

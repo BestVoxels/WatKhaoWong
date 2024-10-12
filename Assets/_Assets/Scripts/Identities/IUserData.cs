@@ -25,6 +25,10 @@ namespace WatKhaoWong.Identities
 
         public string GetTotalChallengeTMWonText();
 
+        public int GetChallengeTMPoints();
+
+        public int GetTotalChallengeTMWon();
+
         public void UpdateProfileIcon(ProfileIconInspector oldUI, ProfileIconItem newIcon, float multiplierRatioForDecorator);
     }
 }

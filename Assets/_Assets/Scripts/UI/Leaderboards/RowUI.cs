@@ -101,7 +101,7 @@ namespace WatKhaoWong.UI.Leaderboards
             {
                 ELeaderboardCategory.AllTime => _userData.GetTotalTMPointsText(),
                 ELeaderboardCategory.Today => _userData.GetTodayTMPointsText(),
-                ELeaderboardCategory.Challenge => "temp challenge score",
+                ELeaderboardCategory.Challenge => _userData.GetChallengeTMPointsText(),
                 _ => _row.NullScoreText
             };
 

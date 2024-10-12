@@ -98,6 +98,10 @@ namespace WatKhaoWong.Identities
         public string GetChallengeTMPointsText() => _data.GetChallengeTMPointsText();
 
         public string GetTotalChallengeTMWonText() => _data.GetTotalChallengeTMWonText();
+
+        public int GetChallengeTMPoints() => _data.ChallengeTMPoints;
+
+        public int GetTotalChallengeTMWon() => _data.TotalChallengeTMWon;
         #endregion
 
 

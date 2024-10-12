@@ -9,6 +9,7 @@ namespace WatKhaoWong.SceneManagement
         Users,
         LeaderboardStats,
         LeaderboardTMToday,
-        LeaderboardTMChallenge
+        LeaderboardTMChallenge,
+        LeaderboardTMChallengeWinner
     }
 }

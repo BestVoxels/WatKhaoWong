@@ -128,7 +128,13 @@ namespace WatKhaoWong.UI.Leaderboards
                 {
                     ELeaderboardCategory.AllTime => _leaderboard.NoAllTimeLeaderboardText,
                     ELeaderboardCategory.Today => _leaderboard.NoTodayLeaderboardText,
-                    ELeaderboardCategory.Challenge => _leaderboard.NoChallengeLeaderboardText,
+                    ELeaderboardCategory.Challenge => _challenge.GetStatus() switch
+                    {
+                        EChallengeStatus.None => _leaderboard.NoChallengeLeaderboardText,
+                        EChallengeStatus.Pending => _leaderboard.PendingChallengeLeaderboardText,
+                        EChallengeStatus.Live => _leaderboard.LiveChallengeLeaderboardText,
+                        _ => ""
+                    },
                     _ => ""
                 };
             else
@@ -140,11 +146,11 @@ namespace WatKhaoWong.UI.Leaderboards
                     _ => ""
                 };
 
-            _countDownBannerText.text = Challenge.Status switch
+            _countDownBannerText.text = _challenge.GetStatus() switch
             {
                 EChallengeStatus.None => $"{_leaderboard.NoChallengeBannerText}",
-                EChallengeStatus.Pending => $"{_challenge.GetChallengeStartDaysLeft()}",
-                EChallengeStatus.Live => $"{_leaderboard.HasChallengeBannerTextBegin}{_challenge.GetChallengeEndDaysLeft()}{_leaderboard.HasChallengeBannerTextEnd}",
+                EChallengeStatus.Pending => $"{_leaderboard.PendingChallengeBannerTextBegin}{_challenge.DaysString(_challenge.GetChallengeStartDaysLeft())}{_leaderboard.PendingChallengeBannerTextEnd}",
+                EChallengeStatus.Live => $"{_leaderboard.LiveChallengeBannerTextBegin}{_challenge.DaysString(_challenge.GetChallengeEndDaysLeft())}{_leaderboard.LiveChallengeBannerTextEnd}",
                 _ => ""
             };
         }

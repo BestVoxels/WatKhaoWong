@@ -4,6 +4,7 @@ using WatKhaoWong.CoreItems;
 using WatKhaoWong.SceneManagement;
 using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Utils.Conditions;
+using WatKhaoWong.Challenges;
 using Firebase.Auth;
 
 namespace WatKhaoWong.Identities
@@ -31,6 +32,7 @@ namespace WatKhaoWong.Identities
         #region --Events-- (Delegate as Action)
         public event Action OnMyUserDataUpdated;
         public event Action<int> OnTodayTMPointsAdded;
+        public event Action<int> OnChallengeTMPointsAdded;
         #endregion
 
 
@@ -38,6 +40,7 @@ namespace WatKhaoWong.Identities
         #region --Fields-- (In Class)
         private readonly Data _data = new Data();
 
+        private Challenge _challenge;
         private SavingWrapper _savingWrapper;
         #endregion
 
@@ -46,6 +49,7 @@ namespace WatKhaoWong.Identities
         #region --Methods-- (Built In)
         private void Awake()
         {
+            _challenge = GameObject.FindWithTag("Player").GetComponentInChildren<Challenge>();
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
         }
 
@@ -121,11 +125,11 @@ namespace WatKhaoWong.Identities
 
         public void AddTodayTMPoints(int input)
         {
-            if (input <= 0) return;
-
             ResetTMPointsDaily();
 
-            AssignUploadTime();
+            if (input <= 0) return;
+
+            AssignTodayUploadTime();
 
             _data.TodayTMPoints += input;
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.TodayTMPoint, _data.TodayTMPoints);
@@ -136,10 +140,17 @@ namespace WatKhaoWong.Identities
 
         public void AddChallengeTMPointsText(int input)
         {
-            _data.ChallengeTMPoints += input;
+            ResetTMPointsAfterChallengeEnd();
 
+            if (input <= 0 || !_challenge.CanLiveNow()) return;
+
+            AssignChallengeUploadTime();
+
+            _data.ChallengeTMPoints += input;
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.ChallengeTMPoint, _data.ChallengeTMPoints);
             OnMyUserDataUpdated?.Invoke();
+
+            OnChallengeTMPointsAdded?.Invoke(_data.ChallengeTMPoints);
         }
 
         public void AddTotalWonTMChallenge(int input)
@@ -167,12 +178,37 @@ namespace WatKhaoWong.Identities
             }
         }
 
-        private void AssignUploadTime()
+        private void AssignTodayUploadTime()
         {
             if (_data.TodayTMPoints == 0)
             {
                 _data.FirstUploadTimeOfDayTM = DateTime.Now;
                 _savingWrapper.Save(ECategoryNode.Users, EValueNode.FirstUploadTimeOfDayTM, DateTime.Now.ToString());
+            }
+        }
+
+        private void ResetTMPointsAfterChallengeEnd()
+        {
+            if (_data.FirstUploadTimeOfChallengeTM == default) return;
+
+            if ((!_challenge.CanLive(_data.FirstUploadTimeOfChallengeTM) || !_challenge.CanLiveNow()) && _data.ChallengeTMPoints > 0)
+            {
+                _data.ChallengeTMPoints = 0;
+                _data.FirstUploadTimeOfChallengeTM = default;
+
+                _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.ChallengeTMPoint, 0);
+                _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.FirstUploadTimeOfChallengeTM, _data.FirstUploadTimeOfChallengeTM.ToString());
+
+                OnMyUserDataUpdated?.Invoke();
+            }
+        }
+
+        private void AssignChallengeUploadTime()
+        {
+            if (_data.ChallengeTMPoints == 0)
+            {
+                _data.FirstUploadTimeOfChallengeTM = DateTime.Now;
+                _savingWrapper.Save(ECategoryNode.Users, EValueNode.FirstUploadTimeOfChallengeTM, DateTime.Now.ToString());
             }
         }
 
@@ -184,6 +220,14 @@ namespace WatKhaoWong.Identities
 
         private async void LoadSave()
         {
+            bool isChallengeSaveLoaded = await _challenge.LoadCompletionSource.Task;
+
+            if (isChallengeSaveLoaded == false)
+            {
+                Debug.LogError("Could not continue LoadSave() on MyUserData.cs because Challenge.cs LoadSave() is not completed.");
+                return;
+            }
+
             var data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.FirstName);
             if (data != null)
                 _data.FirstName = data.Value.ToString();
@@ -248,7 +292,7 @@ namespace WatKhaoWong.Identities
                 if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
                     _data.FirstUploadTimeOfChallengeTM = result;
 
-                //ResetTMPointsAfterChallengeEnd();
+                ResetTMPointsAfterChallengeEnd();
             }
 
             OnMyUserDataUpdated?.Invoke();
@@ -303,6 +347,10 @@ namespace WatKhaoWong.Identities
         public string GetChallengeTMPointsText() => _data.GetChallengeTMPointsText();
 
         public string GetTotalChallengeTMWonText() => _data.GetTotalChallengeTMWonText();
+
+        public int GetChallengeTMPoints() => _data.ChallengeTMPoints;
+
+        public int GetTotalChallengeTMWon() => _data.TotalChallengeTMWon;
         #endregion
 
 

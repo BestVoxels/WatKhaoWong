@@ -17,6 +17,10 @@ namespace WatKhaoWong.SceneManagement
         ChallengeTMPoint,
         ChallengeTMWon,
         FirstUploadTimeOfDayTM,
-        FirstUploadTimeOfChallengeTM
+        FirstUploadTimeOfChallengeTM,
+        ChallengeTMStartDate,
+        ChallengeTMEndDate,
+        ChallengeTMDuration,
+        ChallengeTMStatus
     }
 }

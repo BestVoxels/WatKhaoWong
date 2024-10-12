@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using WatKhaoWong.SceneManagement;
 using WatKhaoWong.Identities;
 using Firebase.Database;
 using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Utils.Conditions;
+using WatKhaoWong.Challenges;
 using Firebase.Auth;
 
 namespace WatKhaoWong.Leaderboards
@@ -17,6 +19,10 @@ namespace WatKhaoWong.Leaderboards
         [SerializeField] private ELeaderboardCategory _defaultCategory;
         [Range(1, 200)]
         [SerializeField] private ushort _maxRowNumber = 100;
+        [Range(1, 3)]
+        [SerializeField] private ushort _rewardWinnerMaxRowNumber = 1;
+        [Range(3, 5)]
+        [SerializeField] private ushort _recordWinnerMaxRowNumber = 3;
         #endregion
 
 
@@ -29,9 +35,11 @@ namespace WatKhaoWong.Leaderboards
         [field: Space]
 
         [field: Header("Leaderboard Status Text")]
-        [field: SerializeField] public string NoAllTimeLeaderboardText { get; private set; } = "No data for All Time leaderboard";
-        [field: SerializeField] public string NoTodayLeaderboardText { get; private set; } = "No data for Today leaderboard";
-        [field: SerializeField] public string NoChallengeLeaderboardText { get; private set; } = "No active Challenge at the moment";
+        [field: SerializeField] public string NoAllTimeLeaderboardText { get; private set; } = "Upload Now! Be the first on All Time Leaderboard";
+        [field: SerializeField] public string NoTodayLeaderboardText { get; private set; } = "Upload Now! Be the first on Today Leaderboard";
+        [field: SerializeField] public string NoChallengeLeaderboardText { get; private set; } = "No Active Challenge at the moment.";
+        [field: SerializeField] public string PendingChallengeLeaderboardText { get; private set; } = "Challenge is pending. Stay tuned!";
+        [field: SerializeField] public string LiveChallengeLeaderboardText { get; private set; } = "Challenge is live! Upload Now!";
         [field: Space]
         [field: Tooltip("Not likely to be shown.")]
         [field: SerializeField] public string HasAllTimeLeaderboardText { get; private set; } = "Displaying data for All Time leaderboard";
@@ -40,10 +48,13 @@ namespace WatKhaoWong.Leaderboards
         [field: Tooltip("Not likely to be shown.")]
         [field: SerializeField] public string HasChallengeLeaderboardText { get; private set; } = "Displaying data for the Active Challenge";
         [field: Space]
-        [field: SerializeField] public string NoChallengeBannerText { get; private set; } = $"Wait for the Challenge to start & Win it!";
+        [field: SerializeField] public string NoChallengeBannerText { get; private set; } = $"Please wait for Admin to create a Challenge";
         [field: Space]
-        [field: SerializeField] public string HasChallengeBannerTextBegin { get; private set; } = $"Challenge Ends in ";
-        [field: SerializeField] public string HasChallengeBannerTextEnd { get; private set; } = $" days!";
+        [field: SerializeField] public string PendingChallengeBannerTextBegin { get; private set; } = $"Challenge Starts in ";
+        [field: SerializeField] public string PendingChallengeBannerTextEnd { get; private set; } = $"!";
+        [field: Space]
+        [field: SerializeField] public string LiveChallengeBannerTextBegin { get; private set; } = $"Ends in ";
+        [field: SerializeField] public string LiveChallengeBannerTextEnd { get; private set; } = $"! Aim for first place to win the Challenge!";
         #endregion
 
 
@@ -58,11 +69,14 @@ namespace WatKhaoWong.Leaderboards
 
         #region --Fields-- (In Class)
         private RecordCollection _records;
-
         private bool _isAsyncRunning = false;
+
         private DateTime _leaderboardFirstUploadTimeOfDayTM;
         private bool _isLeaderboardTMTodayExists = false;
+        private DateTime _leaderboardFirstUploadTimeOfChallengeTM;
+        private bool _isLeaderboardTMChallengeExists = false;
 
+        private Challenge _challenge;
         private SavingWrapper _savingWrapper;
         private MyUserData _myUserData;
         #endregion
@@ -102,20 +116,23 @@ namespace WatKhaoWong.Leaderboards
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
             _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
+            _challenge = GameObject.FindWithTag("Player").GetComponentInChildren<Challenge>();
+            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
         }
 
         private void OnEnable()
         {
             FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged; // This will trigger on Start() too so don't have to call LoadSave() on Start()
             _myUserData.OnTodayTMPointsAdded += AddTodayTMPointsToLeaderboard;
+            _myUserData.OnChallengeTMPointsAdded += AddChallengeTMPointsToLeaderboard;
         }
 
         private void OnDisable()
         {
             FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
             _myUserData.OnTodayTMPointsAdded -= AddTodayTMPointsToLeaderboard;
+            _myUserData.OnChallengeTMPointsAdded -= AddChallengeTMPointsToLeaderboard;
         }
         #endregion
 
@@ -143,7 +160,7 @@ namespace WatKhaoWong.Leaderboards
             {
                 ELeaderboardCategory.AllTime => GetRowsFromServer(ECategoryNode.Users, EValueNode.TotalTMPoint),
                 ELeaderboardCategory.Today => GetRowsFromServer(ECategoryNode.LeaderboardTMToday, EValueNode.TodayTMPoint),
-                ELeaderboardCategory.Challenge => null,
+                ELeaderboardCategory.Challenge => GetRowsFromServer(ECategoryNode.LeaderboardTMChallenge, EValueNode.ChallengeTMPoint),
                 _ => null
             };
 
@@ -205,6 +222,14 @@ namespace WatKhaoWong.Leaderboards
 
         private async void LoadSave()
         {
+            bool isChallengeSaveLoaded = await _challenge.LoadCompletionSource.Task;
+
+            if (isChallengeSaveLoaded == false)
+            {
+                Debug.LogError("Could not continue LoadSave() on Leaderboard.cs because Challenge.cs LoadSave() is not completed.");
+                return;
+            }
+
             _isLeaderboardTMTodayExists = await _savingWrapper.IsLeaderboardTMTodayExists();
 
             var data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM);
@@ -215,6 +240,20 @@ namespace WatKhaoWong.Leaderboards
 
                 DeleteTodayTMLeaderboardDaily();
             }
+
+            _isLeaderboardTMChallengeExists = await _savingWrapper.IsLeaderboardTMChallengeExists();
+
+            data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfChallengeTM);
+            if (data != null)
+            {
+                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                    _leaderboardFirstUploadTimeOfChallengeTM = result;
+
+                await DeleteChallengeTMLeaderboardAfterEnd();
+            }
+
+            // Clear All Record Category CachedRows so that it has to fetch from database again.
+            Records.ClearAllCachedRows();
         }
 
         private void DeleteTodayTMLeaderboardDaily()
@@ -228,12 +267,57 @@ namespace WatKhaoWong.Leaderboards
             }
         }
 
-        private void AssignUploadTime()
+        private void AssignTodayUploadTime()
         {
             if (!_isLeaderboardTMTodayExists)
             {
                 _leaderboardFirstUploadTimeOfDayTM = DateTime.Now;
                 _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM, DateTime.Now.ToString());
+            }
+        }
+
+        private async Task DeleteChallengeTMLeaderboardAfterEnd()
+        {
+            if (_leaderboardFirstUploadTimeOfChallengeTM == default) return;
+
+            if ((!_challenge.CanLive(_leaderboardFirstUploadTimeOfChallengeTM) || !_challenge.CanLiveNow()) && _isLeaderboardTMChallengeExists)
+            {
+                await RewardChallengeWinnerAfterEnd();
+                _savingWrapper.ForceDeleteLeaderboardTMChallenge();
+
+                _isLeaderboardTMChallengeExists = false;
+            }
+        }
+
+        private void AssignChallengeUploadTime()
+        {
+            if (!_isLeaderboardTMChallengeExists)
+            {
+                _leaderboardFirstUploadTimeOfChallengeTM = DateTime.Now;
+                _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfChallengeTM, DateTime.Now.ToString());
+            }
+        }
+
+        private async Task RewardChallengeWinnerAfterEnd()
+        {
+            if ((_challenge.CanLive(_leaderboardFirstUploadTimeOfChallengeTM) && _challenge.CanLiveNow()) || !_isLeaderboardTMChallengeExists) return;
+
+            ushort i = _rewardWinnerMaxRowNumber;
+            await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValue(ECategoryNode.LeaderboardTMChallenge, EValueNode.ChallengeTMPoint, _recordWinnerMaxRowNumber))
+            {
+                DataSnapshot data = await _savingWrapper.LoadOtherUser(eachData.Key);
+                OtherUserData anyUserData = new OtherUserData(data);
+
+                // Record Winners
+                _savingWrapper.ForceSaveChallengeTMWinner(_challenge.GetID(), eachData.Key, anyUserData.GetChallengeTMPoints());
+
+                // Reward Winner
+                for (; i > 0; i--)
+                {
+                    int totalChallengeTMWonPoint = anyUserData.GetTotalChallengeTMWon() + 1;
+
+                    _savingWrapper.ForceSaveAnyUser(ECategoryNode.Users, eachData.Key, EValueNode.ChallengeTMWon, totalChallengeTMWonPoint);
+                }
             }
         }
         #endregion
@@ -275,14 +359,30 @@ namespace WatKhaoWong.Leaderboards
 
         private void AddTodayTMPointsToLeaderboard(int score)
         {
-            if (score <= 0) return;
-
             DeleteTodayTMLeaderboardDaily();
 
-            AssignUploadTime();
+            if (score <= 0) return;
+
+            AssignTodayUploadTime();
 
             // Add score to leaderboard
             _savingWrapper.Save(ECategoryNode.LeaderboardTMToday, EValueNode.TodayTMPoint, score);
+
+            // Clear All Record Category CachedRows so that it has to fetch from database again. Why all? IF 'today score' updated, that means 'alltime score' has to be updated as well.
+            Records.ClearAllCachedRows();
+            OnLeaderboardScoreUpdated?.Invoke();
+        }
+
+        private void AddChallengeTMPointsToLeaderboard(int score)
+        {
+            _ = DeleteChallengeTMLeaderboardAfterEnd();
+
+            if (score <= 0 || !_challenge.CanLiveNow()) return;
+
+            AssignChallengeUploadTime();
+
+            // Add score to leaderboard
+            _savingWrapper.Save(ECategoryNode.LeaderboardTMChallenge, EValueNode.ChallengeTMPoint, score);
 
             // Clear All Record Category CachedRows so that it has to fetch from database again. Why all? IF 'today score' updated, that means 'alltime score' has to be updated as well.
             Records.ClearAllCachedRows();

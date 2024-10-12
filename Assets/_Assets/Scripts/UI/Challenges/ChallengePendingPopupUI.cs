@@ -52,11 +52,11 @@ namespace WatKhaoWong.UI.Challenges
         #region --Methods-- (Custom PRIVATE)
         private void RefreshUI()
         {
-            _startDateText.text = $"{_challengePending.StartDateFormatBegin}{_challenge.FormatDateString(_challenge.StartDate, _challengePending.DateStringFormat)}{_challengePending.StartDateFormatEnd}";
+            _startDateText.text = $"{_challengePending.StartDateFormatBegin}{_challenge.FormatDateString(_challenge.GetStartDate(), _challengePending.DateStringFormat)}{_challengePending.StartDateFormatEnd}";
 
-            _endDateText.text = $"{_challengePending.EndDateFormatBegin}{_challenge.FormatDateString(_challenge.EndDate, _challengePending.DateStringFormat)}{_challengePending.EndDateFormatEnd}";
+            _endDateText.text = $"{_challengePending.EndDateFormatBegin}{_challenge.FormatDateString(_challenge.GetEndDate(), _challengePending.DateStringFormat)}{_challengePending.EndDateFormatEnd}";
 
-            _durationText.text = $"{_challengePending.DurationFormatBegin}{_challenge.FormatDurationString(_challenge.Duration)}{_challengePending.DurationFormatEnd}";
+            _durationText.text = $"{_challengePending.DurationFormatBegin}{_challenge.FormatDurationString(_challenge.GetDuration())}{_challengePending.DurationFormatEnd}";
         }
         #endregion
 

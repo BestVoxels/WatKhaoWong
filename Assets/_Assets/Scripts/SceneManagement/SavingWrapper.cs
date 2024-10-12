@@ -94,6 +94,16 @@ namespace WatKhaoWong.SceneManagement
             _savingSystem.value.Save(GetPath(categoryNode, valueNode), saveValue);
         }
 
+        public void ForceSaveAnyUser(ECategoryNode categoryNode, string userID, EValueNode valueNode, object saveValue)
+        {
+            _savingSystem.value.Save(Path.Combine(categoryNode.ToString(), userID, GetValueNodePath(categoryNode, valueNode)), saveValue);
+        }
+
+        public void ForceSaveChallengeTMWinner(string challengeID, string userID, object saveValue)
+        {
+            _savingSystem.value.Save(Path.Combine(ECategoryNode.LeaderboardTMChallengeWinner.ToString(), challengeID, userID, EValueNode.ChallengeTMPoint.ToString()), saveValue);
+        }
+
         public async Task<DataSnapshot> Load(ECategoryNode categoryNode, EValueNode valueNode)
         {
             if (!FirebaseUtils.IsAuthenticated()) return null;
@@ -141,6 +151,11 @@ namespace WatKhaoWong.SceneManagement
             _savingSystem.value.Delete(ECategoryNode.LeaderboardTMToday.ToString());
         }
 
+        public void ForceDeleteLeaderboardTMChallenge()
+        {
+            _savingSystem.value.Delete(ECategoryNode.LeaderboardTMChallenge.ToString());
+        }
+
         /// <summary>
         /// Don't call this as checker for call 'Load()' because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
         /// </summary>
@@ -156,6 +171,13 @@ namespace WatKhaoWong.SceneManagement
             if (!FirebaseUtils.IsAuthenticated()) return false;
 
             return await _savingSystem.value.IsSaveExists(ECategoryNode.LeaderboardTMToday.ToString());
+        }
+
+        public async Task<bool> IsLeaderboardTMChallengeExists()
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return false;
+
+            return await _savingSystem.value.IsSaveExists(ECategoryNode.LeaderboardTMChallenge.ToString());
         }
         #endregion
 
