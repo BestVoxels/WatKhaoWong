@@ -206,7 +206,7 @@ PrefabInstance:
     - target: {fileID: 1559202661252671073, guid: 168c18bcd3da24a369aa3c2bd0f51e03,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 200
+      value: 130
       objectReference: {fileID: 0}
     - target: {fileID: 1559202661252671073, guid: 168c18bcd3da24a369aa3c2bd0f51e03,
         type: 3}
@@ -282,6 +282,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 30.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 7256012449995192303, guid: 168c18bcd3da24a369aa3c2bd0f51e03,
+        type: 3}
+      propertyPath: m_DefaultAnchorMax.x
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -390,7 +395,7 @@ PrefabInstance:
     - target: {fileID: 6769810256383744285, guid: bf4059e9bb3334860a3e1e18e6c33cd1,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -25
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6769810256383744285, guid: bf4059e9bb3334860a3e1e18e6c33cd1,
         type: 3}
@@ -420,7 +425,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7588662125093519923, guid: bf4059e9bb3334860a3e1e18e6c33cd1,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5330182569478610668}
   m_SourcePrefab: {fileID: 100100000, guid: bf4059e9bb3334860a3e1e18e6c33cd1, type: 3}
 --- !u!224 &229241566610012518 stripped
 RectTransform:
@@ -428,3 +437,28 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6835724756558782587}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &4002865049372631624 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7588662125093519923, guid: bf4059e9bb3334860a3e1e18e6c33cd1,
+    type: 3}
+  m_PrefabInstance: {fileID: 6835724756558782587}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5330182569478610668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4002865049372631624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c97afc556caea1c44969477eb7ddec74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Panel: {fileID: 229241566610012518}
+  m_HorizontalConstraintType: 0
+  m_HorizontalConstraint: 2
+  m_VerticalConstraintType: 2
+  m_VerticalConstraint: 0
+  m_DefaultAnchorMin: {x: 0, y: 1}
+  m_DefaultAnchorMax: {x: 0, y: 1}
