@@ -2692,6 +2692,7 @@ MonoBehaviour:
   - gameObjectsUI:
     - {fileID: 0}
     - {fileID: 0}
+    - {fileID: 0}
     condition:
       _conditionText: (IsLeaderboardCategoryEquals == Challenge)
       _and4:
@@ -2701,6 +2702,17 @@ MonoBehaviour:
             - _conditionType: 19
               _conditionValues: 06000000
               _negate: 0
+  - gameObjectsUI:
+    - {fileID: 0}
+    condition:
+      _conditionText: (IsLeaderboardCategoryEquals != Challenge)
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 19
+              _conditionValues: 06000000
+              _negate: 1
   - gameObjectsUI:
     - {fileID: 0}
     condition:
@@ -2838,6 +2850,7 @@ MonoBehaviour:
   - gameObjectsUI:
     - {fileID: 0}
     - {fileID: 0}
+    - {fileID: 0}
     condition:
       _conditionText: (IsLeaderboardCategoryEquals != Challenge)
       _and4:
@@ -2847,6 +2860,17 @@ MonoBehaviour:
             - _conditionType: 19
               _conditionValues: 06000000
               _negate: 1
+  - gameObjectsUI:
+    - {fileID: 0}
+    condition:
+      _conditionText: (IsLeaderboardCategoryEquals == Challenge)
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 19
+              _conditionValues: 06000000
+              _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
     condition:
