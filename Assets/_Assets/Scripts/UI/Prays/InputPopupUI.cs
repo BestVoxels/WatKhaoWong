@@ -41,6 +41,13 @@ namespace WatKhaoWong.UI.Prays
             _cancelButton.onClick.AddListener(Cancel);
             _okButton.onClick.AddListener(Ok);
             _tMPointsInputField.onEndEdit.AddListener(UpdateInputText);
+
+            UIRefresher.OnLocalizeDynamicString += () => UpdateInputText(_tMPointsInputField.text);
+        }
+
+        private void Start()
+        {
+            UpdateInputText(_tMPointsInputField.text);
         }
         #endregion
 
@@ -78,7 +85,7 @@ namespace WatKhaoWong.UI.Prays
             if (string.IsNullOrWhiteSpace(TMPointsText))
             {
                 _isValidated = false;
-                UpdateStatusText(_playerInputPopup.StatusTextDefault);
+                UpdateStatusText(_playerInputPopup.StatusTextDefault.GetLocalizedString());
                 return;
             }
 
@@ -97,7 +104,7 @@ namespace WatKhaoWong.UI.Prays
             else
             {
                 _isValidated = false;
-                UpdateStatusText(_playerInputPopup.StatusTextCantParse);
+                UpdateStatusText(_playerInputPopup.StatusTextCantParse.GetLocalizedString());
             }
         }
         #endregion

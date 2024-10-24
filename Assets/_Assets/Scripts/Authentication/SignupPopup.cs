@@ -2,6 +2,7 @@ using System;
 using Firebase.Auth;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Identities;
 using WatKhaoWong.Utils.UI;
@@ -12,10 +13,10 @@ namespace WatKhaoWong.Authentication
     {
         #region --Fields-- (Inspector)
         [Header("Signup Popup Status Text")]
-        [SerializeField] private string _statusSucceeded = "Signed up successfully";
+        [SerializeField] private LocalizedString _statusSucceeded;
         [SerializeField] private Color32 _statusSucceededColor;
         [Space]
-        [SerializeField] private string _statusErrored = "Signed up failed.";
+        [SerializeField] private LocalizedString _statusErrored;
         [SerializeField] private Color32 _statusErroredColor;
         #endregion
 
@@ -30,31 +31,31 @@ namespace WatKhaoWong.Authentication
         [field: SerializeField] public byte MaximumPhoneNumberLength { get; private set; } = 15;
         [field: Space]
         [field: Header("Signup Popup Status Text")]
-        [field: SerializeField] public string StatusFirstNameTooShort { get; private set; } = "Your first name must be at least 5 characters long. Please try another.";
+        [field: SerializeField] public LocalizedString StatusFirstNameTooShort { get; private set; }
         [field: SerializeField] public Color32 StatusFirstNameTooShortColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusLastNameTooShort { get; private set; } = "Your last name must be at least 5 characters long. Please try another.";
+        [field: SerializeField] public LocalizedString StatusLastNameTooShort { get; private set; }
         [field: SerializeField] public Color32 StatusLastNameTooShortColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusInvalidPhoneNumber { get; private set; } = "Invalid Phone Number.";
+        [field: SerializeField] public LocalizedString StatusInvalidPhoneNumber { get; private set; }
         [field: SerializeField] public Color32 StatusInvalidPhoneNumberColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusPhoneNumberTooShort { get; private set; } = "Invalid Phone Number (too Short).";
+        [field: SerializeField] public LocalizedString StatusPhoneNumberTooShort { get; private set; }
         [field: SerializeField] public Color32 StatusPhoneNumberTooShortColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusPhoneNumberTooLong { get; private set; } = "Invalid Phone Number (too Long).";
+        [field: SerializeField] public LocalizedString StatusPhoneNumberTooLong { get; private set; }
         [field: SerializeField] public Color32 StatusPhoneNumberTooLongColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusInvalidEmail { get; private set; } = "Invalid Email.";
+        [field: SerializeField] public LocalizedString StatusInvalidEmail { get; private set; }
         [field: SerializeField] public Color32 StatusInvalidEmailColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusPasswordTooShort { get; private set; } = "Your password must be at least 6 characters long. Please try another.";
+        [field: SerializeField] public LocalizedString StatusPasswordTooShort { get; private set; }
         [field: SerializeField] public Color32 StatusPasswordTooShortColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusConfirmPasswordNotMatch { get; private set; } = "Confirm Password & Password must match!";
+        [field: SerializeField] public LocalizedString StatusConfirmPasswordNotMatch { get; private set; }
         [field: SerializeField] public Color32 StatusConfirmPasswordNotMatchColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusWrongFormat { get; private set; } = "Wrong Format!";
+        [field: SerializeField] public LocalizedString StatusWrongFormat { get; private set; }
         [field: SerializeField] public Color32 StatusWrongFormatColor { get; private set; }
         #endregion
 
@@ -120,7 +121,7 @@ namespace WatKhaoWong.Authentication
 
             if (authType == EAuthType.PhoneNumber)
             {
-                _verifyPopup.SendNewCode(phoneNumber, _onSignupSucceeded, _onSignupFailed, _statusErrored, _statusErroredColor, _statusSucceeded, _statusSucceededColor);
+                _verifyPopup.SendNewCode(phoneNumber, _onSignupSucceeded, _onSignupFailed, _statusErrored.GetLocalizedString(), _statusErroredColor, _statusSucceeded.GetLocalizedString(), _statusSucceededColor);
             }
             else if (authType == EAuthType.EmailPassword)
             {
@@ -149,13 +150,13 @@ namespace WatKhaoWong.Authentication
             catch (Firebase.FirebaseException e)
             {
                 Debug.LogError($"Registration encountered an error: ({e.ErrorCode})\n{e.Message}");
-                _statusText.Show($"{_statusErrored} Error Code ({e.ErrorCode})\n{e.Message}", _statusErroredColor);
+                _statusText.Show($"{_statusErrored.GetLocalizedString()} Error Code ({e.ErrorCode})\n{e.Message}", _statusErroredColor);
 
                 _onSignupFailed?.Invoke(e);
                 _isRunningOnBackground = false;
             }
 
-            _statusText.Show(_statusSucceeded, _statusSucceededColor);
+            _statusText.Show(_statusSucceeded.GetLocalizedString(), _statusSucceededColor);
 
             _onSignupSucceeded?.Invoke(result.User);
             _myUserData.SetRole(EUserRole.Member);

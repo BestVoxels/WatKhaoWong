@@ -39,6 +39,7 @@ namespace WatKhaoWong.SceneManagement
             _savingSystem = new AutoInit<SavingSystem>(() => GetComponent<SavingSystem>()); // Use AutoInit so that when other classes use public methods in their Start() SavingSystem won't be null
         }
 
+        //// ---DEBUGGER PURPOSE---
         //private async void Update()
         //{
         //    if (Input.GetKeyDown(KeyCode.S))

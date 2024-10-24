@@ -5,12 +5,16 @@ using UnityEngine.Events;
 using WatKhaoWong.Utils.Conditions;
 using WatKhaoWong.SceneManagement;
 using Firebase.Auth;
+using UnityEngine.Localization;
 
 namespace WatKhaoWong.Challenges
 {
     public class Challenge : MonoBehaviour, IConditionEvaluator
     {
         #region --Fields-- (Inspector)
+        [Header("Challenge Stuffs - Text")]
+        [SerializeField] private LocalizedString _dayText;
+        [SerializeField] private LocalizedString _sText;
         #endregion
 
 
@@ -61,6 +65,7 @@ namespace WatKhaoWong.Challenges
             FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged; // This will trigger on Start() too so don't have to call LoadSave() on Start()
         }
 
+        //// ---DEBUGGER PURPOSE---
         //private void Update()
         //{
         //    if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -160,18 +165,18 @@ namespace WatKhaoWong.Challenges
 
             int totalDays = (int)Math.Round(duration.TotalDays, MidpointRounding.AwayFromZero);
 
-            return $"<u>{totalDays} day{S(totalDays)}</u>";
+            return $"<u>{totalDays} {_dayText.GetLocalizedString()}{S(totalDays)}</u>";
         }
 
         public string DaysString(int days)
         {
             if (days < 0)
-                return "? day";
+                return $"? {_dayText.GetLocalizedString()}";
 
-            return $"{days} day{S(days)}";
+            return $"{days} {_dayText.GetLocalizedString()}{S(days)}";
         }
 
-        public string S(int input) => input > 1 ? "s" : "";
+        public string S(int input) => input > 1 ? _sText.GetLocalizedString() : "";
         #endregion
 
 

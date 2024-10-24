@@ -156,7 +156,7 @@ namespace WatKhaoWong.UI.Identities
 
         private void OnModifyButtonClicked()
         {
-            _statusText.Show(_accountPopup.StatusInformUser, _accountPopup.StatusInformUserColor);
+            _statusText.Show(_accountPopup.StatusInformUser.GetLocalizedString(), _accountPopup.StatusInformUserColor);
         }
         #endregion
     }

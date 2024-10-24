@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.Identities
@@ -9,7 +10,7 @@ namespace WatKhaoWong.Identities
     {
         #region --Properties-- (Inspector)
         [field: Header("Account Popup Status Text")]
-        [field: SerializeField] public string StatusInformUser { get; private set; } = "Click any Profile Icon on the right section to change Profile Picture";
+        [field: SerializeField] public LocalizedString StatusInformUser { get; private set; }
         [field: SerializeField] public Color32 StatusInformUserColor { get; private set; }
         #endregion
 

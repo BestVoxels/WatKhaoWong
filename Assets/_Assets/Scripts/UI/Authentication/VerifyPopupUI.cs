@@ -90,7 +90,7 @@ namespace WatKhaoWong.UI.Authentication
             _codeInputField.text, _codeInputFieldStatus, out _typedCode,
             _playerVerifyPopup.MinimumCodeLength,
             (string.Empty, default),
-            (_playerVerifyPopup.StatusCodeTooShort, _playerVerifyPopup.StatusCodeTooShortColor));
+            (_playerVerifyPopup.StatusCodeTooShort.GetLocalizedString(_playerVerifyPopup.MinimumCodeLength), _playerVerifyPopup.StatusCodeTooShortColor));
 
         private void InformText(PointerEventData data)
         {

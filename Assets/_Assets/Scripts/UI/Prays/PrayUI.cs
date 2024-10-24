@@ -31,7 +31,7 @@ namespace WatKhaoWong.UI.Prays
 
 
         #region --Fields-- (In Class)
-        private Pray _playerPray;
+        private Pray _pray;
         private MyUserData _myUserData;
         #endregion
 
@@ -46,7 +46,7 @@ namespace WatKhaoWong.UI.Prays
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _playerPray = GameObject.FindWithTag("Player").GetComponentInChildren<Pray>();
+            _pray = GameObject.FindWithTag("Player").GetComponentInChildren<Pray>();
             _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
 
             _backButton.onClick.AddListener(Back);
@@ -65,6 +65,8 @@ namespace WatKhaoWong.UI.Prays
             _playSoundButton.onClick.AddListener(PlaySound);
 
             UIRefresher.OnPrayRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
+
+            UIRefresher.OnLocalizeDynamicString += RefreshStatUI;
         }
 
         private void Start()
@@ -76,28 +78,34 @@ namespace WatKhaoWong.UI.Prays
 
 
         #region --Methods-- (Subscriber) ~Page Header UI~
-        private void Back() => _playerPray.OnBackButtonClick();
+        private void Back() => _pray.OnBackButtonClick();
         #endregion
 
 
 
         #region --Methods-- (Subscriber)
-        private void UserProfile(PointerEventData data) => _playerPray.OnUserProfileClick();
+        private void UserProfile(PointerEventData data) => _pray.OnUserProfileClick();
 
-        private void UserStats(PointerEventData data) => _playerPray.OnUserStatsClick();
+        private void UserStats(PointerEventData data) => _pray.OnUserStatsClick();
 
-        private void Done() => _playerPray.OnDoneButtonClick();
+        private void Done() => _pray.OnDoneButtonClick();
 
-        private void PlaySound() => _playerPray.OnPlaySoundButtonClick();
+        private void PlaySound() => _pray.OnPlaySoundButtonClick();
 
         private void RefreshUI()
         {
             _myUserData.UpdateProfileIcon(_icon, _myUserData.GetProfileIcon(), MultiplierRatioForDecorator);
 
             _userNameText.text = _myUserData.GetUserNameText();
-            _allTimeTMPointsText.text = _myUserData.GetTotalTMPointsText();
-            _todayTMPointsText.text = _myUserData.GetTodayTMPointsText();
-            _challengeTMPointsText.text = _myUserData.GetChallengeTMPointsText();
+
+            RefreshStatUI();
+        }
+
+        private void RefreshStatUI()
+        {
+            _allTimeTMPointsText.text = _pray.AllTimeText.GetLocalizedString($"{_pray.ValueTextFormatBegin}{_myUserData.GetTotalTMPointsText()}{_pray.ValueTextFormatEnd}");
+            _todayTMPointsText.text = _pray.TodayText.GetLocalizedString($"{_pray.ValueTextFormatBegin}{_myUserData.GetTodayTMPointsText()}{_pray.ValueTextFormatEnd}");
+            _challengeTMPointsText.text = _pray.ChallengeText.GetLocalizedString($"{_pray.ValueTextFormatBegin}{_myUserData.GetChallengeTMPointsText()}{_pray.ValueTextFormatEnd}");
         }
         #endregion
     }

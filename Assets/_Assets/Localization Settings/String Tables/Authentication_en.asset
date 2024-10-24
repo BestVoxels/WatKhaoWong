@@ -1,0 +1,133 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Authentication_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 6665cdf70c4c34be2a778c41f3c326a9, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 8467956422192398353
+  m_TableData:
+  - m_Id: 19187884032
+    m_Localized: Signed up successfully
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1038386978816
+    m_Localized: Signed up failed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3239985537024
+    m_Localized: Wrong Format!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3193323905024
+    m_Localized: Confirm Password & Password must match!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3155214458880
+    m_Localized: Your Password must be at least {0} characters long. Please try another.
+    m_Metadata:
+      m_Items:
+      - rid: 8467956422192398353
+  - m_Id: 3131642470400
+    m_Localized: Invalid Email.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3105906221056
+    m_Localized: Invalid Phone Number (too Short).
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3069197672448
+    m_Localized: Invalid Phone Number.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3033139240960
+    m_Localized: Your Last name must be at least {0} characters long. Please try
+      another.
+    m_Metadata:
+      m_Items:
+      - rid: 8467956422192398353
+  - m_Id: 2872543535104
+    m_Localized: Your First name must be at least {0} characters long. Please try
+      another.
+    m_Metadata:
+      m_Items:
+      - rid: 8467956422192398353
+  - m_Id: 3700373315584
+    m_Localized: Invalid Phone Number (too Long).
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5232581926912
+    m_Localized: Logged in successfully
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5277268041728
+    m_Localized: Logged in failed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5442506842112
+    m_Localized: Invalid Account or Password.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5480687591424
+    m_Localized: Please contact for support at developer website.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6322970943488
+    m_Localized: Connecting...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6379271086080
+    m_Localized: Code sent successfully.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6433440522240
+    m_Localized: Failed to send the code. Please try again.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6454600785920
+    m_Localized: Auto verification completed successfully.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6517385322496
+    m_Localized: Auto-SMS retrieval timed out. Please enter the verification code
+      manually.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6572007743488
+    m_Localized: Code Sent. Please check the code we've just sent.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6596145963008
+    m_Localized: Cannot resend code. Please restart the app and try again.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6648872558592
+    m_Localized: 'Error: Please send a code request before verifying the OTP. Restart
+      the app and try again.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6737082966016
+    m_Localized: Your code must be at least {0} characters long. Please check the
+      code that we've just sent.
+    m_Metadata:
+      m_Items:
+      - rid: 8467956422192398353
+  references:
+    version: 2
+    RefIds:
+    - rid: 8467956422192398353
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00e06fa1de02000000e0efd09c02000000e02f35c202000000e06f9920060000

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
 using WatKhaoWong.Identities;
 using WatKhaoWong.Utils.Core;
 
@@ -9,11 +10,9 @@ namespace WatKhaoWong.Homes
     {
         #region --Fields-- (Inspector)
         [Header("Home Stuffs - Welcome Text")]
-        [TextArea]
-        [SerializeField] private string _welcomeTextForGuest;
+        [SerializeField] private LocalizedString _welcomeTextForUser;
         [Space]
-        [TextArea]
-        [SerializeField] private string _welcomeTextForUser;
+        [SerializeField] private LocalizedString _welcomeTextForGuest;
 
         //[Space]
         //[Header("Home Stuffs - Settings")]
@@ -64,9 +63,9 @@ namespace WatKhaoWong.Homes
             string text;
             
             if (FirebaseUtils.IsAuthenticated())
-                text = $"{_welcomeTextForUser}\n{_myUserData.GetUserNameText()}";
+                text = _welcomeTextForUser.GetLocalizedString(_myUserData.GetUserNameText());
             else
-                text = _welcomeTextForGuest;
+                text = _welcomeTextForGuest.GetLocalizedString();
 
             return text;
         }

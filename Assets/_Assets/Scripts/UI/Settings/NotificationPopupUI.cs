@@ -112,9 +112,9 @@ namespace WatKhaoWong.UI.Settings
 
             // Show Status Text
             if (isOn)
-                _statusText.Show(_playerNotificationPopup.StatusSwitchOn, _playerNotificationPopup.StatusSwitchOnColor);
+                _statusText.Show(_playerNotificationPopup.StatusSwitchOn.GetLocalizedString(), _playerNotificationPopup.StatusSwitchOnColor);
             else
-                _statusText.Show(_playerNotificationPopup.StatusSwitchOff, _playerNotificationPopup.StatusSwitchOffColor);
+                _statusText.Show(_playerNotificationPopup.StatusSwitchOff.GetLocalizedString(), _playerNotificationPopup.StatusSwitchOffColor);
 
             // When Switch is ON & all Toggles are OFF -> Turn any Toggle ON randomly
             if (isOn && _togglesOnCount <= 0)

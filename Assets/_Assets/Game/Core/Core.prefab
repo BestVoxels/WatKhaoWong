@@ -59,11 +59,27 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _statusSucceeded: Signed up successfully
+  _statusSucceeded:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 19187884032
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusSucceededColor:
     serializedVersion: 2
     rgba: 4288011303
-  _statusErrored: Signed up failed.
+  _statusErrored:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 1038386978816
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusErroredColor:
     serializedVersion: 2
     rgba: 4285887999
@@ -71,44 +87,112 @@ MonoBehaviour:
   <MinimumLastNameLength>k__BackingField: 3
   <MinimumPasswordLength>k__BackingField: 6
   <MinimumPhoneNumberLength>k__BackingField: 9
-  <MaximumPhoneNumberLength>k__BackingField: 15
-  <StatusFirstNameTooShort>k__BackingField: Your First name must be at least 5 characters
-    long. Please try another.
+  <MaximumPhoneNumberLength>k__BackingField: 10
+  <StatusFirstNameTooShort>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 2872543535104
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusFirstNameTooShortColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusLastNameTooShort>k__BackingField: Your Last name must be at least 5 characters
-    long. Please try another.
+  <StatusLastNameTooShort>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3033139240960
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusLastNameTooShortColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusInvalidPhoneNumber>k__BackingField: Invalid Phone Number.
+  <StatusInvalidPhoneNumber>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3069197672448
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusInvalidPhoneNumberColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusPhoneNumberTooShort>k__BackingField: Invalid Phone Number (too Short).
+  <StatusPhoneNumberTooShort>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3105906221056
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusPhoneNumberTooShortColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusPhoneNumberTooLong>k__BackingField: Invalid Phone Number (too Long).
+  <StatusPhoneNumberTooLong>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3700373315584
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusPhoneNumberTooLongColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusInvalidEmail>k__BackingField: Invalid Email.
+  <StatusInvalidEmail>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3131642470400
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusInvalidEmailColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusPasswordTooShort>k__BackingField: Your Password must be at least 6 characters
-    long. Please try another.
+  <StatusPasswordTooShort>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3155214458880
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusPasswordTooShortColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusConfirmPasswordNotMatch>k__BackingField: Confirm Password & Password must
-    match!
+  <StatusConfirmPasswordNotMatch>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3193323905024
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusConfirmPasswordNotMatchColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusWrongFormat>k__BackingField: Wrong Format!
+  <StatusWrongFormat>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3239985537024
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusWrongFormatColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
@@ -187,6 +271,9 @@ MonoBehaviour:
   _onValidateTextFailed:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &212433798140894278
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,14 +392,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  <StatusInformUser>k__BackingField: Click any Profile Icon on the right section
-    to change Profile Picture
+  <StatusInformUser>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 1102618951671808
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusInformUserColor>k__BackingField:
     serializedVersion: 2
     rgba: 0
   _onAccountProfileChangedByClick:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1187216208980445647
 GameObject:
   m_ObjectHideFlags: 0
@@ -818,8 +915,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eba07f54408b4907a3fcf4d674db064, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _welcomeTextForGuest: "Welcome to WatKhaoWong App!\t"
-  _welcomeTextForUser: Welcome back!
+  _welcomeTextForUser:
+    m_TableReference:
+      m_TableCollectionName: GUID:68418daa4cbc14122b8236cf4f108eef
+    m_TableEntryReference:
+      m_KeyId: 2585627975680
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _welcomeTextForGuest:
+    m_TableReference:
+      m_TableCollectionName: GUID:68418daa4cbc14122b8236cf4f108eef
+    m_TableEntryReference:
+      m_KeyId: 1485944967389184
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _onHistoryButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -901,6 +1014,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &4410690731461477662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -979,55 +1095,144 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  <StatusCreateFailed>k__BackingField: Creation failed.
+  <StatusCreateFailed>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 250881197989888
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusCreateFailedColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  _statusCreateSucceeded: The challenge has been created successfully!
+  _statusCreateSucceeded:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 251142574432256
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusCreateSucceededColor:
     serializedVersion: 2
     rgba: 4288011303
-  _statusStartDateIsNull: Please select a Start Date on the first calendar.
+  _statusStartDateIsNull:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 251167954165760
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusStartDateIsNullColor:
     serializedVersion: 2
     rgba: 4285887999
-  _statusStartDateIsInPast: "The Start Date cannot be in the past. Please select
-    today\u2019s date or a date in the future."
+  _statusStartDateIsInPast:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 251251945103360
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusStartDateIsInPastColor:
     serializedVersion: 2
     rgba: 4285887999
-  _statusStartDateIsAfterEndDate: The Start Date cannot be after the End Date. Please
-    select a date earlier than the End Date.
+  _statusStartDateIsAfterEndDate:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 251270404235264
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusStartDateIsAfterEndDateColor:
     serializedVersion: 2
     rgba: 4285887999
-  _statusEndDateIsNull: Please select an End Date on the second calendar.
+  _statusEndDateIsNull:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 251297826594816
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusEndDateIsNullColor:
     serializedVersion: 2
     rgba: 4285887999
-  _statusEndDateIsInPast: The End Date cannot be in the past. Please select a date
-    in the future.
+  _statusEndDateIsInPast:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 251342919557120
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusEndDateIsInPastColor:
     serializedVersion: 2
     rgba: 4285887999
-  _statusEndDateIsBeforeStartDate: The End Date cannot be before the Start Date.
-    Please select a date after the Start Date.
+  _statusEndDateIsBeforeStartDate:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 251363807191040
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusEndDateIsBeforeStartDateColor:
     serializedVersion: 2
     rgba: 4285887999
-  _statusBothDateIsSameDate: The Start Date and End Date cannot be the same date!
+  _statusBothDateIsSameDate:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 251395595821056
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusBothDateIsSameDateColor:
     serializedVersion: 2
     rgba: 4285887999
   <DateStringFormat>k__BackingField: 'dddd, MMMM d, yyyy
 
     HH:mm'
-  <StartDateFormatBegin>k__BackingField: 'Start Date: '
-  <StartDateFormatEnd>k__BackingField: 
-  <EndDateFormatBegin>k__BackingField: 'End Date: '
-  <EndDateFormatEnd>k__BackingField: 
-  <DurationFormatBegin>k__BackingField: 'Challenge Duration: '
-  <DurationFormatEnd>k__BackingField: 
+  <StartDateFormat>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 3336597135360
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <EndDateFormat>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 250409141657600
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <DurationFormat>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 251812706770944
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -1086,6 +1291,9 @@ MonoBehaviour:
   _onConfirmButtonCantClick:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &4570650834472422047
 GameObject:
   m_ObjectHideFlags: 0
@@ -1161,6 +1369,35 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  <AllTimeText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:ebe064a976daf46d286e98fbb9cffd3d
+    m_TableEntryReference:
+      m_KeyId: 921373626064896
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <TodayText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:ebe064a976daf46d286e98fbb9cffd3d
+    m_TableEntryReference:
+      m_KeyId: 921384875188224
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ChallengeText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:ebe064a976daf46d286e98fbb9cffd3d
+    m_TableEntryReference:
+      m_KeyId: 920248571125760
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ValueTextFormatBegin>k__BackingField: <space=25><b><cspace=-3>
+  <ValueTextFormatEnd>k__BackingField: </cspace></b>
   _onUserProfileClick:
     m_PersistentCalls:
       m_Calls:
@@ -1245,6 +1482,9 @@ MonoBehaviour:
   _onPlaySoundButtonClick:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &4397910582779905581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1369,6 +1609,36 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
           m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onThaiToggleIsOn:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2713540295551581792}
+        m_TargetAssemblyTypeName: WatKhaoWong.Settings.LanguagePopup, Assembly-WatKhaoWong-Settings
+        m_MethodName: SetLanguage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onEngToggleIsOn:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2713540295551581792}
+        m_TargetAssemblyTypeName: WatKhaoWong.Settings.LanguagePopup, Assembly-WatKhaoWong-Settings
+        m_MethodName: SetLanguage
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1523,9 +1793,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  <TitleText>k__BackingField: Delete?
-  <InfoText>k__BackingField: This action cannot be undone. Do you want to proceed
-    with deleting the pending challenge?
+  <TitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 781500164333568
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 781876519231488
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4283651013
@@ -1583,6 +1868,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &5909602575756774240
 GameObject:
   m_ObjectHideFlags: 0
@@ -1642,8 +1930,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  <TitleText>k__BackingField: Confirm?
-  <InfoText>k__BackingField: Please ensure the Challenge is properly configured
+  <TitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 781606586408960
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 781730062524416
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4283651013
@@ -1702,6 +2006,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &6008341982099111722
 GameObject:
   m_ObjectHideFlags: 0
@@ -1810,17 +2117,54 @@ MonoBehaviour:
         m_CallState: 2
   _defaultNotificationSwitchValue: 1
   _defaultTimeTogglesValue: 000100000100
-  <StatusSwitchOff>k__BackingField: Notification is now DISABLED
+  _offText:
+    m_TableReference:
+      m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+    m_TableEntryReference:
+      m_KeyId: 1166494275723264
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _onText:
+    m_TableReference:
+      m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+    m_TableEntryReference:
+      m_KeyId: 1167124969021440
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusSwitchOff>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+    m_TableEntryReference:
+      m_KeyId: 1141426497773568
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusSwitchOffColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusSwitchOn>k__BackingField: Notification is now ENABLED
+  <StatusSwitchOn>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+    m_TableEntryReference:
+      m_KeyId: 1141463336345600
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusSwitchOnColor>k__BackingField:
     serializedVersion: 2
     rgba: 0
   _onNotificationSwitchClick:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &6205675919601860092
 GameObject:
   m_ObjectHideFlags: 0
@@ -1880,42 +2224,113 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _statusSucceeded: Logged in successfully
+  _statusSucceeded:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 5232581926912
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusSucceededColor:
     serializedVersion: 2
     rgba: 4288011303
-  _statusErrored: Logged in failed.
+  _statusErrored:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 5277268041728
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusErroredColor:
     serializedVersion: 2
     rgba: 4285887999
   <MinimumPhoneNumberLength>k__BackingField: 9
-  <MaximumPhoneNumberLength>k__BackingField: 15
-  <StatusInvalidPhoneNumber>k__BackingField: Invalid Phone Number.
+  <MaximumPhoneNumberLength>k__BackingField: 10
+  <StatusInvalidPhoneNumber>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3069197672448
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusInvalidPhoneNumberColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusPhoneNumberTooShort>k__BackingField: Invalid Phone Number (too Short).
+  <StatusPhoneNumberTooShort>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3105906221056
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusPhoneNumberTooShortColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusPhoneNumberTooLong>k__BackingField: Invalid Phone Number (too Long).
+  <StatusPhoneNumberTooLong>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3700373315584
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusPhoneNumberTooLongColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusInvalidEmail>k__BackingField: Invalid Email.
+  <StatusInvalidEmail>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3131642470400
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusInvalidEmailColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusInvalidPassword>k__BackingField: Invalid Account or Password.
+  <StatusInvalidPassword>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 5442506842112
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusInvalidPasswordColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
-  <StatusForgotPassword>k__BackingField: Please contact for support at developer
-    website.
+  <StatusForgotPassword>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 5480687591424
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusForgotPasswordColor>k__BackingField:
     serializedVersion: 2
     rgba: 0
-  <StatusWrongFormat>k__BackingField: Wrong Format!
+  <StatusWrongFormat>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3239985537024
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusWrongFormatColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
@@ -1994,6 +2409,9 @@ MonoBehaviour:
   _onValidateTextFailed:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &6325179408576210219
 GameObject:
   m_ObjectHideFlags: 0
@@ -2125,21 +2543,108 @@ MonoBehaviour:
   <UnselectedColor>k__BackingField:
     serializedVersion: 2
     rgba: 4290687917
-  <NoAllTimeLeaderboardText>k__BackingField: Upload Now! Be the first on All Time
-    Leaderboard
-  <NoTodayLeaderboardText>k__BackingField: Upload Now! Be the first on Today Leaderboard
-  <NoChallengeLeaderboardText>k__BackingField: No active Challenge at the moment
-  <PendingChallengeLeaderboardText>k__BackingField: Challenge is pending. Stay tuned!
-  <LiveChallengeLeaderboardText>k__BackingField: Challenge is live! Upload Now!
-  <HasAllTimeLeaderboardText>k__BackingField: Displaying data for All Time leaderboard
-  <HasTodayLeaderboardText>k__BackingField: Displaying data for Today leaderboard
-  <HasChallengeLeaderboardText>k__BackingField: Displaying data for the Active Challenge
-  <NoChallengeBannerText>k__BackingField: Please wait for Admin to create a Challenge
-  <PendingChallengeBannerTextBegin>k__BackingField: 'Challenge Starts in '
-  <PendingChallengeBannerTextEnd>k__BackingField: '!'
-  <LiveChallengeBannerTextBegin>k__BackingField: 'Ends in '
-  <LiveChallengeBannerTextEnd>k__BackingField: '! Aim for first place to win the
-    Challenge!'
+  <NoAllTimeLeaderboardText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 7812931584
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <NoTodayLeaderboardText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 106341326848
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <NoChallengeLeaderboardText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 151522369536
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <PendingChallengeLeaderboardText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 167234232320
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <LiveChallengeLeaderboardText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 185462677504
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <HasAllTimeLeaderboardText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 202713849856
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <HasTodayLeaderboardText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 221332365312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <HasChallengeLeaderboardText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 245785157632
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <NoChallengeBannerText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 267746533376
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <PendingChallengeBannerText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 284452446208
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <LiveChallengeBannerText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 313997123584
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &3087279084121397941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2270,8 +2775,24 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  <TitleText>k__BackingField: Confirm?
-  <InfoText>k__BackingField: '*Beware of Precept Number 4!*'
+  <TitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 781606586408960
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 781656062418944
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4283651013
@@ -2341,6 +2862,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &7456972098369230146
 GameObject:
   m_ObjectHideFlags: 0
@@ -2401,11 +2925,42 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _uploadDelay: 5
-  <StatusHeaderTextDefault>k__BackingField: Uploading...
-  <StatusInfoTextDefault>k__BackingField: Press Undo if you uplooad by mistake
-  <StatusHeaderTextDone>k__BackingField: Uploaded!
-  <StatusInfoTextDoneBegin>k__BackingField: You have successfully upload (
-  <StatusInfoTextDoneEnd>k__BackingField: ) to the system. Awesome!
+  <StatusHeaderTextDefault>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 59625821954048
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusInfoTextDefault>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 59750053044224
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusHeaderTextDone>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 1131055393267712
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusInfoTextDone>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 1131320624275456
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _onUndoButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -2436,6 +2991,9 @@ MonoBehaviour:
   _onUploadSucceed:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &7528254027513631171
 GameObject:
   m_ObjectHideFlags: 0
@@ -3014,12 +3572,60 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   _maximumPointInput: 108
-  <StatusTextDefault>k__BackingField: Enter your desired number!
-  <StatusTextValid>k__BackingField: Good job!
-  <StatusTextNoNegative>k__BackingField: Negative value is not allow!
-  <StatusTextNoZero>k__BackingField: Zero is not allow!
-  <StatusTextTooHigh>k__BackingField: Too High! Try lower the number down...
-  <StatusTextCantParse>k__BackingField: Error! Wrong number format.
+  <StatusTextDefault>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:ebe064a976daf46d286e98fbb9cffd3d
+    m_TableEntryReference:
+      m_KeyId: 1015443371319296
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusTextValid>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:ebe064a976daf46d286e98fbb9cffd3d
+    m_TableEntryReference:
+      m_KeyId: 1015534240915456
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusTextNoNegative>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:ebe064a976daf46d286e98fbb9cffd3d
+    m_TableEntryReference:
+      m_KeyId: 1015572534910976
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusTextNoZero>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:ebe064a976daf46d286e98fbb9cffd3d
+    m_TableEntryReference:
+      m_KeyId: 1015595448393728
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusTextTooHigh>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:ebe064a976daf46d286e98fbb9cffd3d
+    m_TableEntryReference:
+      m_KeyId: 1015618806472704
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusTextCantParse>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:ebe064a976daf46d286e98fbb9cffd3d
+    m_TableEntryReference:
+      m_KeyId: 1015641799647232
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -3078,6 +3684,9 @@ MonoBehaviour:
   _onOkButtonCantClick:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &8535508301120170199
 GameObject:
   m_ObjectHideFlags: 0
@@ -3127,6 +3736,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fccec941c17b4a1e9913efb54e7a2cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _dayText:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 32706125824
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _sText:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 92172967936
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _onChallengeCreationButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -3157,6 +3784,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &2823740306085062417
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3300,44 +3930,113 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _statusCodeConnecting: Connecting...
+  _statusCodeConnecting:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6322970943488
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusCodeConnectingColor:
     serializedVersion: 2
     rgba: 4288011303
-  _statusCodeSentSucceeded: Code sent successfully.
+  _statusCodeSentSucceeded:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6379271086080
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusCodeSentSucceededColor:
     serializedVersion: 2
     rgba: 4288011303
-  _statusCodeSentFailed: Failed to send the code. Please try again.
+  _statusCodeSentFailed:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6433440522240
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusCodeSentFailedColor:
     serializedVersion: 2
     rgba: 4285887999
-  _statusCodeAutoVerifyCompleted: Auto verification completed successfully.
+  _statusCodeAutoVerifyCompleted:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6454600785920
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusCodeAutoVerifyCompletedColor:
     serializedVersion: 2
     rgba: 4288011303
-  _statusCodeAutoRetrievalTimeOut: Auto-SMS retrieval timed out. Please enter the
-    verification code manually.
+  _statusCodeAutoRetrievalTimeOut:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6517385322496
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusCodeAutoRetrievalTimeOutColor:
     serializedVersion: 2
     rgba: 0
-  _statusResendCode: Code Sent. Please check the code we've just sent.
+  _statusResendCode:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6572007743488
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusResendCodeColor:
     serializedVersion: 2
     rgba: 4288011303
-  _statusCantResendCode: Cannot resend code. Please restart the app and try again.
+  _statusCantResendCode:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6596145963008
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusCantResendCodeColor:
     serializedVersion: 2
     rgba: 4285887999
-  _statusErrorNoSendCodeRequest: 'Error: Please send a code request before verifying
-    the OTP. Restart the app and try again.'
+  _statusErrorNoSendCodeRequest:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6648872558592
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusErrorNoSendCodeRequestColor:
     serializedVersion: 2
     rgba: 4285887999
   _timeoutInMilliseconds: 60000
   <MinimumCodeLength>k__BackingField: 6
-  <StatusCodeTooShort>k__BackingField: Your code must be at least 6 characters long.
-    Please check the code that we've just sent.
+  <StatusCodeTooShort>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6737082966016
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusCodeTooShortColor>k__BackingField:
     serializedVersion: 2
     rgba: 4285887999
@@ -3383,6 +4082,9 @@ MonoBehaviour:
   _onValidateTextFailed:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &8983441613738632392
 GameObject:
   m_ObjectHideFlags: 0
@@ -3442,19 +4144,48 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _statusDeleteSucceeded: The challenge has been deleted successfully!
+  _statusDeleteSucceeded:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 250658090377216
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _statusDeleteSucceededColor:
     serializedVersion: 2
     rgba: 4288011303
   <DateStringFormat>k__BackingField: 'dddd, MMMM d, yyyy
 
     HH:mm'
-  <StartDateFormatBegin>k__BackingField: 'Start Date: '
-  <StartDateFormatEnd>k__BackingField: 
-  <EndDateFormatBegin>k__BackingField: 'End Date: '
-  <EndDateFormatEnd>k__BackingField: 
-  <DurationFormatBegin>k__BackingField: 'Challenge Duration: '
-  <DurationFormatEnd>k__BackingField: 
+  <StartDateFormat>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 251884504866816
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <EndDateFormat>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 251922748530688
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <DurationFormat>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 251940054228992
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _onDeleteButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -3495,6 +4226,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &8803156098798840112
 PrefabInstance:
   m_ObjectHideFlags: 0

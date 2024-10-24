@@ -92,7 +92,7 @@ namespace WatKhaoWong.UI.Authentication
                         break;
 
                     case EAuthType.Unknown:
-                        _statusText.Show(_playerLoginPopup.StatusWrongFormat, _playerLoginPopup.StatusWrongFormatColor);
+                        _statusText.Show(_playerLoginPopup.StatusWrongFormat.GetLocalizedString(), _playerLoginPopup.StatusWrongFormatColor);
                         _userNameInputFieldStatus.SetError();
 
                         ShowPasswordUI(true);
@@ -182,25 +182,25 @@ namespace WatKhaoWong.UI.Authentication
             _userNameInputField.text, _userNameInputFieldStatus, out _phoneNumber,
             _playerLoginPopup.MinimumPhoneNumberLength, _playerLoginPopup.MaximumPhoneNumberLength,
             (string.Empty, default),
-            (_playerLoginPopup.StatusInvalidPhoneNumber, _playerLoginPopup.StatusInvalidPhoneNumberColor),
-            (_playerLoginPopup.StatusPhoneNumberTooShort, _playerLoginPopup.StatusPhoneNumberTooShortColor),
-            (_playerLoginPopup.StatusPhoneNumberTooLong, _playerLoginPopup.StatusPhoneNumberTooLongColor));
+            (_playerLoginPopup.StatusInvalidPhoneNumber.GetLocalizedString(), _playerLoginPopup.StatusInvalidPhoneNumberColor),
+            (_playerLoginPopup.StatusPhoneNumberTooShort.GetLocalizedString(), _playerLoginPopup.StatusPhoneNumberTooShortColor),
+            (_playerLoginPopup.StatusPhoneNumberTooLong.GetLocalizedString(), _playerLoginPopup.StatusPhoneNumberTooLongColor));
 
         private bool IsEmailValidated() => _inputFieldValidator.ValidateLoginEmail(
             _userNameInputField.text, _userNameInputFieldStatus, out _email,
             (string.Empty, default),
-            (_playerLoginPopup.StatusInvalidEmail, _playerLoginPopup.StatusInvalidEmailColor));
+            (_playerLoginPopup.StatusInvalidEmail.GetLocalizedString(), _playerLoginPopup.StatusInvalidEmailColor));
 
         private bool IsPasswordValidated() => _inputFieldValidator.ValidateLoginPassword(
             _passwordInputField.text, _passwordInputFieldStatus, out _password,
             (string.Empty, default),
-            (_playerLoginPopup.StatusInvalidPassword, _playerLoginPopup.StatusInvalidPasswordColor));
+            (_playerLoginPopup.StatusInvalidPassword.GetLocalizedString(), _playerLoginPopup.StatusInvalidPasswordColor));
 
         private void SignupText(PointerEventData data) => _playerLoginPopup.OnSignupTextClick();
 
         private void ForgotText(PointerEventData data)
         {
-            _statusText.Show(_playerLoginPopup.StatusForgotPassword, _playerLoginPopup.StatusForgotPasswordColor);
+            _statusText.Show(_playerLoginPopup.StatusForgotPassword.GetLocalizedString(), _playerLoginPopup.StatusForgotPasswordColor);
 
             _playerLoginPopup.OnForgotTextClick();
         }

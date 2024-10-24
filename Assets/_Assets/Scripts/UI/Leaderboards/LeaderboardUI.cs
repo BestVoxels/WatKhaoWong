@@ -46,6 +46,8 @@ namespace WatKhaoWong.UI.Leaderboards
             _myUserData = player.GetComponentInChildren<MyUserData>();
 
             UIRefresher.OnLeaderboardRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
+
+            UIRefresher.OnLocalizeDynamicString += UpdateTexts;
         }
 
         private void Start()
@@ -126,13 +128,13 @@ namespace WatKhaoWong.UI.Leaderboards
             if (!_leaderboard.IsLeaderboardExists())
                 _dataIndicatorText.text = _leaderboard.Category switch
                 {
-                    ELeaderboardCategory.AllTime => _leaderboard.NoAllTimeLeaderboardText,
-                    ELeaderboardCategory.Today => _leaderboard.NoTodayLeaderboardText,
+                    ELeaderboardCategory.AllTime => _leaderboard.NoAllTimeLeaderboardText.GetLocalizedString(),
+                    ELeaderboardCategory.Today => _leaderboard.NoTodayLeaderboardText.GetLocalizedString(),
                     ELeaderboardCategory.Challenge => _challenge.GetStatus() switch
                     {
-                        EChallengeStatus.None => _leaderboard.NoChallengeLeaderboardText,
-                        EChallengeStatus.Pending => _leaderboard.PendingChallengeLeaderboardText,
-                        EChallengeStatus.Live => _leaderboard.LiveChallengeLeaderboardText,
+                        EChallengeStatus.None => _leaderboard.NoChallengeLeaderboardText.GetLocalizedString(),
+                        EChallengeStatus.Pending => _leaderboard.PendingChallengeLeaderboardText.GetLocalizedString(),
+                        EChallengeStatus.Live => _leaderboard.LiveChallengeLeaderboardText.GetLocalizedString(),
                         _ => ""
                     },
                     _ => ""
@@ -140,17 +142,17 @@ namespace WatKhaoWong.UI.Leaderboards
             else
                 _dataIndicatorText.text = _leaderboard.Category switch
                 {
-                    ELeaderboardCategory.AllTime => _leaderboard.HasAllTimeLeaderboardText,
-                    ELeaderboardCategory.Today => _leaderboard.HasTodayLeaderboardText,
-                    ELeaderboardCategory.Challenge => _leaderboard.HasChallengeLeaderboardText,
+                    ELeaderboardCategory.AllTime => _leaderboard.HasAllTimeLeaderboardText.GetLocalizedString(),
+                    ELeaderboardCategory.Today => _leaderboard.HasTodayLeaderboardText.GetLocalizedString(),
+                    ELeaderboardCategory.Challenge => _leaderboard.HasChallengeLeaderboardText.GetLocalizedString(),
                     _ => ""
                 };
 
             _countDownBannerText.text = _challenge.GetStatus() switch
             {
-                EChallengeStatus.None => $"{_leaderboard.NoChallengeBannerText}",
-                EChallengeStatus.Pending => $"{_leaderboard.PendingChallengeBannerTextBegin}{_challenge.DaysString(_challenge.GetChallengeStartDaysLeft())}{_leaderboard.PendingChallengeBannerTextEnd}",
-                EChallengeStatus.Live => $"{_leaderboard.LiveChallengeBannerTextBegin}{_challenge.DaysString(_challenge.GetChallengeEndDaysLeft())}{_leaderboard.LiveChallengeBannerTextEnd}",
+                EChallengeStatus.None => _leaderboard.NoChallengeBannerText.GetLocalizedString(),
+                EChallengeStatus.Pending => _leaderboard.PendingChallengeBannerText.GetLocalizedString(_challenge.DaysString(_challenge.GetChallengeStartDaysLeft())),
+                EChallengeStatus.Live => _leaderboard.LiveChallengeBannerText.GetLocalizedString(_challenge.DaysString(_challenge.GetChallengeEndDaysLeft())),
                 _ => ""
             };
         }

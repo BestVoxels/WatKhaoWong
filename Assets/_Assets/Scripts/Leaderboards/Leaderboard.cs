@@ -9,6 +9,7 @@ using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Utils.Conditions;
 using WatKhaoWong.Challenges;
 using Firebase.Auth;
+using UnityEngine.Localization;
 
 namespace WatKhaoWong.Leaderboards
 {
@@ -35,26 +36,24 @@ namespace WatKhaoWong.Leaderboards
         [field: Space]
 
         [field: Header("Leaderboard Status Text")]
-        [field: SerializeField] public string NoAllTimeLeaderboardText { get; private set; } = "Upload Now! Be the first on All Time Leaderboard";
-        [field: SerializeField] public string NoTodayLeaderboardText { get; private set; } = "Upload Now! Be the first on Today Leaderboard";
-        [field: SerializeField] public string NoChallengeLeaderboardText { get; private set; } = "No Active Challenge at the moment.";
-        [field: SerializeField] public string PendingChallengeLeaderboardText { get; private set; } = "Challenge is pending. Stay tuned!";
-        [field: SerializeField] public string LiveChallengeLeaderboardText { get; private set; } = "Challenge is live! Upload Now!";
+        [field: SerializeField] public LocalizedString NoAllTimeLeaderboardText { get; private set; }
+        [field: SerializeField] public LocalizedString NoTodayLeaderboardText { get; private set; }
+        [field: SerializeField] public LocalizedString NoChallengeLeaderboardText { get; private set; }
+        [field: SerializeField] public LocalizedString PendingChallengeLeaderboardText { get; private set; }
+        [field: SerializeField] public LocalizedString LiveChallengeLeaderboardText { get; private set; }
         [field: Space]
         [field: Tooltip("Not likely to be shown.")]
-        [field: SerializeField] public string HasAllTimeLeaderboardText { get; private set; } = "Displaying data for All Time leaderboard";
+        [field: SerializeField] public LocalizedString HasAllTimeLeaderboardText { get; private set; }
         [field: Tooltip("Not likely to be shown.")]
-        [field: SerializeField] public string HasTodayLeaderboardText { get; private set; } = "Displaying data for Today leaderboard";
+        [field: SerializeField] public LocalizedString HasTodayLeaderboardText { get; private set; }
         [field: Tooltip("Not likely to be shown.")]
-        [field: SerializeField] public string HasChallengeLeaderboardText { get; private set; } = "Displaying data for the Active Challenge";
+        [field: SerializeField] public LocalizedString HasChallengeLeaderboardText { get; private set; }
         [field: Space]
-        [field: SerializeField] public string NoChallengeBannerText { get; private set; } = $"Please wait for Admin to create a Challenge";
+        [field: SerializeField] public LocalizedString NoChallengeBannerText { get; private set; }
         [field: Space]
-        [field: SerializeField] public string PendingChallengeBannerTextBegin { get; private set; } = $"Challenge Starts in ";
-        [field: SerializeField] public string PendingChallengeBannerTextEnd { get; private set; } = $"!";
+        [field: SerializeField] public LocalizedString PendingChallengeBannerText { get; private set; }
         [field: Space]
-        [field: SerializeField] public string LiveChallengeBannerTextBegin { get; private set; } = $"Ends in ";
-        [field: SerializeField] public string LiveChallengeBannerTextEnd { get; private set; } = $"! Aim for first place to win the Challenge!";
+        [field: SerializeField] public LocalizedString LiveChallengeBannerText { get; private set; }
         #endregion
 
 

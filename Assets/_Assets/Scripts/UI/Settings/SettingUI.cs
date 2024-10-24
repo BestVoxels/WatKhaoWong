@@ -22,8 +22,6 @@ namespace WatKhaoWong.UI.Settings
         [SerializeField] private Slider _musicSlider;
         [Space]
         [SerializeField] private TMP_Text _notificationStatusText;
-        [SerializeField] private TMP_Text _languageStatusText;
-        [SerializeField] private Image _languageStatusIcon;
         #endregion
 
 
@@ -38,8 +36,9 @@ namespace WatKhaoWong.UI.Settings
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _playerSetting = GameObject.FindWithTag("Player").GetComponentInChildren<Setting>();
-            _notificationPopup = GameObject.FindWithTag("Player").GetComponentInChildren<NotificationPopup>();
+            GameObject player = GameObject.FindWithTag("Player");
+            _playerSetting = player.GetComponentInChildren<Setting>();
+            _notificationPopup = player.GetComponentInChildren<NotificationPopup>();
 
             _backButton.onClick.AddListener(Back);
 
@@ -53,6 +52,8 @@ namespace WatKhaoWong.UI.Settings
             _musicSlider.onValueChanged.AddListener(MusicSliderValueChanged);
 
             UIRefresher.OnSettingRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
+
+            UIRefresher.OnLocalizeDynamicString += () => _notificationStatusText.text = _notificationPopup.GetNotificationSwitchStatus();
         }
 
         private void Start()
@@ -85,9 +86,6 @@ namespace WatKhaoWong.UI.Settings
             _musicSlider.value = _playerSetting.LoadMusicValue();
 
             _notificationStatusText.text = _notificationPopup.GetNotificationSwitchStatus();
-            // TODO update these UI, wait for 'LanguagePopup' classes
-            //_languageStatusText.text = "";
-            //_languageStatusIcon.sprite = ;
         }
         #endregion
     }

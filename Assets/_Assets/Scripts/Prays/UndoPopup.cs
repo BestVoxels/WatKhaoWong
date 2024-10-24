@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Identities;
+using UnityEngine.Localization;
 
 namespace WatKhaoWong.Prays
 {
@@ -21,11 +22,10 @@ namespace WatKhaoWong.Prays
 
         #region --Properties-- (Inspector)
         [field: Header("Undo Popup Status Text")]
-        [field: SerializeField] public string StatusHeaderTextDefault { get; private set; } = "Uploading...";
-        [field: SerializeField] public string StatusInfoTextDefault { get; private set; } = "Press Undo if you uplooad by mistake";
-        [field: SerializeField] public string StatusHeaderTextDone { get; private set; } = "Uploaded!";
-        [field: SerializeField] public string StatusInfoTextDoneBegin { get; private set; } = $"You have successfully upload (";
-        [field: SerializeField] public string StatusInfoTextDoneEnd { get; private set; } = $") to the system. Awesome!";
+        [field: SerializeField] public LocalizedString StatusHeaderTextDefault { get; private set; }
+        [field: SerializeField] public LocalizedString StatusInfoTextDefault { get; private set; }
+        [field: SerializeField] public LocalizedString StatusHeaderTextDone { get; private set; }
+        [field: SerializeField] public LocalizedString StatusInfoTextDone { get; private set; }
         #endregion
 
 
@@ -57,7 +57,7 @@ namespace WatKhaoWong.Prays
 
 
         #region --Properties-- (Computed)
-        public string StatusInfoTextDone => StatusInfoTextDoneBegin + _tmPoints + StatusInfoTextDoneEnd;
+        public string StatusInfoTextDoneText => StatusInfoTextDone.GetLocalizedString(_tmPoints);
         #endregion
 
 

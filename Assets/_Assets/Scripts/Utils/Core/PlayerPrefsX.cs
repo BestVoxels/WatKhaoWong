@@ -31,7 +31,7 @@ namespace WatKhaoWong.Utils.Core
         {
             BoolArrayObject arrayObject = new()
             {
-                boolArray = (bool[])values.Clone()
+                boolArray = (values == null) ? null : (bool[])values.Clone()
             };
 
             PlayerPrefs.SetString(key, JsonUtility.ToJson(arrayObject));
@@ -41,7 +41,7 @@ namespace WatKhaoWong.Utils.Core
         {
             BoolArrayObject arrayObject = new()
             {
-                boolArray = (bool[])defaultValues.Clone()
+                boolArray = (defaultValues == null) ? null : (bool[])defaultValues.Clone()
             };
 
             return JsonUtility.FromJson<BoolArrayObject>(PlayerPrefs.GetString(key, JsonUtility.ToJson(arrayObject))).boolArray;

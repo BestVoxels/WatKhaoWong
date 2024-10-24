@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Utils.Core;
+using UnityEngine.Localization;
 
 namespace WatKhaoWong.Settings
 {
@@ -14,16 +15,20 @@ namespace WatKhaoWong.Settings
         [Header("Notification Stuffs")]
         [SerializeField] private bool _defaultNotificationSwitchValue = true;
         [SerializeField] private bool[] _defaultTimeTogglesValue;
+
+        [Header("Notification Text")]
+        [SerializeField] private LocalizedString _offText;
+        [SerializeField] private LocalizedString _onText;
         #endregion
 
 
 
         #region --Properties-- (Inspector)
         [field: Header("Notification Status Text")]
-        [field: SerializeField] public string StatusSwitchOff { get; private set; } = "Notification is now disabled.";
+        [field: SerializeField] public LocalizedString StatusSwitchOff { get; private set; }
         [field: SerializeField] public Color32 StatusSwitchOffColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusSwitchOn { get; private set; } = "Notification is now enabled.";
+        [field: SerializeField] public LocalizedString StatusSwitchOn { get; private set; }
         [field: SerializeField] public Color32 StatusSwitchOnColor { get; private set; }
         #endregion
 
@@ -78,7 +83,7 @@ namespace WatKhaoWong.Settings
 
         public string GetNotificationSwitchStatus()
         {
-            return LoadNotificationSwitchValue() ? "ON" : "OFF";
+            return LoadNotificationSwitchValue() ? _onText.GetLocalizedString() : _offText.GetLocalizedString();
         }
         #endregion
 

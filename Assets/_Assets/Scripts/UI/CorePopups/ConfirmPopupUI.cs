@@ -50,9 +50,9 @@ namespace WatKhaoWong.UI.CorePopups
 
             _confirmPopup = confirmPopup;
 
-            _titleText.text = _confirmPopup.TitleText;
+            _titleText.text = _confirmPopup.TitleText.GetLocalizedString();
 
-            _infoText.text = _confirmPopup.InfoText;
+            _infoText.text = _confirmPopup.InfoText.GetLocalizedString();
             _infoText.color = _confirmPopup.InfoTextColor;
         }
         #endregion

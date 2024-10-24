@@ -4,6 +4,7 @@ using UnityEngine.Events;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Utils.UI;
 using Firebase.Auth;
+using UnityEngine.Localization;
 
 namespace WatKhaoWong.Authentication
 {
@@ -11,10 +12,10 @@ namespace WatKhaoWong.Authentication
     {
         #region --Fields-- (Inspector)
         [Header("Login Popup Status Text")]
-        [SerializeField] private string _statusSucceeded = "Logged in successfully";
+        [SerializeField] private LocalizedString _statusSucceeded;
         [SerializeField] private Color32 _statusSucceededColor;
         [Space]
-        [SerializeField] private string _statusErrored = "Logged in failed.";
+        [SerializeField] private LocalizedString _statusErrored;
         [SerializeField] private Color32 _statusErroredColor;
         #endregion
 
@@ -26,25 +27,25 @@ namespace WatKhaoWong.Authentication
         [field: SerializeField] public byte MaximumPhoneNumberLength { get; private set; } = 15;
         [field: Space]
         [field: Header("Login Popup Status Text")]
-        [field: SerializeField] public string StatusInvalidPhoneNumber { get; private set; } = "Invalid Phone Number.";
+        [field: SerializeField] public LocalizedString StatusInvalidPhoneNumber { get; private set; }
         [field: SerializeField] public Color32 StatusInvalidPhoneNumberColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusPhoneNumberTooShort { get; private set; } = "Invalid Phone Number (too Short).";
+        [field: SerializeField] public LocalizedString StatusPhoneNumberTooShort { get; private set; }
         [field: SerializeField] public Color32 StatusPhoneNumberTooShortColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusPhoneNumberTooLong { get; private set; } = "Invalid Phone Number (too Long).";
+        [field: SerializeField] public LocalizedString StatusPhoneNumberTooLong { get; private set; }
         [field: SerializeField] public Color32 StatusPhoneNumberTooLongColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusInvalidEmail { get; private set; } = "Invalid Email.";
+        [field: SerializeField] public LocalizedString StatusInvalidEmail { get; private set; }
         [field: SerializeField] public Color32 StatusInvalidEmailColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusInvalidPassword { get; private set; } = "Invalid Account or Password.";
+        [field: SerializeField] public LocalizedString StatusInvalidPassword { get; private set; }
         [field: SerializeField] public Color32 StatusInvalidPasswordColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusForgotPassword { get; private set; } = "Please contact for support at developer website.";
+        [field: SerializeField] public LocalizedString StatusForgotPassword { get; private set; }
         [field: SerializeField] public Color32 StatusForgotPasswordColor { get; private set; }
         [field: Space]
-        [field: SerializeField] public string StatusWrongFormat { get; private set; } = "Wrong Format!";
+        [field: SerializeField] public LocalizedString StatusWrongFormat { get; private set; }
         [field: SerializeField] public Color32 StatusWrongFormatColor { get; private set; }
         #endregion
 
@@ -98,7 +99,7 @@ namespace WatKhaoWong.Authentication
 
             if (authType == EAuthType.PhoneNumber)
             {
-                _verifyPopup.SendNewCode(phoneNumber, _onLoginSucceeded, _onLoginFailed, _statusErrored, _statusErroredColor, _statusSucceeded, _statusSucceededColor);
+                _verifyPopup.SendNewCode(phoneNumber, _onLoginSucceeded, _onLoginFailed, _statusErrored.GetLocalizedString(), _statusErroredColor, _statusSucceeded.GetLocalizedString(), _statusSucceededColor);
             }
             else if (authType == EAuthType.EmailPassword)
             {
@@ -127,13 +128,13 @@ namespace WatKhaoWong.Authentication
             catch (Firebase.FirebaseException e)
             {
                 Debug.LogError($"Login encountered an error: ({e.ErrorCode})\n{e.Message}");
-                _statusText.Show($"{_statusErrored} Error Code ({e.ErrorCode})\n{e.Message}", _statusErroredColor);
+                _statusText.Show($"{_statusErrored.GetLocalizedString()} Error Code ({e.ErrorCode})\n{e.Message}", _statusErroredColor);
 
                 _onLoginFailed?.Invoke(e);
                 _isRunningOnBackground = false;
             }
 
-            _statusText.Show(_statusSucceeded, _statusSucceededColor);
+            _statusText.Show(_statusSucceeded.GetLocalizedString(), _statusSucceededColor);
 
             _onLoginSucceeded?.Invoke(result.User);
             // No need to assign Role to user because 'HandleStateChanged' will be triggered and Load Role back

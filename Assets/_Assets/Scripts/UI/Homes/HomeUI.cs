@@ -35,6 +35,7 @@ namespace WatKhaoWong.UI.Homes
             _settingButton.onClick.AddListener(Setting);
 
             UIRefresher.OnHomeRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
+            UIRefresher.OnLocalizeDynamicString += () => _welcomeText.text = _playerHome.GetWelcomeText();
         }
 
         private void Start()

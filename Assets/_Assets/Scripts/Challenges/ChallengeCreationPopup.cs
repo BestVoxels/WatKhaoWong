@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Utils.UI;
 
@@ -18,37 +19,37 @@ namespace WatKhaoWong.Challenges
 
         #region --Fields-- (Inspector)
         [field: Header("Challenge Creation Popup - Status Text")]
-        [field: SerializeField] public string StatusCreateFailed { get; private set; } = "Creation failed.";
+        [field: SerializeField] public LocalizedString StatusCreateFailed { get; private set; }
         [field: SerializeField] public Color32 StatusCreateFailedColor { get; private set; }
         [Space]
-        [SerializeField] private string _statusCreateSucceeded = "The challenge has been created successfully!";
+        [SerializeField] private LocalizedString _statusCreateSucceeded;
         [SerializeField] private Color32 _statusCreateSucceededColor;
         [Space]
         [Space]
         [Space]
-        [SerializeField] private string _statusStartDateIsNull = "Please select a Start Date on the first calendar.";
+        [SerializeField] private LocalizedString _statusStartDateIsNull;
         [SerializeField] private Color32 _statusStartDateIsNullColor;
         [Space]
-        [SerializeField] private string _statusStartDateIsInPast = "The Start Date cannot be in the past. Please select today’s date or a date in the future.";
+        [SerializeField] private LocalizedString _statusStartDateIsInPast;
         [SerializeField] private Color32 _statusStartDateIsInPastColor;
         [Space]
-        [SerializeField] private string _statusStartDateIsAfterEndDate = "The Start Date cannot be after the End Date. Please select a date earlier than the End Date.";
+        [SerializeField] private LocalizedString _statusStartDateIsAfterEndDate;
         [SerializeField] private Color32 _statusStartDateIsAfterEndDateColor;
         [Space]
         [Space]
         [Space]
-        [SerializeField] private string _statusEndDateIsNull = "Please select an End Date on the second calendar.";
+        [SerializeField] private LocalizedString _statusEndDateIsNull;
         [SerializeField] private Color32 _statusEndDateIsNullColor;
         [Space]
-        [SerializeField] private string _statusEndDateIsInPast = "The End Date cannot be in the past. Please select a date in the future.";
+        [SerializeField] private LocalizedString _statusEndDateIsInPast;
         [SerializeField] private Color32 _statusEndDateIsInPastColor;
         [Space]
-        [SerializeField] private string _statusEndDateIsBeforeStartDate = "The End Date cannot be before the Start Date. Please select a date after the Start Date.";
+        [SerializeField] private LocalizedString _statusEndDateIsBeforeStartDate;
         [SerializeField] private Color32 _statusEndDateIsBeforeStartDateColor;
         [Space]
         [Space]
         [Space]
-        [SerializeField] private string _statusBothDateIsSameDate = "The Start Date and End Date cannot be the same date!";
+        [SerializeField] private LocalizedString _statusBothDateIsSameDate;
         [SerializeField] private Color32 _statusBothDateIsSameDateColor;
         #endregion
 
@@ -58,14 +59,11 @@ namespace WatKhaoWong.Challenges
         [field: Header("Challenge Creation Popup - Settings")]
         [field: SerializeField] public string DateStringFormat { get; private set; } = "dddd, MMMM d, yyyy\nHH:mm";
         [field: Space]
-        [field: SerializeField] public string StartDateFormatBegin { get; private set; } = "Start Date: ";
-        [field: SerializeField] public string StartDateFormatEnd { get; private set; } = "";
+        [field: SerializeField] public LocalizedString StartDateFormat { get; private set; }
         [field: Space]
-        [field: SerializeField] public string EndDateFormatBegin { get; private set; } = "End Date: ";
-        [field: SerializeField] public string EndDateFormatEnd { get; private set; } = "";
+        [field: SerializeField] public LocalizedString EndDateFormat { get; private set; }
         [field: Space]
-        [field: SerializeField] public string DurationFormatBegin { get; private set; } = "Challenge Duration: ";
-        [field: SerializeField] public string DurationFormatEnd { get; private set; } = "";
+        [field: SerializeField] public LocalizedString DurationFormat { get; private set; }
         #endregion
 
 
@@ -123,22 +121,22 @@ namespace WatKhaoWong.Challenges
         {
             if (startDate == default)
             {
-                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusStartDateIsNull, _statusStartDateIsNullColor);
+                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusStartDateIsNull.GetLocalizedString(), _statusStartDateIsNullColor);
                 return false;
             }
             if (startDate.Date < DateTime.Today)
             {
-                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusStartDateIsInPast, _statusStartDateIsInPastColor);
+                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusStartDateIsInPast.GetLocalizedString(), _statusStartDateIsInPastColor);
                 return false;
             }
             if (endDate != default && startDate.Date > endDate.Date)
             {
-                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusStartDateIsAfterEndDate, _statusStartDateIsAfterEndDateColor);
+                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusStartDateIsAfterEndDate.GetLocalizedString(), _statusStartDateIsAfterEndDateColor);
                 return false;
             }
             if (startDate.Date == endDate.Date)
             {
-                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusBothDateIsSameDate, _statusBothDateIsSameDateColor);
+                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusBothDateIsSameDate.GetLocalizedString(), _statusBothDateIsSameDateColor);
                 return false;
             }    
 
@@ -149,22 +147,22 @@ namespace WatKhaoWong.Challenges
         {
             if (endDate == default)
             {
-                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusEndDateIsNull, _statusEndDateIsNullColor);
+                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusEndDateIsNull.GetLocalizedString(), _statusEndDateIsNullColor);
                 return false;
             }
             if (endDate.Date < DateTime.Today)
             {
-                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusEndDateIsInPast, _statusEndDateIsInPastColor);
+                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusEndDateIsInPast.GetLocalizedString(), _statusEndDateIsInPastColor);
                 return false;
             }
             if (startDate != default && endDate.Date < startDate.Date)
             {
-                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusEndDateIsBeforeStartDate, _statusEndDateIsBeforeStartDateColor);
+                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusEndDateIsBeforeStartDate.GetLocalizedString(), _statusEndDateIsBeforeStartDateColor);
                 return false;
             }
             if (startDate.Date == endDate.Date)
             {
-                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusBothDateIsSameDate, _statusBothDateIsSameDateColor);
+                if (displayStatus == ShowStatus.Show) _statusText.Show(_statusBothDateIsSameDate.GetLocalizedString(), _statusBothDateIsSameDateColor);
                 return false;
             }
 
@@ -203,7 +201,7 @@ namespace WatKhaoWong.Challenges
         #region --Methods-- (Subscriber) ~UnityEvent~
         public void CreateChallenge()
         {
-            _statusText.Show(_statusCreateSucceeded, _statusCreateSucceededColor);
+            _statusText.Show(_statusCreateSucceeded.GetLocalizedString(), _statusCreateSucceededColor);
 
             _challenge.CreatePendingChallenge(_startDate, _endDate, _duration);
         }

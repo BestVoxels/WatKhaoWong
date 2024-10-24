@@ -105,7 +105,7 @@ namespace WatKhaoWong.UI.Authentication
                         break;
 
                     case EAuthType.Unknown:
-                        _statusText.Show(_playerSignupPopup.StatusWrongFormat, _playerSignupPopup.StatusWrongFormatColor);
+                        _statusText.Show(_playerSignupPopup.StatusWrongFormat.GetLocalizedString(), _playerSignupPopup.StatusWrongFormatColor);
                         _userNameInputFieldStatus.SetError();
 
                         ShowPasswordUI(true);
@@ -202,38 +202,38 @@ namespace WatKhaoWong.UI.Authentication
             _firstNameInputField.text, _firstNameInputFieldStatus, out _firstName,
             _playerSignupPopup.MinimumFirstNameLength,
             (string.Empty, default),
-            (_playerSignupPopup.StatusFirstNameTooShort, _playerSignupPopup.StatusFirstNameTooShortColor));
+            (_playerSignupPopup.StatusFirstNameTooShort.GetLocalizedString(_playerSignupPopup.MinimumFirstNameLength), _playerSignupPopup.StatusFirstNameTooShortColor));
 
         private bool IsLastNameValidated() => _inputFieldValidator.ValidateLastName(
             _lastNameInputField.text, _lastNameInputFieldStatus, out _lastName,
             _playerSignupPopup.MinimumLastNameLength,
             (string.Empty, default),
-            (_playerSignupPopup.StatusLastNameTooShort, _playerSignupPopup.StatusLastNameTooShortColor));
+            (_playerSignupPopup.StatusLastNameTooShort.GetLocalizedString(_playerSignupPopup.MinimumLastNameLength), _playerSignupPopup.StatusLastNameTooShortColor));
 
         private bool IsPhoneNumberValidated() => _inputFieldValidator.ValidateSignupPhoneNumber(
             _userNameInputField.text, _userNameInputFieldStatus, out _phoneNumber,
             _playerSignupPopup.MinimumPhoneNumberLength, _playerSignupPopup.MaximumPhoneNumberLength,
             (string.Empty, default),
-            (_playerSignupPopup.StatusInvalidPhoneNumber, _playerSignupPopup.StatusInvalidPhoneNumberColor),
-            (_playerSignupPopup.StatusPhoneNumberTooShort, _playerSignupPopup.StatusPhoneNumberTooShortColor),
-            (_playerSignupPopup.StatusPhoneNumberTooLong, _playerSignupPopup.StatusPhoneNumberTooLongColor));
+            (_playerSignupPopup.StatusInvalidPhoneNumber.GetLocalizedString(), _playerSignupPopup.StatusInvalidPhoneNumberColor),
+            (_playerSignupPopup.StatusPhoneNumberTooShort.GetLocalizedString(), _playerSignupPopup.StatusPhoneNumberTooShortColor),
+            (_playerSignupPopup.StatusPhoneNumberTooLong.GetLocalizedString(), _playerSignupPopup.StatusPhoneNumberTooLongColor));
 
         private bool IsEmailValidated() => _inputFieldValidator.ValidateSignupEmail(
             _userNameInputField.text, _userNameInputFieldStatus, out _email,
             (string.Empty, default),
-            (_playerSignupPopup.StatusInvalidEmail, _playerSignupPopup.StatusInvalidEmailColor));
+            (_playerSignupPopup.StatusInvalidEmail.GetLocalizedString(), _playerSignupPopup.StatusInvalidEmailColor));
 
         private bool IsPasswordValidated() => _inputFieldValidator.ValidateSignupPassword(
             _passwordInputField.text, _passwordInputFieldStatus, out _password,
             _playerSignupPopup.MinimumPasswordLength,
             (string.Empty, default),
-            (_playerSignupPopup.StatusPasswordTooShort, _playerSignupPopup.StatusPasswordTooShortColor));
+            (_playerSignupPopup.StatusPasswordTooShort.GetLocalizedString(_playerSignupPopup.MinimumPasswordLength), _playerSignupPopup.StatusPasswordTooShortColor));
 
         private bool IsConfirmPasswordValidated() => _inputFieldValidator.ValidateConfirmPassword(
             _confirmPasswordInputField.text, _confirmPasswordInputFieldStatus, out _,
             _password,
             (string.Empty, default),
-            (_playerSignupPopup.StatusConfirmPasswordNotMatch, _playerSignupPopup.StatusConfirmPasswordNotMatchColor));
+            (_playerSignupPopup.StatusConfirmPasswordNotMatch.GetLocalizedString(), _playerSignupPopup.StatusConfirmPasswordNotMatchColor));
 
         private void InformText(PointerEventData data) => _playerSignupPopup.OnInformTextClick();
 

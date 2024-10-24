@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.Prays
@@ -16,12 +17,12 @@ namespace WatKhaoWong.Prays
 
         #region --Properties-- (Inspector)
         [field: Header("Input Popup Status Text")]
-        [field: SerializeField] public string StatusTextDefault { get; private set; } = "Enter your desired number!";
-        [field: SerializeField] public string StatusTextValid { get; private set; } = "Good job!";
-        [field: SerializeField] public string StatusTextNoNegative { get; private set; } = "Negative value is not allow!";
-        [field: SerializeField] public string StatusTextNoZero { get; private set; } = "Zero is not allow!";
-        [field: SerializeField] public string StatusTextTooHigh { get; private set; } = "Too High! Try lower the number down...";
-        [field: SerializeField] public string StatusTextCantParse { get; private set; } = "Error! Wrong number format.";
+        [field: SerializeField] public LocalizedString StatusTextDefault { get; private set; }
+        [field: SerializeField] public LocalizedString StatusTextValid { get; private set; }
+        [field: SerializeField] public LocalizedString StatusTextNoNegative { get; private set; }
+        [field: SerializeField] public LocalizedString StatusTextNoZero { get; private set; }
+        [field: SerializeField] public LocalizedString StatusTextTooHigh { get; private set; }
+        [field: SerializeField] public LocalizedString StatusTextCantParse { get; private set; }
         #endregion
 
 
@@ -40,21 +41,21 @@ namespace WatKhaoWong.Prays
         {
             if (inputNumber < 0)
             {
-                validateStatus = StatusTextNoNegative;
+                validateStatus = StatusTextNoNegative.GetLocalizedString();
                 return false;
             }
             else if (inputNumber == 0)
             {
-                validateStatus = StatusTextNoZero;
+                validateStatus = StatusTextNoZero.GetLocalizedString();
                 return false;
             }
             else if (inputNumber > _maximumPointInput)
             {
-                validateStatus = StatusTextTooHigh;
+                validateStatus = StatusTextTooHigh.GetLocalizedString();
                 return false;
             }
 
-            validateStatus = StatusTextValid;
+            validateStatus = StatusTextValid.GetLocalizedString();
             return true;
         }
         #endregion

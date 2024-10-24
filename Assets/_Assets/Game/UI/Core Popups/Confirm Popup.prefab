@@ -335,7 +335,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _closeButton: {fileID: 5867551254657365499}
-  _confirmPopup: {fileID: 0}
   _titleText: {fileID: 1656547037441422298}
   _infoText: {fileID: 5802764418467293880}
   _cancelButton: {fileID: 5869198572183465303}
@@ -424,6 +423,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3731583644025356681, guid: 4b89c92afe1ac4586a5568c4f3964d98,
+        type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 669644233891840
       objectReference: {fileID: 0}
     - target: {fileID: 3994772994109190438, guid: 4b89c92afe1ac4586a5568c4f3964d98,
         type: 3}

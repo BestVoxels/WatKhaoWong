@@ -39,6 +39,8 @@ namespace WatKhaoWong.UI.Challenges
             _deleteButton.onClick.AddListener(Delete);
 
             UIRefresher.OnPopupRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
+
+            UIRefresher.OnLocalizeDynamicString += RefreshUI;
         }
 
         private void Start()
@@ -52,11 +54,11 @@ namespace WatKhaoWong.UI.Challenges
         #region --Methods-- (Custom PRIVATE)
         private void RefreshUI()
         {
-            _startDateText.text = $"{_challengePending.StartDateFormatBegin}{_challenge.FormatDateString(_challenge.GetStartDate(), _challengePending.DateStringFormat)}{_challengePending.StartDateFormatEnd}";
+            _startDateText.text = _challengePending.StartDateFormat.GetLocalizedString(_challenge.FormatDateString(_challenge.GetStartDate(), _challengePending.DateStringFormat));
 
-            _endDateText.text = $"{_challengePending.EndDateFormatBegin}{_challenge.FormatDateString(_challenge.GetEndDate(), _challengePending.DateStringFormat)}{_challengePending.EndDateFormatEnd}";
+            _endDateText.text = _challengePending.EndDateFormat.GetLocalizedString(_challenge.FormatDateString(_challenge.GetEndDate(), _challengePending.DateStringFormat));
 
-            _durationText.text = $"{_challengePending.DurationFormatBegin}{_challenge.FormatDurationString(_challenge.GetDuration())}{_challengePending.DurationFormatEnd}";
+            _durationText.text = _challengePending.DurationFormat.GetLocalizedString(_challenge.FormatDurationString(_challenge.GetDuration()));
         }
         #endregion
 

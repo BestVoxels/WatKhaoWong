@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Utils.UI;
 
@@ -9,7 +10,7 @@ namespace WatKhaoWong.Challenges
     {
         #region --Fields-- (Inspector)
         [Header("Challenge Pending Popup - Status Text")]
-        [SerializeField] private string _statusDeleteSucceeded = "The challenge has been deleted successfully!";
+        [SerializeField] private LocalizedString _statusDeleteSucceeded;
         [SerializeField] private Color32 _statusDeleteSucceededColor;
         #endregion
 
@@ -19,14 +20,11 @@ namespace WatKhaoWong.Challenges
         [field: Header("Challenge Pending Popup - Settings")]
         [field: SerializeField] public string DateStringFormat { get; private set; } = "dddd, MMMM d, yyyy\nHH:mm";
         [field: Space]
-        [field: SerializeField] public string StartDateFormatBegin { get; private set; } = "Start Date: ";
-        [field: SerializeField] public string StartDateFormatEnd { get; private set; } = "";
+        [field: SerializeField] public LocalizedString StartDateFormat { get; private set; }
         [field: Space]
-        [field: SerializeField] public string EndDateFormatBegin { get; private set; } = "End Date: ";
-        [field: SerializeField] public string EndDateFormatEnd { get; private set; } = "";
+        [field: SerializeField] public LocalizedString EndDateFormat { get; private set; }
         [field: Space]
-        [field: SerializeField] public string DurationFormatBegin { get; private set; } = "Challenge Duration: ";
-        [field: SerializeField] public string DurationFormatEnd { get; private set; } = "";
+        [field: SerializeField] public LocalizedString DurationFormat { get; private set; }
         #endregion
 
 
@@ -72,7 +70,7 @@ namespace WatKhaoWong.Challenges
         #region --Methods-- (Subscriber) ~UnityEvent~
         public void DeleteChallenge()
         {
-            _statusText.Show(_statusDeleteSucceeded, _statusDeleteSucceededColor);
+            _statusText.Show(_statusDeleteSucceeded.GetLocalizedString(), _statusDeleteSucceededColor);
 
             _challenge.DeletePendingChallenge();
         }

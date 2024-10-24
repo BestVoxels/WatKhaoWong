@@ -1,0 +1,125 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Authentication Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Authentication
+  m_TableCollectionNameGuidString: 6665cdf70c4c34be2a778c41f3c326a9
+  m_Entries:
+  - m_Id: 19187884032
+    m_Key: Status Signup Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1038386978816
+    m_Key: Status Signup Fail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2872543535104
+    m_Key: Status First Name Too Short
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3033139240960
+    m_Key: Status Last Name Too Short
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3069197672448
+    m_Key: Status Invalid Phone Number
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3105906221056
+    m_Key: Status Phone Number Too Short
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3700373315584
+    m_Key: Status Phone Number Too Long
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3131642470400
+    m_Key: Status Invalid Email
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3155214458880
+    m_Key: Status Password Too Short
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3193323905024
+    m_Key: Status Confirm Password Not Match
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3239985537024
+    m_Key: Status Wrong Format
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5232581926912
+    m_Key: Status Login Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5277268041728
+    m_Key: Status Login Fail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5442506842112
+    m_Key: Status Invalid Password
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5480687591424
+    m_Key: Status Forgot Password
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6322970943488
+    m_Key: Status Code Connecting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6379271086080
+    m_Key: Status Code Sent Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6433440522240
+    m_Key: Status Code Sent Fail
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6454600785920
+    m_Key: Status Code Auto Verify Success
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6517385322496
+    m_Key: Status Code Auto Retrieval Time Out
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6572007743488
+    m_Key: Status Resend Code
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6596145963008
+    m_Key: Status Can't Resend Code
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6648872558592
+    m_Key: Status Error No Send Code Request
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6737082966016
+    m_Key: Status Code Too Short
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 8467956422192398350
+  references:
+    version: 2
+    RefIds:
+    - rid: 8467956422192398350
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables,
+        asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1729759281049

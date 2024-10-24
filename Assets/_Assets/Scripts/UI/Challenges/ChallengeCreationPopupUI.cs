@@ -57,6 +57,8 @@ namespace WatKhaoWong.UI.Challenges
             
             _datePickerEnd.Content.OnSelectionChanged.AddListener(SelectedDateOnEndCalendar);
             //_datePickerEnd.Content.OnDisplayChanged.AddListener(() => print("EndCalendar: Calls when Click Change Month or Year"));
+
+            UIRefresher.OnLocalizeDynamicString += RefreshUI;
         }
 
         private void Start()
@@ -73,11 +75,11 @@ namespace WatKhaoWong.UI.Challenges
         #region --Methods-- (Custom PRIVATE)
         private void RefreshUI()
         {
-            _startDateText.text = $"{_challengeCreation.StartDateFormatBegin}{_challenge.FormatDateString(_startDate, _challengeCreation.DateStringFormat)}{_challengeCreation.StartDateFormatEnd}";
+            _startDateText.text = _challengeCreation.StartDateFormat.GetLocalizedString(_challenge.FormatDateString(_startDate, _challengeCreation.DateStringFormat));
 
-            _endDateText.text = $"{_challengeCreation.EndDateFormatBegin}{_challenge.FormatDateString(_endDate, _challengeCreation.DateStringFormat)}{_challengeCreation.EndDateFormatEnd}";
+            _endDateText.text = _challengeCreation.EndDateFormat.GetLocalizedString(_challenge.FormatDateString(_endDate, _challengeCreation.DateStringFormat));
 
-            _durationText.text = $"{_challengeCreation.DurationFormatBegin}{_challenge.FormatDurationString(_duration)}{_challengeCreation.DurationFormatEnd}";
+            _durationText.text = _challengeCreation.DurationFormat.GetLocalizedString(_challenge.FormatDurationString(_duration));
         }
         #endregion
 
@@ -107,7 +109,7 @@ namespace WatKhaoWong.UI.Challenges
             {
                 _challengeCreation.OnConfirmButtonCantClick();
 
-                _statusText.Show(_challengeCreation.StatusCreateFailed, _challengeCreation.StatusCreateFailedColor);
+                _statusText.Show(_challengeCreation.StatusCreateFailed.GetLocalizedString(), _challengeCreation.StatusCreateFailedColor);
             }
         }
 

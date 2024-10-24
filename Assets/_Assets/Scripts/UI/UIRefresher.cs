@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using WatKhaoWong.Prays;
 using WatKhaoWong.Challenges;
 using WatKhaoWong.Settings;
@@ -27,6 +28,7 @@ namespace WatKhaoWong.UI
         public static event Action OnHistoryRefreshed;
         public static event Action OnPopupRefreshed;
         public static event Action OnLeaderboardRefreshed;
+        public static event Action OnLocalizeDynamicString;
         public static event Action OnUIShowedHidByRoles;
         #endregion
 
@@ -69,7 +71,8 @@ namespace WatKhaoWong.UI
 
             // SETTING SYSTEM
             _notificationPopup.OnNotificationSwitchChanged += () => { RefreshSettingUI(); };
-            // TODO lets see what to subscribe to for SETTING SYSTEM -> probably last one is _languagePopup when select each language toggle
+            // NO NEED to do for Language since it changes using 'LocalizeStringEvent' component by itself.
+            //_languagePopup.OnLanguageToggleIsOn += () => { RefreshSettingUI(); };
 
             // HISTORY SYSTEM
             // TODO lets see what to subscribe to for HISTORY SYSTEM
@@ -84,6 +87,9 @@ namespace WatKhaoWong.UI
 
             // CONDITION SYSTEM
             _leaderboard.OnConditionIsLeaderboardExistsUpdated += CallAllConditionCheck;
+
+            // LOCALIZATION SYSTEM
+            LocalizationSettings.SelectedLocaleChanged += (obj) => LocalizeDynamicString();
         }
 
         private void OnDisable()
@@ -151,6 +157,12 @@ namespace WatKhaoWong.UI
             //print("Refreshed Leaderboard UI : " + OnLeaderboardRefreshed?.GetInvocationList().Length);
         }
 
+        public static void LocalizeDynamicString()
+        {
+            OnLocalizeDynamicString?.Invoke();
+            //print("Localize Dynamic String : " + OnLocalizeDynamicString?.GetInvocationList().Length);
+        }
+
         public static void ShowHideUIByRoles()
         {
             OnUIShowedHidByRoles?.Invoke();
@@ -171,6 +183,7 @@ namespace WatKhaoWong.UI
             OnHistoryRefreshed = null;
             OnPopupRefreshed = null;
             OnLeaderboardRefreshed = null;
+            OnLocalizeDynamicString = null;
             OnUIShowedHidByRoles = null;
         }
         #endregion

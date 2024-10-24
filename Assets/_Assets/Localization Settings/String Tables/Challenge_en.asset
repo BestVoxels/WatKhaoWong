@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Challenge_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 9edd1468ee2974e498f53771fc6e220b, type: 2}
+  m_Metadata:
+    m_Items:
+    - rid: 8467956339120275626
+  m_TableData:
+  - m_Id: 32706125824
+    m_Localized: day
+    m_Metadata:
+      m_Items: []
+  - m_Id: 92172967936
+    m_Localized: s
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3336597135360
+    m_Localized: 'Start Date: {0}'
+    m_Metadata:
+      m_Items:
+      - rid: 8467956339120275626
+  - m_Id: 250409141657600
+    m_Localized: 'End Date: {0}'
+    m_Metadata:
+      m_Items:
+      - rid: 8467956339120275626
+  - m_Id: 250658090377216
+    m_Localized: The challenge has been deleted successfully!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 251812706770944
+    m_Localized: 'Challenge Duration: {0}'
+    m_Metadata:
+      m_Items:
+      - rid: 8467956339120275626
+  - m_Id: 251884504866816
+    m_Localized: 'Start Date: {0}'
+    m_Metadata:
+      m_Items:
+      - rid: 8467956339120275626
+  - m_Id: 251922748530688
+    m_Localized: 'End Date: {0}'
+    m_Metadata:
+      m_Items:
+      - rid: 8467956339120275626
+  - m_Id: 251940054228992
+    m_Localized: 'Challenge Duration: {0}'
+    m_Metadata:
+      m_Items:
+      - rid: 8467956339120275626
+  - m_Id: 250881197989888
+    m_Localized: Creation failed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 251142574432256
+    m_Localized: The challenge has been created successfully!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 251167954165760
+    m_Localized: Please select a Start Date on the first calendar.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 251251945103360
+    m_Localized: "The Start Date cannot be in the past. Please select today\u2019s
+      date or a date in the future."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 251270404235264
+    m_Localized: The Start Date cannot be after the End Date. Please select a date
+      earlier than the End Date.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 251297826594816
+    m_Localized: Please select an End Date on the second calendar.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 251342919557120
+    m_Localized: The End Date cannot be in the past. Please select a date in the
+      future.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 251363807191040
+    m_Localized: The End Date cannot be before the Start Date. Please select a date
+      after the Start Date.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 251395595821056
+    m_Localized: The Start Date and End Date cannot be the same date!
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 8467956339120275626
+      type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
+      data:
+        m_Entries: 00e0afdc0803000000e0efebbee3000000e0efb605e5000000e06f6e16e5000000e0ef551fe5000000e06f5d23e50000

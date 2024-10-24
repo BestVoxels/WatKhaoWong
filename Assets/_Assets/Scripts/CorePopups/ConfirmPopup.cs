@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.CorePopups
@@ -8,9 +9,9 @@ namespace WatKhaoWong.CorePopups
     {
         #region --Properties-- (Inspector)
         [field: Header("Confirm Popup UI Settings")]
-        [field: SerializeField] public string TitleText { get; private set; } = "Title Text";
+        [field: SerializeField] public LocalizedString TitleText { get; private set; }
         [field: Space]
-        [field: SerializeField] public string InfoText { get; private set; } = "Info Text";
+        [field: SerializeField] public LocalizedString InfoText { get; private set; }
         [field: SerializeField] public Color32 InfoTextColor { get; private set; }
         #endregion
 

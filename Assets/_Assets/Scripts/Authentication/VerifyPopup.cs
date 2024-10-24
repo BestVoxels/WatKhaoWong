@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Utils.UI;
 using WatKhaoWong.Identities;
@@ -12,28 +13,28 @@ namespace WatKhaoWong.Authentication
     {
         #region --Fields-- (Inspector)
         [Header("Verify Popup Status Text")]
-        [SerializeField] private string _statusCodeConnecting = "Connecting...";
+        [SerializeField] private LocalizedString _statusCodeConnecting;
         [SerializeField] private Color32 _statusCodeConnectingColor;
         [Space]
-        [SerializeField] private string _statusCodeSentSucceeded = "Code sent successfully.";
+        [SerializeField] private LocalizedString _statusCodeSentSucceeded;
         [SerializeField] private Color32 _statusCodeSentSucceededColor;
         [Space]
-        [SerializeField] private string _statusCodeSentFailed = "Failed to send the code. Please try again.";
+        [SerializeField] private LocalizedString _statusCodeSentFailed;
         [SerializeField] private Color32 _statusCodeSentFailedColor;
         [Space]
-        [SerializeField] private string _statusCodeAutoVerifyCompleted = "Auto verification completed successfully.";
+        [SerializeField] private LocalizedString _statusCodeAutoVerifyCompleted;
         [SerializeField] private Color32 _statusCodeAutoVerifyCompletedColor;
         [Space]
-        [SerializeField] private string _statusCodeAutoRetrievalTimeOut = "Auto-SMS retrieval timed out. Please enter the verification code manually.";
+        [SerializeField] private LocalizedString _statusCodeAutoRetrievalTimeOut;
         [SerializeField] private Color32 _statusCodeAutoRetrievalTimeOutColor;
         [Space]
-        [SerializeField] private string _statusResendCode = "Code Sent. Please check the code we've just sent.";
+        [SerializeField] private LocalizedString _statusResendCode;
         [SerializeField] private Color32 _statusResendCodeColor;
         [Space]
-        [SerializeField] private string _statusCantResendCode = "Cannot resend code. Please restart the app and try again.";
+        [SerializeField] private LocalizedString _statusCantResendCode;
         [SerializeField] private Color32 _statusCantResendCodeColor;
         [Space]
-        [SerializeField] private string _statusErrorNoSendCodeRequest = "Error: Please send a code request before verifying the OTP. Restart the app and try again.";
+        [SerializeField] private LocalizedString _statusErrorNoSendCodeRequest;
         [SerializeField] private Color32 _statusErrorNoSendCodeRequestColor;
         [Space]
         [Header("Phone Number Authentication Settings")]
@@ -48,7 +49,7 @@ namespace WatKhaoWong.Authentication
         [field: SerializeField] public byte MinimumCodeLength { get; private set; } = 6;
         [field: Space]
         [field: Header("Verify Popup Status Text")]
-        [field: SerializeField] public string StatusCodeTooShort { get; private set; } = "Your code must be at least 6 characters long. Please check the code that we've just sent.";
+        [field: SerializeField] public LocalizedString StatusCodeTooShort { get; private set; }
         [field: SerializeField] public Color32 StatusCodeTooShortColor { get; private set; }
         #endregion
 
@@ -123,7 +124,7 @@ namespace WatKhaoWong.Authentication
             if (string.IsNullOrWhiteSpace(_firebaseCode) || string.IsNullOrWhiteSpace(_phoneNumber) || _onCallerSucceeded == null)
             {
                 Debug.LogError("Error: Please send a code request before verifying the OTP. Verify Popup is showed first without Firebase Code sent.");
-                _statusText.Show(_statusErrorNoSendCodeRequest, _statusErrorNoSendCodeRequestColor);
+                _statusText.Show(_statusErrorNoSendCodeRequest.GetLocalizedString(), _statusErrorNoSendCodeRequestColor);
                 return;
             }
             if (_isRunningOnBackground) return;
@@ -163,11 +164,11 @@ namespace WatKhaoWong.Authentication
             if (_phoneNumber == string.Empty || _resendToken == null)
             {
                 Debug.LogError($"Can't Resend Code : Phone Number value = {_phoneNumber} | Resend Token value = {_resendToken}");
-                _statusText.Show(_statusCantResendCode, _statusCantResendCodeColor);
+                _statusText.Show(_statusCantResendCode.GetLocalizedString(), _statusCantResendCodeColor);
                 return;
             }
 
-            _statusText.Show(_statusResendCode, _statusResendCodeColor);
+            _statusText.Show(_statusResendCode.GetLocalizedString(), _statusResendCodeColor);
             SendCode(_phoneNumber, _resendToken);
         }
 
@@ -195,7 +196,7 @@ namespace WatKhaoWong.Authentication
                   // Verification code was successfully sent via SMS.
                   // `id` contains the verification id that will need to passed in with the code from the user when calling GetCredential().
                   // `token` can be used if the user requests the code be sent again, to tie the two requests together.
-                  _statusText.Show(_statusCodeSentSucceeded, _statusCodeSentSucceededColor);
+                  _statusText.Show(_statusCodeSentSucceeded.GetLocalizedString(), _statusCodeSentSucceededColor);
 
                   _resendToken = token;
                   _firebaseCode = id; // NO NEED to SAVE '_firebaseCode' (verification id) with PlayerPrefs - BECAUSE it is too cumbersome have to display Validation UI and check various condition to display properly.
@@ -205,7 +206,7 @@ namespace WatKhaoWong.Authentication
               verificationFailed: (error) => {
                   // The verification code was not sent. `error` contains a human readable explanation of the problem.
                   Debug.LogError($"Registration encountered an error: {error}");
-                  _statusText.Show($"{_statusCodeSentFailed}\n{error}", _statusCodeSentFailedColor);
+                  _statusText.Show($"{_statusCodeSentFailed.GetLocalizedString()}\n{error}", _statusCodeSentFailedColor);
 
                   _onCallerFailed?.Invoke(null);
               },
@@ -216,7 +217,7 @@ namespace WatKhaoWong.Authentication
                   // `credential` can be used instead of calling GetCredential().
                   SignupOrLoginAsyncWithPhoneNumber(credential);
 
-                  _statusText.Show(_statusCodeAutoVerifyCompleted, _statusCodeAutoVerifyCompletedColor);
+                  _statusText.Show(_statusCodeAutoVerifyCompleted.GetLocalizedString(), _statusCodeAutoVerifyCompletedColor);
 #endif
               },
               codeAutoRetrievalTimeOut: (id) => {
@@ -225,11 +226,11 @@ namespace WatKhaoWong.Authentication
                   // This callback is used in the context of Firebase Phone Authentication on Android.
                   // This callback is triggered when the specified timeout period elapses and Firebase is unable to automatically retrieve the SMS verification code.
                   // `id` contains the verification id of the request that timed out.
-                  _statusText.Show(_statusCodeAutoRetrievalTimeOut, _statusCodeAutoRetrievalTimeOutColor);
+                  _statusText.Show(_statusCodeAutoRetrievalTimeOut.GetLocalizedString(), _statusCodeAutoRetrievalTimeOutColor);
 #endif
               });
 
-            _statusText.Show(_statusCodeConnecting, _statusCodeConnectingColor);
+            _statusText.Show(_statusCodeConnecting.GetLocalizedString(), _statusCodeConnectingColor);
             // TODO Open Processing UI to block Interaction
         }
 

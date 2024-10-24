@@ -83,8 +83,8 @@ namespace WatKhaoWong.UI.Prays
             _statusSlider.gameObject.SetActive(true);
             _closeButton.gameObject.SetActive(false);
 
-            _headerText.text = _playerUndoPopup.StatusHeaderTextDefault;
-            _infoText.text = _playerUndoPopup.StatusInfoTextDefault;
+            _headerText.text = _playerUndoPopup.StatusHeaderTextDefault.GetLocalizedString();
+            _infoText.text = _playerUndoPopup.StatusInfoTextDefault.GetLocalizedString();
         }
 
         private void RefreshUIDone()
@@ -95,8 +95,8 @@ namespace WatKhaoWong.UI.Prays
             _statusSlider.gameObject.SetActive(false);
             _closeButton.gameObject.SetActive(true);
 
-            _headerText.text = _playerUndoPopup.StatusHeaderTextDone;
-            _infoText.text = _playerUndoPopup.StatusInfoTextDone;
+            _headerText.text = _playerUndoPopup.StatusHeaderTextDone.GetLocalizedString();
+            _infoText.text = _playerUndoPopup.StatusInfoTextDoneText;
         }
         #endregion
     }
