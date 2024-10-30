@@ -253,10 +253,10 @@ namespace WatKhaoWong.SceneManagement
             string valueNodePath = GetValueNodePath(categoryNode, valueNode);
             if (valueNodePath == null) Debug.LogError("Can't create Path. ValueNodePath is null! Maybe because Parent Node is null.");
 
-            // ONLY 'LeaderboardStats' Category does NOT NEED userID in path.
-            if (categoryNode == ECategoryNode.LeaderboardStats)
+            // ONLY 'LeaderboardStats' or 'ServerStats' Category does NOT NEED userID in path.
+            if (categoryNode == ECategoryNode.LeaderboardStats || categoryNode == ECategoryNode.ServerStats)
             {
-                return Path.Combine(ECategoryNode.LeaderboardStats.ToString(), valueNodePath);
+                return Path.Combine(categoryNode.ToString(), valueNodePath);
             }
 
             if (FirebaseUtils.CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");

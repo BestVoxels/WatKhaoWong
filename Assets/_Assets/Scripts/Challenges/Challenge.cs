@@ -6,6 +6,7 @@ using WatKhaoWong.Utils.Conditions;
 using WatKhaoWong.SceneManagement;
 using Firebase.Auth;
 using UnityEngine.Localization;
+using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.Challenges
 {
@@ -40,6 +41,7 @@ namespace WatKhaoWong.Challenges
         private EChallengeStatus _status;
 
         private SavingWrapper _savingWrapper;
+        private ServerTime _serverTime;
         #endregion
 
 
@@ -58,6 +60,7 @@ namespace WatKhaoWong.Challenges
         private void Awake()
         {
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
+            _serverTime = FindAnyObjectByType<ServerTime>();
         }
 
         private void OnEnable()
@@ -90,7 +93,7 @@ namespace WatKhaoWong.Challenges
 
 
         #region --Methods-- (Custom PUBLIC)
-        public void CreatePendingChallenge(DateTime startDate, DateTime endDate, TimeSpan duration)
+        public async void CreatePendingChallenge(DateTime startDate, DateTime endDate, TimeSpan duration)
         {
             if (_status == EChallengeStatus.Pending) return;
 
@@ -99,7 +102,7 @@ namespace WatKhaoWong.Challenges
             SetDuration(duration);
             SetStatus(EChallengeStatus.Pending);
 
-            AutoLiveChallenge(); // when Admin choose StartDate is Today Date.
+            await AutoLiveChallenge(); // when Admin choose StartDate is Today Date.
 
             OnDataUpdated?.Invoke();
         }
@@ -116,24 +119,29 @@ namespace WatKhaoWong.Challenges
             OnDataUpdated?.Invoke();
         }
 
-        public bool CanLiveNow() => DateTime.Now >= _startDate && DateTime.Now <= _endDate;
+        public async Task<bool> CanLiveNow()
+        {
+            DateTime nowDate = await _serverTime.Now();
+
+            return nowDate >= _startDate && nowDate <= _endDate;
+        }
 
         public bool CanLive(DateTime compareTime) => compareTime >= _startDate && compareTime <= _endDate;
 
-        public int GetChallengeEndDaysLeft()
+        public async Task<int> GetChallengeEndDaysLeft()
         {
-            if (_status != EChallengeStatus.Live || !CanLiveNow()) return -1; // Challenge is not yet started
+            if (_status != EChallengeStatus.Live || !await CanLiveNow()) return -1; // Challenge is not yet started
 
-            TimeSpan daysLeft = _endDate.Date - DateTime.Today;
+            TimeSpan daysLeft = _endDate.Date - (await _serverTime.Now()).Date;
 
             return (int)Math.Round(daysLeft.TotalDays, MidpointRounding.AwayFromZero);
         }
 
-        public int GetChallengeStartDaysLeft()
+        public async Task<int> GetChallengeStartDaysLeft()
         {
-            if (_status == EChallengeStatus.Live || CanLiveNow()) return -1; // Challenge is already started
+            if (_status == EChallengeStatus.Live || await CanLiveNow()) return -1; // Challenge is already started
 
-            TimeSpan daysLeft = _startDate.Date - DateTime.Today;
+            TimeSpan daysLeft = _startDate.Date - (await _serverTime.Now()).Date;
 
             return (int)Math.Round(daysLeft.TotalDays, MidpointRounding.AwayFromZero);
         }
@@ -257,15 +265,15 @@ namespace WatKhaoWong.Challenges
 
 
         #region --Methods-- (Custom PRIVATE)
-        private void AutoLiveChallenge()
+        private async Task AutoLiveChallenge()
         {
-            if (_status == EChallengeStatus.Pending && CanLiveNow())
+            if (_status == EChallengeStatus.Pending && await CanLiveNow())
                 LiveChallenge();
         }
 
-        private void AutoEndChallenge()
+        private async Task AutoEndChallenge()
         {
-            if (_status == EChallengeStatus.Live && !CanLiveNow())
+            if (_status == EChallengeStatus.Live && !await CanLiveNow())
                 EndChallenge();
         }
 
@@ -325,8 +333,8 @@ namespace WatKhaoWong.Challenges
             // Wait a little before change state so that MyUserData.cs or Leaderboard.cs can use loaded data first. If AutoLive() or AutoEnd() run the loaded data might get changed.
             await Task.Delay(1500); // 1.5 sec
 
-            AutoLiveChallenge();
-            AutoEndChallenge();
+            await AutoLiveChallenge();
+            await AutoEndChallenge();
 
             OnDataUpdated?.Invoke();
         }

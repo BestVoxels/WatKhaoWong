@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using WatKhaoWong.Challenges;
 using Bitsplash.DatePicker;
 using WatKhaoWong.Utils.UI;
+using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.UI.Challenges
 {
@@ -36,6 +37,7 @@ namespace WatKhaoWong.UI.Challenges
         private StatusText _statusText;
         private ChallengeCreationPopup _challengeCreation;
         private Challenge _challenge;
+        private ServerTime _serverTime;
         #endregion
 
 
@@ -46,6 +48,7 @@ namespace WatKhaoWong.UI.Challenges
             _challengeCreation = GameObject.FindWithTag("Player").GetComponentInChildren<ChallengeCreationPopup>();
             _challenge = GameObject.FindWithTag("Player").GetComponentInChildren<Challenge>();
             _statusText = FindAnyObjectByType<StatusText>();
+            _serverTime = FindAnyObjectByType<ServerTime>();
 
             _closeButton.onClick.AddListener(Close);
 
@@ -61,10 +64,12 @@ namespace WatKhaoWong.UI.Challenges
             UIRefresher.OnLocalizeDynamicString += RefreshUI;
         }
 
-        private void Start()
+        private async void Start()
         {
-            _datePickerStart.Content.SetMarkerColor(DateTime.Now);
-            _datePickerEnd.Content.SetMarkerColor(DateTime.Now);
+            DateTime nowDate = await _serverTime.Now();
+
+            _datePickerStart.Content.SetMarkerColor(nowDate);
+            _datePickerEnd.Content.SetMarkerColor(nowDate);
 
             RefreshUI();
         }

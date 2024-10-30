@@ -10,6 +10,7 @@ namespace WatKhaoWong.SceneManagement
         LeaderboardStats,
         LeaderboardTMToday,
         LeaderboardTMChallenge,
-        LeaderboardTMChallengeWinner
+        LeaderboardTMChallengeWinner,
+        ServerStats
     }
 }

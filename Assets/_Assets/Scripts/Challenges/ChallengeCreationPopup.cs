@@ -81,9 +81,11 @@ namespace WatKhaoWong.Challenges
         private DateTime _startDate;
         private DateTime _endDate;
         private TimeSpan _duration;
+        private DateTime _serverTimeNow;
 
         private StatusText _statusText;
         private Challenge _challenge;
+        private ServerTime _serverTime;
         #endregion
 
 
@@ -93,6 +95,12 @@ namespace WatKhaoWong.Challenges
         {
             _challenge = GameObject.FindWithTag("Player").GetComponentInChildren<Challenge>();
             _statusText = FindAnyObjectByType<StatusText>();
+            _serverTime = FindAnyObjectByType<ServerTime>();
+        }
+
+        private async void Start()
+        {
+            _serverTimeNow = await _serverTime.Now();
         }
         #endregion
 
@@ -124,7 +132,7 @@ namespace WatKhaoWong.Challenges
                 if (displayStatus == ShowStatus.Show) _statusText.Show(_statusStartDateIsNull.GetLocalizedString(), _statusStartDateIsNullColor);
                 return false;
             }
-            if (startDate.Date < DateTime.Today)
+            if (startDate.Date < _serverTimeNow.Date)
             {
                 if (displayStatus == ShowStatus.Show) _statusText.Show(_statusStartDateIsInPast.GetLocalizedString(), _statusStartDateIsInPastColor);
                 return false;
@@ -138,7 +146,7 @@ namespace WatKhaoWong.Challenges
             {
                 if (displayStatus == ShowStatus.Show) _statusText.Show(_statusBothDateIsSameDate.GetLocalizedString(), _statusBothDateIsSameDateColor);
                 return false;
-            }    
+            }
 
             return true;
         }
@@ -150,7 +158,7 @@ namespace WatKhaoWong.Challenges
                 if (displayStatus == ShowStatus.Show) _statusText.Show(_statusEndDateIsNull.GetLocalizedString(), _statusEndDateIsNullColor);
                 return false;
             }
-            if (endDate.Date < DateTime.Today)
+            if (endDate.Date < _serverTimeNow.Date)
             {
                 if (displayStatus == ShowStatus.Show) _statusText.Show(_statusEndDateIsInPast.GetLocalizedString(), _statusEndDateIsInPastColor);
                 return false;

@@ -21,6 +21,7 @@ namespace WatKhaoWong.SceneManagement
         ChallengeTMStartDate,
         ChallengeTMEndDate,
         ChallengeTMDuration,
-        ChallengeTMStatus
+        ChallengeTMStatus,
+        TimeStamp
     }
 }

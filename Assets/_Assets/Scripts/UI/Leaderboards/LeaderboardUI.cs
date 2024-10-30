@@ -123,7 +123,7 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Methods-- (Custom PRIVATE) ~Texts~
-        private void UpdateTexts()
+        private async void UpdateTexts()
         {
             if (!_leaderboard.IsLeaderboardExists())
                 _dataIndicatorText.text = _leaderboard.Category switch
@@ -151,8 +151,8 @@ namespace WatKhaoWong.UI.Leaderboards
             _countDownBannerText.text = _challenge.GetStatus() switch
             {
                 EChallengeStatus.None => _leaderboard.NoChallengeBannerText.GetLocalizedString(),
-                EChallengeStatus.Pending => _leaderboard.PendingChallengeBannerText.GetLocalizedString(_challenge.DaysString(_challenge.GetChallengeStartDaysLeft())),
-                EChallengeStatus.Live => _leaderboard.LiveChallengeBannerText.GetLocalizedString(_challenge.DaysString(_challenge.GetChallengeEndDaysLeft())),
+                EChallengeStatus.Pending => _leaderboard.PendingChallengeBannerText.GetLocalizedString(_challenge.DaysString(await _challenge.GetChallengeStartDaysLeft())),
+                EChallengeStatus.Live => _leaderboard.LiveChallengeBannerText.GetLocalizedString(_challenge.DaysString(await _challenge.GetChallengeEndDaysLeft())),
                 _ => ""
             };
         }

@@ -10,6 +10,7 @@ using WatKhaoWong.Utils.Conditions;
 using WatKhaoWong.Challenges;
 using Firebase.Auth;
 using UnityEngine.Localization;
+using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.Leaderboards
 {
@@ -78,6 +79,7 @@ namespace WatKhaoWong.Leaderboards
         private Challenge _challenge;
         private SavingWrapper _savingWrapper;
         private MyUserData _myUserData;
+        private ServerTime _serverTime;
         #endregion
 
 
@@ -118,6 +120,7 @@ namespace WatKhaoWong.Leaderboards
             _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
             _challenge = GameObject.FindWithTag("Player").GetComponentInChildren<Challenge>();
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
+            _serverTime = FindAnyObjectByType<ServerTime>();
         }
 
         private void OnEnable()
@@ -237,7 +240,7 @@ namespace WatKhaoWong.Leaderboards
                 if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
                     _leaderboardFirstUploadTimeOfDayTM = result;
 
-                DeleteTodayTMLeaderboardDaily();
+                await DeleteTodayTMLeaderboardDaily();
             }
 
             _isLeaderboardTMChallengeExists = await _savingWrapper.IsLeaderboardTMChallengeExists();
@@ -255,23 +258,26 @@ namespace WatKhaoWong.Leaderboards
             Records.ClearAllCachedRows();
         }
 
-        private void DeleteTodayTMLeaderboardDaily()
+        private async Task DeleteTodayTMLeaderboardDaily()
         {
             if (_leaderboardFirstUploadTimeOfDayTM == default) return;
 
-            if (_leaderboardFirstUploadTimeOfDayTM.Date != DateTime.Today && _isLeaderboardTMTodayExists)
+            DateTime nowDate = await _serverTime.Now();
+            if (_leaderboardFirstUploadTimeOfDayTM.Date != nowDate.Date && _isLeaderboardTMTodayExists)
             {
                 _savingWrapper.ForceDeleteLeaderboardTMToday();
                 _isLeaderboardTMTodayExists = false;
             }
         }
 
-        private void AssignTodayUploadTime()
+        private async void AssignTodayUploadTime()
         {
             if (!_isLeaderboardTMTodayExists)
             {
-                _leaderboardFirstUploadTimeOfDayTM = DateTime.Now;
-                _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM, DateTime.Now.ToString());
+                DateTime nowDate = await _serverTime.Now();
+
+                _leaderboardFirstUploadTimeOfDayTM = nowDate;
+                _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM, nowDate.ToString());
             }
         }
 
@@ -279,7 +285,7 @@ namespace WatKhaoWong.Leaderboards
         {
             if (_leaderboardFirstUploadTimeOfChallengeTM == default) return;
 
-            if ((!_challenge.CanLive(_leaderboardFirstUploadTimeOfChallengeTM) || !_challenge.CanLiveNow()) && _isLeaderboardTMChallengeExists)
+            if ((!_challenge.CanLive(_leaderboardFirstUploadTimeOfChallengeTM) || !await _challenge.CanLiveNow()) && _isLeaderboardTMChallengeExists)
             {
                 await RewardChallengeWinnerAfterEnd();
                 _savingWrapper.ForceDeleteLeaderboardTMChallenge();
@@ -288,18 +294,20 @@ namespace WatKhaoWong.Leaderboards
             }
         }
 
-        private void AssignChallengeUploadTime()
+        private async void AssignChallengeUploadTime()
         {
             if (!_isLeaderboardTMChallengeExists)
             {
-                _leaderboardFirstUploadTimeOfChallengeTM = DateTime.Now;
-                _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfChallengeTM, DateTime.Now.ToString());
+                DateTime nowDate = await _serverTime.Now();
+
+                _leaderboardFirstUploadTimeOfChallengeTM = nowDate;
+                _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfChallengeTM, nowDate.ToString());
             }
         }
 
         private async Task RewardChallengeWinnerAfterEnd()
         {
-            if ((_challenge.CanLive(_leaderboardFirstUploadTimeOfChallengeTM) && _challenge.CanLiveNow()) || !_isLeaderboardTMChallengeExists) return;
+            if ((_challenge.CanLive(_leaderboardFirstUploadTimeOfChallengeTM) && await _challenge.CanLiveNow()) || !_isLeaderboardTMChallengeExists) return;
 
             ushort i = _rewardWinnerMaxRowNumber;
             await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValue(ECategoryNode.LeaderboardTMChallenge, EValueNode.ChallengeTMPoint, _recordWinnerMaxRowNumber))
@@ -356,9 +364,9 @@ namespace WatKhaoWong.Leaderboards
             LoadSave(); // So Don't have to call on Awake()
         }
 
-        private void AddTodayTMPointsToLeaderboard(int score)
+        private async void AddTodayTMPointsToLeaderboard(int score)
         {
-            DeleteTodayTMLeaderboardDaily();
+            await DeleteTodayTMLeaderboardDaily();
 
             if (score <= 0) return;
 
@@ -372,11 +380,11 @@ namespace WatKhaoWong.Leaderboards
             OnLeaderboardScoreUpdated?.Invoke();
         }
 
-        private void AddChallengeTMPointsToLeaderboard(int score)
+        private async void AddChallengeTMPointsToLeaderboard(int score)
         {
-            _ = DeleteChallengeTMLeaderboardAfterEnd();
+            await DeleteChallengeTMLeaderboardAfterEnd();
 
-            if (score <= 0 || !_challenge.CanLiveNow()) return;
+            if (score <= 0 || !await _challenge.CanLiveNow()) return;
 
             AssignChallengeUploadTime();
 

@@ -79,6 +79,7 @@ namespace WatKhaoWong.Authentication
         private VerifyPopup _verifyPopup;
         private MyUserData _myUserData;
         private StatusText _statusText;
+        private ServerTime _serverTime;
         #endregion
 
 
@@ -91,6 +92,7 @@ namespace WatKhaoWong.Authentication
             _verifyPopup = player.GetComponentInChildren<VerifyPopup>();
             _myUserData = player.GetComponentInChildren<MyUserData>();
             _statusText = FindAnyObjectByType<StatusText>();
+            _serverTime = FindAnyObjectByType<ServerTime>();
         }
         #endregion
 
@@ -110,11 +112,11 @@ namespace WatKhaoWong.Authentication
         public void OnValidateSucceeded(EAuthType authType, string firstName, string lastName, string phoneNumber, string email, string password)
         {
             // Can't just call _savingWrapper.SaveWithoutAuth() without Subscribe to _onSignupSucceeded BECAUSE have to wait for 'CurrentUser.UserId' otherwise can't get Path to save.
-            _onSignupSucceeded.AddListener((FirebaseUser user) =>
+            _onSignupSucceeded.AddListener(async (FirebaseUser user) =>
             {
                 _myUserData.SetFirstName(firstName);
                 _myUserData.SetLastName(lastName);
-                _myUserData.SetMemberSinceText(DateTime.Now);
+                _myUserData.SetMemberSinceText(await _serverTime.Now());
             });
 
             if (_isRunningOnBackground) return;
