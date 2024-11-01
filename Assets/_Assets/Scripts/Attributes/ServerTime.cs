@@ -90,7 +90,7 @@ namespace WatKhaoWong.Attributes
 
             if (result == null)
             {
-                Debug.LogError("TimeStamp not found on server. Couldn't Load from Server!");
+                Debug.LogWarning("Couldn't Load from Server! Default Time will be returned instead.");
                 return new DateTime();
             }
 
