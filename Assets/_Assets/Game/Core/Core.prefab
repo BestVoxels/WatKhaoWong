@@ -419,6 +419,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 116505430524204639}
+  - component: {fileID: 425803036979405384}
   m_Layer: 0
   m_Name: Signup Button
   m_TagString: Untagged
@@ -441,6 +442,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1313416025136834623}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &425803036979405384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 398025818855045364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9551debd688249c99cc79b7cd7b8f6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onSignupButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4956454277919580197}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: OpenPopupIfGuest
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1187216208980445647
 GameObject:
   m_ObjectHideFlags: 0
@@ -3237,6 +3265,7 @@ MonoBehaviour:
               _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
+    - {fileID: 0}
     condition:
       _conditionText: (IsRoleEquals == Guest)
       _and4:
@@ -3407,6 +3436,7 @@ MonoBehaviour:
               _conditionValues: 03000000
               _negate: 0
   - gameObjectsUI:
+    - {fileID: 0}
     - {fileID: 0}
     condition:
       _conditionText: (IsRoleEquals == Admin || IsRoleEquals == Member)

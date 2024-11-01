@@ -9470,6 +9470,18 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 88455355420876269}
   m_SourcePrefab: {fileID: 100100000, guid: de0a1848707c24d58b78301d898bb3ed, type: 3}
+--- !u!114 &3157833797278784452 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7874844878017582641, guid: de0a1848707c24d58b78301d898bb3ed,
+    type: 3}
+  m_PrefabInstance: {fileID: 5087924817199140341}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7791838492151255425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &6377465010288954031 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2169255117282150234, guid: de0a1848707c24d58b78301d898bb3ed,
@@ -12449,7 +12461,11 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 6377465010288954031}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 199445973109269778, guid: 5e64fed2a08a8484f99690cb43a3353a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 219488309354774569}
   m_SourcePrefab: {fileID: 100100000, guid: 5e64fed2a08a8484f99690cb43a3353a, type: 3}
 --- !u!224 &4235005512422333166 stripped
 RectTransform:
@@ -12457,6 +12473,25 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 6407425393803071727}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &6498461701921076733 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 199445973109269778, guid: 5e64fed2a08a8484f99690cb43a3353a,
+    type: 3}
+  m_PrefabInstance: {fileID: 6407425393803071727}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &219488309354774569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6498461701921076733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5073972fc6b84546acad0babddce8ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _signupButton: {fileID: 3157833797278784452}
 --- !u!1001 &6661909989252136551
 PrefabInstance:
   m_ObjectHideFlags: 0
