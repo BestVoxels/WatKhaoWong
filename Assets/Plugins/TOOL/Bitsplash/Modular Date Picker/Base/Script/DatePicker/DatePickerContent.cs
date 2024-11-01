@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using WatKhaoWong.Utils.Core;
 
 namespace Bitsplash.DatePicker
 {
@@ -50,7 +51,7 @@ namespace Bitsplash.DatePicker
         [Tooltip("Month/Day/Year")]
         [SerializeField] private string _startCalendarDate = "1/1/2024";
         [Tooltip("Month/Day/Year")]
-        [SerializeField] private string _endCalendarDate = "12/31/2050";
+        [SerializeField] private string _endCalendarDate = "31/12/2050";
 
         private DateTime startDate = new DateTime(1960,1,1);  // This will be overrided with '_startCalendarDate' // My Code
         private DateTime endDate = new DateTime(2030, 12, 31); // This will be override with '_endCalendarDate' // My Code
@@ -430,15 +431,11 @@ namespace Bitsplash.DatePicker
             //  if (AllowEmptySelection == false)
             //      SelectOne(DateTime.Today);
 
-            if (DateTime.TryParse(_startCalendarDate, out DateTime startDateResult))
-            {
+            if (_startCalendarDate.TryParseGregorianOnlyDateFormat(out DateTime startDateResult))
                 startDate = startDateResult;
-            }
 
-            if (DateTime.TryParse(_endCalendarDate, out DateTime endDateResult))
-            {
+            if (_endCalendarDate.TryParseGregorianOnlyDateFormat(out DateTime endDateResult))
                 endDate = endDateResult;
-            }
         }
 
         public void Update()

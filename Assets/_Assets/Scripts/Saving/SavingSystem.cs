@@ -36,7 +36,7 @@ namespace WatKhaoWong.Saving
         /// </summary>
         public void Save(string path, object saveValue)
         {
-            Debug.Log($"Called \"Save();\" value of ({saveValue}) with path ({path})");
+            //Debug.Log($"Called \"Save();\" value of ({saveValue}) with path ({path})");
             
             _database.GetReference(path).SetValueAsync(saveValue);
         }
@@ -46,7 +46,7 @@ namespace WatKhaoWong.Saving
         /// </summary>
         public async Task<DataSnapshot> Load(string path)
         {
-            Debug.Log($"Called \"Load();\" with path ({path})");
+            //Debug.Log($"Called \"Load();\" with path ({path})");
 
             DataSnapshot data = null;
             try
@@ -69,7 +69,7 @@ namespace WatKhaoWong.Saving
         /// </summary>
         public async Task<DataSnapshot> LoadAndSortByChildValue(string path, string childNode, int limitNumber)
         {
-            Debug.Log($"Called \"LoadAndSortByChildValue();\" with path ({path}) and sort by child value of ({childNode})");
+            //Debug.Log($"Called \"LoadAndSortByChildValue();\" with path ({path}) and sort by child value of ({childNode})");
 
             DataSnapshot data = null;
             try
@@ -91,7 +91,7 @@ namespace WatKhaoWong.Saving
         /// </summary>
         public void Delete(string path)
         {
-            Debug.Log($"Called \"Delete();\" with path ({path})");
+            //Debug.Log($"Called \"Delete();\" with path ({path})");
 
             _database.GetReference(path).RemoveValueAsync();
         }
@@ -102,7 +102,7 @@ namespace WatKhaoWong.Saving
         /// </summary>
         public async Task<bool> IsSaveExists(string path)
         {
-            Debug.Log($"Called \"SaveExists(); + Load()\" with path ({path})");
+            //Debug.Log($"Called \"SaveExists(); + Load()\" with path ({path})");
 
             DataSnapshot data = null;
             try

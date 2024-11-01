@@ -1,4 +1,5 @@
 using System;
+using Firebase.Auth;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
@@ -98,9 +99,14 @@ namespace WatKhaoWong.Challenges
             _serverTime = FindAnyObjectByType<ServerTime>();
         }
 
-        private async void Start()
+        private void OnEnable()
         {
-            _serverTimeNow = await _serverTime.Now();
+            FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged;
+        }
+
+        private void OnDisable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
         }
         #endregion
 
@@ -212,6 +218,18 @@ namespace WatKhaoWong.Challenges
             _statusText.Show(_statusCreateSucceeded.GetLocalizedString(), _statusCreateSucceededColor);
 
             _challenge.CreatePendingChallenge(_startDate, _endDate, _duration);
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber)
+        /// <summary>
+        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake().
+        /// </summary>
+        private async void HandleStateChanged(object obj, EventArgs args)
+        {
+            _serverTimeNow = await _serverTime.Now();
         }
         #endregion
     }

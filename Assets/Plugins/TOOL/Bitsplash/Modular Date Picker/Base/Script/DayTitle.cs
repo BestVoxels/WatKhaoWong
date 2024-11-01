@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using WatKhaoWong.Utils.Core;
 
 namespace Bitsplash.DatePicker
 {
@@ -58,7 +59,7 @@ namespace Bitsplash.DatePicker
                 cell.DayValue = current;
                 try
                 {
-                    cell.SetText(current.ToString(Format));
+                    cell.SetText(current.ToGregorianString(Format));
                 }
                 catch(Exception)
                 {

@@ -1,4 +1,5 @@
 using System.IO;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -7,6 +8,7 @@ using WatKhaoWong.Utils;
 using WatKhaoWong.Utils.Core;
 using System.Threading.Tasks;
 using Firebase.Database;
+using Firebase.Auth;
 using System;
 
 namespace WatKhaoWong.SceneManagement
@@ -21,13 +23,15 @@ namespace WatKhaoWong.SceneManagement
         #region --Fields-- (Inspector)
         [Header("Saving Wrapper Stuffs")]
         [Tooltip("Amount of time in seconds that Save() won't work in the Beginning of the Game. To Avoid overriding Save file with Default Values of UI or Player Default State.")]
-        [Range(1, 60)]
-        [SerializeField] private byte _saveProtectionOnStartInSeconds = 3;
+        [Range(1f, 60f)]
+        [SerializeField] private float _saveProtectionOnStartInSeconds = 3f;
         #endregion
 
 
 
         #region --Fields-- (In Class)
+        private float _saveProtectionTimer = 0f;
+
         private AutoInit<SavingSystem> _savingSystem;
         #endregion
 
@@ -37,6 +41,16 @@ namespace WatKhaoWong.SceneManagement
         private void Awake()
         {
             _savingSystem = new AutoInit<SavingSystem>(() => GetComponent<SavingSystem>()); // Use AutoInit so that when other classes use public methods in their Start() SavingSystem won't be null
+        }
+
+        private void OnEnable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged;
+        }
+
+        private void OnDisable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
         }
 
         //// ---DEBUGGER PURPOSE---
@@ -90,7 +104,7 @@ namespace WatKhaoWong.SceneManagement
         public void Save(ECategoryNode categoryNode, EValueNode valueNode, object saveValue)
         {
             if (!FirebaseUtils.IsAuthenticated()) return;
-            if (IsSaveProtectionOnStartActive()) return; // Avoid Override Save file with Default Values of UI or Player Default State.
+            if (IsSaveProtectionActive()) return; // Avoid Override Save file with Default Values of UI or Player Default State.
 
             _savingSystem.value.Save(GetPath(categoryNode, valueNode), saveValue);
         }
@@ -242,7 +256,20 @@ namespace WatKhaoWong.SceneManagement
 
 
         #region --Methods-- (Custom PRIVATE)
-        private bool IsSaveProtectionOnStartActive() => _saveProtectionOnStartInSeconds > Time.time;
+        private bool IsSaveProtectionActive() => _saveProtectionTimer < _saveProtectionOnStartInSeconds;
+
+        private IEnumerator StartProtectionTimer()
+        {
+            _saveProtectionTimer = 0f;
+
+            while (IsSaveProtectionActive())
+            {
+                _saveProtectionTimer += Time.deltaTime;
+                yield return null;
+            }
+
+            yield break;
+        }
         #endregion
 
 
@@ -261,6 +288,18 @@ namespace WatKhaoWong.SceneManagement
 
             if (FirebaseUtils.CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
             return Path.Combine(categoryNode.ToString(), FirebaseUtils.CurrentUserID, valueNodePath);
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber)
+        /// <summary>
+        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake().
+        /// </summary>
+        private void HandleStateChanged(object obj, EventArgs args)
+        {
+            StartCoroutine(StartProtectionTimer()); // So it get reset and start again when User Log In or Log Out
         }
         #endregion
     }

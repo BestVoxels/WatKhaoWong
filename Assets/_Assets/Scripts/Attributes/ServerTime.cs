@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
+using System.Globalization;
 using System.Threading.Tasks;
+using Firebase.Auth;
 using Firebase.Database;
 using UnityEngine;
 using WatKhaoWong.SceneManagement;
@@ -23,12 +26,14 @@ namespace WatKhaoWong.Attributes
         [Header("Server Time Stuffs")]
         [Tooltip("Delay on Application First Start to make it return Server Time properly. After App Starts for specific sec it has no delay when use after delays ends. Atleast '100 miliseconds', to make it return server time properly.")]
         [Range(1f, 3f)]
-        [SerializeField] private float _delayOnStartInSeconds = 1.5f;
+        [SerializeField] private float _delayOnStartInSeconds = 1f;
         #endregion
 
 
 
         #region --Fields-- (In Class)
+        private float _delayTimer = 0f;
+
         private SavingWrapper _savingWrapper;
         #endregion
 
@@ -38,6 +43,16 @@ namespace WatKhaoWong.Attributes
         private void Awake()
         {
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
+        }
+
+        private void OnEnable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged;
+        }
+
+        private void OnDisable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
         }
 
         //// ---DEBUGGER PURPOSE---
@@ -62,15 +77,17 @@ namespace WatKhaoWong.Attributes
         /// <returns>Local Thailand Time, same for all users even from different countries.</returns>
         public async Task<DateTime> Now()
         {
-            if (HasToDelayOnStart())
-                await Task.Delay((int)(_delayOnStartInSeconds * 1000f));
+            while (IsDelayOnStartActive())
+            {
+                await Task.Delay(100); // Wait 0.1 sec to check condition again.
+            }
 
             // SAVE CODE -> Writing timestamp to the database first
             _savingWrapper.ForceSave(ECategoryNode.ServerStats, EValueNode.TimeStamp, ServerValue.Timestamp);
 
             // LOAD CODE -> then reading it back once Firebase has replaced it with the actual server time
             DataSnapshot result = await _savingWrapper.Load(ECategoryNode.ServerStats, EValueNode.TimeStamp);
-            
+
             if (result == null)
             {
                 Debug.LogError("TimeStamp not found on server. Couldn't Load from Server!");
@@ -78,7 +95,10 @@ namespace WatKhaoWong.Attributes
             }
 
             DateTime utcDateTime = DateTimeOffset.FromUnixTimeMilliseconds((long)result.Value).UtcDateTime;
-            
+
+            // Ensure a consistent Gregorian calendar date across users regardless of their device’s local calendar settings
+            utcDateTime = ConvertToGregorian(utcDateTime, DateTimeKind.Utc);
+
             return utcDateTime.AddHours(7);
         }
 
@@ -98,6 +118,9 @@ namespace WatKhaoWong.Attributes
 
             DateTime localDateTime = DateTimeOffset.FromUnixTimeMilliseconds((long)result.Value).LocalDateTime;
 
+            // Ensure a consistent Gregorian calendar date across users regardless of their device’s local calendar settings
+            localDateTime = ConvertToGregorian(localDateTime, DateTimeKind.Local);
+
             return localDateTime;
         }
         #endregion
@@ -105,7 +128,49 @@ namespace WatKhaoWong.Attributes
 
 
         #region --Methods-- (Custom PRIVATE)
-        private bool HasToDelayOnStart() => _delayOnStartInSeconds > Time.time;
+        private bool IsDelayOnStartActive() => _delayTimer < _delayOnStartInSeconds;
+
+        private IEnumerator StartDelayTimer()
+        {
+            _delayTimer = 0f;
+
+            while (IsDelayOnStartActive())
+            {
+                _delayTimer += Time.deltaTime;
+                yield return null;
+            }
+
+            yield break;
+        }
+
+        private DateTime ConvertToGregorian(DateTime dateTime, DateTimeKind dateTimeKind)
+        {
+            GregorianCalendar gregorianCalendar = new GregorianCalendar(GregorianCalendarTypes.USEnglish);
+            return DateTime.SpecifyKind(
+                gregorianCalendar.ToDateTime(
+                    dateTime.Year,
+                    dateTime.Month,
+                    dateTime.Day,
+                    dateTime.Hour,
+                    dateTime.Minute,
+                    dateTime.Second,
+                    dateTime.Millisecond
+                ),
+                dateTimeKind
+            );
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber)
+        /// <summary>
+        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake().
+        /// </summary>
+        private void HandleStateChanged(object obj, EventArgs args)
+        {
+            StartCoroutine(StartDelayTimer()); // So it get reset and start again when User Log In or Log Out
+        }
         #endregion
     }
 }

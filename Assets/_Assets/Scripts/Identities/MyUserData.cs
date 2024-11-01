@@ -91,7 +91,7 @@ namespace WatKhaoWong.Identities
         {
             _data.MemberSince = input;
 
-            _savingWrapper.Save(ECategoryNode.Users, EValueNode.MemberSince, _data.MemberSince.ToString());
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.MemberSince, _data.MemberSince.ToGregorianString());
             OnMyUserDataUpdated?.Invoke();
         }
 
@@ -190,7 +190,7 @@ namespace WatKhaoWong.Identities
                 DateTime nowDate = await _serverTime.Now();
 
                 _data.FirstUploadTimeOfDayTM = nowDate;
-                _savingWrapper.Save(ECategoryNode.Users, EValueNode.FirstUploadTimeOfDayTM, nowDate.ToString());
+                _savingWrapper.Save(ECategoryNode.Users, EValueNode.FirstUploadTimeOfDayTM, nowDate.ToGregorianString());
             }
         }
 
@@ -204,7 +204,7 @@ namespace WatKhaoWong.Identities
                 _data.FirstUploadTimeOfChallengeTM = default;
 
                 _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.ChallengeTMPoint, 0);
-                _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.FirstUploadTimeOfChallengeTM, _data.FirstUploadTimeOfChallengeTM.ToString());
+                _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.FirstUploadTimeOfChallengeTM, _data.FirstUploadTimeOfChallengeTM.ToGregorianString());
 
                 OnMyUserDataUpdated?.Invoke();
             }
@@ -217,7 +217,7 @@ namespace WatKhaoWong.Identities
                 DateTime nowDate = await _serverTime.Now();
 
                 _data.FirstUploadTimeOfChallengeTM = nowDate;
-                _savingWrapper.Save(ECategoryNode.Users, EValueNode.FirstUploadTimeOfChallengeTM, nowDate.ToString());
+                _savingWrapper.Save(ECategoryNode.Users, EValueNode.FirstUploadTimeOfChallengeTM, nowDate.ToGregorianString());
             }
         }
 
@@ -248,8 +248,8 @@ namespace WatKhaoWong.Identities
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.MemberSince);
             if (data != null)
             {
-                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
-                _data.MemberSince = result;
+                if (data.Value.ToString().TryParseGregorian(out DateTime result))
+                    _data.MemberSince = result;
             }
 
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.ProfileIconID);
@@ -289,7 +289,7 @@ namespace WatKhaoWong.Identities
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.FirstUploadTimeOfDayTM);
             if (data != null)
             {
-                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                if (data.Value.ToString().TryParseGregorian(out DateTime result))
                     _data.FirstUploadTimeOfDayTM = result;
 
                 await ResetTMPointsDaily();
@@ -298,7 +298,7 @@ namespace WatKhaoWong.Identities
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.FirstUploadTimeOfChallengeTM);
             if (data != null)
             {
-                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                if (data.Value.ToString().TryParseGregorian(out DateTime result))
                     _data.FirstUploadTimeOfChallengeTM = result;
 
                 await ResetTMPointsAfterChallengeEnd();

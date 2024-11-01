@@ -7,6 +7,7 @@ using WatKhaoWong.SceneManagement;
 using Firebase.Auth;
 using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
+using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.Challenges
 {
@@ -95,6 +96,7 @@ namespace WatKhaoWong.Challenges
         #region --Methods-- (Custom PUBLIC)
         public async void CreatePendingChallenge(DateTime startDate, DateTime endDate, TimeSpan duration)
         {
+            if (startDate == default && endDate == default) return; // Guard check Input because StartDate & EndDate will have default value from Server.
             if (_status == EChallengeStatus.Pending) return;
 
             SetStartDate(startDate);
@@ -109,6 +111,7 @@ namespace WatKhaoWong.Challenges
 
         public void DeletePendingChallenge()
         {
+            if (StartAndEndDateAreDefault()) return; // Guard check incase StartDate & EndDate didn't Load Data from Server. (Avoid Overwrite)
             if (_status != EChallengeStatus.Pending) return;
 
             SetStartDate(default);
@@ -121,6 +124,7 @@ namespace WatKhaoWong.Challenges
 
         public async Task<bool> CanLiveNow()
         {
+            if (StartAndEndDateAreDefault()) return false; // Guard check incase StartDate & EndDate didn't Load Data from Server. (Avoid Overwrite)
             DateTime nowDate = await _serverTime.Now();
 
             return nowDate >= _startDate && nowDate <= _endDate;
@@ -158,13 +162,13 @@ namespace WatKhaoWong.Challenges
 
         public EChallengeStatus GetStatus() => _status;
 
-        public string GetID() => $"({_startDate:d-M-yyyy HH-mm-ss}) -> ({_endDate:d-M-yyyy HH-mm-ss})";
+        public string GetID() => $"({_startDate.ToGregorianString("d-M-yyyy HH-mm-ss")}) -> ({_endDate.ToGregorianString("d-M-yyyy HH-mm-ss")})";
         #endregion
 
 
 
         #region --Methods-- (Custom PUBLIC) ~For Displaying~
-        public string FormatDateString(DateTime date, string format) => (date == default) ? "-" : $"<u>{date.ToString(format)}</u>";
+        public string FormatDateString(DateTime date, string format) => (date == default) ? "-" : $"<u>{date.ToGregorianString(format)}</u>";
 
         public string FormatDurationString(TimeSpan duration)
         {
@@ -179,7 +183,7 @@ namespace WatKhaoWong.Challenges
         public string DaysString(int days)
         {
             if (days < 0)
-                return $"? {_dayText.GetLocalizedString()}";
+                return $"??? {_dayText.GetLocalizedString()}";
 
             return $"{days} {_dayText.GetLocalizedString()}{S(days)}";
         }
@@ -208,14 +212,14 @@ namespace WatKhaoWong.Challenges
         {
             _startDate = input;
 
-            _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMStartDate, _startDate.ToString());
+            _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMStartDate, _startDate.ToGregorianString());
         }
 
         private void SetEndDate(DateTime input)
         {
             _endDate = input;
 
-            _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMEndDate, _endDate.ToString());
+            _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMEndDate, _endDate.ToGregorianString());
         }
 
         private void SetDuration(TimeSpan input)
@@ -237,14 +241,14 @@ namespace WatKhaoWong.Challenges
         {
             _startDate = input;
 
-            _savingWrapper.ForceSave(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMStartDate, _startDate.ToString());
+            _savingWrapper.ForceSave(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMStartDate, _startDate.ToGregorianString());
         }
 
         private void SetEndDateForceSave(DateTime input)
         {
             _endDate = input;
 
-            _savingWrapper.ForceSave(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMEndDate, _endDate.ToString());
+            _savingWrapper.ForceSave(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMEndDate, _endDate.ToGregorianString());
         }
 
         private void SetDurationForceSave(TimeSpan input)
@@ -279,6 +283,7 @@ namespace WatKhaoWong.Challenges
 
         private void LiveChallenge()
         {
+            if (StartAndEndDateAreDefault()) return; // Guard check incase StartDate & EndDate didn't Load Data from Server. (Avoid Overwrite)
             if (_status == EChallengeStatus.Live) return;
 
             SetStatusForceSave(EChallengeStatus.Live);
@@ -288,6 +293,7 @@ namespace WatKhaoWong.Challenges
 
         private void EndChallenge()
         {
+            if (StartAndEndDateAreDefault()) return; // Guard check incase StartDate & EndDate didn't Load Data from Server. (Avoid Overwrite)
             if (_status == EChallengeStatus.None) return;
 
             SetStartDateForceSave(default);
@@ -298,19 +304,21 @@ namespace WatKhaoWong.Challenges
             OnDataUpdated?.Invoke();
         }
 
+        private bool StartAndEndDateAreDefault() => _startDate == default && _endDate == default;
+
         private async void LoadSave()
         {
             var data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMStartDate);
             if (data != null)
             {
-                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                if (data.Value.ToString().TryParseGregorian(out DateTime result))                
                     _startDate = result;
             }
 
             data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMEndDate);
             if (data != null)
             {
-                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                if (data.Value.ToString().TryParseGregorian(out DateTime result))
                     _endDate = result;
             }
 

@@ -237,7 +237,7 @@ namespace WatKhaoWong.Leaderboards
             var data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM);
             if (data != null)
             {
-                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                if (data.Value.ToString().TryParseGregorian(out DateTime result))
                     _leaderboardFirstUploadTimeOfDayTM = result;
 
                 await DeleteTodayTMLeaderboardDaily();
@@ -248,7 +248,7 @@ namespace WatKhaoWong.Leaderboards
             data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfChallengeTM);
             if (data != null)
             {
-                if (DateTime.TryParse(data.Value.ToString(), out DateTime result))
+                if (data.Value.ToString().TryParseGregorian(out DateTime result))
                     _leaderboardFirstUploadTimeOfChallengeTM = result;
 
                 await DeleteChallengeTMLeaderboardAfterEnd();
@@ -277,7 +277,7 @@ namespace WatKhaoWong.Leaderboards
                 DateTime nowDate = await _serverTime.Now();
 
                 _leaderboardFirstUploadTimeOfDayTM = nowDate;
-                _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM, nowDate.ToString());
+                _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM, nowDate.ToGregorianString());
             }
         }
 
@@ -301,7 +301,7 @@ namespace WatKhaoWong.Leaderboards
                 DateTime nowDate = await _serverTime.Now();
 
                 _leaderboardFirstUploadTimeOfChallengeTM = nowDate;
-                _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfChallengeTM, nowDate.ToString());
+                _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfChallengeTM, nowDate.ToGregorianString());
             }
         }
 

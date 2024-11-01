@@ -2,6 +2,7 @@ using Firebase.Database;
 using System;
 using WatKhaoWong.CoreItems;
 using WatKhaoWong.SceneManagement;
+using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.Identities
 {
@@ -39,7 +40,7 @@ namespace WatKhaoWong.Identities
 
             data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.MemberSince)).Value;
             if (data != null)
-                if (DateTime.TryParse(data.ToString(), out DateTime result))
+                if (data.ToString().TryParseGregorian(out DateTime result))
                     _data.MemberSince = result;
 
             data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.ProfileIconID)).Value;

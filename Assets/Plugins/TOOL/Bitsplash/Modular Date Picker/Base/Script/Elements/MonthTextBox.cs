@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using WatKhaoWong.Utils.Core;
 
 namespace Bitsplash.DatePicker
 {
@@ -47,7 +48,7 @@ namespace Bitsplash.DatePicker
                 return;
             try
             {
-                Text = (Content.DisplayDate.ToString(dateFormat));
+                Text = (Content.DisplayDate.ToGregorianString(dateFormat));
             }
             catch (Exception)
             {

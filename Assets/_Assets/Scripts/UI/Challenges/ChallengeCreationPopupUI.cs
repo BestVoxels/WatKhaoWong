@@ -6,6 +6,7 @@ using WatKhaoWong.Challenges;
 using Bitsplash.DatePicker;
 using WatKhaoWong.Utils.UI;
 using WatKhaoWong.Attributes;
+using Firebase.Auth;
 
 namespace WatKhaoWong.UI.Challenges
 {
@@ -64,14 +65,19 @@ namespace WatKhaoWong.UI.Challenges
             UIRefresher.OnLocalizeDynamicString += RefreshUI;
         }
 
-        private async void Start()
+        private void OnEnable()
         {
-            DateTime nowDate = await _serverTime.Now();
+            FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged;
+        }
 
-            _datePickerStart.Content.SetMarkerColor(nowDate);
-            _datePickerEnd.Content.SetMarkerColor(nowDate);
-
+        private void Start()
+        {
             RefreshUI();
+        }
+
+        private void OnDisable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
         }
         #endregion
 
@@ -134,6 +140,17 @@ namespace WatKhaoWong.UI.Challenges
             _challengeCreation.ValidateEndDate(_startDate, _endDate);
 
             RefreshUI();
+        }
+
+        /// <summary>
+        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake().
+        /// </summary>
+        private async void HandleStateChanged(object obj, EventArgs args)
+        {
+            DateTime nowDate = await _serverTime.Now();
+
+            _datePickerStart.Content.SetMarkerColor(nowDate);
+            _datePickerEnd.Content.SetMarkerColor(nowDate);
         }
         #endregion
     }

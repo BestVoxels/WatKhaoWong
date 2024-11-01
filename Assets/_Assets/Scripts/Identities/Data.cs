@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Globalization;
+using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.Identities
 {
@@ -72,7 +73,7 @@ namespace WatKhaoWong.Identities
         #region --Methods-- (Custom INTERNAL) ~Get Text Format~
         internal string GetUserNameText() => $"{FirstName} {LastName}";
 
-        internal string GetMemberSinceText() => $"{MemberSince:d/M/yyyy}";
+        internal string GetMemberSinceText() => $"{MemberSince.ToGregorianOnlyDateString()}";
 
         internal ProfileIconItem GetProfileIcon() => ProfileIcon;
 
