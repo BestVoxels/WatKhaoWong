@@ -26,6 +26,7 @@ namespace WatKhaoWong.Homes
         [SerializeField] private UnityEvent _onHistoryButtonClick;
         [SerializeField] private UnityEvent _onPrayButtonClick;
         [SerializeField] private UnityEvent _onSettingButtonClick;
+        [SerializeField] private UnityEvent _onRankingButtonClick;
         #endregion
 
 
@@ -87,6 +88,11 @@ namespace WatKhaoWong.Homes
         public void OnSettingButtonClick()
         {
             _onSettingButtonClick?.Invoke();
+        }
+
+        public void OnRankingButtonClick()
+        {
+            _onRankingButtonClick?.Invoke();
         }
         #endregion
     }
