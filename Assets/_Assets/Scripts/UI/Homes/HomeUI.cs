@@ -11,6 +11,7 @@ namespace WatKhaoWong.UI.Homes
         [Header("Home UI Stuffs")]
         [SerializeField] private Button _historyButton;
         [SerializeField] private Button _prayButton;
+        [SerializeField] private Button _bookMeditationButton;
         [SerializeField] private Button _settingButton;
         [SerializeField] private Button _rankingButton;
         [Space]
@@ -33,6 +34,7 @@ namespace WatKhaoWong.UI.Homes
 
             _historyButton.onClick.AddListener(History);
             _prayButton.onClick.AddListener(Pray);
+            _bookMeditationButton.onClick.AddListener(BookMeditation);
             _settingButton.onClick.AddListener(Setting);
             _rankingButton.onClick.AddListener(Ranking);
 
@@ -51,6 +53,7 @@ namespace WatKhaoWong.UI.Homes
         #region --Methods-- (Subscriber)
         private void History() => _playerHome.OnHistoryButtonClick();
         private void Pray() => _playerHome.OnPrayButtonClick();
+        private void BookMeditation() => _playerHome.OnBookMeditationButtonClick();
         private void Setting() => _playerHome.OnSettingButtonClick();
         private void Ranking() => _playerHome.OnRankingButtonClick();
 
