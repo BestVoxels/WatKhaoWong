@@ -23,7 +23,13 @@ namespace WatKhaoWong.Homes
 
         #region --Events-- (UnityEvent)
         [Header("Home UI Event")]
-        [SerializeField] private UnityEvent _onHistoryButtonClick;
+        [SerializeField] private UnityEvent _onTempleHistoryButtonClick;
+        [SerializeField] private UnityEvent _onAbbotHistoryButtonClick;
+        [SerializeField] private UnityEvent _onTempleGuideButtonClick;
+        [SerializeField] private UnityEvent _onMapButtonClick;
+        [SerializeField] private UnityEvent _onDonationAccountsButtonClick;
+        [SerializeField] private UnityEvent _onAupiciousCalendarButtonClick;
+        [Space]
         [SerializeField] private UnityEvent _onPrayButtonClick;
         [SerializeField] private UnityEvent _onBookMeditationButtonClick;
         [SerializeField] private UnityEvent _onSettingButtonClick;
@@ -76,10 +82,36 @@ namespace WatKhaoWong.Homes
 
 
         #region --Methods-- (Custom PUBLIC) ~Page UI Buttons~
-        public void OnHistoryButtonClick()
+        public void OnTempleHistoryButtonClick()
         {
-            _onHistoryButtonClick?.Invoke();
+            _onTempleHistoryButtonClick?.Invoke();
         }
+
+        public void OnAbbotHistoryButtonClick()
+        {
+            _onAbbotHistoryButtonClick?.Invoke();
+        }
+
+        public void OnTempleGuideButtonClick()
+        {
+            _onTempleGuideButtonClick?.Invoke();
+        }
+
+        public void OnMapButtonClick()
+        {
+            _onMapButtonClick?.Invoke();
+        }
+
+        public void OnDonationAccountsButtonClick()
+        {
+            _onDonationAccountsButtonClick?.Invoke();
+        }
+
+        public void OnAupiciousCalendarButtonClick()
+        {
+            _onAupiciousCalendarButtonClick?.Invoke();
+        }
+
 
         public void OnPrayButtonClick()
         {

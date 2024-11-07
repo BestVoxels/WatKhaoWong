@@ -9,7 +9,13 @@ namespace WatKhaoWong.UI.Homes
     {
         #region --Fields-- (Inspector)
         [Header("Home UI Stuffs")]
-        [SerializeField] private Button _historyButton;
+        [SerializeField] private Button _templeHistoryButton;
+        [SerializeField] private Button _abbotHistoryButton;
+        [SerializeField] private Button _templeGuideButton;
+        [SerializeField] private Button _mapButton;
+        [SerializeField] private Button _donationAccountsButton;
+        [SerializeField] private Button _auspiciousCalendarButton;
+        [Space]
         [SerializeField] private Button _prayButton;
         [SerializeField] private Button _bookMeditationButton;
         [SerializeField] private Button _settingButton;
@@ -32,7 +38,13 @@ namespace WatKhaoWong.UI.Homes
         {
             _playerHome = GameObject.FindWithTag("Player").GetComponentInChildren<Home>();
 
-            _historyButton.onClick.AddListener(History);
+            _templeHistoryButton.onClick.AddListener(TempleHistory);
+            _abbotHistoryButton.onClick.AddListener(AbbotHistory);
+            _templeGuideButton.onClick.AddListener(TempleGuide);
+            _mapButton.onClick.AddListener(Map);
+            _donationAccountsButton.onClick.AddListener(DonationAccounts);
+            _auspiciousCalendarButton.onClick.AddListener(AupiciousCalendar);
+
             _prayButton.onClick.AddListener(Pray);
             _bookMeditationButton.onClick.AddListener(BookMeditation);
             _settingButton.onClick.AddListener(Setting);
@@ -51,7 +63,13 @@ namespace WatKhaoWong.UI.Homes
 
 
         #region --Methods-- (Subscriber)
-        private void History() => _playerHome.OnHistoryButtonClick();
+        private void TempleHistory() => _playerHome.OnTempleHistoryButtonClick();
+        private void AbbotHistory() => _playerHome.OnAbbotHistoryButtonClick();
+        private void TempleGuide() => _playerHome.OnTempleGuideButtonClick();
+        private void Map() => _playerHome.OnMapButtonClick();
+        private void DonationAccounts() => _playerHome.OnDonationAccountsButtonClick();
+        private void AupiciousCalendar() => _playerHome.OnAupiciousCalendarButtonClick();
+
         private void Pray() => _playerHome.OnPrayButtonClick();
         private void BookMeditation() => _playerHome.OnBookMeditationButtonClick();
         private void Setting() => _playerHome.OnSettingButtonClick();
