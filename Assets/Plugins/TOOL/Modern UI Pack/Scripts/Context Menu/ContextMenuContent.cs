@@ -163,6 +163,7 @@ namespace Michsky.MUIP
             itemParent.gameObject.SetActive(true);
         }
 
+#if UNITY_EDITOR
         public void OnMouseOver() 
         {
 #if ENABLE_LEGACY_INPUT_MANAGER
@@ -174,6 +175,7 @@ namespace Michsky.MUIP
                 ProcessContent();
             }
         }
+#endif
 
         public void AddNewItem()
         {
