@@ -69,7 +69,6 @@ namespace WatKhaoWong.Leaderboards
 
         #region --Fields-- (In Class)
         private RecordCollection _records;
-        private bool _isAsyncRunning = false;
 
         private DateTime _leaderboardFirstUploadTimeOfDayTM;
         private bool _isLeaderboardTMTodayExists = false;
@@ -114,6 +113,12 @@ namespace WatKhaoWong.Leaderboards
 
 
 
+        #region --Properties-- (Auto)
+        public static bool IsAsyncRunning { get; private set; } = false;
+        #endregion
+
+
+
         #region --Methods-- (Built In)
         private void Awake()
         {
@@ -154,9 +159,11 @@ namespace WatKhaoWong.Leaderboards
 
         public async IAsyncEnumerable<OtherUserData> GetRows()
         {
-            if (_isAsyncRunning) yield break; // Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.
+            //+Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.
+            //+Prevent some LeaderboardUI GameObject show Empty Data (No Rows), solve by make LeaderboardUI GameObject that comes after wait first then loads when Async is done.
+            if (IsAsyncRunning) yield break;
 
-            _isAsyncRunning = true;
+            IsAsyncRunning = true;
 
             IAsyncEnumerable<DataSnapshot> rows = Category switch
             {
@@ -169,14 +176,14 @@ namespace WatKhaoWong.Leaderboards
             if (rows == null)
             {
                 Debug.LogError("Error : Can't fetch data to display rows on learderboard. Because 'rows' is null.");
-                _isAsyncRunning = false;
+                IsAsyncRunning = false;
                 yield break;
             }
 
             await foreach (DataSnapshot eachData in rows)
                 yield return new OtherUserData(eachData);
 
-            _isAsyncRunning = false;
+            IsAsyncRunning = false;
         }
         #endregion
 

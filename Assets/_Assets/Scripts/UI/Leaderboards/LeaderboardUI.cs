@@ -27,7 +27,7 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Fields-- (In Class)
-        private bool _isAsyncRunning = false;
+        private float _waitAsyncTimeOut = 3f;
 
         private Leaderboard _leaderboard;
         private Challenge _challenge;
@@ -72,11 +72,20 @@ namespace WatKhaoWong.UI.Leaderboards
         #region --Methods-- (Custom PRIVATE) ~Row~
         private async Task BuildRows()
         {
-            if (_isAsyncRunning) return; // Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.
+            //+Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.
+            //+Prevent some LeaderboardUI GameObject show Empty Data (No Rows), solve by make LeaderboardUI GameObject that comes after wait first then loads when Async is done.
+            float timer = 0f;
+            while (Leaderboard.IsAsyncRunning == true)
+            {
+                timer += Time.deltaTime;
+
+                if (timer >= _waitAsyncTimeOut) return;
+
+                await Task.Delay(100);
+            }
 
             ushort rowCounter = 1;
 
-            _isAsyncRunning = true;
             await foreach (OtherUserData otherUserData in _leaderboard.GetRows())
             {
                 RowUI createdPrefab = Instantiate(_rowPrefab, _spawnParent);
@@ -85,7 +94,6 @@ namespace WatKhaoWong.UI.Leaderboards
 
                 ++rowCounter;
             }
-            _isAsyncRunning = false;
         }
 
         private void SetupMyRow()
