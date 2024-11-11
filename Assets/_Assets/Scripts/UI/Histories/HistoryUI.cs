@@ -27,14 +27,12 @@ namespace WatKhaoWong.UI.Histories
             _playerHistory = GameObject.FindWithTag("Player").GetComponentInChildren<History>();
 
             _backButton.onClick.AddListener(Back);
-
-            UIRefresher.OnHistoryRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
 
-        private void Start()
-        {
-            RefreshUI();
-        }
+        //private void Start()
+        //{
+        //    RefreshUI();
+        //}
         #endregion
 
 
@@ -46,10 +44,10 @@ namespace WatKhaoWong.UI.Histories
 
 
         #region --Methods-- (Subscriber)
-        private void RefreshUI()
-        {
+        //private void RefreshUI()
+        //{
 
-        }
+        //}
         #endregion
     }
 }

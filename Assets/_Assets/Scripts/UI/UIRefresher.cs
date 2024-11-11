@@ -25,7 +25,7 @@ namespace WatKhaoWong.UI
         public static event Action OnHomeRefreshed;
         public static event Action OnPrayRefreshed;
         public static event Action OnSettingRefreshed;
-        public static event Action OnHistoryRefreshed;
+        //public static event Action OnAbbotHistoryRefreshed;
         public static event Action OnPopupRefreshed;
         public static event Action OnLeaderboardRefreshed;
         public static event Action OnLocalizeDynamicString;
@@ -74,7 +74,7 @@ namespace WatKhaoWong.UI
             // NO NEED to do for Language since it changes using 'LocalizeStringEvent' component by itself.
             //_languagePopup.OnLanguageToggleIsOn += () => { RefreshSettingUI(); };
 
-            // HISTORY SYSTEM
+            // ABBOT HISTORY SYSTEM
             // TODO lets see what to subscribe to for HISTORY SYSTEM
 
             // SHARE POPUP SYSTEM
@@ -108,7 +108,7 @@ namespace WatKhaoWong.UI
             RefreshHomeUI();
             RefreshPrayUI();
             RefreshSettingUI();
-            RefreshHistoryUI();
+            //RefreshAbbotHistoryUI();
             RefreshPopupUI();
             RefreshLeaderboardUI();
             ShowHideUIByRoles();
@@ -139,11 +139,11 @@ namespace WatKhaoWong.UI
             //print("Refreshed Setting UI : " + OnSettingRefreshed?.GetInvocationList().Length);
         }
 
-        public static void RefreshHistoryUI()
-        {
-            OnHistoryRefreshed?.Invoke();
-            //print("Refreshed History UI : " + OnHistoryRefreshed?.GetInvocationList().Length);
-        }
+        //public static void RefreshAbbotHistoryUI()
+        //{
+        //    OnAbbotHistoryRefreshed?.Invoke();
+        //    //print("Refreshed Abbot History UI : " + OnAbbotHistoryRefreshed?.GetInvocationList().Length);
+        //}
 
         public static void RefreshPopupUI()
         {
@@ -180,7 +180,7 @@ namespace WatKhaoWong.UI
             OnHomeRefreshed = null;
             OnPrayRefreshed = null;
             OnSettingRefreshed = null;
-            OnHistoryRefreshed = null;
+            //OnAbbotHistoryRefreshed = null;
             OnPopupRefreshed = null;
             OnLeaderboardRefreshed = null;
             OnLocalizeDynamicString = null;

@@ -48,9 +48,9 @@ namespace Bitsplash.DatePicker
         [SerializeField]
         private bool allowEmptySelection = false;
 
-        [Tooltip("Month/Day/Year")]
+        [Tooltip("Day/Month/Year")]
         [SerializeField] private string _startCalendarDate = "1/1/2024";
-        [Tooltip("Month/Day/Year")]
+        [Tooltip("Day/Month/Year")]
         [SerializeField] private string _endCalendarDate = "31/12/2050";
 
         private DateTime startDate = new DateTime(1960,1,1);  // This will be overrided with '_startCalendarDate' // My Code

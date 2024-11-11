@@ -29,10 +29,10 @@ namespace WatKhaoWong.UI.Leaderboards
             _backButton.onClick.AddListener(Back);
         }
 
-        private void Start()
-        {
-            RefreshUI();
-        }
+        //private void Start()
+        //{
+        //    RefreshUI();
+        //}
         #endregion
 
 
@@ -44,10 +44,10 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Methods-- (Subscriber)
-        private void RefreshUI()
-        {
+        //private void RefreshUI()
+        //{
 
-        }
+        //}
         #endregion
     }
 }

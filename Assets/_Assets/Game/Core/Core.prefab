@@ -928,6 +928,77 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uniqueIdentifier: cf7189db-614e-4b67-936b-3bc11f4403f5
+--- !u!1 &2302210905655535586
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8882057648747807207}
+  - component: {fileID: 4793549156615248691}
+  m_Layer: 0
+  m_Name: Clipboard Utility
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8882057648747807207
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2302210905655535586}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5923315315416972317}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4793549156615248691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2302210905655535586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cffff835f4bff44a2a922f8d11327359, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _statusCopySucceeded:
+    m_TableReference:
+      m_TableCollectionName: GUID:d4a980b1761634cb3b938b661c450b63
+    m_TableEntryReference:
+      m_KeyId: 66755958398976
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusCopySucceededColor:
+    serializedVersion: 2
+    rgba: 4288011303
+  _statusCopyErrored:
+    m_TableReference:
+      m_TableCollectionName: GUID:d4a980b1761634cb3b938b661c450b63
+    m_TableEntryReference:
+      m_KeyId: 67643200495616
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusCopyErroredColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2463763845362812804
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,6 +1171,7 @@ Transform:
   - {fileID: 7070464524601806179}
   - {fileID: 4894843460213008174}
   - {fileID: 4089146525035716039}
+  - {fileID: 8882057648747807207}
   - {fileID: 4423133681883869042}
   - {fileID: 2637654065332200263}
   m_Father: {fileID: 0}
@@ -4832,6 +4904,186 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0.1
           m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCopyButton1Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4793549156615248691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.ClipboardUtility, Assembly-WatKhaoWong-Utils
+        m_MethodName: CopyToClipboard
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 7892804890
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCopyButton2Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4793549156615248691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.ClipboardUtility, Assembly-WatKhaoWong-Utils
+        m_MethodName: CopyToClipboard
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 7894052619
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCopyButton3Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4793549156615248691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.ClipboardUtility, Assembly-WatKhaoWong-Utils
+        m_MethodName: CopyToClipboard
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 7892744032
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCopyButton4Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4793549156615248691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.ClipboardUtility, Assembly-WatKhaoWong-Utils
+        m_MethodName: CopyToClipboard
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 7894006163
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCopyButton5Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4793549156615248691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.ClipboardUtility, Assembly-WatKhaoWong-Utils
+        m_MethodName: CopyToClipboard
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 7894086448
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCopyButton6Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4793549156615248691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.ClipboardUtility, Assembly-WatKhaoWong-Utils
+        m_MethodName: CopyToClipboard
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 7894035316
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCopyButton7Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4793549156615248691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.ClipboardUtility, Assembly-WatKhaoWong-Utils
+        m_MethodName: CopyToClipboard
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 7894086448
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCopyButton8Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4793549156615248691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.ClipboardUtility, Assembly-WatKhaoWong-Utils
+        m_MethodName: CopyToClipboard
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 7894237293
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCopyButton9Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4793549156615248691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.ClipboardUtility, Assembly-WatKhaoWong-Utils
+        m_MethodName: CopyToClipboard
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 1330233867
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCopyButton10Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4793549156615248691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.ClipboardUtility, Assembly-WatKhaoWong-Utils
+        m_MethodName: CopyToClipboard
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 1330276574
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCopyButton11Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4793549156615248691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.ClipboardUtility, Assembly-WatKhaoWong-Utils
+        m_MethodName: CopyToClipboard
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 1330333527
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onCopyButton12Click:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4793549156615248691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.ClipboardUtility, Assembly-WatKhaoWong-Utils
+        m_MethodName: CopyToClipboard
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 5850174052
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &974546311889633296

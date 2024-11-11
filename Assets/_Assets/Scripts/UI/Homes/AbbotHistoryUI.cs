@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Homes;
@@ -10,7 +11,11 @@ namespace WatKhaoWong.UI.Homes
         [Header("Page Header UI Stuffs")]
         [SerializeField] private Button _backButton;
 
+        //[Space]
+
         //[Header("AbbotHistory UI Stuffs")]
+        //[SerializeField] private TMP_Text _thyAgeText;
+        //[SerializeField] private TMP_Text _thyOrdinationAgeText;
         #endregion
 
 
@@ -27,12 +32,14 @@ namespace WatKhaoWong.UI.Homes
             _playerAbbotHistory = GameObject.FindWithTag("Player").GetComponentInChildren<AbbotHistory>();
 
             _backButton.onClick.AddListener(Back);
+
+            //UIRefresher.OnAbbotHistoryRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
 
-        private void Start()
-        {
-            RefreshUI();
-        }
+        //private void Start()
+        //{
+        //    RefreshUI();
+        //}
         #endregion
 
 
@@ -44,10 +51,10 @@ namespace WatKhaoWong.UI.Homes
 
 
         #region --Methods-- (Subscriber)
-        private void RefreshUI()
-        {
+        //private void RefreshUI()
+        //{
 
-        }
+        //}
         #endregion
     }
 }
