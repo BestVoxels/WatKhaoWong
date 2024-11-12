@@ -25,6 +25,10 @@ namespace WatKhaoWong.Identities
 
         public string GetTotalChallengeTMWonText();
 
+        public int GetTotalTMPoints();
+
+        public int GetTodayTMPoints();
+
         public int GetChallengeTMPoints();
 
         public int GetTotalChallengeTMWon();

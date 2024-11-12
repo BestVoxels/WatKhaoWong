@@ -19,6 +19,7 @@ namespace WatKhaoWong.Leaderboards
         #region --Fields-- (Inspector)
         [Header("Leaderboard Settings")]
         [SerializeField] private ELeaderboardCategory _defaultCategory;
+        [SerializeField] private bool _hideZeroScore = true;
         [Range(1, 200)]
         [SerializeField] private ushort _maxRowNumber = 100;
         [Range(1, 3)]
@@ -181,7 +182,13 @@ namespace WatKhaoWong.Leaderboards
             }
 
             await foreach (DataSnapshot eachData in rows)
-                yield return new OtherUserData(eachData);
+            {
+                OtherUserData otherUserData = new OtherUserData(eachData);
+
+                if (IsDataScoreLessThanZero(otherUserData)) continue;
+
+                yield return otherUserData;
+            }
 
             IsAsyncRunning = false;
         }
@@ -227,6 +234,21 @@ namespace WatKhaoWong.Leaderboards
             // *** Return List as Synchronous ***
             foreach (DataSnapshot each in Records[Category].CachedRows)
                 yield return each;
+        }
+
+        private bool IsDataScoreLessThanZero(OtherUserData otherUserData)
+        {
+            if (!_hideZeroScore) return false;
+            
+            int score = Category switch
+            {
+                ELeaderboardCategory.AllTime => otherUserData.GetTotalTMPoints(),
+                ELeaderboardCategory.Today => otherUserData.GetTodayTMPoints(),
+                ELeaderboardCategory.Challenge => otherUserData.GetChallengeTMPoints(),
+                _ => 0
+            };
+
+            return score <= 0;
         }
 
         private async void LoadSave()
