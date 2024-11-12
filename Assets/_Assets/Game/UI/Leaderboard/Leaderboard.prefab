@@ -761,6 +761,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3648232727626471571}
   - component: {fileID: 4016670320247202841}
+  - component: {fileID: 2643507687155059389}
   - component: {fileID: 5722908259619943060}
   - component: {fileID: 279711486263971477}
   m_Layer: 5
@@ -812,6 +813,24 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2643507687155059389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141416424307815111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a55f6e1621c042249dfdedafab6958b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rowPrefab: {fileID: 100224748807216795, guid: e137ff56481694b909c5ad2f366be7fd,
+    type: 3}
+  _spawnParent: {fileID: 1260999882291109136}
+  _isClearExistPrefabs: 1
+  _poolSize: 100
+  _preWarmOnStart: 0
 --- !u!114 &5722908259619943060
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -828,9 +847,6 @@ MonoBehaviour:
   _countDownBannerText: {fileID: 1068699905802788146}
   _tabsTransform: {fileID: 4609970753687523528}
   _myRowUI: {fileID: 4684788400343662124}
-  _rowPrefab: {fileID: 100224748807216795, guid: e137ff56481694b909c5ad2f366be7fd,
-    type: 3}
-  _spawnParent: {fileID: 1260999882291109136}
 --- !u!114 &279711486263971477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -938,7 +954,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52
+  m_fontSize: 42
   m_fontSizeBase: 55
   m_fontWeight: 400
   m_enableAutoSizing: 1

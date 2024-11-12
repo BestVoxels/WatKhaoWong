@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -7,6 +8,7 @@ using WatKhaoWong.Challenges;
 
 namespace WatKhaoWong.UI.Leaderboards
 {
+    [RequireComponent(typeof(RowUIPool))]
     public class LeaderboardUI : MonoBehaviour
     {
         #region --Fields-- (Inspector)
@@ -16,22 +18,18 @@ namespace WatKhaoWong.UI.Leaderboards
         [Space]
         [SerializeField] private Transform _tabsTransform;
         [SerializeField] private RowUI _myRowUI;
-
-        [Space]
-
-        [Header("Spawn Stuffs")]
-        [SerializeField] private RowUI _rowPrefab;
-        [SerializeField] private Transform _spawnParent;
         #endregion
 
 
 
         #region --Fields-- (In Class)
         private float _waitAsyncTimeOut = 3f;
+        private List<RowUI> _activeRowUIs = new List<RowUI>();
 
         private Leaderboard _leaderboard;
         private Challenge _challenge;
         private MyUserData _myUserData;
+        private RowUIPool _rowUIPool;
         #endregion
 
 
@@ -44,6 +42,7 @@ namespace WatKhaoWong.UI.Leaderboards
             _leaderboard = player.GetComponentInChildren<Leaderboard>();
             _challenge = player.GetComponentInChildren<Challenge>();
             _myUserData = player.GetComponentInChildren<MyUserData>();
+            _rowUIPool = GetComponent<RowUIPool>();
 
             UIRefresher.OnLeaderboardRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
 
@@ -72,7 +71,6 @@ namespace WatKhaoWong.UI.Leaderboards
         #region --Methods-- (Custom PRIVATE) ~Row~
         private async Task BuildRows()
         {
-            //+Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.
             //+Prevent some LeaderboardUI GameObject show Empty Data (No Rows), solve by make LeaderboardUI GameObject that comes after wait first then loads when Async is done.
             float timer = 0f;
             while (Leaderboard.IsAsyncRunning == true)
@@ -84,13 +82,17 @@ namespace WatKhaoWong.UI.Leaderboards
                 await Task.Delay(100);
             }
 
-            ushort rowCounter = 1;
+            ClearRows(); //+Prevent duplicates Rows Bug.
 
+            ushort rowCounter = 1;
             await foreach (OtherUserData otherUserData in _leaderboard.GetRows())
             {
-                RowUI createdPrefab = Instantiate(_rowPrefab, _spawnParent);
+                RowUI createdPrefab = _rowUIPool.Pool.Get();
 
+                createdPrefab.transform.SetSiblingIndex(rowCounter - 1); // -1 bcuz Index starts at 0.
                 createdPrefab.Setup(otherUserData, rowCounter, _leaderboard.Category, ELeaderboardPresence.Present, _leaderboard.IsLeaderboardExists());
+
+                _activeRowUIs.Add(createdPrefab);
 
                 ++rowCounter;
             }
@@ -103,8 +105,10 @@ namespace WatKhaoWong.UI.Leaderboards
 
         private void ClearRows()
         {
-            foreach (Transform eachChild in _spawnParent)
-                Destroy(eachChild.gameObject);
+            foreach (RowUI eachRow in _activeRowUIs)
+                eachRow.Release();
+
+            _activeRowUIs.Clear();
         }
         #endregion
 
@@ -174,7 +178,6 @@ namespace WatKhaoWong.UI.Leaderboards
             UpdateFilterButtonsUI();
             UpdateTexts();
 
-            // Row
             ClearRows();
 
             await BuildRows(); // Have to call before 'SetupMyRow()' and have wait until it finished. So that it setup 'MyRank' properly.

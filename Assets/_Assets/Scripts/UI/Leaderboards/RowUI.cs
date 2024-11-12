@@ -4,6 +4,7 @@ using TMPro;
 using WatKhaoWong.Identities;
 using WatKhaoWong.Leaderboards;
 using WatKhaoWong.UI.Identities;
+using UnityEngine.Pool;
 
 namespace WatKhaoWong.UI.Leaderboards
 {
@@ -48,6 +49,7 @@ namespace WatKhaoWong.UI.Leaderboards
         private Row _row;
         private IUserData _userData;
         private OtherAccountPopupUI _otherAccountPopupUI;
+        private IObjectPool<RowUI> _rowUIPool;
         #endregion
 
 
@@ -71,6 +73,16 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Methods-- (Custom PUBLIC)
+        public void Setup(IObjectPool<RowUI> rowUIPool)
+        {
+            _rowUIPool = rowUIPool;
+        }
+
+        public void Release()
+        {
+            _rowUIPool.Release(this);
+        }
+
         public void Setup(IUserData userdata, ushort rankNumber, ELeaderboardCategory category, ELeaderboardPresence myPresence, bool isLeaderboardExists)
         {
             _userData = userdata;
