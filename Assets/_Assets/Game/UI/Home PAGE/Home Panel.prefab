@@ -208,7 +208,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5195495915256658922}
   - {fileID: 8620607849267349977}
   m_Father: {fileID: 347410791356089245}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -252,7 +251,7 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 175
+    m_Top: 174
     m_Bottom: 0
   m_ChildAlignment: 1
   m_Spacing: 0
@@ -315,7 +314,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7773784460244575433}
-  m_Father: {fileID: 1950433183682474363}
+  m_Father: {fileID: 3318812558869921859}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -547,7 +546,7 @@ MonoBehaviour:
     "-Username-"!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5094b715585444e90b7306721788dae5, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 276166e6376cc4203a7b650f8e972bf1, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 618f043e6a70f4dd482af00524c5270b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3010,7 +3009,7 @@ PrefabInstance:
     - target: {fileID: 9100634692513258456, guid: 00738adbe32b943d69c4c88902fb791f,
         type: 3}
       propertyPath: m_Padding.m_Top
-      value: 75
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9100634692513258456, guid: 00738adbe32b943d69c4c88902fb791f,
         type: 3}
@@ -3030,6 +3029,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5552474865056296263, guid: 00738adbe32b943d69c4c88902fb791f,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5195495915256658922}
     - targetCorrespondingSourceObject: {fileID: 5552474865056296263, guid: 00738adbe32b943d69c4c88902fb791f,
         type: 3}
       insertIndex: -1
@@ -3918,6 +3921,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_text
       value: Signup
+      objectReference: {fileID: 0}
+    - target: {fileID: 2006443655091039073, guid: 55e9b249b55474baaa8a3534d68842c0,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 45
       objectReference: {fileID: 0}
     - target: {fileID: 2307104926368045928, guid: 55e9b249b55474baaa8a3534d68842c0,
         type: 3}
