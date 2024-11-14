@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Localization;
 using WatKhaoWong.CoreItems;
 using WatKhaoWong.SceneManagement;
 using WatKhaoWong.Utils.Core;
@@ -22,9 +23,10 @@ namespace WatKhaoWong.Identities
     {
         #region --Fields-- (Inspector)
         [Header("Account Stuffs")]
-        [SerializeField] private string _defaultFirstName;
-        [SerializeField] private string _defaultLastName;
-        [SerializeField] private string _defaultMemberSince;
+        [SerializeField] private LocalizedString _defaultFirstName;
+        [SerializeField] private LocalizedString _defaultLastName;
+        [SerializeField] private LocalizedString _defaultMemberSince;
+        [SerializeField] private LocalizedString _loading;
         [SerializeField] private ProfileIconItem _defaultProfileIcon;
         [SerializeField] private int _defaultLevel;
         #endregion
@@ -41,6 +43,7 @@ namespace WatKhaoWong.Identities
 
         #region --Fields-- (In Class)
         private readonly Data _data = new Data();
+        private bool _loadingFirstNameFromServer = true;
 
         private Challenge _challenge;
         private SavingWrapper _savingWrapper;
@@ -237,9 +240,13 @@ namespace WatKhaoWong.Identities
                 return;
             }
 
+            _loadingFirstNameFromServer = true;
+
             var data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.FirstName);
             if (data != null)
                 _data.FirstName = data.Value.ToString();
+
+            _loadingFirstNameFromServer = false;
 
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.LastName);
             if (data != null)
@@ -313,10 +320,14 @@ namespace WatKhaoWong.Identities
         #region --Methods-- (Interface) ~Getter~
         public string GetUserNameText()
         {
-            if (string.IsNullOrEmpty(_data.FirstName) || string.IsNullOrEmpty(_data.LastName))
+            if (!FirebaseUtils.IsAuthenticated())
             {
-                _data.FirstName = _defaultFirstName;
-                _data.LastName = _defaultLastName;
+                _data.FirstName = _defaultFirstName.GetLocalizedString();
+                _data.LastName = _defaultLastName.GetLocalizedString();
+            }
+            else if (FirebaseUtils.IsAuthenticated() && _loadingFirstNameFromServer == true)
+            {
+                _data.FirstName = _loading.GetLocalizedString();
             }
 
             return _data.GetUserNameText();
@@ -324,8 +335,10 @@ namespace WatKhaoWong.Identities
 
         public string GetMemberSinceText()
         {
-            if (_data.MemberSince == null)
-                return $"{_defaultMemberSince}";
+            if (!FirebaseUtils.IsAuthenticated())
+                return $"{_defaultMemberSince.GetLocalizedString()}";
+            else if (FirebaseUtils.IsAuthenticated() && _loadingFirstNameFromServer == true)
+                return $"{_loading.GetLocalizedString()}";
 
 
             return _data.GetMemberSinceText();

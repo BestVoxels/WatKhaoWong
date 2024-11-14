@@ -3251,12 +3251,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58799e86949114904b60eedc84f1d4bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _defaultFirstName: FirstName
-  _defaultLastName: LastName
-  _defaultMemberSince: no data
+  _defaultFirstName:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6901414788849664
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _defaultLastName:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6901451166048256
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _defaultMemberSince:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6901702186754048
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _loading:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6922026068467712
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _defaultProfileIcon: {fileID: 11400000, guid: c2ac1f107ef784c5ea99406cb9b6b13f,
     type: 2}
   _defaultLevel: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &8705845222389736811
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3417,6 +3453,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _defaultCategory: 0
+  _hideZeroScore: 1
   _maxRowNumber: 100
   _rewardWinnerMaxRowNumber: 1
   _recordWinnerMaxRowNumber: 3
@@ -4029,29 +4066,26 @@ MonoBehaviour:
   - gameObjectsUI:
     - {fileID: 0}
     condition:
-      _conditionText: (IsRoleEquals == Admin || IsRoleEquals == Member)
+      _conditionText: IsAuthenticated == true
       _and4:
       - _or3:
         - _and2:
           - _or1:
-            - _conditionType: 4
-              _conditionValues: 01000000
-              _negate: 0
-            - _conditionType: 4
-              _conditionValues: 02000000
+            - _conditionType: 0
+              _conditionValues: 
               _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
     - {fileID: 0}
     condition:
-      _conditionText: (IsRoleEquals == Guest)
+      _conditionText: IsAuthenticated == false
       _and4:
       - _or3:
         - _and2:
           - _or1:
-            - _conditionType: 4
-              _conditionValues: 03000000
-              _negate: 0
+            - _conditionType: 0
+              _conditionValues: 
+              _negate: 1
   - gameObjectsUI:
     - {fileID: 0}
     - {fileID: 0}
@@ -4212,28 +4246,25 @@ MonoBehaviour:
   - gameObjectsUI:
     - {fileID: 0}
     condition:
-      _conditionText: (IsRoleEquals == Guest)
+      _conditionText: IsAuthenticated == false
       _and4:
       - _or3:
         - _and2:
           - _or1:
-            - _conditionType: 4
-              _conditionValues: 03000000
-              _negate: 0
+            - _conditionType: 0
+              _conditionValues: 
+              _negate: 1
   - gameObjectsUI:
     - {fileID: 0}
     - {fileID: 0}
     condition:
-      _conditionText: (IsRoleEquals == Admin || IsRoleEquals == Member)
+      _conditionText: IsAuthenticated == true
       _and4:
       - _or3:
         - _and2:
           - _or1:
-            - _conditionType: 4
-              _conditionValues: 01000000
-              _negate: 0
-            - _conditionType: 4
-              _conditionValues: 02000000
+            - _conditionType: 0
+              _conditionValues: 
               _negate: 0
   - gameObjectsUI:
     - {fileID: 0}

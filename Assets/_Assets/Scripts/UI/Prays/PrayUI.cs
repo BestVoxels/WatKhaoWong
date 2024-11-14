@@ -96,13 +96,13 @@ namespace WatKhaoWong.UI.Prays
         {
             _myUserData.UpdateProfileIcon(_icon, _myUserData.GetProfileIcon(), MultiplierRatioForDecorator);
 
-            _userNameText.text = _myUserData.GetUserNameText();
-
             RefreshStatUI();
         }
 
         private void RefreshStatUI()
         {
+            _userNameText.text = _myUserData.GetUserNameText();
+
             _allTimeTMPointsText.text = _pray.AllTimeText.GetLocalizedString($"{_pray.ValueTextFormatBegin}{_myUserData.GetTotalTMPointsText()}{_pray.ValueTextFormatEnd}");
             _todayTMPointsText.text = _pray.TodayText.GetLocalizedString($"{_pray.ValueTextFormatBegin}{_myUserData.GetTodayTMPointsText()}{_pray.ValueTextFormatEnd}");
             _challengeTMPointsText.text = _pray.ChallengeText.GetLocalizedString($"{_pray.ValueTextFormatBegin}{_myUserData.GetChallengeTMPointsText()}{_pray.ValueTextFormatEnd}");
