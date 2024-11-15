@@ -245,6 +245,7 @@ GameObject:
   - component: {fileID: 5120848572575549109}
   - component: {fileID: 2319439091503538393}
   - component: {fileID: 1201031331700475851}
+  - component: {fileID: 8935795782681357946}
   m_Layer: 5
   m_Name: Countdown Banner Container
   m_TagString: Untagged
@@ -405,6 +406,19 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8935795782681357946
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767781601619184783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
 --- !u!1 &1310973756840738554
 GameObject:
   m_ObjectHideFlags: 0
@@ -861,6 +875,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _challengeCreationButton: {fileID: 3135194883554721069}
   _challengePendingButton: {fileID: 1471554157409611466}
+  _countDownBannerEventTriggers:
+  - {fileID: 6728760206656744623}
+  - {fileID: 8935795782681357946}
 --- !u!1 &3005961401922867872
 GameObject:
   m_ObjectHideFlags: 0
@@ -954,7 +971,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 42
+  m_fontSize: 52
   m_fontSizeBase: 55
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1018,6 +1035,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1848046535691994949}
   - component: {fileID: 8662732585986637436}
+  - component: {fileID: 6728760206656744623}
   m_Layer: 5
   m_Name: Countdown Banner Decoration
   m_TagString: Untagged
@@ -1066,6 +1084,19 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &6728760206656744623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3172680294950220008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates: []
 --- !u!1 &3682558055429303448
 GameObject:
   m_ObjectHideFlags: 0

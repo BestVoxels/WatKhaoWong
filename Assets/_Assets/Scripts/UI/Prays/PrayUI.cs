@@ -24,8 +24,12 @@ namespace WatKhaoWong.UI.Prays
         [SerializeField] private TMP_Text _todayTMPointsText;
         [SerializeField] private TMP_Text _challengeTMPointsText;
         [Space]
-        [SerializeField] private Button _doneButton;
-        [SerializeField] private Button _playSoundButton;
+        [SerializeField] private Button _recordManuallyButton;
+        [SerializeField] private Button _meditateButton;
+        [SerializeField] private Button _pauseButton;
+        [SerializeField] private Button _endButton;
+        [Space]
+        [SerializeField] private TMP_Text _meditateText;
         #endregion
 
 
@@ -61,8 +65,10 @@ namespace WatKhaoWong.UI.Prays
             entry.callback.AddListener((BaseEventData data) => UserStats((PointerEventData)data));
             _userStatsEventTrigger.triggers.Add(entry);
 
-            _doneButton.onClick.AddListener(Done);
-            _playSoundButton.onClick.AddListener(PlaySound);
+            _recordManuallyButton.onClick.AddListener(RecordManually);
+            _meditateButton.onClick.AddListener(Meditate);
+            _pauseButton.onClick.AddListener(Pause);
+            _endButton.onClick.AddListener(End);
 
             UIRefresher.OnPrayRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
 
@@ -72,6 +78,18 @@ namespace WatKhaoWong.UI.Prays
         private void Start()
         {
             RefreshUI();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE)
+        private void UpdateMeditateText()
+        {
+            if (_pray.ToStartMeditateText)
+                _meditateText.text = _pray.MeditateText.GetLocalizedString();
+            else
+                _meditateText.text = _pray.ContinueText.GetLocalizedString();
         }
         #endregion
 
@@ -88,9 +106,28 @@ namespace WatKhaoWong.UI.Prays
 
         private void UserStats(PointerEventData data) => _pray.OnUserStatsClick();
 
-        private void Done() => _pray.OnDoneButtonClick();
+        private void RecordManually() => _pray.OnRecordManuallyButtonClick();
 
-        private void PlaySound() => _pray.OnPlaySoundButtonClick();
+        private void Meditate()
+        {
+            _pray.OnPlaySoundButtonClick();
+
+            //UpdateMeditateText();
+        }
+
+        private void Pause()
+        {
+            _pray.OnPauseSoundButtonClick();
+
+            UpdateMeditateText();
+        }
+
+        private void End()
+        {
+            _pray.OnEndSoundButtonClick();
+
+            UpdateMeditateText();
+        }
 
         private void RefreshUI()
         {
@@ -106,6 +143,8 @@ namespace WatKhaoWong.UI.Prays
             _allTimeTMPointsText.text = _pray.AllTimeText.GetLocalizedString($"{_pray.ValueTextFormatBegin}{_myUserData.GetTotalTMPointsText()}{_pray.ValueTextFormatEnd}");
             _todayTMPointsText.text = _pray.TodayText.GetLocalizedString($"{_pray.ValueTextFormatBegin}{_myUserData.GetTodayTMPointsText()}{_pray.ValueTextFormatEnd}");
             _challengeTMPointsText.text = _pray.ChallengeText.GetLocalizedString($"{_pray.ValueTextFormatBegin}{_myUserData.GetChallengeTMPointsText()}{_pray.ValueTextFormatEnd}");
+
+            UpdateMeditateText();
         }
         #endregion
     }

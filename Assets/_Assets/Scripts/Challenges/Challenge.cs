@@ -25,6 +25,8 @@ namespace WatKhaoWong.Challenges
         [Header("Challenge Event")]
         [SerializeField] private UnityEvent _onChallengeCreationButtonClick;
         [SerializeField] private UnityEvent _onChallengePendingButtonClick;
+        [Space]
+        [SerializeField] private UnityEvent _onCountDownBannerClick;
         #endregion
 
 
@@ -202,6 +204,11 @@ namespace WatKhaoWong.Challenges
         public void OnChallengePendingButtonClick()
         {
             _onChallengePendingButtonClick?.Invoke();
+        }
+
+        public void OnCountDownBannerClick()
+        {
+            _onCountDownBannerClick?.Invoke();
         }
         #endregion
 

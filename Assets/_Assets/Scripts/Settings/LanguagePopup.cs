@@ -40,7 +40,7 @@ namespace WatKhaoWong.Settings
 
 
 
-        #region --Methods-- (Custom PRIVATE)
+        #region --Methods-- (Built In)
         private IEnumerator Start()
         {
             // Wait for the localization system to initialize
