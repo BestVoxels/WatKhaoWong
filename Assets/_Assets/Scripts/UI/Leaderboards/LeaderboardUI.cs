@@ -5,6 +5,7 @@ using UnityEngine;
 using WatKhaoWong.Leaderboards;
 using WatKhaoWong.Identities;
 using WatKhaoWong.Challenges;
+using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.UI.Leaderboards
 {
@@ -137,7 +138,15 @@ namespace WatKhaoWong.UI.Leaderboards
         #region --Methods-- (Custom PRIVATE) ~Texts~
         private async void UpdateTexts()
         {
-            if (!_leaderboard.IsLeaderboardExists())
+            if (!FirebaseUtils.IsAuthenticated())
+                _dataIndicatorText.text = _leaderboard.Category switch
+                {
+                    ELeaderboardCategory.AllTime => _leaderboard.GuestAllTimeLeaderboardText.GetLocalizedString(),
+                    ELeaderboardCategory.Today => _leaderboard.GuestTodayLeaderboardText.GetLocalizedString(),
+                    ELeaderboardCategory.Challenge => _leaderboard.GuestChallengeLeaderboardText.GetLocalizedString(),
+                    _ => ""
+                };
+            else if (!_leaderboard.IsLeaderboardExists())
                 _dataIndicatorText.text = _leaderboard.Category switch
                 {
                     ELeaderboardCategory.AllTime => _leaderboard.NoAllTimeLeaderboardText.GetLocalizedString(),
@@ -151,7 +160,7 @@ namespace WatKhaoWong.UI.Leaderboards
                     },
                     _ => ""
                 };
-            else
+            else if (_leaderboard.IsLeaderboardExists())
                 _dataIndicatorText.text = _leaderboard.Category switch
                 {
                     ELeaderboardCategory.AllTime => _leaderboard.HasAllTimeLeaderboardText.GetLocalizedString(),

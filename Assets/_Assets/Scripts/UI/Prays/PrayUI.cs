@@ -111,8 +111,6 @@ namespace WatKhaoWong.UI.Prays
         private void Meditate()
         {
             _pray.OnPlaySoundButtonClick();
-
-            //UpdateMeditateText();
         }
 
         private void Pause()

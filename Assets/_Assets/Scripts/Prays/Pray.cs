@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Identities;
+using WatKhaoWong.Settings;
 
 namespace WatKhaoWong.Prays
 {
@@ -46,6 +47,7 @@ namespace WatKhaoWong.Prays
         [Space]
         [SerializeField] private UnityEvent _onRecordManuallyButtonClick;
         [SerializeField] private UnityEvent _onPlaySoundButtonClick;
+        [SerializeField] private UnityEvent _onPlaySoundButtonClickIfGuest;
         [SerializeField] private UnityEvent _onPauseSoundButtonClick;
         [SerializeField] private UnityEvent _onEndSoundButtonClick;
         #endregion
@@ -65,6 +67,7 @@ namespace WatKhaoWong.Prays
 
         private bool _isAdded = false;
         private MyUserData _myUserData;
+        private Setting _playerSetting;
         #endregion
 
 
@@ -78,7 +81,14 @@ namespace WatKhaoWong.Prays
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
+            GameObject player = GameObject.FindWithTag("Player");
+            _myUserData = player.GetComponentInChildren<MyUserData>();
+            _playerSetting = player.GetComponentInChildren<Setting>();
+        }
+
+        private void Start()
+        {
+            Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
 
         private void Update()
@@ -124,6 +134,12 @@ namespace WatKhaoWong.Prays
 
         public void OnPlaySoundButtonClick()
         {
+            if (_myUserData.GetRole() == EUserRole.Guest)
+            {
+                _onPlaySoundButtonClickIfGuest?.Invoke();
+                return;
+            }
+
             _onPlaySoundButtonClick?.Invoke();
 
             PlayTMClipLooping();
@@ -152,6 +168,8 @@ namespace WatKhaoWong.Prays
             _audioSource.loop = true;
 
             _audioSource.clip = _audioClipTM;
+
+            _audioSource.volume = _playerSetting.LoadMusicValue();
 
             _audioSource.Play();
         }

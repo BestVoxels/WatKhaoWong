@@ -38,6 +38,10 @@ namespace WatKhaoWong.Leaderboards
         [field: Space]
 
         [field: Header("Leaderboard Status Text")]
+        [field: SerializeField] public LocalizedString GuestAllTimeLeaderboardText { get; private set; }
+        [field: SerializeField] public LocalizedString GuestTodayLeaderboardText { get; private set; }
+        [field: SerializeField] public LocalizedString GuestChallengeLeaderboardText { get; private set; }
+        [field: Space]
         [field: SerializeField] public LocalizedString NoAllTimeLeaderboardText { get; private set; }
         [field: SerializeField] public LocalizedString NoTodayLeaderboardText { get; private set; }
         [field: SerializeField] public LocalizedString NoChallengeLeaderboardText { get; private set; }
