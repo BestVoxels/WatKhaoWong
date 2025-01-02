@@ -26,10 +26,9 @@ namespace WatKhaoWong.UI.Prays
         [Space]
         [SerializeField] private Button _recordManuallyButton;
         [SerializeField] private Button _meditateButton;
+        [SerializeField] private Button _continueButton;
         [SerializeField] private Button _pauseButton;
         [SerializeField] private Button _endButton;
-        [Space]
-        [SerializeField] private TMP_Text _meditateText;
         #endregion
 
 
@@ -67,6 +66,7 @@ namespace WatKhaoWong.UI.Prays
 
             _recordManuallyButton.onClick.AddListener(RecordManually);
             _meditateButton.onClick.AddListener(Meditate);
+            _continueButton.onClick.AddListener(Continue);
             _pauseButton.onClick.AddListener(Pause);
             _endButton.onClick.AddListener(End);
 
@@ -84,13 +84,6 @@ namespace WatKhaoWong.UI.Prays
 
 
         #region --Methods-- (Custom PRIVATE)
-        private void UpdateMeditateText()
-        {
-            if (_pray.ToStartMeditateText)
-                _meditateText.text = _pray.MeditateText.GetLocalizedString();
-            else
-                _meditateText.text = _pray.ContinueText.GetLocalizedString();
-        }
         #endregion
 
 
@@ -113,18 +106,19 @@ namespace WatKhaoWong.UI.Prays
             _pray.OnPlaySoundButtonClick();
         }
 
+        private void Continue()
+        {
+            _pray.OnContinueButtonClick();
+        }
+
         private void Pause()
         {
             _pray.OnPauseSoundButtonClick();
-
-            UpdateMeditateText();
         }
 
         private void End()
         {
             _pray.OnEndSoundButtonClick();
-
-            UpdateMeditateText();
         }
 
         private void RefreshUI()
@@ -141,8 +135,6 @@ namespace WatKhaoWong.UI.Prays
             _allTimeTMPointsText.text = _pray.AllTimeText.GetLocalizedString($"{_pray.ValueTextFormatBegin}{_myUserData.GetTotalTMPointsText()}{_pray.ValueTextFormatEnd}");
             _todayTMPointsText.text = _pray.TodayText.GetLocalizedString($"{_pray.ValueTextFormatBegin}{_myUserData.GetTodayTMPointsText()}{_pray.ValueTextFormatEnd}");
             _challengeTMPointsText.text = _pray.ChallengeText.GetLocalizedString($"{_pray.ValueTextFormatBegin}{_myUserData.GetChallengeTMPointsText()}{_pray.ValueTextFormatEnd}");
-
-            UpdateMeditateText();
         }
         #endregion
     }

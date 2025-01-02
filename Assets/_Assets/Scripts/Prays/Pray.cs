@@ -25,11 +25,6 @@ namespace WatKhaoWong.Prays
 
         [field: Space]
 
-        [field: SerializeField] public LocalizedString MeditateText { get; private set; }
-        [field: SerializeField] public LocalizedString ContinueText { get; private set; }
-
-        [field: Space]
-
         [field: Header("Pray - Settings")]
         [field: SerializeField] public string ValueTextFormatBegin { get; private set; } = "<space=25><b><cspace=-3>";
         [field: SerializeField] public string ValueTextFormatEnd { get; private set; } = "</cspace></b>";
@@ -48,6 +43,7 @@ namespace WatKhaoWong.Prays
         [SerializeField] private UnityEvent _onRecordManuallyButtonClick;
         [SerializeField] private UnityEvent _onPlaySoundButtonClick;
         [SerializeField] private UnityEvent _onPlaySoundButtonClickIfGuest;
+        [SerializeField] private UnityEvent _onContinueButtonClick;
         [SerializeField] private UnityEvent _onPauseSoundButtonClick;
         [SerializeField] private UnityEvent _onEndSoundButtonClick;
         #endregion
@@ -145,6 +141,13 @@ namespace WatKhaoWong.Prays
             PlayTMClipLooping();
         }
 
+        public void OnContinueButtonClick()
+        {
+            _onContinueButtonClick?.Invoke();
+
+            ContinueTMClip();
+        }
+
         public void OnPauseSoundButtonClick()
         {
             _onPauseSoundButtonClick?.Invoke();
@@ -171,6 +174,11 @@ namespace WatKhaoWong.Prays
 
             _audioSource.volume = _playerSetting.LoadMusicValue();
 
+            _audioSource.Play();
+        }
+
+        private void ContinueTMClip()
+        {
             _audioSource.Play();
         }
 
