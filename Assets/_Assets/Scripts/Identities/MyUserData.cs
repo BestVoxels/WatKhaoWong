@@ -69,10 +69,24 @@ namespace WatKhaoWong.Identities
         {
             FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
         }
+
+        private async void OnApplicationPause(bool pauseStatus)
+        {
+            if (!pauseStatus)
+            {
+                OnTodayTMPointsAdded?.Invoke(_data.TodayTMPoints);
+                await ResetTMPointsDaily();
+
+                OnChallengeTMPointsAdded?.Invoke(_data.ChallengeTMPoints);
+                await ResetTMPointsAfterChallengeEnd();
+
+                OnMyUserDataUpdated?.Invoke();
+            }
+        }
         #endregion
 
 
-        
+
         #region --Methods-- (Custom PUBLIC) ~Setter~
         public void SetFirstName(string input)
         {
