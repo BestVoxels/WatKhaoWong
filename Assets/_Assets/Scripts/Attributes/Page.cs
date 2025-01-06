@@ -8,6 +8,7 @@ namespace WatKhaoWong.Attributes
         #region --Events-- (UnityEvent)
         [Header("Page Header UI Event")]
         [SerializeField] private UnityEvent _onBackButtonClick;
+        [SerializeField] private UnityEvent _onChangeLangButtonClick;
         #endregion
 
 
@@ -16,6 +17,11 @@ namespace WatKhaoWong.Attributes
         public void OnBackButtonClick()
         {
             _onBackButtonClick?.Invoke();
+        }
+
+        public void OnChangeLangButtonClick()
+        {
+            _onChangeLangButtonClick?.Invoke();
         }
         #endregion
     }

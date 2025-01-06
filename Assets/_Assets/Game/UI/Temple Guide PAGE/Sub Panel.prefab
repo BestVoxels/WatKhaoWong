@@ -777,7 +777,7 @@ PrefabInstance:
     - target: {fileID: 31136049371754568, guid: 49817cb28b85b4453b9d0ef6195e0831,
         type: 3}
       propertyPath: m_fontSize
-      value: 72
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 229241566610012518, guid: 49817cb28b85b4453b9d0ef6195e0831,
         type: 3}
@@ -925,6 +925,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1709241410703729980}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6323989452698427783 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4646343618868151483, guid: 49817cb28b85b4453b9d0ef6195e0831,
+    type: 3}
+  m_PrefabInstance: {fileID: 1709241410703729980}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7477576566628601137 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8105848506663364621, guid: 49817cb28b85b4453b9d0ef6195e0831,
@@ -4478,6 +4490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _backButton: {fileID: 7477576566628601137}
+  _changeLangButton: {fileID: 6323989452698427783}
 --- !u!1001 &8716358943410353720
 PrefabInstance:
   m_ObjectHideFlags: 0

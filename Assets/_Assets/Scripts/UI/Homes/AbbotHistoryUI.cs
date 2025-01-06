@@ -10,6 +10,7 @@ namespace WatKhaoWong.UI.Homes
         #region --Fields-- (Inspector)
         [Header("Page Header UI Stuffs")]
         [SerializeField] private Button _backButton;
+        [SerializeField] private Button _changeLangButton;
 
         //[Space]
 
@@ -32,6 +33,7 @@ namespace WatKhaoWong.UI.Homes
             _playerAbbotHistory = GameObject.FindWithTag("Player").GetComponentInChildren<AbbotHistory>();
 
             _backButton.onClick.AddListener(Back);
+            _changeLangButton.onClick.AddListener(ChangeLang);
 
             //UIRefresher.OnAbbotHistoryRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
@@ -46,6 +48,7 @@ namespace WatKhaoWong.UI.Homes
 
         #region --Methods-- (Subscriber) ~Page Header UI~
         private void Back() => _playerAbbotHistory.OnBackButtonClick();
+        private void ChangeLang() => _playerAbbotHistory.OnChangeLangButtonClick();
         #endregion
 
 

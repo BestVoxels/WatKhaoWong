@@ -9,6 +9,7 @@ namespace WatKhaoWong.UI.Homes
         #region --Fields-- (Inspector)
         [Header("Page Header UI Stuffs")]
         [SerializeField] private Button _backButton;
+        [SerializeField] private Button _changeLangButton;
 
         //[Header("TempleGuide UI Stuffs")]
         #endregion
@@ -27,6 +28,7 @@ namespace WatKhaoWong.UI.Homes
             _playerTempleGuide = GameObject.FindWithTag("Player").GetComponentInChildren<TempleGuide>();
 
             _backButton.onClick.AddListener(Back);
+            _changeLangButton.onClick.AddListener(ChangeLang);
         }
 
         //private void Start()
@@ -39,6 +41,7 @@ namespace WatKhaoWong.UI.Homes
 
         #region --Methods-- (Subscriber) ~Page Header UI~
         private void Back() => _playerTempleGuide.OnBackButtonClick();
+        private void ChangeLang() => _playerTempleGuide.OnChangeLangButtonClick();
         #endregion
 
 

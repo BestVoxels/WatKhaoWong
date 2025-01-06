@@ -9,6 +9,7 @@ namespace WatKhaoWong.UI.Histories
         #region --Fields-- (Inspector)
         [Header("Page Header UI Stuffs")]
         [SerializeField] private Button _backButton;
+        [SerializeField] private Button _changeLangButton;
 
         //[Header("History UI Stuffs")]
         #endregion
@@ -27,6 +28,7 @@ namespace WatKhaoWong.UI.Histories
             _playerHistory = GameObject.FindWithTag("Player").GetComponentInChildren<History>();
 
             _backButton.onClick.AddListener(Back);
+            _changeLangButton.onClick.AddListener(ChangeLang);
         }
 
         //private void Start()
@@ -39,6 +41,7 @@ namespace WatKhaoWong.UI.Histories
 
         #region --Methods-- (Subscriber) ~Page Header UI~
         private void Back() => _playerHistory.OnBackButtonClick();
+        private void ChangeLang() => _playerHistory.OnChangeLangButtonClick();
         #endregion
 
 

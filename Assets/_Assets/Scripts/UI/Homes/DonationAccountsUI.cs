@@ -9,6 +9,7 @@ namespace WatKhaoWong.UI.Homes
         #region --Fields-- (Inspector)
         [Header("Page Header UI Stuffs")]
         [SerializeField] private Button _backButton;
+        [SerializeField] private Button _changeLangButton;
 
         [Header("DonationAccounts UI Stuffs")]
         [SerializeField] private Button _copyButton1;
@@ -39,6 +40,7 @@ namespace WatKhaoWong.UI.Homes
             _playerDonationAccounts = GameObject.FindWithTag("Player").GetComponentInChildren<DonationAccounts>();
 
             _backButton.onClick.AddListener(Back);
+            _changeLangButton.onClick.AddListener(ChangeLang);
 
             _copyButton1.onClick.AddListener(Copy1);
             _copyButton2.onClick.AddListener(Copy2);
@@ -64,6 +66,7 @@ namespace WatKhaoWong.UI.Homes
 
         #region --Methods-- (Subscriber) ~Page Header UI~
         private void Back() => _playerDonationAccounts.OnBackButtonClick();
+        private void ChangeLang() => _playerDonationAccounts.OnChangeLangButtonClick();
         #endregion
 
 
