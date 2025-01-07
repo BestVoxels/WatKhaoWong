@@ -212,7 +212,7 @@ RectTransform:
   m_Father: {fileID: 347410791356089245}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0.9492441}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -829,7 +829,7 @@ PrefabInstance:
     - target: {fileID: 7483152262337741135, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_Padding.m_Right
-      value: -7
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 8331024767012289936, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -2347,7 +2347,7 @@ PrefabInstance:
     - target: {fileID: 6648364001943737867, guid: 49817cb28b85b4453b9d0ef6195e0831,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.9492441
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6648364001943737867, guid: 49817cb28b85b4453b9d0ef6195e0831,
         type: 3}
@@ -3550,8 +3550,23 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 2eb22c3c31dbf4d3b93baa0df24fc1c7,
+      objectReference: {fileID: 21300000, guid: 095ecb8bd81d84d2f842c2649374041e,
         type: 3}
+    - target: {fileID: 93500112773183736, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_Color.b
+      value: 0.93961376
+      objectReference: {fileID: 0}
+    - target: {fileID: 93500112773183736, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.94957095
+      objectReference: {fileID: 0}
+    - target: {fileID: 93500112773183736, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.9716981
+      objectReference: {fileID: 0}
     - target: {fileID: 1224021217041234692, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_Pivot.x
@@ -3737,15 +3752,20 @@ PrefabInstance:
       propertyPath: m_Padding.m_Top
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 7483152262337741135, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_Padding.m_Right
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 8331024767012289936, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_MinWidth
-      value: 135
+      value: 105
       objectReference: {fileID: 0}
     - target: {fileID: 8331024767012289936, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_PreferredWidth
-      value: 135
+      value: 105
       objectReference: {fileID: 0}
     - target: {fileID: 9206818104386637119, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
