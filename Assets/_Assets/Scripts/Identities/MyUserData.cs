@@ -9,6 +9,7 @@ using WatKhaoWong.Utils.Conditions;
 using WatKhaoWong.Challenges;
 using Firebase.Auth;
 using WatKhaoWong.Attributes;
+using UnityEngine.Events;
 
 namespace WatKhaoWong.Identities
 {
@@ -33,7 +34,15 @@ namespace WatKhaoWong.Identities
 
 
 
+        #region --Events-- (UnityEvent)
+        [Header("UI Event")]
+        [SerializeField] private UnityEvent _onUserNameMissing;
+        #endregion
+
+
+
         #region --Events-- (Delegate as Action)
+        public event Action OnApplicationResume;
         public event Action OnMyUserDataUpdated;
         public event Action<int> OnTodayTMPointsAdded;
         public event Action<int> OnChallengeTMPointsAdded;
@@ -80,7 +89,7 @@ namespace WatKhaoWong.Identities
                 OnChallengeTMPointsAdded?.Invoke(_data.ChallengeTMPoints);
                 await ResetTMPointsAfterChallengeEnd();
 
-                OnMyUserDataUpdated?.Invoke();
+                OnApplicationResume?.Invoke();
             }
         }
         #endregion
@@ -285,6 +294,11 @@ namespace WatKhaoWong.Identities
             {
                 string roleString = data.Value.ToString();
                 _data.Role = (EUserRole)Enum.Parse(typeof(EUserRole), roleString);
+            }
+            // Detects if "Authenticated & No Role Data", so we can prompt them to enter info.
+            else if (data == null && FirebaseUtils.IsAuthenticated())
+            {
+                _onUserNameMissing?.Invoke();
             }
 
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.Level);
