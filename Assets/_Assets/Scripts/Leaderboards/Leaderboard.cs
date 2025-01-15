@@ -146,6 +146,20 @@ namespace WatKhaoWong.Leaderboards
             _myUserData.OnTodayTMPointsAdded -= AddTodayTMPointsToLeaderboard;
             _myUserData.OnChallengeTMPointsAdded -= AddChallengeTMPointsToLeaderboard;
         }
+
+        private async void OnApplicationPause(bool pauseStatus)
+        {
+            if (!pauseStatus)
+            {
+                await DeleteTodayTMLeaderboardDaily();
+
+                await DeleteChallengeTMLeaderboardAfterEnd();
+
+                // Clear All Record Category CachedRows so that it has to fetch from database again. Why all? IF 'today score' updated, that means 'alltime score' has to be updated as well.
+                Records.ClearAllCachedRows();
+                OnLeaderboardScoreUpdated?.Invoke();
+            }
+        }
         #endregion
 
 
@@ -215,7 +229,7 @@ namespace WatKhaoWong.Leaderboards
                         Records[Category].IsLeaderboardExists = true;
                         OnConditionIsLeaderboardExistsUpdated?.Invoke();
                     }
-
+                    
                     if (eachData.Key.Equals(FirebaseUtils.CurrentUserID))
                     {
                         Records[Category].MyRank = index;
@@ -230,6 +244,12 @@ namespace WatKhaoWong.Leaderboards
                     Records[Category].CachedRows.Add(data);
 
                     yield return data;
+                }
+                
+                if (index == 0 && IsLeaderboardExists())
+                {
+                    Records[Category].IsLeaderboardExists = false;
+                    OnConditionIsLeaderboardExistsUpdated?.Invoke();
                 }
 
                 yield break; // Important to stop here because 'await' will resume call and if we don't end here it will run code below too.
@@ -311,6 +331,8 @@ namespace WatKhaoWong.Leaderboards
 
                 _leaderboardFirstUploadTimeOfDayTM = nowDate;
                 _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM, nowDate.ToGregorianString());
+
+                _isLeaderboardTMTodayExists = true;
             }
         }
 
@@ -335,6 +357,8 @@ namespace WatKhaoWong.Leaderboards
 
                 _leaderboardFirstUploadTimeOfChallengeTM = nowDate;
                 _savingWrapper.Save(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfChallengeTM, nowDate.ToGregorianString());
+
+                _isLeaderboardTMChallengeExists = true;
             }
         }
 

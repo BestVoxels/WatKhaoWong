@@ -35,7 +35,6 @@ namespace WatKhaoWong.Identities
 
 
         #region --Events-- (Delegate as Action)
-        public event Action OnApplicationResume;
         public event Action OnMyUserDataUpdated;
         public event Action<int> OnTodayTMPointsAdded;
         public event Action<int> OnChallengeTMPointsAdded;
@@ -76,13 +75,9 @@ namespace WatKhaoWong.Identities
         {
             if (!pauseStatus)
             {
-                OnTodayTMPointsAdded?.Invoke(_data.TodayTMPoints);
                 await ResetTMPointsDaily();
 
-                OnChallengeTMPointsAdded?.Invoke(_data.ChallengeTMPoints);
                 await ResetTMPointsAfterChallengeEnd();
-
-                OnApplicationResume?.Invoke();
             }
         }
         #endregion

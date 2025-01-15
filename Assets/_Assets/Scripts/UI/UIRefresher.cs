@@ -62,7 +62,6 @@ namespace WatKhaoWong.UI
         {
             // IDENTITY SYSTEM
             _myUserData.OnMyUserDataUpdated += RefreshAllUI; // Just Refresh All cuz even LeaderboardUI still has to (MeRowUI will show correct result when MyUserData is loaded)
-            _myUserData.OnApplicationResume += () => { RefreshPrayUI(); RefreshLeaderboardUI(); ShowHideUIByRoles(); CallAllConditionCheck(); };
 
             // HOME SYSTEM
             // TODO lets see what to subscribe to for HOME SYSTEM
@@ -87,7 +86,7 @@ namespace WatKhaoWong.UI
             _challenge.OnDataUpdated += () => { RefreshPopupUI(); ShowHideUIByRoles(); RefreshLeaderboardUI(); };
 
             // CONDITION SYSTEM
-            _leaderboard.OnConditionIsLeaderboardExistsUpdated += CallAllConditionCheck;
+            _leaderboard.OnConditionIsLeaderboardExistsUpdated += () => { CallAllConditionCheck(); RefreshLeaderboardUI(); };
 
             // LOCALIZATION SYSTEM
             LocalizationSettings.SelectedLocaleChanged += (obj) => LocalizeDynamicString();
