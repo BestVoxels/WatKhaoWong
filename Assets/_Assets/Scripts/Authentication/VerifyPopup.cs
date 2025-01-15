@@ -3,7 +3,6 @@ using UnityEngine.Events;
 using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Utils.UI;
-using WatKhaoWong.Identities;
 using Firebase.Auth;
 using System;
 
@@ -76,7 +75,6 @@ namespace WatKhaoWong.Authentication
         private string _typedCode;
 
         private StatusText _statusText;
-        private MyUserData _myUserData;
         #endregion
 
 
@@ -97,7 +95,6 @@ namespace WatKhaoWong.Authentication
         private void Awake()
         {
             _statusText = FindAnyObjectByType<StatusText>();
-            _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
         }
         #endregion
 
@@ -266,7 +263,6 @@ namespace WatKhaoWong.Authentication
 
             _onCallerSucceeded?.Invoke(result.User); // Pass back to the caller
             _onVerifySucceeded?.Invoke(result.User); // Call To Close Verfication Popup UI
-            _myUserData.SetRole(EUserRole.Member);
 
             _isRunningOnBackground = false;
         }

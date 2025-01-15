@@ -48,6 +48,11 @@ namespace WatKhaoWong.SceneManagement
             FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged;
         }
 
+        private void Start()
+        {
+            StartCoroutine(StartProtectionTimer());
+        }
+
         private void OnDisable()
         {
             FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;

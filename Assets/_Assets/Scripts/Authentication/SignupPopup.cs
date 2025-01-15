@@ -84,6 +84,12 @@ namespace WatKhaoWong.Authentication
 
 
 
+        #region --Properties-- (Auto)
+        public bool IsSigningUp { get; set; } = false;
+        #endregion
+
+
+
         #region --Methods-- (Built In)
         private void Awake()
         {
@@ -111,12 +117,15 @@ namespace WatKhaoWong.Authentication
 
         public void OnValidateSucceeded(EAuthType authType, string firstName, string lastName, string phoneNumber, string email, string password)
         {
+            IsSigningUp = true;
+
             // Can't just call _savingWrapper.SaveWithoutAuth() without Subscribe to _onSignupSucceeded BECAUSE have to wait for 'CurrentUser.UserId' otherwise can't get Path to save.
             _onSignupSucceeded.AddListener(async (FirebaseUser user) =>
             {
-                _myUserData.SetFirstName(firstName);
-                _myUserData.SetLastName(lastName);
-                _myUserData.SetMemberSinceText(await _serverTime.Now());
+                _myUserData.ForceSetFirstName(firstName);
+                _myUserData.ForceSetLastName(lastName);
+                _myUserData.ForceSetMemberSinceText(await _serverTime.Now());
+                _myUserData.ForceSetRole(EUserRole.LayPeople);
             });
 
             if (_isRunningOnBackground) return;
@@ -161,7 +170,6 @@ namespace WatKhaoWong.Authentication
             _statusText.Show(_statusSucceeded.GetLocalizedString(), _statusSucceededColor);
 
             _onSignupSucceeded?.Invoke(result.User);
-            _myUserData.SetRole(EUserRole.Member);
 
             _isRunningOnBackground = false;
         }

@@ -34,13 +34,6 @@ namespace WatKhaoWong.Identities
 
 
 
-        #region --Events-- (UnityEvent)
-        [Header("UI Event")]
-        [SerializeField] private UnityEvent _onUserNameMissing;
-        #endregion
-
-
-
         #region --Events-- (Delegate as Action)
         public event Action OnApplicationResume;
         public event Action OnMyUserDataUpdated;
@@ -97,27 +90,27 @@ namespace WatKhaoWong.Identities
 
 
         #region --Methods-- (Custom PUBLIC) ~Setter~
-        public void SetFirstName(string input)
+        public void ForceSetFirstName(string input)
         {
             _data.FirstName = input;
 
-            _savingWrapper.Save(ECategoryNode.Users, EValueNode.FirstName, _data.FirstName);
+            _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.FirstName, _data.FirstName);
             OnMyUserDataUpdated?.Invoke();
         }
 
-        public void SetLastName(string input)
+        public void ForceSetLastName(string input)
         {
             _data.LastName = input;
 
-            _savingWrapper.Save(ECategoryNode.Users, EValueNode.LastName, _data.LastName);
+            _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.LastName, _data.LastName);
             OnMyUserDataUpdated?.Invoke();
         }
 
-        public void SetMemberSinceText(DateTime input)
+        public void ForceSetMemberSinceText(DateTime input)
         {
             _data.MemberSince = input;
 
-            _savingWrapper.Save(ECategoryNode.Users, EValueNode.MemberSince, _data.MemberSince.ToGregorianString());
+            _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.MemberSince, _data.MemberSince.ToGregorianString());
             OnMyUserDataUpdated?.Invoke();
         }
 
@@ -129,11 +122,11 @@ namespace WatKhaoWong.Identities
             OnMyUserDataUpdated?.Invoke();
         }
 
-        public void SetRole(EUserRole role)
+        public void ForceSetRole(EUserRole role)
         {
             _data.Role = role;
 
-            _savingWrapper.Save(ECategoryNode.Users, EValueNode.Role, _data.Role.ToString());
+            _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.Role, _data.Role.ToString());
             OnMyUserDataUpdated?.Invoke();
         }
 
@@ -295,10 +288,7 @@ namespace WatKhaoWong.Identities
                 string roleString = data.Value.ToString();
                 _data.Role = (EUserRole)Enum.Parse(typeof(EUserRole), roleString);
             }
-            // Detects if "Authenticated & No Role Data", so we can prompt them to enter info.
-            else if (data == null && FirebaseUtils.IsAuthenticated())
             {
-                _onUserNameMissing?.Invoke();
             }
 
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.Level);

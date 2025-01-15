@@ -1,5 +1,3 @@
-using System;
-using Firebase.Auth;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
@@ -66,10 +64,10 @@ namespace WatKhaoWong.Authentication
         #region --Methods-- (Custom PUBLIC) ~Popup UI Buttons~
         public async void OnEnterSucceeded(string firstName, string lastName)
         {
-            _myUserData.SetFirstName(firstName);
-            _myUserData.SetLastName(lastName);
-            _myUserData.SetMemberSinceText(await _serverTime.Now());
-            _myUserData.SetRole(EUserRole.Member);
+            _myUserData.ForceSetFirstName(firstName);
+            _myUserData.ForceSetLastName(lastName);
+            _myUserData.ForceSetMemberSinceText(await _serverTime.Now());
+            _myUserData.ForceSetRole(EUserRole.LayPeople);
 
             _statusText.Show(_statusSucceeded.GetLocalizedString(), _statusSucceededColor);
             _onEnterSucceeded?.Invoke();

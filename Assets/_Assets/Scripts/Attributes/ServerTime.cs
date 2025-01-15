@@ -50,6 +50,11 @@ namespace WatKhaoWong.Attributes
             FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged;
         }
 
+        private void Start()
+        {
+            StartCoroutine(StartDelayTimer());
+        }
+
         private void OnDisable()
         {
             FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
