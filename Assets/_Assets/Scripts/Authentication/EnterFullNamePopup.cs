@@ -68,6 +68,7 @@ namespace WatKhaoWong.Authentication
             _myUserData.ForceSetLastName(lastName);
             _myUserData.ForceSetMemberSinceText(await _serverTime.Now());
             _myUserData.ForceSetRole(EUserRole.LayPeople);
+            _myUserData.ForceSetTitle(EUserTitle.LayPeople.ToString());
 
             _statusText.Show(_statusSucceeded.GetLocalizedString(), _statusSucceededColor);
             _onEnterSucceeded?.Invoke();

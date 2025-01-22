@@ -14,6 +14,9 @@ namespace WatKhaoWong.Homes
         [Space]
         [SerializeField] private LocalizedString _welcomeTextForGuest;
 
+        [Space]
+        [SerializeField] private LocalizedString _loading;
+
         //[Space]
         //[Header("Home Stuffs - Settings")]
         //[SerializeField] private float _coverImageRefreshTime = 99999999f;
@@ -40,6 +43,7 @@ namespace WatKhaoWong.Homes
 
         #region --Fields-- (In Class)
         private MyUserData _myUserData;
+        private TitleLocalizer _titleLocalizer;
         #endregion
 
 
@@ -50,6 +54,7 @@ namespace WatKhaoWong.Homes
             GameObject player = GameObject.FindWithTag("Player");
 
             _myUserData = player.GetComponentInChildren<MyUserData>();
+            _titleLocalizer = FindAnyObjectByType<TitleLocalizer>();
         }
         #endregion
 
@@ -69,9 +74,11 @@ namespace WatKhaoWong.Homes
         public string GetWelcomeText()
         {
             string text;
-            
-            if (FirebaseUtils.IsAuthenticated())
-                text = _welcomeTextForUser.GetLocalizedString(_myUserData.GetUserNameText());
+
+            if (FirebaseUtils.IsAuthenticated() && _myUserData.IsLoadingFromServer == true)
+                text = _welcomeTextForUser.GetLocalizedString(_loading.GetLocalizedString());
+            else if (FirebaseUtils.IsAuthenticated())
+                text = _welcomeTextForUser.GetLocalizedString( $"{_titleLocalizer.Localize(_myUserData.GetTitleText())}\n{_myUserData.GetUserNameText()}" );
             else
                 text = _welcomeTextForGuest.GetLocalizedString();
 

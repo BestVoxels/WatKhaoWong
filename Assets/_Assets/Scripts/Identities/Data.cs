@@ -32,6 +32,7 @@ namespace WatKhaoWong.Identities
         internal DateTime? MemberSince { get; set; } = null;
         internal ProfileIconItem ProfileIcon { get; set; } = null;
         internal EUserRole Role { get; set; } = EUserRole.Guest;
+        internal string Title { get; set; } = EUserTitle.Guest.ToString();
         internal int Level { get; set; } = 1;
         internal int TotalTMPoints { get; set; }
         internal int TodayTMPoints { get; set; }
@@ -48,7 +49,7 @@ namespace WatKhaoWong.Identities
         {
         }
 
-        internal Data(string firstName, string lastName, DateTime? memberSince, ProfileIconItem profileIcon, EUserRole role, int level, int totalTMPoints, int todayTMPoints, int challengeTMPoints, int totalChallengeTMWon, DateTime firstUploadTimeOfDayTM, DateTime firstUploadTimeOfChallengeTM)
+        internal Data(string firstName, string lastName, DateTime? memberSince, ProfileIconItem profileIcon, EUserRole role, string title, int level, int totalTMPoints, int todayTMPoints, int challengeTMPoints, int totalChallengeTMWon, DateTime firstUploadTimeOfDayTM, DateTime firstUploadTimeOfChallengeTM)
         {
             _nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             _nfi.NumberGroupSeparator = " ";
@@ -58,6 +59,7 @@ namespace WatKhaoWong.Identities
             MemberSince = memberSince;
             ProfileIcon = profileIcon;
             Role = role;
+            Title = title;
             Level = level;
             TotalTMPoints = totalTMPoints;
             TodayTMPoints = todayTMPoints;
@@ -78,6 +80,8 @@ namespace WatKhaoWong.Identities
         internal ProfileIconItem GetProfileIcon() => ProfileIcon;
 
         internal EUserRole GetRole() => Role;
+
+        internal string GetTitleText() => Title;
 
         internal string GetLevelText() => $"LV. {Level.ToString("#,0", _nfi)}";
 

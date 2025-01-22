@@ -3,7 +3,10 @@ namespace WatKhaoWong.Identities
     public enum EUserRole
     {
         Admin,
-        Member,
+        Phra,
+        DhammaForces,
+        DhammaPractitioner,
+        LayPeople,
         Guest
     }
 }

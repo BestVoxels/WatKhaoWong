@@ -18,6 +18,7 @@ namespace WatKhaoWong.UI.Identities
         [SerializeField] private ProfileIconInspector _icon;
         [Space]
         [SerializeField] private TMP_Text _userNameText;
+        [SerializeField] private TMP_Text _userTitleText;
         [SerializeField] private TMP_Text _userLevelText;
 
         [Header("User Stats")]
@@ -33,6 +34,7 @@ namespace WatKhaoWong.UI.Identities
         #region --Fields-- (In Class)
         private IUserData _userData;
         private OtherAccountPopup _otherAccountPopup;
+        private TitleLocalizer _titleLocalizer;
         #endregion
 
 
@@ -47,6 +49,7 @@ namespace WatKhaoWong.UI.Identities
         private void Awake()
         {
             _otherAccountPopup = GameObject.FindWithTag("Player").GetComponentInChildren<OtherAccountPopup>();
+            _titleLocalizer = FindAnyObjectByType<TitleLocalizer>();
 
             _closeButton.onClick.AddListener(Close);
         }
@@ -71,6 +74,7 @@ namespace WatKhaoWong.UI.Identities
             _userData.UpdateProfileIcon(_icon, _userData.GetProfileIcon(), MultiplierRatioForDecorator);
 
             _userNameText.text = _userData.GetUserNameText();
+            _userTitleText.text = _titleLocalizer.Localize(_userData.GetTitleText());
             _userLevelText.text = _userData.GetLevelText();
 
             _allTimeTMPointsText.text = _userData.GetTotalTMPointsText();

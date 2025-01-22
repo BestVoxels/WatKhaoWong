@@ -51,6 +51,10 @@ namespace WatKhaoWong.Identities
             if (data != null)
                 _data.Role = (EUserRole)Enum.Parse(typeof(EUserRole), data.ToString());
 
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.Title)).Value;
+            if (data != null)
+                _data.Title = data.ToString();
+
             data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.Level)).Value;
             if (data != null)
                 _data.Level = int.Parse(data.ToString());
@@ -89,6 +93,8 @@ namespace WatKhaoWong.Identities
         }
 
         public EUserRole GetRole() => _data.GetRole();
+
+        public string GetTitleText() => _data.GetTitleText();
 
         public string GetLevelText() => _data.GetLevelText();
 

@@ -126,6 +126,7 @@ namespace WatKhaoWong.Authentication
                 _myUserData.ForceSetLastName(lastName);
                 _myUserData.ForceSetMemberSinceText(await _serverTime.Now());
                 _myUserData.ForceSetRole(EUserRole.LayPeople);
+                _myUserData.ForceSetTitle(EUserTitle.LayPeople.ToString());
             });
 
             if (_isRunningOnBackground) return;

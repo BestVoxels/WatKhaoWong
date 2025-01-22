@@ -10,6 +10,7 @@ namespace WatKhaoWong.SceneManagement
         MemberSince,
         ProfileIconID,
         Role,
+        Title,
         Level,
         XP,
         TodayTMPoint,

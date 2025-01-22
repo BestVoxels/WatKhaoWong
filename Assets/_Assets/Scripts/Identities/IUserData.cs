@@ -15,6 +15,8 @@ namespace WatKhaoWong.Identities
 
         public EUserRole GetRole();
 
+        public string GetTitleText();
+
         public string GetLevelText();
 
         public string GetTotalTMPointsText();

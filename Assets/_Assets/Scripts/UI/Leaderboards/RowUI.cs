@@ -37,6 +37,7 @@ namespace WatKhaoWong.UI.Leaderboards
 
         [Header("Profile Name")]
         [SerializeField] private TMP_Text _userNameText;
+        [SerializeField] private TMP_Text _titleText;
         [SerializeField] private TMP_Text _levelText;
 
         [Header("Stats")]
@@ -50,6 +51,7 @@ namespace WatKhaoWong.UI.Leaderboards
         private IUserData _userData;
         private OtherAccountPopupUI _otherAccountPopupUI;
         private IObjectPool<RowUI> _rowUIPool;
+        private TitleLocalizer _titleLocalizer;
         #endregion
 
 
@@ -64,18 +66,32 @@ namespace WatKhaoWong.UI.Leaderboards
         private void Awake()
         {
             _row = GameObject.FindWithTag("Player").GetComponentInChildren<Row>();
-            _otherAccountPopupUI = FindAnyObjectByType<OtherAccountPopupUI>(FindObjectsInactive.Include);
+
+            _titleLocalizer = FindAnyObjectByType<TitleLocalizer>();  // For 'RowType.Myself'
 
             _rowButton.onClick.AddListener(RowClick);
+        }
+
+        private void Start()
+        {
+            UIRefresher.OnLocalizeDynamicString += RefreshTitleUI;  // Subscribe on Start() can't on Awake() because 'UIRefresher.OnLocalizeDynamicString' might get triggered on Awake() and error will occurs.
+        }
+
+        private void OnDestroy()
+        {
+            UIRefresher.OnLocalizeDynamicString -= RefreshTitleUI;  // Unsubscribe from those Existing Row UI GameObjects (Example Rows) on leaderboard.
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PUBLIC)
-        public void Setup(IObjectPool<RowUI> rowUIPool)
+        public void OnCreatedByPool(IObjectPool<RowUI> rowUIPool)
         {
             _rowUIPool = rowUIPool;
+
+            _titleLocalizer = FindAnyObjectByType<TitleLocalizer>();  // For 'RowType.OtherUser'
+            _otherAccountPopupUI = FindAnyObjectByType<OtherAccountPopupUI>(FindObjectsInactive.Include);  // For 'RowType.OtherUser'
         }
 
         public void Release()
@@ -107,6 +123,7 @@ namespace WatKhaoWong.UI.Leaderboards
             _userData.UpdateProfileIcon(_icon, _userData.GetProfileIcon(), MultiplierRatioForDecorator);
 
             _userNameText.text = _userData.GetUserNameText();
+            RefreshTitleUI();
             _levelText.text = _userData.GetLevelText();
 
             _scoreText.text = category switch
@@ -186,6 +203,11 @@ namespace WatKhaoWong.UI.Leaderboards
                     _row.OnClickOtherUserRow();
                     break;
             }
+        }
+
+        private void RefreshTitleUI()
+        {
+            _titleText.text = _titleLocalizer.Localize(_userData.GetTitleText());
         }
         #endregion
     }

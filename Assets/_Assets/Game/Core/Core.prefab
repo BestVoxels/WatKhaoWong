@@ -1475,6 +1475,7 @@ Transform:
   - {fileID: 7070464524601806179}
   - {fileID: 4894843460213008174}
   - {fileID: 4089146525035716039}
+  - {fileID: 5453957320850827884}
   - {fileID: 8882057648747807207}
   - {fileID: 4423133681883869042}
   - {fileID: 2637654065332200263}
@@ -1715,6 +1716,15 @@ MonoBehaviour:
       m_TableCollectionName: GUID:68418daa4cbc14122b8236cf4f108eef
     m_TableEntryReference:
       m_KeyId: 1485944967389184
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _loading:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 6922026068467712
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -4042,6 +4052,174 @@ MonoBehaviour:
     isShowOnStart: 0
   - animator: {fileID: 0}
     isShowOnStart: 0
+--- !u!1 &6624140423634728183
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5453957320850827884}
+  - component: {fileID: 307593366267584820}
+  m_Layer: 0
+  m_Name: Title Localizer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5453957320850827884
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6624140423634728183}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5923315315416972317}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &307593366267584820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6624140423634728183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ad9fc8d254e44d5eb3c13e762e29378, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _LocalizedTitleEntries:
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+      m_TableEntryReference:
+        m_KeyId: 31488577769562112
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    userTitle: 0
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+      m_TableEntryReference:
+        m_KeyId: 31488641288101888
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    userTitle: 1
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+      m_TableEntryReference:
+        m_KeyId: 33349131832385536
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    userTitle: 2
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+      m_TableEntryReference:
+        m_KeyId: 33348406167461888
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    userTitle: 3
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+      m_TableEntryReference:
+        m_KeyId: 31488673911398400
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    userTitle: 4
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+      m_TableEntryReference:
+        m_KeyId: 31488688927006720
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    userTitle: 5
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+      m_TableEntryReference:
+        m_KeyId: 31488767050113024
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    userTitle: 6
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+      m_TableEntryReference:
+        m_KeyId: 31488832581918720
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    userTitle: 7
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+      m_TableEntryReference:
+        m_KeyId: 31488868027981824
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    userTitle: 8
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+      m_TableEntryReference:
+        m_KeyId: 31488896784130048
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    userTitle: 9
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+      m_TableEntryReference:
+        m_KeyId: 31489006255464448
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    userTitle: 10
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:9a8fb5cef08964b5a932be50ce9f281b
+      m_TableEntryReference:
+        m_KeyId: 31489031748444160
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    userTitle: 11
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &6804334142869734239
 GameObject:
   m_ObjectHideFlags: 0

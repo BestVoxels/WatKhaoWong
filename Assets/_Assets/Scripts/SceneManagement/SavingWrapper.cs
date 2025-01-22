@@ -229,6 +229,7 @@ namespace WatKhaoWong.SceneManagement
                 case EValueNode.MemberSince:
                 case EValueNode.ProfileIconID:
                 case EValueNode.Role:
+                case EValueNode.Title:
                     parentNode = EParentNode.Stats;
                     break;
 

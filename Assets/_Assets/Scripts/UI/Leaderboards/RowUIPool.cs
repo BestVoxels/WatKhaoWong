@@ -56,7 +56,7 @@ namespace WatKhaoWong.UI.Leaderboards
         private RowUI CreatePoolItem()
         {
             RowUI rowUI = Instantiate(_rowPrefab, _spawnParent);
-            rowUI.Setup(Pool);
+            rowUI.OnCreatedByPool(Pool);
 
             return rowUI;
         }

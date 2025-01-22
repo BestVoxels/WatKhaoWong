@@ -9,7 +9,6 @@ using WatKhaoWong.Utils.Conditions;
 using WatKhaoWong.Challenges;
 using Firebase.Auth;
 using WatKhaoWong.Attributes;
-using UnityEngine.Events;
 
 namespace WatKhaoWong.Identities
 {
@@ -44,11 +43,16 @@ namespace WatKhaoWong.Identities
 
         #region --Fields-- (In Class)
         private readonly Data _data = new Data();
-        private bool _loadingFirstNameFromServer = true;
 
         private Challenge _challenge;
         private SavingWrapper _savingWrapper;
         private ServerTime _serverTime;
+        #endregion
+
+
+
+        #region --Properties-- (Auto)
+        public bool IsLoadingFromServer { get; private set; } = true;
         #endregion
 
 
@@ -122,6 +126,14 @@ namespace WatKhaoWong.Identities
             _data.Role = role;
 
             _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.Role, _data.Role.ToString());
+            OnMyUserDataUpdated?.Invoke();
+        }
+
+        public void ForceSetTitle(string title)
+        {
+            _data.Title = title;
+
+            _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.Title, _data.Title);
             OnMyUserDataUpdated?.Invoke();
         }
 
@@ -251,13 +263,11 @@ namespace WatKhaoWong.Identities
                 return;
             }
 
-            _loadingFirstNameFromServer = true;
+            IsLoadingFromServer = true;
 
             var data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.FirstName);
             if (data != null)
                 _data.FirstName = data.Value.ToString();
-
-            _loadingFirstNameFromServer = false;
 
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.LastName);
             if (data != null)
@@ -283,8 +293,10 @@ namespace WatKhaoWong.Identities
                 string roleString = data.Value.ToString();
                 _data.Role = (EUserRole)Enum.Parse(typeof(EUserRole), roleString);
             }
-            {
-            }
+
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.Title);
+            if (data != null)
+                _data.Title = data.Value.ToString();
 
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.Level);
             if (data != null)
@@ -324,6 +336,8 @@ namespace WatKhaoWong.Identities
                 await ResetTMPointsAfterChallengeEnd();
             }
 
+            IsLoadingFromServer = false;
+
             OnMyUserDataUpdated?.Invoke();
         }
         #endregion
@@ -338,9 +352,9 @@ namespace WatKhaoWong.Identities
                 _data.FirstName = _defaultFirstName.GetLocalizedString();
                 _data.LastName = _defaultLastName.GetLocalizedString();
             }
-            else if (FirebaseUtils.IsAuthenticated() && _loadingFirstNameFromServer == true)
+            else if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
             {
-                _data.FirstName = _loading.GetLocalizedString();
+                return _loading.GetLocalizedString();
             }
 
             return _data.GetUserNameText();
@@ -350,9 +364,8 @@ namespace WatKhaoWong.Identities
         {
             if (!FirebaseUtils.IsAuthenticated())
                 return $"{_defaultMemberSince.GetLocalizedString()}";
-            else if (FirebaseUtils.IsAuthenticated() && _loadingFirstNameFromServer == true)
-                return $"{_loading.GetLocalizedString()}";
-
+            else if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
+                return "...";
 
             return _data.GetMemberSinceText();
         }
@@ -366,6 +379,14 @@ namespace WatKhaoWong.Identities
         }
 
         public EUserRole GetRole() => _data.GetRole();
+
+        public string GetTitleText()
+        {
+            if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
+                return "...";
+
+            return _data.GetTitleText();
+        }
 
         public string GetLevelText()
         {
