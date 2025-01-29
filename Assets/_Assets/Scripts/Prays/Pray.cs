@@ -1,9 +1,12 @@
+using System;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Identities;
 using WatKhaoWong.Settings;
+using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.Prays
 {
@@ -59,17 +62,14 @@ namespace WatKhaoWong.Prays
 
 
         #region --Fields-- (In Class)
+        private DateTime _startPlayTime = default;
+        private DateTime _startPauseTime = default;
+        private double _totalPausedTime = 0d;
         private int _tmCounter = 0;
 
-        private bool _isAdded = false;
         private MyUserData _myUserData;
         private Setting _playerSetting;
-        #endregion
-
-
-
-        #region --Fields-- (Constant)
-        private const byte MarginForCompareTime = 1;
+        private ServerTime _serverTime;
         #endregion
 
 
@@ -80,34 +80,13 @@ namespace WatKhaoWong.Prays
             GameObject player = GameObject.FindWithTag("Player");
             _myUserData = player.GetComponentInChildren<MyUserData>();
             _playerSetting = player.GetComponentInChildren<Setting>();
+            _serverTime = FindAnyObjectByType<ServerTime>();
         }
 
         private void Start()
         {
             Screen.sleepTimeout = SleepTimeout.NeverSleep;
         }
-
-        private void Update()
-        {
-            if (!IsPlayingSound) return;
-
-            if (_audioSource.time >= _audioClipTM.length - MarginForCompareTime && _isAdded == false)
-            {
-                ++_tmCounter;
-
-                _isAdded = true;
-            }
-
-            if (_audioSource.time <= 0f + MarginForCompareTime)
-            {
-                _isAdded = false;
-            }
-        }
-        #endregion
-
-
-
-        #region --Methods-- (Custom PUBLIC)
         #endregion
 
 
@@ -128,7 +107,7 @@ namespace WatKhaoWong.Prays
             _onRecordManuallyButtonClick?.Invoke();
         }
 
-        public void OnPlaySoundButtonClick()
+        public async void OnPlaySoundButtonClick()
         {
             if (_myUserData.GetRole() == EUserRole.Guest)
             {
@@ -138,69 +117,103 @@ namespace WatKhaoWong.Prays
 
             _onPlaySoundButtonClick?.Invoke();
 
-            PlayTMClipLooping();
+            await PlayTMClipLooping();
         }
 
-        public void OnContinueButtonClick()
+        public async void OnContinueButtonClick()
         {
             _onContinueButtonClick?.Invoke();
 
-            ContinueTMClip();
+            await ContinueTMClip();
         }
 
-        public void OnPauseSoundButtonClick()
+        public async void OnPauseSoundButtonClick()
         {
             _onPauseSoundButtonClick?.Invoke();
 
-            PauseTMClip();
+            await PauseTMClip();
         }
 
-        public void OnEndSoundButtonClick()
+        public async void OnEndSoundButtonClick()
         {
             _onEndSoundButtonClick?.Invoke();
 
-            EndTMClip();
+            await EndTMClip();
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PRIVATE)
-        private void PlayTMClipLooping()
+        private async Task<int> GetLoopCount()
+        {
+            _totalPausedTime += await GetPauseTime();
+
+            double playedTime = ((await _serverTime.Now()) - _startPlayTime).TotalSeconds;
+            double actualPlayedTime = playedTime - _totalPausedTime;
+            decimal dividedResult = (decimal)(actualPlayedTime / _audioClipTM.length);
+
+            if (dividedResult.IsNegative()) return 0; // If the logic is correct this line won't ever need to execute, because _startPlayTime will always bigger than _startPauseTime since it starts first.
+
+            _totalPausedTime = 0d;
+            _startPauseTime = default;
+
+            return (int)Math.Floor(dividedResult);
+        }
+
+        private async Task<double> GetPauseTime()
+        {
+            if (_startPauseTime == default) return 0d;
+
+            double pausedTime = ((await _serverTime.Now()) - _startPauseTime).TotalSeconds;
+
+            _startPauseTime = default;
+
+            return pausedTime;
+        }
+
+        private async Task PlayTMClipLooping()
         {
             _audioSource.loop = true;
-
             _audioSource.clip = _audioClipTM;
-
             _audioSource.volume = _playerSetting.LoadMusicValue();
-
             _audioSource.Play();
+
+            _startPlayTime = await _serverTime.Now();
         }
 
-        private void ContinueTMClip()
+        private async Task ContinueTMClip()
         {
             _audioSource.Play();
+
+            _totalPausedTime += await GetPauseTime();
         }
 
-        private void PauseTMClip()
+        private async Task PauseTMClip()
         {
             _audioSource.Pause();
+
+            _startPauseTime = await _serverTime.Now();
         }
 
-        private void EndTMClip()
+        private async Task EndTMClip()
         {
             _audioSource.loop = false;
-
             _audioSource.clip = null;
-
             _audioSource.Stop();
+
+            _tmCounter = await GetLoopCount();
 
             if (CanUploadToServer)
                 UploadToServerSucceeded();
             else
                 UploadToServerFailed();
         }
+        #endregion
 
+
+
+        #region --Methods-- (Custom PRIVATE) ~Upload to Server Stuffs~
         private void UploadToServerSucceeded()
         {
             _myUserData.AddTotalTMPoints(_tmCounter);
