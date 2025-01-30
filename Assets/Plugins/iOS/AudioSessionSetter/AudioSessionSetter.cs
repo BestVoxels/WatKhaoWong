@@ -12,9 +12,10 @@ namespace WatKhaoWong.Plugins
             SetAudioSession();
         }
 
-        private void OnApplicationPause(bool pauseStatus)
+        private void OnApplicationFocus(bool focusStatus)
         {
-            SetAudioSession();
+            if (focusStatus)
+                SetAudioSession();
         }
 #endif
 

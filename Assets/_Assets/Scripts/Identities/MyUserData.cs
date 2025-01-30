@@ -75,9 +75,9 @@ namespace WatKhaoWong.Identities
             FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
         }
 
-        private async void OnApplicationPause(bool pauseStatus)
+        private async void OnApplicationFocus(bool focusStatus)
         {
-            if (!pauseStatus)
+            if (focusStatus)
             {
                 await ResetTMPointsDaily();
 

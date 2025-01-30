@@ -61,13 +61,13 @@ namespace WatKhaoWong.Settings
 
 
         #region --Methods-- (Built In)
-        private void OnApplicationPause(bool isAppPaused)
+        private void OnApplicationFocus(bool isAppFocus)
         {
-            if (isAppPaused == true)
+            if (isAppFocus == false)
             {
                 // TODO SEND Notifications data, check how to do on ColorPuzzle project, GameNotification.cs
             }
-            else if (isAppPaused == false)
+            else if (isAppFocus == true)
             {
                 // TODO CLEAR Old Notifications data, check how to do on ColorPuzzle project, GameNotification.cs
             }

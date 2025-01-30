@@ -147,9 +147,9 @@ namespace WatKhaoWong.Leaderboards
             _myUserData.OnChallengeTMPointsAdded -= AddChallengeTMPointsToLeaderboard;
         }
 
-        private async void OnApplicationPause(bool pauseStatus)
+        private async void OnApplicationFocus(bool focusStatus)
         {
-            if (!pauseStatus)
+            if (focusStatus)
             {
                 await DeleteTodayTMLeaderboardDaily();
 
