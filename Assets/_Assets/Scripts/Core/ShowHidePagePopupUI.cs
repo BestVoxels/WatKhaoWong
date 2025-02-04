@@ -10,6 +10,9 @@ namespace WatKhaoWong.Core
     public class ShowHidePagePopupUI : MonoBehaviour
     {
         #region --Fields-- (Inspector)
+        [Header("Settings Stuffs")]
+        [SerializeField] private bool _getUserDataToCheckIfGuest = true;
+
         [Header("Page Animation Stuffs")]
         [SerializeField] private AnimatorType _page;
 
@@ -42,7 +45,8 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _userData = GameObject.FindWithTag("Player").GetComponentInChildren<IUserData>();
+            if (_getUserDataToCheckIfGuest)
+                _userData = GameObject.FindWithTag("Player").GetComponentInChildren<IUserData>();
         }
 
         private void Start()

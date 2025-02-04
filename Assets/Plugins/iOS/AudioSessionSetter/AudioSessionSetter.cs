@@ -12,6 +12,9 @@ namespace WatKhaoWong.Plugins
             SetAudioSession();
         }
 
+        // This is IMPORTANT because once it get initialized on Awake() it works fine but until other app run on background,
+        // it works fine until some App run in background like Youtube then background audio from this app Will be overridden.
+        // SO have to SetAudioSession() again once OnApplicationFocus() is true.
         private void OnApplicationFocus(bool focusStatus)
         {
             if (focusStatus)

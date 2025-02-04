@@ -23,6 +23,11 @@ namespace WatKhaoWong.SceneManagement
         ChallengeTMEndDate,
         ChallengeTMDuration,
         ChallengeTMStatus,
-        TimeStamp
+        TimeStamp,
+        LiveAppVersioniOS,
+        LiveAppVersionAndroid,
+        LinkToUpdateAppiOS,
+        LinkToUpdateAppAndroid,
+        TMPointLimiter
     }
 }

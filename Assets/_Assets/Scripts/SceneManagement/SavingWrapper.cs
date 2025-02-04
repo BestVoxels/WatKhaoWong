@@ -132,6 +132,13 @@ namespace WatKhaoWong.SceneManagement
             return await _savingSystem.value.Load(GetPath(categoryNode, valueNode));
         }
 
+        public async Task<DataSnapshot> ForceLoad(ECategoryNode categoryNode, EValueNode valueNode)
+        {
+            // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
+
+            return await _savingSystem.value.Load(GetPath(categoryNode, valueNode));
+        }
+
         public async Task<DataSnapshot> LoadOtherUser(string otherUserID)
         {
             if (!FirebaseUtils.IsAuthenticated()) return null;
@@ -286,8 +293,8 @@ namespace WatKhaoWong.SceneManagement
             string valueNodePath = GetValueNodePath(categoryNode, valueNode);
             if (valueNodePath == null) Debug.LogError("Can't create Path. ValueNodePath is null! Maybe because Parent Node is null.");
 
-            // ONLY 'LeaderboardStats' or 'ServerStats' Category does NOT NEED userID in path.
-            if (categoryNode == ECategoryNode.LeaderboardStats || categoryNode == ECategoryNode.ServerStats)
+            // ONLY 'LeaderboardStats' or 'ServerStats' or 'RemoteConfig' Category does NOT NEED userID in path.
+            if (categoryNode == ECategoryNode.LeaderboardStats || categoryNode == ECategoryNode.ServerStats || categoryNode == ECategoryNode.RemoteConfig)
             {
                 return Path.Combine(categoryNode.ToString(), valueNodePath);
             }

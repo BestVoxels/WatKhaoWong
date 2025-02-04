@@ -11,6 +11,7 @@ namespace WatKhaoWong.SceneManagement
         LeaderboardTMToday,
         LeaderboardTMChallenge,
         LeaderboardTMChallengeWinner,
-        ServerStats
+        ServerStats,
+        RemoteConfig
     }
 }

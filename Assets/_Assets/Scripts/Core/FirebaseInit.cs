@@ -7,6 +7,8 @@ using UnityEngine.Events;
 namespace WatKhaoWong.Core
 {
     /// <summary>
+    /// This component should be created once and shared between all subsequent scenes.
+    /// 
     /// *****
     /// FirebaseInit.cs script SHOULD Execute before default time under ‘Project Settings/Script Execution Order’. (Ex-Check from WatKhaoWong project)
     /// Reason is because WITHOUT calling "CheckAndFixDependenciesAsync()" we CAN NOT call "FirebaseCATEGORY.DefaultInstance" on some Android Device.
