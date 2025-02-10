@@ -5,7 +5,6 @@ using UnityEngine.Events;
 using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Identities;
-using UnityEngine.Localization;
 
 namespace WatKhaoWong.Prays
 {
@@ -20,28 +19,15 @@ namespace WatKhaoWong.Prays
 
 
 
-        #region --Properties-- (Inspector)
-        [field: Header("Undo Popup Status Text")]
-        [field: SerializeField] public LocalizedString StatusHeaderTextDefault { get; private set; }
-        [field: SerializeField] public LocalizedString StatusInfoTextDefault { get; private set; }
-        [field: SerializeField] public LocalizedString StatusHeaderTextDone { get; private set; }
-        [field: SerializeField] public LocalizedString StatusInfoTextDone { get; private set; }
-        #endregion
-
-
-
         #region --Events-- (UnityEvent)
         [Header("Undo Popup UI Event")]
         [SerializeField] private UnityEvent _onUndoButtonClick;
-        [Space]
-        [Header("Other Event")]
-        [SerializeField] private UnityEvent _onUploadSucceed;
+        [SerializeField] private UnityEvent _onUploadDone;
         #endregion
 
 
 
         #region --Events-- (Delegate as Action)
-        public event Action OnUploadSucceeded;
         public event Action<float> OnUploading;
         #endregion
 
@@ -52,12 +38,6 @@ namespace WatKhaoWong.Prays
 
         private Coroutine _previousCoroutine;
         private MyUserData _myUserData;
-        #endregion
-
-
-
-        #region --Properties-- (Computed)
-        public string StatusInfoTextDoneText => StatusInfoTextDone.GetLocalizedString(_tmPoints);
         #endregion
 
 
@@ -124,8 +104,7 @@ namespace WatKhaoWong.Prays
             _myUserData.AddTodayTMPoints(_tmPoints);
             _myUserData.AddChallengeTMPointsText(_tmPoints);
 
-            _onUploadSucceed?.Invoke();
-            OnUploadSucceeded?.Invoke();
+            _onUploadDone?.Invoke();
         }
         #endregion
 

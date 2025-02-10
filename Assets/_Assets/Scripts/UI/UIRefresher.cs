@@ -1,7 +1,6 @@
 using System;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
-using WatKhaoWong.Prays;
 using WatKhaoWong.Challenges;
 using WatKhaoWong.Settings;
 using WatKhaoWong.Identities;
@@ -36,7 +35,6 @@ namespace WatKhaoWong.UI
 
         #region --Fields-- (In Class)
         private MyUserData _myUserData;
-        private UndoPopup _undoPopup;
         private NotificationPopup _notificationPopup;
         private AccountPopup _accountPopup;
         private Leaderboard _leaderboard;
@@ -51,7 +49,6 @@ namespace WatKhaoWong.UI
             GameObject player = GameObject.FindWithTag("Player");
 
             _myUserData = player.GetComponentInChildren<MyUserData>();
-            _undoPopup = player.GetComponentInChildren<UndoPopup>();
             _notificationPopup = player.GetComponentInChildren<NotificationPopup>();
             _accountPopup = player.GetComponentInChildren<AccountPopup>();
             _leaderboard = player.GetComponentInChildren<Leaderboard>();
@@ -67,7 +64,7 @@ namespace WatKhaoWong.UI
             // TODO lets see what to subscribe to for HOME SYSTEM
 
             // PRAY SYSTEM
-            _undoPopup.OnUploadSucceeded += () => { RefreshPrayUI(); };
+            //_undoPopup.OnUploadSucceeded += () => { RefreshPrayUI(); };
 
             // SETTING SYSTEM
             _notificationPopup.OnNotificationSwitchChanged += () => { RefreshSettingUI(); };

@@ -954,6 +954,40 @@ MonoBehaviour:
     isShowOnStart: 0
   - animator: {fileID: 0}
     isShowOnStart: 0
+--- !u!1 &1733175201253604506
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8829268326045058168}
+  m_Layer: 0
+  m_Name: Point System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8829268326045058168
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1733175201253604506}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8119657945492305204}
+  - {fileID: 4319029686523616245}
+  - {fileID: 1291415234518735721}
+  m_Father: {fileID: 2637654065332200263}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1778228571487430851
 GameObject:
   m_ObjectHideFlags: 0
@@ -1111,6 +1145,7 @@ Transform:
   - {fileID: 547467516478111935}
   - {fileID: 8041509738821837987}
   - {fileID: 1617545815102208418}
+  - {fileID: 8829268326045058168}
   m_Father: {fileID: 5923315315416972317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6474094721529044221
@@ -1266,6 +1301,104 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ae8902a194fa4fe0aebbb39af46a2e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &2174659423391406169
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1752476009631522448}
+  - component: {fileID: 4516699758156541027}
+  m_Layer: 0
+  m_Name: '[Pray System] Alert Popup Fail Negative'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1752476009631522448
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2174659423391406169}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8200222152408351853}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4516699758156541027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2174659423391406169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6c0107836b340ef9c8ce4cdc0c5e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onCloseButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4397910582779905581}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  <TitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 39788638786019328
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 39788656880246784
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoTextColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4283651013
+  _onAlertButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4397910582779905581}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2302210905655535586
 GameObject:
   m_ObjectHideFlags: 0
@@ -1379,6 +1512,253 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a4aae9b5c0e3149cb8d4d6d32b8ba837, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &2597142764813745737
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8119657945492305204}
+  - component: {fileID: 1208445140719165698}
+  m_Layer: 0
+  m_Name: Point Upload Events
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8119657945492305204
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2597142764813745737}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8829268326045058168}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1208445140719165698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2597142764813745737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9f942963c8ce4ee28d2ad2d91d0de17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnTMPointsUploadSucceeded:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.CorePopups.AlertPopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: Setup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 7486239743148448817}
+          m_ObjectArgumentAssemblyTypeName: WatKhaoWong.CorePopups.AlertPopup, Assembly-WatKhaoWong-CorePopups
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.CorePopups.AlertPopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: SetupInfoSmartString
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4397910582779905581}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: OpenPopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTMPointsUploadSucceededPartial:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.CorePopups.AlertPopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: Setup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 3708318146804671339}
+          m_ObjectArgumentAssemblyTypeName: WatKhaoWong.CorePopups.AlertPopup, Assembly-WatKhaoWong-CorePopups
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.CorePopups.AlertPopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: SetupInfoSmartString
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4397910582779905581}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: OpenPopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTMPointsUploadFailedCap:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.CorePopups.AlertPopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: Setup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 6444403899036804538}
+          m_ObjectArgumentAssemblyTypeName: WatKhaoWong.CorePopups.AlertPopup, Assembly-WatKhaoWong-CorePopups
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4397910582779905581}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: OpenPopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTMPointsUploadFailedZero:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.CorePopups.AlertPopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: Setup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 3525415447713649546}
+          m_ObjectArgumentAssemblyTypeName: WatKhaoWong.CorePopups.AlertPopup, Assembly-WatKhaoWong-CorePopups
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4397910582779905581}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: OpenPopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnTMPointsUploadFailedNegative:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.CorePopups.AlertPopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: Setup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 4516699758156541027}
+          m_ObjectArgumentAssemblyTypeName: WatKhaoWong.CorePopups.AlertPopup, Assembly-WatKhaoWong-CorePopups
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4397910582779905581}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: OpenPopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!1 &2600119365624188771
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4319029686523616245}
+  - component: {fileID: 8370252808633655970}
+  m_Layer: 0
+  m_Name: Point Cap Setter
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4319029686523616245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2600119365624188771}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8829268326045058168}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8370252808633655970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2600119365624188771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d0d7226a872740e7b9493d91e8a6cb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &3331672115037710119
@@ -2616,7 +2996,10 @@ Transform:
   - {fileID: 6874158055001494262}
   - {fileID: 3221843498232537315}
   - {fileID: 213457211237515160}
+  - {fileID: 8053446231269097292}
   - {fileID: 2173781667951192271}
+  - {fileID: 4219674165509951220}
+  - {fileID: 1752476009631522448}
   m_Father: {fileID: 2637654065332200263}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3476639795763182727
@@ -2749,72 +3132,6 @@ MonoBehaviour:
       - m_Target: {fileID: 4956454277919580197}
         m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: OpenPopupIfGuest
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _onMeditateAndUploadScoreSucceeded:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: WatKhaoWong.UI.CorePopups.AlertPopupUI, Assembly-WatKhaoWong-UI
-        m_MethodName: Setup
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 7486239743148448817}
-          m_ObjectArgumentAssemblyTypeName: WatKhaoWong.CorePopups.AlertPopup, Assembly-WatKhaoWong-CorePopups
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: WatKhaoWong.UI.CorePopups.AlertPopupUI, Assembly-WatKhaoWong-UI
-        m_MethodName: SetupInfoSmartString
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4397910582779905581}
-        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
-        m_MethodName: OpenPopup
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  _onMeditateAndUploadScoreFailed:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: WatKhaoWong.UI.CorePopups.AlertPopupUI, Assembly-WatKhaoWong-UI
-        m_MethodName: Setup
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 6444403899036804538}
-          m_ObjectArgumentAssemblyTypeName: WatKhaoWong.CorePopups.AlertPopup, Assembly-WatKhaoWong-CorePopups
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4397910582779905581}
-        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
-        m_MethodName: OpenPopup
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3077,6 +3394,106 @@ MonoBehaviour:
     isShowOnStart: 0
   - animator: {fileID: 0}
     isShowOnStart: 0
+  - animator: {fileID: 0}
+    isShowOnStart: 0
+--- !u!1 &4670493191851311196
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4219674165509951220}
+  - component: {fileID: 3525415447713649546}
+  m_Layer: 0
+  m_Name: '[Pray System] Alert Popup Fail Zero'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4219674165509951220
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4670493191851311196}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8200222152408351853}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3525415447713649546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4670493191851311196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6c0107836b340ef9c8ce4cdc0c5e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onCloseButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4397910582779905581}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  <TitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 9064434017230848
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 9064452342145024
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoTextColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4283651013
+  _onAlertButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4397910582779905581}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &4868694783025360276
 GameObject:
   m_ObjectHideFlags: 0
@@ -3121,6 +3538,77 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a294f46fd6323248b71413c26504a86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &5104781292429298614
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1291415234518735721}
+  - component: {fileID: 1481080215209587431}
+  m_Layer: 0
+  m_Name: Point Cap Requester
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1291415234518735721
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5104781292429298614}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8829268326045058168}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1481080215209587431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5104781292429298614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6235894f36834d5799f41730e2469cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _statusRequestSucceeded:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 39889985355112448
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusRequestSucceededColor:
+    serializedVersion: 2
+    rgba: 4288011303
+  _statusRequestFailedAlreadySent:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 39890140682772480
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusRequestFailedAlreadySentColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &5137394881223054746
 GameObject:
   m_ObjectHideFlags: 0
@@ -4332,7 +4820,7 @@ GameObject:
   - component: {fileID: 2173781667951192271}
   - component: {fileID: 6444403899036804538}
   m_Layer: 0
-  m_Name: '[Pray System] Alert Popup Fail'
+  m_Name: '[Pray System] Alert Popup Fail Cap'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4384,7 +4872,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
     m_TableEntryReference:
-      m_KeyId: 9064434017230848
+      m_KeyId: 39788549321515008
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -4393,7 +4881,7 @@ MonoBehaviour:
     m_TableReference:
       m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
     m_TableEntryReference:
-      m_KeyId: 9064452342145024
+      m_KeyId: 39788554547617792
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -4411,6 +4899,128 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1481080215209587431}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.PointCapRequester, Assembly-WatKhaoWong-Core
+        m_MethodName: RequestCapIncrease
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
+--- !u!1 &6910932749653281941
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8053446231269097292}
+  - component: {fileID: 3708318146804671339}
+  m_Layer: 0
+  m_Name: '[Pray System] Alert Popup Success Partial'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8053446231269097292
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6910932749653281941}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8200222152408351853}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3708318146804671339
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6910932749653281941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6c0107836b340ef9c8ce4cdc0c5e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onCloseButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4397910582779905581}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  <TitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 39788223898050560
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 39788304705511424
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoTextColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4284440415
+  _onAlertButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4397910582779905581}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1481080215209587431}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.PointCapRequester, Assembly-WatKhaoWong-Core
+        m_MethodName: RequestCapIncrease
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4977,56 +5587,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _onCloseButtonClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4397910582779905581}
-        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UI.ShowHideUI, Assembly-WatKhaoWong-Utils
-        m_MethodName: ClosePopup
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   _uploadDelay: 5
-  <StatusHeaderTextDefault>k__BackingField:
-    m_TableReference:
-      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
-    m_TableEntryReference:
-      m_KeyId: 59625821954048
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  <StatusInfoTextDefault>k__BackingField:
-    m_TableReference:
-      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
-    m_TableEntryReference:
-      m_KeyId: 59750053044224
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  <StatusHeaderTextDone>k__BackingField:
-    m_TableReference:
-      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
-    m_TableEntryReference:
-      m_KeyId: 1131055393267712
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  <StatusInfoTextDone>k__BackingField:
-    m_TableReference:
-      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
-    m_TableEntryReference:
-      m_KeyId: 1131320624275456
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
   _onUndoButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -5054,12 +5616,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _onUploadSucceed:
+  _onUploadDone:
     m_PersistentCalls:
-      m_Calls: []
-  references:
-    version: 2
-    RefIds: []
+      m_Calls:
+      - m_Target: {fileID: 4397910582779905581}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7528254027513631171
 GameObject:
   m_ObjectHideFlags: 0

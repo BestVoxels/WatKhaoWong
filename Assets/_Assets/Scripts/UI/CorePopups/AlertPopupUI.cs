@@ -59,10 +59,16 @@ namespace WatKhaoWong.UI.CorePopups
             _titleText.text = _alertPopup.TitleText.GetLocalizedString(input);
         }
 
+        public void SetupTitleSmartString(int input) => SetupTitleSmartString(input.ToString());
+        public void SetupTitleSmartString(float input) => SetupTitleSmartString(input.ToString());
+
         public void SetupInfoSmartString(string input)
         {
             _infoText.text = _alertPopup.InfoText.GetLocalizedString(input);
         }
+
+        public void SetupInfoSmartString(int input) => SetupInfoSmartString(input.ToString());
+        public void SetupInfoSmartString(float input) => SetupInfoSmartString(input.ToString());
         #endregion
 
 

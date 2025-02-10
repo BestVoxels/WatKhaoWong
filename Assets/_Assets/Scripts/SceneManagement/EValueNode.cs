@@ -28,6 +28,13 @@ namespace WatKhaoWong.SceneManagement
         LiveAppVersionAndroid,
         LinkToUpdateAppiOS,
         LinkToUpdateAppAndroid,
-        TMPointLimiter
+        TMPointCapRequest,
+        TMPointCap,
+        IsCustomTMPointCap,
+        TMPointCapForAdmin,
+        TMPointCapForPhra,
+        TMPointCapForDhammaForces,
+        TMPointCapForDhammaPractitioner,
+        TMPointCapForLayPeople
     }
 }

@@ -245,6 +245,9 @@ namespace WatKhaoWong.SceneManagement
                     parentNode = EParentNode.Progression;
                     break;
 
+                case EValueNode.TMPointCapRequest:
+                case EValueNode.TMPointCap:
+                case EValueNode.IsCustomTMPointCap:
                 case EValueNode.TodayTMPoint:
                 case EValueNode.TotalTMPoint:
                 case EValueNode.ChallengeTMPoint:

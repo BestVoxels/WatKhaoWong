@@ -38,6 +38,9 @@ namespace WatKhaoWong.Identities
         internal int TodayTMPoints { get; set; }
         internal int ChallengeTMPoints { get; set; }
         internal int TotalChallengeTMWon { get; set; }
+        internal int TMPointCapRequest { get; set; }
+        internal int TMPointCap { get; set; }
+        internal bool IsCustomTMPointCap { get; set; } = false;
         internal DateTime FirstUploadTimeOfDayTM { get; set; }
         internal DateTime FirstUploadTimeOfChallengeTM { get; set; }
         #endregion
@@ -49,7 +52,7 @@ namespace WatKhaoWong.Identities
         {
         }
 
-        internal Data(string firstName, string lastName, DateTime? memberSince, ProfileIconItem profileIcon, EUserRole role, string title, int level, int totalTMPoints, int todayTMPoints, int challengeTMPoints, int totalChallengeTMWon, DateTime firstUploadTimeOfDayTM, DateTime firstUploadTimeOfChallengeTM)
+        internal Data(string firstName, string lastName, DateTime? memberSince, ProfileIconItem profileIcon, EUserRole role, string title, int level, int totalTMPoints, int todayTMPoints, int challengeTMPoints, int totalChallengeTMWon, int tmPointCapRequest, int tmPointCap, bool isCustomTMPointCap, DateTime firstUploadTimeOfDayTM, DateTime firstUploadTimeOfChallengeTM)
         {
             _nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             _nfi.NumberGroupSeparator = " ";
@@ -65,6 +68,9 @@ namespace WatKhaoWong.Identities
             TodayTMPoints = todayTMPoints;
             ChallengeTMPoints = challengeTMPoints;
             TotalChallengeTMWon = totalChallengeTMWon;
+            TMPointCapRequest = tmPointCapRequest;
+            TMPointCap = tmPointCap;
+            IsCustomTMPointCap = isCustomTMPointCap;
             FirstUploadTimeOfDayTM = firstUploadTimeOfDayTM;
             FirstUploadTimeOfChallengeTM = firstUploadTimeOfChallengeTM;
         }

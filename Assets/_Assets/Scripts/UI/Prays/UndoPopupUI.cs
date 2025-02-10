@@ -1,8 +1,6 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Prays;
-using WatKhaoWong.Utils.UI;
 
 namespace WatKhaoWong.UI.Prays
 {
@@ -15,15 +13,12 @@ namespace WatKhaoWong.UI.Prays
         [Header("Undo Popup UI Stuffs")]
         [SerializeField] private Button _undoButton;
         [SerializeField] private Slider _statusSlider;
-        [SerializeField] private TMP_Text _headerText;
-        [SerializeField] private TMP_Text _infoText;
         #endregion
 
 
 
         #region --Fields-- (In Class)
         private UndoPopup _playerUndoPopup;
-        private EventTriggerAnimator _undoEventTrigger;
         #endregion
 
 
@@ -32,7 +27,6 @@ namespace WatKhaoWong.UI.Prays
         private void Awake()
         {
             _playerUndoPopup = GameObject.FindWithTag("Player").GetComponentInChildren<UndoPopup>();
-            _undoEventTrigger = _undoButton.GetComponent<EventTriggerAnimator>();
 
             _closeButton.onClick.AddListener(Close);
 
@@ -41,16 +35,12 @@ namespace WatKhaoWong.UI.Prays
 
         private void OnEnable()
         {
-            RefreshUIDefault();
-
             _playerUndoPopup.OnUploading += UpdateStatus;
-            _playerUndoPopup.OnUploadSucceeded += RefreshUIDone;
         }
 
         private void OnDisable()
         {
             _playerUndoPopup.OnUploading -= UpdateStatus;
-            _playerUndoPopup.OnUploadSucceeded -= RefreshUIDone;
         }
         #endregion
 
@@ -73,30 +63,6 @@ namespace WatKhaoWong.UI.Prays
             progressValue = Mathf.Clamp01(progressValue);
 
             _statusSlider.value = progressValue;
-        }
-
-        private void RefreshUIDefault()
-        {
-            _undoButton.interactable = true;
-            _undoEventTrigger.Interactable = true;
-
-            _statusSlider.gameObject.SetActive(true);
-            _closeButton.gameObject.SetActive(false);
-
-            _headerText.text = _playerUndoPopup.StatusHeaderTextDefault.GetLocalizedString();
-            _infoText.text = _playerUndoPopup.StatusInfoTextDefault.GetLocalizedString();
-        }
-
-        private void RefreshUIDone()
-        {
-            _undoButton.interactable = false;
-            _undoEventTrigger.Interactable = false;
-
-            _statusSlider.gameObject.SetActive(false);
-            _closeButton.gameObject.SetActive(true);
-
-            _headerText.text = _playerUndoPopup.StatusHeaderTextDone.GetLocalizedString();
-            _infoText.text = _playerUndoPopup.StatusInfoTextDoneText;
         }
         #endregion
     }

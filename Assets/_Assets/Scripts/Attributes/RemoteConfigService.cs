@@ -34,6 +34,11 @@ namespace WatKhaoWong.Attributes
         public string LiveAppVersionAndroid { get; private set; } = null;
         public string LinkToUpdateAppiOS { get; private set; } = null;
         public string LinkToUpdateAppAndroid { get; private set; } = null;
+        public int TMPointCapForAdmin { get; private set; } = -1;
+        public int TMPointCapForPhra { get; private set; } = -1;
+        public int TMPointCapForDhammaForces { get; private set; } = -1;
+        public int TMPointCapForDhammaPractitioner { get; private set; } = -1;
+        public int TMPointCapForLayPeople { get; private set; } = -1;
         #endregion
 
 
@@ -57,12 +62,12 @@ namespace WatKhaoWong.Attributes
 
         //private async void Start()
         //{
-        //    bool existResult = await _savingWrapper.IsSaveExists(ECategoryNode.RemoteConfig, EValueNode.LinkToUpdateAppAndroid);
+        //    bool existResult = await _savingWrapper.IsSaveExists(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForAdmin);
         //    print(existResult);
 
         //    if (!existResult)
         //    {
-        //        _savingWrapper.ForceSave(ECategoryNode.RemoteConfig, EValueNode.LinkToUpdateAppAndroid, "https://www.bestvoxels.com/blog");
+        //        _savingWrapper.ForceSave(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForAdmin, 150);
         //        print("ForceSave is working");
         //    }
         //}
@@ -91,6 +96,26 @@ namespace WatKhaoWong.Attributes
             if (data != null)
                 LinkToUpdateAppAndroid = data.Value.ToString();
 #endif
+
+            data = await _savingWrapper.Load(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForAdmin);
+            if (data != null)
+                TMPointCapForAdmin = int.Parse(data.Value.ToString());
+
+            data = await _savingWrapper.Load(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForPhra);
+            if (data != null)
+                TMPointCapForPhra = int.Parse(data.Value.ToString());
+
+            data = await _savingWrapper.Load(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForDhammaForces);
+            if (data != null)
+                TMPointCapForDhammaForces = int.Parse(data.Value.ToString());
+
+            data = await _savingWrapper.Load(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForDhammaPractitioner);
+            if (data != null)
+                TMPointCapForDhammaPractitioner = int.Parse(data.Value.ToString());
+
+            data = await _savingWrapper.Load(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForLayPeople);
+            if (data != null)
+                TMPointCapForLayPeople = int.Parse(data.Value.ToString());
 
             OnLoaded?.Invoke();
         }

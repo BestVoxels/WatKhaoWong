@@ -74,6 +74,18 @@ namespace WatKhaoWong.Identities
             data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.ChallengeTMWon)).Value;
             if (data != null)
                 _data.TotalChallengeTMWon = int.Parse(data.ToString());
+
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.TMPointCapRequest)).Value;
+            if (data != null)
+                _data.TMPointCapRequest = int.Parse(data.ToString());
+
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.TMPointCap)).Value;
+            if (data != null)
+                _data.TMPointCap = int.Parse(data.ToString());
+
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.IsCustomTMPointCap)).Value;
+            if (data != null)
+                _data.IsCustomTMPointCap = bool.Parse(data.ToString());
         }
         #endregion
 
@@ -113,6 +125,12 @@ namespace WatKhaoWong.Identities
         public int GetChallengeTMPoints() => _data.ChallengeTMPoints;
 
         public int GetTotalChallengeTMWon() => _data.TotalChallengeTMWon;
+
+        public int GetTMPointCapRequest() => _data.TMPointCapRequest;
+
+        public int GetTMPointCap() => _data.TMPointCap;
+
+        public bool GetIsCustomTMPointCap() => _data.IsCustomTMPointCap;
         #endregion
 
 

@@ -50,7 +50,7 @@ namespace WatKhaoWong.Challenges
 
 
         #region --Properties-- (Auto)
-        // IMPORTANT : LoadSave() on MyUserData.cs & Leaderboard.cs will use 'IsSaveLoaded' to check and wait
+        // IMPORTANT : LoadSave() on MyUserData.cs & Leaderboard.cs will use 'LoadCompletionSource' to check and wait
         // until Challenge.cs' LoadSave() is fully loaded because they use some value here to check in their condition.
         // If don't do this, we can't guarantee Challenge.cs' LoadSave() will loaded prior and value they use to check
         // will be wrong and trigger 'DeleteChallengeLeaderboard', 'DeleteChallengePoints' and more disaster...

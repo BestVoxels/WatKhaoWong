@@ -5,6 +5,7 @@ using UnityEngine.Localization;
 using WatKhaoWong.CoreItems;
 using WatKhaoWong.SceneManagement;
 using WatKhaoWong.Utils.Core;
+using WatKhaoWong.Utils.UI;
 using WatKhaoWong.Utils.Conditions;
 using WatKhaoWong.Challenges;
 using Firebase.Auth;
@@ -28,6 +29,7 @@ namespace WatKhaoWong.Identities
         [SerializeField] private LocalizedString _defaultMemberSince;
         [SerializeField] private LocalizedString _loading;
         [SerializeField] private ProfileIconItem _defaultProfileIcon;
+        [SerializeField] private bool _defaultIsCustomTMPointCap = false;
         [SerializeField] private int _defaultLevel;
         #endregion
 
@@ -44,6 +46,7 @@ namespace WatKhaoWong.Identities
         #region --Fields-- (In Class)
         private readonly Data _data = new Data();
 
+        private PointUploadEvents _pointUploadEvents;
         private Challenge _challenge;
         private SavingWrapper _savingWrapper;
         private ServerTime _serverTime;
@@ -51,8 +54,20 @@ namespace WatKhaoWong.Identities
 
 
 
+        #region --Fields-- (Constant)
+        private const string KeySentCapRequest = "KeySentCapRequest";
+        #endregion
+
+
+
         #region --Properties-- (Auto)
         public bool IsLoadingFromServer { get; private set; } = true;
+
+        // IMPORTANT : SetTMPointCap() on PointCapSetter.cs will use 'LoadCompletionSource' to check and wait
+        // until MyUserData.cs' LoadSave() is fully loaded because they use some value here to check in their condition.
+        // If don't do this, we can't guarantee MyUserData.cs' LoadSave() will loaded prior and value they use to check
+        // will be wrong
+        public TaskCompletionSource<bool> LoadCompletionSource { get; } = new TaskCompletionSource<bool>();
         #endregion
 
 
@@ -60,7 +75,10 @@ namespace WatKhaoWong.Identities
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _challenge = GameObject.FindWithTag("Player").GetComponentInChildren<Challenge>();
+            GameObject player = GameObject.FindWithTag("Player");
+
+            _pointUploadEvents = player.GetComponentInChildren<PointUploadEvents>();
+            _challenge = player.GetComponentInChildren<Challenge>();
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
             _serverTime = FindAnyObjectByType<ServerTime>();
         }
@@ -147,7 +165,28 @@ namespace WatKhaoWong.Identities
 
         public void AddTotalTMPoints(int input)
         {
-            _data.TotalTMPoints += input;
+            if (input < 0)
+            {
+                _pointUploadEvents.OnTMPointsUploadFailedNegative?.Invoke();
+                return;
+            }
+            if (input == 0)
+            {
+                _pointUploadEvents.OnTMPointsUploadFailedZero?.Invoke();
+                return;
+            }
+            if (!CanAddPoints(input, out int availableToAdd))
+            {
+                _pointUploadEvents.OnTMPointsUploadFailedCap?.Invoke();
+                return;
+            }
+
+            if (input == availableToAdd)
+                _pointUploadEvents.OnTMPointsUploadSucceeded?.Invoke(availableToAdd);
+            else if (input != availableToAdd)
+                _pointUploadEvents.OnTMPointsUploadSucceededPartial?.Invoke(availableToAdd);
+
+            _data.TotalTMPoints += availableToAdd;
 
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.TotalTMPoint, _data.TotalTMPoints);
             OnMyUserDataUpdated?.Invoke();
@@ -158,10 +197,11 @@ namespace WatKhaoWong.Identities
             await ResetTMPointsDaily();
 
             if (input <= 0) return;
-
+            if (!CanAddPoints(input, out int availableToAdd)) return;
+            
             AssignTodayUploadTime();
 
-            _data.TodayTMPoints += input;
+            _data.TodayTMPoints += availableToAdd;
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.TodayTMPoint, _data.TodayTMPoints);
             OnMyUserDataUpdated?.Invoke();
 
@@ -173,10 +213,11 @@ namespace WatKhaoWong.Identities
             await ResetTMPointsAfterChallengeEnd();
 
             if (input <= 0 || !await _challenge.CanLiveNow()) return;
+            if (!CanAddPoints(input, out int availableToAdd)) return;
 
             AssignChallengeUploadTime();
 
-            _data.ChallengeTMPoints += input;
+            _data.ChallengeTMPoints += availableToAdd;
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.ChallengeTMPoint, _data.ChallengeTMPoints);
             OnMyUserDataUpdated?.Invoke();
 
@@ -189,6 +230,32 @@ namespace WatKhaoWong.Identities
 
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.ChallengeTMWon, _data.TotalChallengeTMWon);
             OnMyUserDataUpdated?.Invoke();
+        }
+
+        public bool IncrementTMPointCapRequest()
+        {
+            if (PlayerPrefsX.GetBool(KeySentCapRequest, false))
+                return false;
+
+            _data.TMPointCapRequest += 1;
+            PlayerPrefsX.SetBool(KeySentCapRequest, true);
+
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TMPointCapRequest, _data.TMPointCapRequest);
+            return true;
+        }
+
+        public void SetTMPointCap(int input)
+        {
+            _data.TMPointCap = input;
+
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TMPointCap, _data.TMPointCap);
+        }
+
+        public void ForceSetIsCustomTMPointCap(bool input)
+        {
+            _data.IsCustomTMPointCap = input;
+
+            _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.IsCustomTMPointCap, _data.IsCustomTMPointCap);
         }
         #endregion
 
@@ -206,6 +273,8 @@ namespace WatKhaoWong.Identities
 
                 _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.TodayTMPoint, 0);
                 OnMyUserDataUpdated?.Invoke();
+
+                PlayerPrefsX.SetBool(KeySentCapRequest, false);
             }
         }
 
@@ -251,6 +320,15 @@ namespace WatKhaoWong.Identities
         {
             if (!FirebaseUtils.IsAuthenticated())
                 _data.Role = EUserRole.Guest;
+        }
+
+        public bool CanAddPoints(int inputPoints, out int availableToAdd)
+        {
+            int remaining = GetTMPointCap() - GetTodayTMPoints();
+
+            availableToAdd = Mathf.Clamp(inputPoints, 0, remaining);
+
+            return availableToAdd > 0;
         }
 
         private async void LoadSave()
@@ -318,6 +396,24 @@ namespace WatKhaoWong.Identities
             if (data != null)
                 _data.TotalChallengeTMWon = int.Parse(data.Value.ToString());
 
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.TMPointCapRequest);
+            if (data != null)
+                _data.TMPointCapRequest = int.Parse(data.Value.ToString());
+
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.TMPointCap);
+            if (data != null)
+                _data.TMPointCap = int.Parse(data.Value.ToString());
+
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.IsCustomTMPointCap);
+            if (data != null)
+            {
+                _data.IsCustomTMPointCap = bool.Parse(data.Value.ToString());
+            }
+            else if (FirebaseUtils.IsAuthenticated())
+            {
+                ForceSetIsCustomTMPointCap(_defaultIsCustomTMPointCap);
+            }
+
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.FirstUploadTimeOfDayTM);
             if (data != null)
             {
@@ -336,8 +432,9 @@ namespace WatKhaoWong.Identities
                 await ResetTMPointsAfterChallengeEnd();
             }
 
+            LoadCompletionSource.TrySetResult(true);
             IsLoadingFromServer = false;
-
+            
             OnMyUserDataUpdated?.Invoke();
         }
         #endregion
@@ -411,6 +508,12 @@ namespace WatKhaoWong.Identities
         public int GetChallengeTMPoints() => _data.ChallengeTMPoints;
 
         public int GetTotalChallengeTMWon() => _data.TotalChallengeTMWon;
+
+        public int GetTMPointCapRequest() => _data.TMPointCapRequest;
+
+        public int GetTMPointCap() => _data.TMPointCap;
+
+        public bool GetIsCustomTMPointCap() => _data.IsCustomTMPointCap;
         #endregion
 
 

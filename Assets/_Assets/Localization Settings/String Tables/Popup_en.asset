@@ -348,15 +348,6 @@ MonoBehaviour:
     m_Localized: Click any Profile Icon on the right section to change Profile Picture
     m_Metadata:
       m_Items: []
-  - m_Id: 1131055393267712
-    m_Localized: Uploaded!
-    m_Metadata:
-      m_Items: []
-  - m_Id: 1131320624275456
-    m_Localized: You have successfully upload ({0}) to the system. Awesome!
-    m_Metadata:
-      m_Items:
-      - rid: 8467956339120275496
   - m_Id: 1148117444452352
     m_Localized: NOTIFICATION
     m_Metadata:
@@ -426,10 +417,55 @@ MonoBehaviour:
     m_Localized: UPDATE
     m_Metadata:
       m_Items: []
+  - m_Id: 39788304705511424
+    m_Localized: "Uploaded ({0}) as you\u2019ve reached the daily limit. Please try
+      again tomorrow or request a limit increase."
+    m_Metadata:
+      m_Items:
+      - rid: 8467956339120275496
+  - m_Id: 39792908138700800
+    m_Localized: Request Cap Increase
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39788223898050560
+    m_Localized: Uploaded (Partial)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39788549321515008
+    m_Localized: Unable to Upload
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39788638786019328
+    m_Localized: Upload Error
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39788656880246784
+    m_Localized: Negative values are not allowed. Please enter a valid number.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39788554547617792
+    m_Localized: "You\u2019ve reached your daily limit. Please try again tomorrow
+      or request a limit increase."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39889985355112448
+    m_Localized: Status Request Succeeded
+    m_Metadata:
+      m_Items: []
+  - m_Id: 39890140682772480
+    m_Localized: Status Request Failed Already Sent
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 8467956339120275496
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00e0af57e25f020000e0ef342060020000e02f334860020000e0ef1bee04040000e02fc095f71f00
+        m_Entries: 
+        m_SharedEntries:
+        - id: 668375691812864
+        - id: 668641396776960
+        - id: 668813166108672
+        - id: 8997946824581120
+        - id: 39788304705511424

@@ -40,9 +40,6 @@ namespace WatKhaoWong.Prays
         [SerializeField] private UnityEvent _onUserProfileClick;
         [SerializeField] private UnityEvent _onUserStatsClick;
         [Space]
-        [SerializeField] private UnityEvent<string> _onMeditateAndUploadScoreSucceeded;
-        [SerializeField] private UnityEvent _onMeditateAndUploadScoreFailed;
-        [Space]
         [SerializeField] private UnityEvent _onRecordManuallyButtonClick;
         [SerializeField] private UnityEvent _onPlaySoundButtonClick;
         [SerializeField] private UnityEvent _onPlaySoundButtonClickIfGuest;
@@ -55,7 +52,6 @@ namespace WatKhaoWong.Prays
 
         #region --Properties-- (Computed)
         public bool IsPlayingSound => _audioSource.isPlaying;
-        public bool CanUploadToServer => _tmCounter > 0;
         public bool ToStartMeditateText => _audioSource.time <= 0f && _tmCounter == 0;
         #endregion
 
@@ -204,30 +200,20 @@ namespace WatKhaoWong.Prays
 
             _tmCounter = await GetLoopCount();
 
-            if (CanUploadToServer)
-                UploadToServerSucceeded();
-            else
-                UploadToServerFailed();
+            UploadToServer();
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PRIVATE) ~Upload to Server Stuffs~
-        private void UploadToServerSucceeded()
+        private void UploadToServer()
         {
             _myUserData.AddTotalTMPoints(_tmCounter);
             _myUserData.AddTodayTMPoints(_tmCounter);
             _myUserData.AddChallengeTMPointsText(_tmCounter);
 
-            _onMeditateAndUploadScoreSucceeded?.Invoke(_tmCounter.ToString());
-
             _tmCounter = 0;
-        }
-
-        private void UploadToServerFailed()
-        {
-            _onMeditateAndUploadScoreFailed?.Invoke();
         }
         #endregion
     }
