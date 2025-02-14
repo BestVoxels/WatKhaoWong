@@ -23,6 +23,7 @@ namespace WatKhaoWong.Core
         private void OnEnable()
         {
             _remoteConfigService.OnLoaded += SetTMPointCap;
+            _myUserData.OnRoleUpdated += SetTMPointCap;
         }
 
         private void Start()
@@ -33,6 +34,7 @@ namespace WatKhaoWong.Core
         private void OnDisable()
         {
             _remoteConfigService.OnLoaded -= SetTMPointCap;
+            _myUserData.OnRoleUpdated -= SetTMPointCap;
         }
         #endregion
 
@@ -60,7 +62,7 @@ namespace WatKhaoWong.Core
             };
 
             if (!_myUserData.GetIsCustomTMPointCap())
-                _myUserData.SetTMPointCap(TMPointCap);
+                _myUserData.ForceSetTMPointCap(TMPointCap);
         }
         #endregion
     }

@@ -1,4 +1,5 @@
 using System;
+using Firebase.Auth;
 using UnityEngine;
 using WatKhaoWong.SceneManagement;
 
@@ -49,9 +50,19 @@ namespace WatKhaoWong.Attributes
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
         }
 
+        private void OnEnable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged;
+        }
+
         private void Start()
         {
             ForceLoadConfigWithoutAuth();
+        }
+
+        private void OnDisable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
         }
 
         private void OnApplicationFocus(bool focusStatus)
@@ -119,6 +130,18 @@ namespace WatKhaoWong.Attributes
 
             OnLoaded?.Invoke();
         }
-#endregion
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber)
+        /// <summary>
+        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake().
+        /// </summary>
+        private void HandleStateChanged(object obj, EventArgs args)
+        {
+            ForceLoadConfigWithoutAuth();
+        }
+        #endregion
     }
 }

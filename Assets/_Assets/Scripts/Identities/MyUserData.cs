@@ -37,6 +37,7 @@ namespace WatKhaoWong.Identities
 
         #region --Events-- (Delegate as Action)
         public event Action OnMyUserDataUpdated;
+        public event Action OnRoleUpdated;
         public event Action<int> OnTodayTMPointsAdded;
         public event Action<int> OnChallengeTMPointsAdded;
         #endregion
@@ -145,6 +146,7 @@ namespace WatKhaoWong.Identities
 
             _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.Role, _data.Role.ToString());
             OnMyUserDataUpdated?.Invoke();
+            OnRoleUpdated?.Invoke();
         }
 
         public void ForceSetTitle(string title)
@@ -226,6 +228,8 @@ namespace WatKhaoWong.Identities
 
         public void AddTotalWonTMChallenge(int input)
         {
+            if (input < 0) return;
+
             _data.TotalChallengeTMWon += input;
 
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.ChallengeTMWon, _data.TotalChallengeTMWon);
@@ -244,11 +248,13 @@ namespace WatKhaoWong.Identities
             return true;
         }
 
-        public void SetTMPointCap(int input)
+        public void ForceSetTMPointCap(int input)
         {
+            if (input < 0) return;
+
             _data.TMPointCap = input;
 
-            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TMPointCap, _data.TMPointCap);
+            _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.TMPointCap, _data.TMPointCap);
         }
 
         public void ForceSetIsCustomTMPointCap(bool input)
@@ -333,6 +339,8 @@ namespace WatKhaoWong.Identities
 
         private async void LoadSave()
         {
+            if (!FirebaseUtils.IsAuthenticated()) return;
+
             bool isChallengeSaveLoaded = await _challenge.LoadCompletionSource.Task;
 
             if (isChallengeSaveLoaded == false)
