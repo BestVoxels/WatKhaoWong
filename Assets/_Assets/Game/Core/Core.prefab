@@ -2163,7 +2163,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 609588765349389010}
   m_Father: {fileID: 2637654065332200263}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6249207557036988962
@@ -2367,6 +2368,21 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _onDhammaButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4410690731461477662}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: OpenPopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _onPrayButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -2497,7 +2513,9 @@ MonoBehaviour:
   _dim:
     animator: {fileID: 0}
     isShowOnStart: 0
-  _popups: []
+  _popups:
+  - animator: {fileID: 0}
+    isShowOnStart: 0
 --- !u!1 &4284119393299924498
 GameObject:
   m_ObjectHideFlags: 0
@@ -4613,6 +4631,7 @@ MonoBehaviour:
     m_LocalVariables: []
   _defaultProfileIcon: {fileID: 11400000, guid: c2ac1f107ef784c5ea99406cb9b6b13f,
     type: 2}
+  _defaultIsCustomTMPointCap: 0
   _defaultLevel: 1
   references:
     version: 2
@@ -5733,6 +5752,170 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: https://www.bestvoxels.com
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!1 &7646724095182948242
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 609588765349389010}
+  - component: {fileID: 1948392097104876589}
+  m_Layer: 0
+  m_Name: Dhamma and Insights Popup
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &609588765349389010
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7646724095182948242}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2156521017610681451}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1948392097104876589
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7646724095182948242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8141bc3df4647417da3d4f1df78ec12b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onCloseButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4410690731461477662}
+        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onFacebook1ButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1908285290424802923}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
+        m_MethodName: OpenUrl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: https://www.facebook.com/share/1BahhGXJji/?mibextid=wwXIfr
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onFacebook2ButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1908285290424802923}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
+        m_MethodName: OpenUrl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: https://www.facebook.com/share/15cb4uhru7/?mibextid=wwXIfr
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onFacebook3ButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1908285290424802923}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
+        m_MethodName: OpenUrl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: https://www.facebook.com/share/18p49Eb9Sv/?mibextid=wwXIfr
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onFacebook4ButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1908285290424802923}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
+        m_MethodName: OpenUrl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: https://www.facebook.com/share/1Eofztu7dq/?mibextid=wwXIfr
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onYoutube1ButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1908285290424802923}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
+        m_MethodName: OpenUrl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: https://youtube.com/@luangta19?si=QgyNoJ6bxewlwUcQ
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onTiktok1ButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1908285290424802923}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
+        m_MethodName: OpenUrl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: https://www.tiktok.com/@watkhaowongthamnarai?_t=ZS-8tiHgfeb5Nq&_r=1
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onLine1ButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1908285290424802923}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
+        m_MethodName: OpenUrl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: https://lin.ee/wmzW768
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &7745489654696426291

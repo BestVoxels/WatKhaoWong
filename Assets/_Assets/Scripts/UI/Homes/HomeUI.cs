@@ -16,6 +16,7 @@ namespace WatKhaoWong.UI.Homes
         [SerializeField] private Button _donationAccountsButton;
         [SerializeField] private Button _auspiciousCalendarButton;
         [Space]
+        [SerializeField] private Button _dhammaButton;
         [SerializeField] private Button _prayButton;
         [SerializeField] private Button _bookMeditationButton;
         [SerializeField] private Button _settingButton;
@@ -45,6 +46,7 @@ namespace WatKhaoWong.UI.Homes
             _donationAccountsButton.onClick.AddListener(DonationAccounts);
             _auspiciousCalendarButton.onClick.AddListener(AupiciousCalendar);
 
+            _dhammaButton.onClick.AddListener(Dhamma);
             _prayButton.onClick.AddListener(Pray);
             _bookMeditationButton.onClick.AddListener(BookMeditation);
             _settingButton.onClick.AddListener(Setting);
@@ -70,6 +72,7 @@ namespace WatKhaoWong.UI.Homes
         private void DonationAccounts() => _playerHome.OnDonationAccountsButtonClick();
         private void AupiciousCalendar() => _playerHome.OnAupiciousCalendarButtonClick();
 
+        private void Dhamma() => _playerHome.OnDhammaButtonClick();
         private void Pray() => _playerHome.OnPrayButtonClick();
         private void BookMeditation() => _playerHome.OnBookMeditationButtonClick();
         private void Setting() => _playerHome.OnSettingButtonClick();

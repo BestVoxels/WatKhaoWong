@@ -53,7 +53,8 @@ namespace WatKhaoWong.Core
         {
             if (IsPageExist())
                 CloseOrOpenPage();
-            else
+
+            if (IsDimExist())
                 CloseOrOpenPopup();
         }
         #endregion

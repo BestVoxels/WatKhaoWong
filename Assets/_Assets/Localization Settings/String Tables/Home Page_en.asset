@@ -38,14 +38,6 @@ MonoBehaviour:
     m_Localized: Pray
     m_Metadata:
       m_Items: []
-  - m_Id: 779839618408448
-    m_Localized: Wat Khao Wong
-    m_Metadata:
-      m_Items: []
-  - m_Id: 779932752928768
-    m_Localized: Narai Songrit
-    m_Metadata:
-      m_Items: []
   - m_Id: 1485944967389184
     m_Localized: Welcome to WatKhaoWong App!
     m_Metadata:
@@ -82,10 +74,16 @@ MonoBehaviour:
     m_Localized: Wat Khao Wong
     m_Metadata:
       m_Items: []
+  - m_Id: 43853183313764352
+    m_Localized: Dhamma and Insights
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 8467956339120275457
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00e06f035a020000
+        m_Entries: 
+        m_SharedEntries:
+        - id: 2585627975680

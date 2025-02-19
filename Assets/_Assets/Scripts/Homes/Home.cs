@@ -33,6 +33,7 @@ namespace WatKhaoWong.Homes
         [SerializeField] private UnityEvent _onDonationAccountsButtonClick;
         [SerializeField] private UnityEvent _onAupiciousCalendarButtonClick;
         [Space]
+        [SerializeField] private UnityEvent _onDhammaButtonClick;
         [SerializeField] private UnityEvent _onPrayButtonClick;
         [SerializeField] private UnityEvent _onBookMeditationButtonClick;
         [SerializeField] private UnityEvent _onSettingButtonClick;
@@ -119,6 +120,11 @@ namespace WatKhaoWong.Homes
             _onAupiciousCalendarButtonClick?.Invoke();
         }
 
+
+        public void OnDhammaButtonClick()
+        {
+            _onDhammaButtonClick?.Invoke();
+        }
 
         public void OnPrayButtonClick()
         {
