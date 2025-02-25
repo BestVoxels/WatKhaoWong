@@ -25,6 +25,7 @@ MonoBehaviour:
   m_Metadata:
     m_Items:
     - rid: 5491085681367449616
+    - rid: 4960357010283692032
   m_ProjectLocaleIdentifier:
     m_Code: th
   m_PreloadBehavior: 3
@@ -34,6 +35,18 @@ MonoBehaviour:
     RefIds:
     - rid: -2
       type: {class: , ns: , asm: }
+    - rid: 4960357010283692032
+      type: {class: AppInfo, ns: UnityEngine.Localization.Platform.Android, asm: Unity.Localization}
+      data:
+        m_DisplayName:
+          m_TableReference:
+            m_TableCollectionName: GUID:68418daa4cbc14122b8236cf4f108eef
+          m_TableEntryReference:
+            m_KeyId: 10142160442613760
+            m_Key: 
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
     - rid: 5491085681367449616
       type: {class: AppInfo, ns: UnityEngine.Localization.Platform.iOS, asm: Unity.Localization}
       data:
@@ -118,6 +131,7 @@ MonoBehaviour:
           rid: -2
         m_CustomTablePostprocessor:
           rid: -2
+        m_AsynchronousBehaviour: 0
         m_UseFallback: 0
     - rid: 8467956308000112645
       type: {class: LocalizedStringDatabase, ns: UnityEngine.Localization.Settings,
@@ -129,6 +143,7 @@ MonoBehaviour:
           rid: -2
         m_CustomTablePostprocessor:
           rid: -2
+        m_AsynchronousBehaviour: 0
         m_UseFallback: 0
         m_MissingTranslationState: 0
         m_NoTranslationFoundMessage: '********No translation found for ''{key}''
