@@ -37,7 +37,7 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _remoteConfigService = FindAnyObjectByType<RemoteConfigService>();
+            _remoteConfigService = FindAnyObjectByType<RemoteConfigService>(FindObjectsInactive.Include);
         }
 
         private void OnEnable()
