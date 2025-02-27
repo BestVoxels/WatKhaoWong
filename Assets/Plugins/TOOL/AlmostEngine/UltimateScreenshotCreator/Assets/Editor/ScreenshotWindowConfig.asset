@@ -17,8 +17,10 @@ MonoBehaviour:
     m_RelativePath: Screenshots/
     m_RootedPath: 
     m_ExportToPhoneGallery: 1
+    m_ExportAsync: 0
     m_FileName: '{width}x{height}-screenshot'
     m_OverwriteFiles: 0
+    m_NumberLeftPadding: 0
     m_FileFormat: 0
     m_JPGQuality: 75
     m_ShareTitle: Share the screenshot
@@ -28,6 +30,7 @@ MonoBehaviour:
     m_MultisamplingAntiAliasing: 0
     m_ColorFormat: 0
     m_RecomputeAlphaLayer: 0
+    m_DisableHDRPFX: 1
     m_ShotMode: 0
     m_MaxBurstShotsNumber: 20
     m_MaxShotPerSeconds: 30
@@ -49,7 +52,7 @@ MonoBehaviour:
       m_ForcedUnityPPI: 0
       m_DeviceCanvas: {fileID: 0}
       m_Ratio: 16:9
-      m_FileName: 
+      m_FileName: /Users/boat/Pictures/Screenshots/1920x1080-screenshot.png
       m_IgnoreOrientation: 0
       m_DisableSafeArea: 0
       m_SafeAreaPortrait:
@@ -75,7 +78,7 @@ MonoBehaviour:
       m_PPI: 0
       m_ForcedUnityPPI: 0
       m_DeviceCanvas: {fileID: 0}
-      m_Ratio: 683:384
+      m_Ratio: 16:9~
       m_FileName: 
       m_IgnoreOrientation: 0
       m_DisableSafeArea: 0
@@ -183,7 +186,7 @@ MonoBehaviour:
       m_PPI: 0
       m_ForcedUnityPPI: 0
       m_DeviceCanvas: {fileID: 0}
-      m_Ratio: 8:5
+      m_Ratio: 16:10
       m_FileName: 
       m_IgnoreOrientation: 0
       m_DisableSafeArea: 0
@@ -226,10 +229,37 @@ MonoBehaviour:
         y: 0
         width: 0
         height: 0
+    - m_Active: 1
+      m_Width: 1136
+      m_Height: 640
+      m_Scale: 1
+      m_Orientation: 2
+      m_ResolutionName: Apple iPhone SE (with status bar)
+      m_Category: Devices/Apple/iPhoneWithStatusBar
+      m_Platform: iOS
+      m_PPI: 326
+      m_ForcedUnityPPI: 0
+      m_DeviceCanvas: {fileID: 22395588, guid: 7e06e659b2f74b44fa6bbb4c56bd80fd, type: 3}
+      m_Ratio: 16:9~
+      m_FileName: /Users/boat/Pictures/Screenshots/1136x640-screenshot.png
+      m_IgnoreOrientation: 0
+      m_DisableSafeArea: 0
+      m_SafeAreaPortrait:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 640
+        height: 1096
+      m_SafeAreaLandscapeLeft:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 1136
+        height: 640
     m_GameViewResolution:
       m_Active: 1
-      m_Width: 365
-      m_Height: 172
+      m_Width: 2160
+      m_Height: 3840
       m_Scale: 1
       m_Orientation: 0
       m_ResolutionName: GameView
