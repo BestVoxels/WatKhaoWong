@@ -1160,8 +1160,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 719.6486, y: -404.7593}
-  m_SizeDelta: {x: 1439.2972, y: 809.5186}
+  m_AnchoredPosition: {x: 540, y: -481.9376}
+  m_SizeDelta: {x: 1080, y: 963.8752}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &664061115051043358
 CanvasRenderer:
@@ -3115,8 +3115,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 719.6486, y: -1760}
-  m_SizeDelta: {x: 1439.2972, y: 320}
+  m_AnchoredPosition: {x: 540, y: -2119.698}
+  m_SizeDelta: {x: 1080, y: 433.87515}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &6422294981577742563
 MonoBehaviour:
@@ -3693,6 +3693,7 @@ GameObject:
   - component: {fileID: 8206199699747570023}
   - component: {fileID: 791963397434476615}
   - component: {fileID: 8109072458774889791}
+  - component: {fileID: 6977317789943412896}
   m_Layer: 5
   m_Name: Chanting Text
   m_TagString: Untagged
@@ -3716,8 +3717,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 719.6486, y: -1204.7593}
-  m_SizeDelta: {x: 1439.2972, y: 690.4813}
+  m_AnchoredPosition: {x: 540, y: -1433.3177}
+  m_SizeDelta: {x: 1080, y: 838.8852}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8206199699747570023
 CanvasRenderer:
@@ -3747,21 +3748,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0E2A\u0E31\u0E21\u0E1B\u0E30\u0E08\u0E34\u0E15\u0E09\u0E32\u0E21\u0E34
-    \u0E19\u0E32\u0E2A\u0E31\u0E07\u0E2A\u0E34\u0E42\u0E21\n\u0E1E\u0E23\u0E2B\u0E21\u0E32
-    \u0E08\u0E30 \u0E21\u0E2B\u0E32\u0E40\u0E17\u0E27\u0E32 \u0E2A\u0E31\u0E1E\u0E40\u0E1E\u0E22\u0E31\u0E01\u0E02\u0E32
-    \u0E1B\u0E30\u0E23\u0E32\u0E22\u0E31\u0E19\u0E15\u0E34\n\u0E1E\u0E23\u0E2B\u0E21\u0E32
-    \u0E08\u0E30 \u0E21\u0E2B\u0E32\u0E40\u0E17\u0E27\u0E32 \u0E2D\u0E20\u0E34\u0E25\u0E32\u0E20\u0E32
-    \u0E20\u0E30\u0E27\u0E31\u0E19\u0E15\u0E38 \u0E40\u0E21\n\u0E21\u0E2B\u0E32\u0E1B\u0E38\u0E0D\u0E42\u0E0D
-    \u0E21\u0E2B\u0E32\u0E25\u0E32\u0E42\u0E20 \u0E20\u0E30\u0E27\u0E31\u0E19\u0E15\u0E38
-    \u0E40\u0E21\n\u0E21\u0E34\u0E40\u0E15\u0E1E\u0E32\u0E2B\u0E38\u0E2B\u0E30\u0E15\u0E34\n\u0E1E\u0E38\u0E17\u0E18\u0E30\u0E21\u0E30\u0E2D\u0E30\u0E2D\u0E38
-    \u0E19\u0E30\u0E42\u0E21\u0E1E\u0E38\u0E17\u0E18\u0E32\u0E22\u0E30\n\u0E27\u0E34\u0E23\u0E30\u0E17\u0E30\u0E42\u0E22
-    \u0E27\u0E34\u0E23\u0E30\u0E42\u0E04\u0E19\u0E32\u0E22\u0E31\u0E07 \u0E27\u0E34\u0E23\u0E30\u0E2B\u0E34\u0E07\u0E2A\u0E32
-    \u0E27\u0E34\u0E23\u0E30\u0E17\u0E32\u0E2A\u0E35\n\u0E27\u0E34\u0E23\u0E30\u0E17\u0E32\u0E2A\u0E32
-    \u0E27\u0E34\u0E23\u0E30\u0E2D\u0E34\u0E15\u0E16\u0E34\u0E42\u0E22 \u0E1E\u0E38\u0E17\u0E18\u0E31\u0E2A\u0E2A\u0E30
-    \u0E21\u0E32\u0E19\u0E35\u0E21\u0E32\u0E21\u0E30\n\u0E1E\u0E38\u0E17\u0E18\u0E31\u0E2A\u0E2A\u0E30
-    \u0E2A\u0E27\u0E32\u0E42\u0E2B\u0E21 \u0E2A\u0E31\u0E21\u0E1B\u0E30\u0E15\u0E34\u0E08\u0E09\u0E32\u0E21\u0E34\n\u0E40\u0E1E\u0E47\u0E07\u0E40\u0E1E\u0E47\u0E07
-    \u0E1E\u0E32\u0E1E\u0E32 \u0E2B\u0E32\u0E2B\u0E32 \u0E24\u0E45\u0E24\u0E45"
+  m_text: "\u0E1A\u0E17\u0E2A\u0E27\u0E14\u0E1E\u0E23\u0E30\u0E04\u0E32\u0E16\u0E32\u0E40\u0E07\u0E34\u0E19\u0E25\u0E49\u0E32\u0E19"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5094b715585444e90b7306721788dae5, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: b341eb056b49143e891afe93675664fb, type: 2}
@@ -3842,6 +3829,46 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
+--- !u!114 &6977317789943412896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9192252111406505970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:ebe064a976daf46d286e98fbb9cffd3d
+    m_TableEntryReference:
+      m_KeyId: 46606015427239936
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 791963397434476615}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1001 &921433335558363796
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9249,12 +9276,12 @@ PrefabInstance:
     - target: {fileID: 1224021217041234692, guid: 55e9b249b55474baaa8a3534d68842c0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 719.6486
+      value: 540
       objectReference: {fileID: 0}
     - target: {fileID: 1224021217041234692, guid: 55e9b249b55474baaa8a3534d68842c0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -232.5
+      value: -289.43756
       objectReference: {fileID: 0}
     - target: {fileID: 1224021217041234692, guid: 55e9b249b55474baaa8a3534d68842c0,
         type: 3}
@@ -10022,12 +10049,12 @@ PrefabInstance:
     - target: {fileID: 1224021217041234692, guid: 55e9b249b55474baaa8a3534d68842c0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 719.6486
+      value: 540
       objectReference: {fileID: 0}
     - target: {fileID: 1224021217041234692, guid: 55e9b249b55474baaa8a3534d68842c0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -62.5
+      value: -119.43758
       objectReference: {fileID: 0}
     - target: {fileID: 1224021217041234692, guid: 55e9b249b55474baaa8a3534d68842c0,
         type: 3}
