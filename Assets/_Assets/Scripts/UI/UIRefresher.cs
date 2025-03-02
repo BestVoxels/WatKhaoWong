@@ -5,6 +5,7 @@ using WatKhaoWong.Challenges;
 using WatKhaoWong.Settings;
 using WatKhaoWong.Identities;
 using WatKhaoWong.Leaderboards;
+using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.UI
 {
@@ -39,6 +40,7 @@ namespace WatKhaoWong.UI
         private AccountPopup _accountPopup;
         private Leaderboard _leaderboard;
         private Challenge _challenge;
+        private RemoteConfigService _remoteConfigService;
         #endregion
 
 
@@ -53,6 +55,7 @@ namespace WatKhaoWong.UI
             _accountPopup = player.GetComponentInChildren<AccountPopup>();
             _leaderboard = player.GetComponentInChildren<Leaderboard>();
             _challenge = player.GetComponentInChildren<Challenge>();
+            _remoteConfigService = FindAnyObjectByType<RemoteConfigService>(FindObjectsInactive.Include);
         }
 
         private void OnEnable()
@@ -87,6 +90,9 @@ namespace WatKhaoWong.UI
 
             // LOCALIZATION SYSTEM
             LocalizationSettings.SelectedLocaleChanged += (obj) => LocalizeDynamicString();
+
+            // REMOTE CONFIG SYSTEM
+            _remoteConfigService.OnLoaded += ShowHideUIByRoles;
         }
 
         private void OnDisable()

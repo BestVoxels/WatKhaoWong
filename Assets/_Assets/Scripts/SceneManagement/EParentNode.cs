@@ -7,6 +7,7 @@ namespace WatKhaoWong.SceneManagement
     {
         Progression,
         Stats,
-        TMPoints
+        TMPoints,
+        AccountStatus
     }
 }

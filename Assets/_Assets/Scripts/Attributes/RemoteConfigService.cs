@@ -2,6 +2,7 @@ using System;
 using Firebase.Auth;
 using UnityEngine;
 using WatKhaoWong.SceneManagement;
+using WatKhaoWong.Utils.Conditions;
 
 namespace WatKhaoWong.Attributes
 {
@@ -10,7 +11,7 @@ namespace WatKhaoWong.Attributes
     ///
     /// This component should be created once and shared between all subsequent scenes.
     /// </summary>
-    public class RemoteConfigService : MonoBehaviour
+    public class RemoteConfigService : MonoBehaviour, IConditionEvaluator
     {
         #region --Fields-- (Inspector)
         //[Header("Remote Config Stuffs")]
@@ -35,6 +36,7 @@ namespace WatKhaoWong.Attributes
         public string LiveAppVersionAndroid { get; private set; } = null;
         public string LinkToUpdateAppiOS { get; private set; } = null;
         public string LinkToUpdateAppAndroid { get; private set; } = null;
+        public bool AllowAccountDeletion { get; private set; } = false;
         public int TMPointCapForAdmin { get; private set; } = -1;
         public int TMPointCapForPhra { get; private set; } = -1;
         public int TMPointCapForDhammaForces { get; private set; } = -1;
@@ -73,12 +75,12 @@ namespace WatKhaoWong.Attributes
 
         //private async void Start()
         //{
-        //    bool existResult = await _savingWrapper.IsSaveExists(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForAdmin);
+        //    bool existResult = await _savingWrapper.IsSaveExists(ECategoryNode.RemoteConfig, EValueNode.AllowAccountDeletion);
         //    print(existResult);
 
         //    if (!existResult)
         //    {
-        //        _savingWrapper.ForceSave(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForAdmin, 150);
+        //        _savingWrapper.ForceSave(ECategoryNode.RemoteConfig, EValueNode.AllowAccountDeletion, true);
         //        print("ForceSave is working");
         //    }
         //}
@@ -108,23 +110,27 @@ namespace WatKhaoWong.Attributes
                 LinkToUpdateAppAndroid = data.Value.ToString();
 #endif
 
-            data = await _savingWrapper.Load(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForAdmin);
+            data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.AllowAccountDeletion);
+            if (data != null)
+                AllowAccountDeletion = bool.Parse(data.Value.ToString());
+
+            data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForAdmin);
             if (data != null)
                 TMPointCapForAdmin = int.Parse(data.Value.ToString());
 
-            data = await _savingWrapper.Load(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForPhra);
+            data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForPhra);
             if (data != null)
                 TMPointCapForPhra = int.Parse(data.Value.ToString());
 
-            data = await _savingWrapper.Load(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForDhammaForces);
+            data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForDhammaForces);
             if (data != null)
                 TMPointCapForDhammaForces = int.Parse(data.Value.ToString());
 
-            data = await _savingWrapper.Load(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForDhammaPractitioner);
+            data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForDhammaPractitioner);
             if (data != null)
                 TMPointCapForDhammaPractitioner = int.Parse(data.Value.ToString());
 
-            data = await _savingWrapper.Load(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForLayPeople);
+            data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForLayPeople);
             if (data != null)
                 TMPointCapForLayPeople = int.Parse(data.Value.ToString());
 
@@ -141,6 +147,21 @@ namespace WatKhaoWong.Attributes
         private void HandleStateChanged(object obj, EventArgs args)
         {
             ForceLoadConfigWithoutAuth();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Interface)
+        bool? IConditionEvaluator.Evaluate(EConditionType conditionType, EConditionValue[] conditionValues)
+        {
+            switch (conditionType)
+            {
+                case EConditionType.AllowAccountDeletion:
+                    return AllowAccountDeletion;
+            }
+
+            return null;
         }
         #endregion
     }

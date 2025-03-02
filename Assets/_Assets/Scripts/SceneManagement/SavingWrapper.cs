@@ -257,6 +257,10 @@ namespace WatKhaoWong.SceneManagement
                     parentNode = EParentNode.TMPoints;
                     break;
 
+                case EValueNode.State:
+                    parentNode = EParentNode.AccountStatus;
+                    break;
+
                 default:
                     parentNode = null;
                     break;

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using WatKhaoWong.Utils.Conditions;
 using WatKhaoWong.UI;
+using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.Core
 {
@@ -17,7 +18,7 @@ namespace WatKhaoWong.Core
 
 
         #region --Fields-- (In Class)
-        private IConditionEvaluator[] _conditionsEvaluator;
+        private List<IConditionEvaluator> _conditionsEvaluator = new List<IConditionEvaluator>();
         #endregion
 
 
@@ -25,7 +26,12 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _conditionsEvaluator = GameObject.FindWithTag("Player").GetComponentsInChildren<IConditionEvaluator>();
+            _conditionsEvaluator.AddRange(GameObject.FindWithTag("Player").GetComponentsInChildren<IConditionEvaluator>());
+
+            RemoteConfigService remoteConfigService = FindAnyObjectByType<RemoteConfigService>(FindObjectsInactive.Include);
+            IConditionEvaluator iConditionEvaluator = remoteConfigService.GetComponentInChildren<IConditionEvaluator>();
+
+            _conditionsEvaluator.Add(iConditionEvaluator);
         }
 
         private void OnEnable()

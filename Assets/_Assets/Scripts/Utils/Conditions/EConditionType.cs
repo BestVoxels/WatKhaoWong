@@ -21,7 +21,8 @@ namespace WatKhaoWong.Utils.Conditions
         HasAllTimeTMPoint,
         HasTodayTMPoint,
         HasChallengeTMPoint,
-        HasChallengeTMWon
+        HasChallengeTMWon,
+        AllowAccountDeletion
 
         //// ---DEBUGGER PURPOSE--- search for 'EConditionType.cs | MyUserData.cs | ShowHideUIByCondition.cs'
         //True,

@@ -35,6 +35,8 @@ namespace WatKhaoWong.SceneManagement
         TMPointCapForPhra,
         TMPointCapForDhammaForces,
         TMPointCapForDhammaPractitioner,
-        TMPointCapForLayPeople
+        TMPointCapForLayPeople,
+        AllowAccountDeletion,
+        State
     }
 }
