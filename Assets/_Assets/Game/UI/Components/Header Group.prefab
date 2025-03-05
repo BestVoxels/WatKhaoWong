@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &7737904814400111646
 RectTransform:
@@ -111,7 +111,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &2254980152559129431
 RectTransform:
@@ -288,6 +288,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontSizeBase
       value: 30.18
+      objectReference: {fileID: 0}
+    - target: {fileID: 5300247790378926114, guid: 168c18bcd3da24a369aa3c2bd0f51e03,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 7256012449995192303, guid: 168c18bcd3da24a369aa3c2bd0f51e03,
         type: 3}
@@ -476,6 +481,16 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2254980152559129431}
     m_Modifications:
+    - target: {fileID: 1371613299105254439, guid: 47a13b44825644a529681386705ea04c,
+        type: 3}
+      propertyPath: m_fontSize
+      value: 30.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1371613299105254439, guid: 47a13b44825644a529681386705ea04c,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 6769810256383744285, guid: 47a13b44825644a529681386705ea04c,
         type: 3}
       propertyPath: m_Pivot.x

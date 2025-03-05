@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &9079744486241993029
 RectTransform:
@@ -39,7 +39,7 @@ RectTransform:
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &5456371027272383943
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -53,6 +53,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -534,7 +535,7 @@ PrefabInstance:
     - target: {fileID: 4835350795956872028, guid: f71e8dde4fc784782819957b7ef2fbef,
         type: 3}
       propertyPath: m_fontSize
-      value: 90
+      value: 72.3
       objectReference: {fileID: 0}
     - target: {fileID: 4948325330020379863, guid: f71e8dde4fc784782819957b7ef2fbef,
         type: 3}

@@ -15,7 +15,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &6001525615688709832
 RectTransform:
@@ -39,7 +39,7 @@ RectTransform:
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!95 &2134773187968337828
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -53,6 +53,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -214,22 +215,22 @@ PrefabInstance:
     - target: {fileID: 9121765817364234296, guid: 177ab2178928048e2acd27480fe192c0,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9121765817364234296, guid: 177ab2178928048e2acd27480fe192c0,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9121765817364234296, guid: 177ab2178928048e2acd27480fe192c0,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1904
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9121765817364234296, guid: 177ab2178928048e2acd27480fe192c0,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -1304.3517
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

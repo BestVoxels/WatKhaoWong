@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &7773784460244575433
 RectTransform:
@@ -106,7 +106,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &7614050619027142912
 RectTransform:
@@ -194,7 +194,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &1950433183682474363
 RectTransform:
@@ -299,7 +299,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &5195495915256658922
 RectTransform:
@@ -408,7 +408,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &831934071417647340
 RectTransform:
@@ -493,7 +493,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &396471724463262162
 RectTransform:
@@ -587,15 +587,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -757,6 +759,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Auspicious Calendar
       objectReference: {fileID: 0}
+    - target: {fileID: 2006443655091039073, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2307104926368045928, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -792,10 +799,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2331437109627145284, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_Name
       value: Auspicious Calendar Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2686157109166442111, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -826,6 +843,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285777945164894376, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183358431476888265, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244658880593521107, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7483152262337741135, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -1019,6 +1051,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Temple Guide
       objectReference: {fileID: 0}
+    - target: {fileID: 2006443655091039073, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2307104926368045928, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1054,10 +1091,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2331437109627145284, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_Name
       value: Temple Guide Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2686157109166442111, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -1128,6 +1175,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _effectGradient.key1.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285777945164894376, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183358431476888265, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244658880593521107, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7483152262337741135, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -1306,6 +1368,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2006443655091039073, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2307104926368045928, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1341,10 +1408,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2331437109627145284, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_Name
       value: Abbot History Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2686157109166442111, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -1375,6 +1452,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285777945164894376, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183358431476888265, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244658880593521107, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7250640443005726304, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -1573,6 +1665,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Book Meditation Retreat
       objectReference: {fileID: 0}
+    - target: {fileID: 2006443655091039073, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2307104926368045928, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1608,10 +1705,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2331437109627145284, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_Name
       value: Book Meditation Retreat Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2686157109166442111, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -1682,6 +1789,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _effectGradient.key1.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285777945164894376, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183358431476888265, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244658880593521107, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 9206818104386637119, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -1864,6 +1986,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Leaderboard Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 3078733134412946548, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3750979544706602381, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 4447574578350043150, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
@@ -2059,6 +2191,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Pray
       objectReference: {fileID: 0}
+    - target: {fileID: 2006443655091039073, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2307104926368045928, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2094,10 +2231,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2331437109627145284, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_Name
       value: Dhamma Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2686157109166442111, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -2168,6 +2315,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _effectGradient.key1.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285777945164894376, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183358431476888265, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244658880593521107, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7483152262337741135, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -2351,6 +2513,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Pray
       objectReference: {fileID: 0}
+    - target: {fileID: 2006443655091039073, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2307104926368045928, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2386,10 +2553,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2331437109627145284, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_Name
       value: Pray Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2686157109166442111, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -2420,6 +2597,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285777945164894376, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183358431476888265, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244658880593521107, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 9206818104386637119, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -2490,7 +2682,7 @@ PrefabInstance:
     - target: {fileID: 31136049371754568, guid: 49817cb28b85b4453b9d0ef6195e0831,
         type: 3}
       propertyPath: m_fontSize
-      value: 90
+      value: 81.25
       objectReference: {fileID: 0}
     - target: {fileID: 31136049371754568, guid: 49817cb28b85b4453b9d0ef6195e0831,
         type: 3}
@@ -2526,6 +2718,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_enableAutoSizing
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 31136049371754568, guid: 49817cb28b85b4453b9d0ef6195e0831,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     - target: {fileID: 1156878113760967904, guid: 49817cb28b85b4453b9d0ef6195e0831,
         type: 3}
@@ -2656,6 +2853,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Header Group
+      objectReference: {fileID: 0}
+    - target: {fileID: 6706623858651007801, guid: 49817cb28b85b4453b9d0ef6195e0831,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7431483822701830936, guid: 49817cb28b85b4453b9d0ef6195e0831,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 7950744123994286538, guid: 49817cb28b85b4453b9d0ef6195e0831,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -2796,6 +3008,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Temple Layout
       objectReference: {fileID: 0}
+    - target: {fileID: 2006443655091039073, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2307104926368045928, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -2831,10 +3048,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2331437109627145284, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_Name
       value: Map Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2686157109166442111, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -2905,6 +3132,21 @@ PrefabInstance:
         type: 3}
       propertyPath: _effectGradient.key1.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285777945164894376, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183358431476888265, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244658880593521107, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 8331024767012289936, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -3103,6 +3345,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Settings Button
       objectReference: {fileID: 0}
+    - target: {fileID: 3078733134412946548, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3750979544706602381, guid: de0a1848707c24d58b78301d898bb3ed,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 4447574578350043150, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
       propertyPath: m_Type
@@ -3176,6 +3428,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1950433183682474363}
     m_Modifications:
+    - target: {fileID: 511478835050135470, guid: 00738adbe32b943d69c4c88902fb791f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 762491360043503705, guid: 00738adbe32b943d69c4c88902fb791f,
         type: 3}
       propertyPath: m_SizeDelta.x
@@ -3291,6 +3548,11 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3245945832937976886, guid: 00738adbe32b943d69c4c88902fb791f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 5552474865056296263, guid: 00738adbe32b943d69c4c88902fb791f,
         type: 3}
       propertyPath: m_SizeDelta.y
@@ -3300,6 +3562,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Scroll View
+      objectReference: {fileID: 0}
+    - target: {fileID: 7629703609881192666, guid: 00738adbe32b943d69c4c88902fb791f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 9100634692513258456, guid: 00738adbe32b943d69c4c88902fb791f,
         type: 3}
@@ -3413,6 +3680,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Home Panel
+      objectReference: {fileID: 0}
+    - target: {fileID: 4051690543373004037, guid: e522a8a2a422e41aa861bf3fe7c21729,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7144805511005377407, guid: e522a8a2a422e41aa861bf3fe7c21729,
         type: 3}
@@ -3709,6 +3981,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Temple History
       objectReference: {fileID: 0}
+    - target: {fileID: 2006443655091039073, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2307104926368045928, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -3744,10 +4021,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2331437109627145284, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_Name
       value: Temple History Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2686157109166442111, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -3778,6 +4065,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285777945164894376, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183358431476888265, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244658880593521107, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7483152262337741135, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -3976,6 +4278,11 @@ PrefabInstance:
       propertyPath: m_text
       value: Donation Accounts
       objectReference: {fileID: 0}
+    - target: {fileID: 2006443655091039073, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2307104926368045928, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -4011,10 +4318,20 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2331437109627145284, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
       propertyPath: m_Name
       value: Donation Accounts Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621092507776000042, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 2686157109166442111, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -4045,6 +4362,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285777945164894376, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183358431476888265, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244658880593521107, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7483152262337741135, guid: 5e4625ca4d9cd4b909476e80de5d4eba,
         type: 3}
@@ -4248,6 +4580,11 @@ PrefabInstance:
       propertyPath: m_fontSize
       value: 45
       objectReference: {fileID: 0}
+    - target: {fileID: 2006443655091039073, guid: 55e9b249b55474baaa8a3534d68842c0,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 2307104926368045928, guid: 55e9b249b55474baaa8a3534d68842c0,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -4282,6 +4619,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Signup Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 2621092507776000042, guid: 55e9b249b55474baaa8a3534d68842c0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 3285777945164894376, guid: 55e9b249b55474baaa8a3534d68842c0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4183358431476888265, guid: 55e9b249b55474baaa8a3534d68842c0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244658880593521107, guid: 55e9b249b55474baaa8a3534d68842c0,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 7250640443005726304, guid: 55e9b249b55474baaa8a3534d68842c0,
         type: 3}

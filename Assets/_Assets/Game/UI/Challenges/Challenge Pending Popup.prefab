@@ -18,7 +18,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!224 &6255500502707969037
 RectTransform:
@@ -111,15 +111,17 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 1
+  m_ActiveFontFeatures: 6e72656b
   m_enableExtraPadding: 0
   checkPaddingRequired: 0
   m_isRichText: 1
+  m_EmojiFallbackSupport: 1
   m_parseCtrlCharacters: 1
   m_isOrthographic: 1
   m_isCullingEnabled: 0
@@ -220,10 +222,20 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 44
       objectReference: {fileID: 0}
+    - target: {fileID: 2069954106553966909, guid: b2549a6e7519d45bf919dfd322977aaa,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 3538127180282940142, guid: b2549a6e7519d45bf919dfd322977aaa,
         type: 3}
       propertyPath: m_Name
       value: Summary 1 Info Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538127180282940142, guid: b2549a6e7519d45bf919dfd322977aaa,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 5629079462636310878, guid: b2549a6e7519d45bf919dfd322977aaa,
         type: 3}
@@ -377,6 +389,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Summary Header Text
       objectReference: {fileID: 0}
+    - target: {fileID: 2144437648201986141, guid: 914bec50b21674b3b8adac52b8d5e6be,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2669497348579506721, guid: 914bec50b21674b3b8adac52b8d5e6be,
         type: 3}
       propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
@@ -511,6 +528,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4283911495
+      objectReference: {fileID: 0}
+    - target: {fileID: 6372006520632911415, guid: 914bec50b21674b3b8adac52b8d5e6be,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -857,10 +879,20 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 44
       objectReference: {fileID: 0}
+    - target: {fileID: 2069954106553966909, guid: b2549a6e7519d45bf919dfd322977aaa,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 3538127180282940142, guid: b2549a6e7519d45bf919dfd322977aaa,
         type: 3}
       propertyPath: m_Name
       value: Summary 2 Info Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538127180282940142, guid: b2549a6e7519d45bf919dfd322977aaa,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 5629079462636310878, guid: b2549a6e7519d45bf919dfd322977aaa,
         type: 3}
@@ -1270,10 +1302,20 @@ PrefabInstance:
       propertyPath: m_fontSizeBase
       value: 44
       objectReference: {fileID: 0}
+    - target: {fileID: 2069954106553966909, guid: b2549a6e7519d45bf919dfd322977aaa,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 3538127180282940142, guid: b2549a6e7519d45bf919dfd322977aaa,
         type: 3}
       propertyPath: m_Name
       value: Summary 3 Info Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538127180282940142, guid: b2549a6e7519d45bf919dfd322977aaa,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 5629079462636310878, guid: b2549a6e7519d45bf919dfd322977aaa,
         type: 3}
@@ -1428,10 +1470,20 @@ PrefabInstance:
       value: Once deleted, this challenge will be permanently removed from the pending
         state, and you will need to create a new one if desired.
       objectReference: {fileID: 0}
+    - target: {fileID: 2069954106553966909, guid: b2549a6e7519d45bf919dfd322977aaa,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     - target: {fileID: 3538127180282940142, guid: b2549a6e7519d45bf919dfd322977aaa,
         type: 3}
       propertyPath: m_Name
       value: Delete Info Text
+      objectReference: {fileID: 0}
+    - target: {fileID: 3538127180282940142, guid: b2549a6e7519d45bf919dfd322977aaa,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 5629079462636310878, guid: b2549a6e7519d45bf919dfd322977aaa,
         type: 3}
@@ -1572,6 +1624,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Delete Header Text
       objectReference: {fileID: 0}
+    - target: {fileID: 2144437648201986141, guid: 914bec50b21674b3b8adac52b8d5e6be,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
+      objectReference: {fileID: 0}
     - target: {fileID: 2669497348579506721, guid: 914bec50b21674b3b8adac52b8d5e6be,
         type: 3}
       propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
@@ -1697,6 +1754,11 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4283911495
       objectReference: {fileID: 0}
+    - target: {fileID: 6372006520632911415, guid: 914bec50b21674b3b8adac52b8d5e6be,
+        type: 3}
+      propertyPath: 'm_ActiveFontFeatures.Array.data[0]'
+      value: 1801810542
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1720,6 +1782,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: --Space--
+      objectReference: {fileID: 0}
+    - target: {fileID: 884768070311769787, guid: d5eac199bd3d04fc5ad03798bf69368f,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 2147483647
       objectReference: {fileID: 0}
     - target: {fileID: 5503182512887614163, guid: d5eac199bd3d04fc5ad03798bf69368f,
         type: 3}
