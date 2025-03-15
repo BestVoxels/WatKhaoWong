@@ -25,7 +25,7 @@ namespace WatKhaoWong.Utils.Debugger
 
         #region --Fields-- (In Class)
         private float _timer = 1f;
-        private int _fps = 0;
+        private double _fps = 0d;
         private byte _vsyncIndexer = 0;
         private byte _targetFPSIndexer = 0;
 
@@ -85,7 +85,8 @@ namespace WatKhaoWong.Utils.Debugger
             // Texts
             if (_timer >= _fpsRefreshTime)
             {
-                _fps = (int)Math.Round(1f / Time.deltaTime, MidpointRounding.AwayFromZero);
+                //_fps = (int)Math.Round(1f / Time.deltaTime, MidpointRounding.AwayFromZero);
+                _fps = Math.Round(1f / Time.deltaTime, 2, MidpointRounding.AwayFromZero);
                 _timer = 0f;
             }
             _timer += Time.deltaTime;

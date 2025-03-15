@@ -27,6 +27,7 @@ android {
       exclude ('/lib/mips64/*' + '*')
       exclude ('/lib/x86/*' + '*')
       exclude ('/lib/x86_64/*' + '*')
+      exclude 'com/google/android/gms/permission/AD_ID'
   }
 }
 // Android Resolver Exclusions End
