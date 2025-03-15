@@ -12,6 +12,7 @@ namespace WatKhaoWong.Identities
         PhraMaha,
         DhammaForces,
         DhammaPractitioner,
+        Admin,
         LayPeople,
         Guest
     }
