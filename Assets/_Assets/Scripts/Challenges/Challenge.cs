@@ -75,13 +75,13 @@ namespace WatKhaoWong.Challenges
         //private void Update()
         //{
         //    if (Input.GetKeyDown(KeyCode.Alpha1))
-        //        Status = EChallengeStatus.None;
+        //        _status = EChallengeStatus.None;
 
         //    if (Input.GetKeyDown(KeyCode.Alpha2))
-        //        Status = EChallengeStatus.Pending;
+        //        _status = EChallengeStatus.Pending;
 
         //    if (Input.GetKeyDown(KeyCode.Alpha3))
-        //        Status = EChallengeStatus.Live;
+        //        _status = EChallengeStatus.Live;
 
         //    if (Input.GetKeyDown(KeyCode.KeypadEnter))
         //        print(_status);

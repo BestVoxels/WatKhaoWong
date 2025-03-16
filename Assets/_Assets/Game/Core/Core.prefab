@@ -6283,19 +6283,37 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
     condition:
-      _conditionText: (IsChallengeStatusEquals != None)
+      _conditionText: (IsChallengeStatusEquals == Pending || IsChallengeStatusEquals
+        == Live)
       _and4:
       - _or3:
         - _and2:
           - _or1:
             - _conditionType: 15
-              _conditionValues: 07000000
-              _negate: 1
+              _conditionValues: 08000000
+              _negate: 0
+            - _conditionType: 15
+              _conditionValues: 09000000
+              _negate: 0
+  - gameObjectsUI:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    condition:
+      _conditionText: (IsChallengeStatusEquals == Pending && IsRoleEquals == Admin)
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 15
+              _conditionValues: 08000000
+              _negate: 0
+          - _or1:
+            - _conditionType: 4
+              _conditionValues: 01000000
+              _negate: 0
   - gameObjectsUI:
     - {fileID: 0}
     - {fileID: 0}
@@ -6460,17 +6478,6 @@ MonoBehaviour:
               _negate: 1
   - gameObjectsUI:
     - {fileID: 0}
-    condition:
-      _conditionText: (IsChallengeStatusEquals != None)
-      _and4:
-      - _or3:
-        - _and2:
-          - _or1:
-            - _conditionType: 15
-              _conditionValues: 07000000
-              _negate: 1
-  - gameObjectsUI:
-    - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
     - {fileID: 0}
@@ -6487,6 +6494,38 @@ MonoBehaviour:
             - _conditionType: 15
               _conditionValues: 07000000
               _negate: 0
+  - gameObjectsUI:
+    - {fileID: 0}
+    condition:
+      _conditionText: (IsChallengeStatusEquals == Pending || IsChallengeStatusEquals
+        == Live)
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 15
+              _conditionValues: 08000000
+              _negate: 0
+            - _conditionType: 15
+              _conditionValues: 09000000
+              _negate: 0
+  - gameObjectsUI:
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    condition:
+      _conditionText: (IsChallengeStatusEquals == Live || IsRoleEquals != Admin)
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 15
+              _conditionValues: 09000000
+              _negate: 0
+            - _conditionType: 4
+              _conditionValues: 01000000
+              _negate: 1
   - gameObjectsUI:
     - {fileID: 0}
     - {fileID: 0}
