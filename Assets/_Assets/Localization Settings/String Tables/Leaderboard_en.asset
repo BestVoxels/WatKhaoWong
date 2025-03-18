@@ -91,10 +91,17 @@ MonoBehaviour:
     m_Localized: Sign up to join the Event
     m_Metadata:
       m_Items: []
+  - m_Id: 52817726043840512
+    m_Localized: "'{0}' data is on its way\u2026\nJust a moment before switching!"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
     - rid: 8467956422192398345
       type: {class: SmartFormatTag, ns: UnityEngine.Localization.Metadata, asm: Unity.Localization}
       data:
-        m_Entries: 00e0af3a4200000000e0af1b49000000
+        m_Entries: 
+        m_SharedEntries:
+        - id: 284452446208
+        - id: 313997123584

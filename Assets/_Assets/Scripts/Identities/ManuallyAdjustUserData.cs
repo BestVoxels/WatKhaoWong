@@ -50,7 +50,7 @@ namespace WatKhaoWong.Identities
                 //{
                 //    _savingWrapper.ForceDeleteAnyUser(ECategoryNode.Users, eachData.Key, EValueNode.ChallengeTMPoint);
 
-                //    print($"({index})");
+                //    Debug.LogWarning($"({index})");
                 //}
 
                 // -> Get 'TotalTMPoint' and copy into 'ChallengeTMPoint'
@@ -58,7 +58,7 @@ namespace WatKhaoWong.Identities
                 {
                     _savingWrapper.ForceSaveAnyUser(ECategoryNode.Users, eachData.Key, EValueNode.ChallengeTMPoint, otherUserData.GetTotalTMPoints());
 
-                    print($"({index}) GetTotalTMPoints: {otherUserData.GetTotalTMPoints()}");
+                    Debug.LogWarning($"({index}) GetTotalTMPoints: {otherUserData.GetTotalTMPoints()}");
                 }
 
                 // -> Write 'ChallengeTMPoint' into 'LeaderboardTMChallenge'
@@ -66,7 +66,7 @@ namespace WatKhaoWong.Identities
                 {
                     _savingWrapper.ForceSaveAnyUser(ECategoryNode.LeaderboardTMChallenge, eachData.Key, EValueNode.ChallengeTMPoint, otherUserData.GetTotalTMPoints());
 
-                    print($"({index}) GetChallengeTMPoints: {otherUserData.GetChallengeTMPoints()}");
+                    Debug.LogWarning($"({index}) GetChallengeTMPoints: {otherUserData.GetChallengeTMPoints()}");
                 }
 
                 // -> Check 'FirstUploadTimeOfDayTM' is TODAY, if so add 'TodayTMPoint' into 'LeaderboardTMToday'
@@ -74,7 +74,7 @@ namespace WatKhaoWong.Identities
                 {
                     _savingWrapper.ForceSaveAnyUser(ECategoryNode.LeaderboardTMToday, eachData.Key, EValueNode.TodayTMPoint, otherUserData.GetTodayTMPoints());
 
-                    print($"({index}) IS TODAY & GetTodayTMPoints: {otherUserData.GetTodayTMPoints()}");
+                    Debug.LogWarning($"({index}) IS TODAY & GetTodayTMPoints: {otherUserData.GetTodayTMPoints()}");
                 }
             }
 

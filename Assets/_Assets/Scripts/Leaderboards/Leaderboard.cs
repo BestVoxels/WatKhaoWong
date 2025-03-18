@@ -34,6 +34,11 @@ namespace WatKhaoWong.Leaderboards
         [field: Header("Leaderboard Filter Settings")]
         [field: SerializeField] public Color32 SelectedColor { get; private set; }
         [field: SerializeField] public Color32 UnselectedColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public LocalizedString CantChangeCategory { get; private set; }
+        [field: SerializeField] public Color32 CantChangeCategoryColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public CategoryNameEntry[] CategoryName { get; private set; }
 
         [field: Space]
 
@@ -520,6 +525,17 @@ namespace WatKhaoWong.Leaderboards
                     _ => -1
                 };
             }
+        }
+        #endregion
+
+
+
+        #region --Classes-- (Custom PUBLIC)
+        [System.Serializable]
+        public class CategoryNameEntry
+        {
+            public ELeaderboardCategory category;
+            public LocalizedString localizedString;
         }
         #endregion
     }

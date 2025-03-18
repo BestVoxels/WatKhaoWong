@@ -1,6 +1,8 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Leaderboards;
+using WatKhaoWong.Utils.UI;
 
 namespace WatKhaoWong.UI.Leaderboards
 {
@@ -21,6 +23,7 @@ namespace WatKhaoWong.UI.Leaderboards
 
         #region --Fields-- (In Class)
         private Leaderboard _leaderboard;
+        private StatusText _statusText;
         #endregion
 
 
@@ -28,6 +31,8 @@ namespace WatKhaoWong.UI.Leaderboards
         #region --Methods-- (Built In)
         private void Awake()
         {
+            _statusText = FindAnyObjectByType<StatusText>();
+
             _button.onClick.AddListener(SetFilter);
         }
         #endregion
@@ -54,6 +59,15 @@ namespace WatKhaoWong.UI.Leaderboards
         private void SetFilter()
         {
             if (_leaderboard == null) return;
+            if (_category == _leaderboard.Category) return;
+
+            if (Leaderboard.IsAsyncRunning)
+            {
+                string categoryName = _leaderboard.CategoryName.First(e => e.category == _leaderboard.Category).localizedString.GetLocalizedString();
+
+                _statusText.Show(_leaderboard.CantChangeCategory.GetLocalizedString(categoryName), _leaderboard.CantChangeCategoryColor);
+                return;
+            }
 
             _leaderboard.Category = _category;
         }

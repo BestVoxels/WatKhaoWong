@@ -30,7 +30,7 @@ namespace WatKhaoWong.Identities
 
 
 
-        #region --Classes-- (Custom PRIVATE)
+        #region --Classes-- (Custom PUBLIC)
         [System.Serializable]
         public class LocalizedTitleEntry
         {
