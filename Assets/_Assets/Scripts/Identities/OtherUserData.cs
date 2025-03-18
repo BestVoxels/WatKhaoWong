@@ -86,7 +86,18 @@ namespace WatKhaoWong.Identities
             data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.IsCustomTMPointCap)).Value;
             if (data != null)
                 _data.IsCustomTMPointCap = bool.Parse(data.ToString());
+
+            data = bigData.Child(SavingWrapper.GetValueNodePath(ECategoryNode.Users, EValueNode.FirstUploadTimeOfDayTM)).Value;
+            if (data != null)
+                if (data.ToString().TryParseGregorian(out DateTime result))
+                    _data.FirstUploadTimeOfDayTM = result;
         }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Getter~
+        public DateTime GetFirstUploadTimeOfDayTM() => _data.FirstUploadTimeOfDayTM;
         #endregion
 
 

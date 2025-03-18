@@ -184,6 +184,14 @@ namespace WatKhaoWong.SceneManagement
         }
 
         /// <summary>
+        /// Please update RULE on Firebase Console for this to works.
+        /// </summary>
+        public void ForceDeleteAnyUser(ECategoryNode categoryNode, string userID, EValueNode valueNode)
+        {
+            _savingSystem.value.Delete(Path.Combine(categoryNode.ToString(), userID, GetValueNodePath(categoryNode, valueNode)));
+        }
+
+        /// <summary>
         /// Don't call this as checker for call 'Load()' because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
         /// </summary>
         public async Task<bool> IsSaveExists(ECategoryNode categoryNode, EValueNode valueNode)
