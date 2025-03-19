@@ -214,6 +214,11 @@ namespace WatKhaoWong.SceneManagement
 
             return await _savingSystem.value.IsSaveExists(ECategoryNode.LeaderboardTMChallenge.ToString());
         }
+
+        public async Task<bool> ForceIsSaveExists(ECategoryNode categoryNode, string userID, EValueNode valueNode)
+        {
+            return await _savingSystem.value.IsSaveExists(Path.Combine(categoryNode.ToString(), userID, GetValueNodePath(categoryNode, valueNode)));
+        }
         #endregion
 
 

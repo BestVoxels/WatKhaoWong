@@ -69,14 +69,19 @@ namespace WatKhaoWong.Identities
                     Debug.LogWarning($"({index}) GetChallengeTMPoints: {otherUserData.GetChallengeTMPoints()}");
                 }
 
-                // -> Check 'FirstUploadTimeOfDayTM' is TODAY, if so add 'TodayTMPoint' into 'LeaderboardTMToday'
+                // -> Check IF User TodayTMPoint is not assign in TodayLeaderboard, IF SO add 'TodayTMPoint' into 'LeaderboardTMToday'
                 if (otherUserData.GetFirstUploadTimeOfDayTM().Date == DateTime.Now.Date)
                 {
-                    _savingWrapper.ForceSaveAnyUser(ECategoryNode.LeaderboardTMToday, eachData.Key, EValueNode.TodayTMPoint, otherUserData.GetTodayTMPoints());
+                    if ((await _savingWrapper.ForceIsSaveExists(ECategoryNode.LeaderboardTMToday, eachData.Key, EValueNode.TodayTMPoint)) == false)
+                    {
+                        _savingWrapper.ForceSaveAnyUser(ECategoryNode.LeaderboardTMToday, eachData.Key, EValueNode.TodayTMPoint, otherUserData.GetTodayTMPoints());
 
-                    Debug.LogWarning($"({index}) IS TODAY & GetTodayTMPoints: {otherUserData.GetTodayTMPoints()}");
+                        Debug.LogWarning($"({index}) / ({eachData.Key}) This User has NO data in 'LeaderboardTMToday'");
+                    }
                 }
             }
+
+            Debug.LogWarning("DONE");
 
             _firstTime = true;
         }
