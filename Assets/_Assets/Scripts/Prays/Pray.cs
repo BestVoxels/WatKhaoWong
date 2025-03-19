@@ -209,9 +209,7 @@ namespace WatKhaoWong.Prays
         #region --Methods-- (Custom PRIVATE) ~Upload to Server Stuffs~
         private void UploadToServer()
         {
-            _myUserData.AddTotalTMPoints(_tmCounter);
-            _myUserData.AddTodayTMPoints(_tmCounter);
-            _myUserData.AddChallengeTMPointsText(_tmCounter);
+            _myUserData.AddTMPoints(_tmCounter);
 
             _tmCounter = 0;
         }

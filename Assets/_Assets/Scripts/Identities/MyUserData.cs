@@ -165,65 +165,12 @@ namespace WatKhaoWong.Identities
             OnMyUserDataUpdated?.Invoke();
         }
 
-        public void AddTotalTMPoints(int input)
+        public async void AddTMPoints(int input)
         {
-            if (input < 0)
-            {
-                _pointUploadEvents.OnTMPointsUploadFailedNegative?.Invoke();
-                return;
-            }
-            if (input == 0)
-            {
-                _pointUploadEvents.OnTMPointsUploadFailedZero?.Invoke();
-                return;
-            }
-            if (!CanAddPoints(input, out int availableToAdd))
-            {
-                _pointUploadEvents.OnTMPointsUploadFailedCap?.Invoke();
-                return;
-            }
+            await AddChallengeTMPoints(input);
+            AddTotalTMPoints(input);
 
-            if (input == availableToAdd)
-                _pointUploadEvents.OnTMPointsUploadSucceeded?.Invoke(availableToAdd);
-            else if (input != availableToAdd)
-                _pointUploadEvents.OnTMPointsUploadSucceededPartial?.Invoke(availableToAdd);
-
-            _data.TotalTMPoints += availableToAdd;
-
-            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TotalTMPoint, _data.TotalTMPoints);
-            OnMyUserDataUpdated?.Invoke();
-        }
-
-        public async void AddTodayTMPoints(int input)
-        {
-            await ResetTMPointsDaily();
-
-            if (input <= 0) return;
-            if (!CanAddPoints(input, out int availableToAdd)) return;
-            
-            AssignTodayUploadTime();
-
-            _data.TodayTMPoints += availableToAdd;
-            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TodayTMPoint, _data.TodayTMPoints);
-            OnMyUserDataUpdated?.Invoke();
-
-            OnTodayTMPointsAdded?.Invoke(_data.TodayTMPoints);
-        }
-
-        public async void AddChallengeTMPointsText(int input)
-        {
-            await ResetTMPointsAfterChallengeEnd();
-
-            if (input <= 0 || !await _challenge.CanLiveNow()) return;
-            if (!CanAddPoints(input, out int availableToAdd)) return;
-
-            AssignChallengeUploadTime();
-
-            _data.ChallengeTMPoints += availableToAdd;
-            _savingWrapper.Save(ECategoryNode.Users, EValueNode.ChallengeTMPoint, _data.ChallengeTMPoints);
-            OnMyUserDataUpdated?.Invoke();
-
-            OnChallengeTMPointsAdded?.Invoke(_data.ChallengeTMPoints);
+            await AddTodayTMPoints(input); // Call this last, since it changes 'TodayTMPoints' value and it will messup how 'CanAddPoints()' is calculate.
         }
 
         public void AddTotalWonTMChallenge(int input)
@@ -268,6 +215,67 @@ namespace WatKhaoWong.Identities
 
 
         #region --Methods-- (Custom PRIVATE)
+        private void AddTotalTMPoints(int input)
+        {
+            if (input < 0)
+            {
+                _pointUploadEvents.OnTMPointsUploadFailedNegative?.Invoke();
+                return;
+            }
+            if (input == 0)
+            {
+                _pointUploadEvents.OnTMPointsUploadFailedZero?.Invoke();
+                return;
+            }
+            if (!CanAddPoints(input, out int availableToAdd))
+            {
+                _pointUploadEvents.OnTMPointsUploadFailedCap?.Invoke();
+                return;
+            }
+
+            if (input == availableToAdd)
+                _pointUploadEvents.OnTMPointsUploadSucceeded?.Invoke(availableToAdd);
+            else if (input != availableToAdd)
+                _pointUploadEvents.OnTMPointsUploadSucceededPartial?.Invoke(availableToAdd);
+
+            _data.TotalTMPoints += availableToAdd;
+
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TotalTMPoint, _data.TotalTMPoints);
+            OnMyUserDataUpdated?.Invoke();
+        }
+
+        private async Task AddTodayTMPoints(int input)
+        {
+            await ResetTMPointsDaily();
+
+            if (input <= 0) return;
+            if (!CanAddPoints(input, out int availableToAdd)) return;
+
+            AssignTodayUploadTime();
+
+            _data.TodayTMPoints += availableToAdd;
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TodayTMPoint, _data.TodayTMPoints);
+            OnMyUserDataUpdated?.Invoke();
+
+            OnTodayTMPointsAdded?.Invoke(_data.TodayTMPoints);
+        }
+
+        private async Task AddChallengeTMPoints(int input)
+        {
+            await ResetTMPointsAfterChallengeEnd();
+
+            if (input <= 0 || !await _challenge.CanLiveNow()) return;
+            if (!CanAddPoints(input, out int availableToAdd)) return;
+
+            AssignChallengeUploadTime();
+
+            _data.ChallengeTMPoints += availableToAdd;
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.ChallengeTMPoint, _data.ChallengeTMPoints);
+            OnMyUserDataUpdated?.Invoke();
+
+            OnChallengeTMPointsAdded?.Invoke(_data.ChallengeTMPoints);
+        }
+
         private async Task ResetTMPointsDaily()
         {
             if (_data.FirstUploadTimeOfDayTM == default) return;

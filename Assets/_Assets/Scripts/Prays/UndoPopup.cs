@@ -100,9 +100,7 @@ namespace WatKhaoWong.Prays
 
         private void UploadToServer()
         {
-            _myUserData.AddTotalTMPoints(_tmPoints);
-            _myUserData.AddTodayTMPoints(_tmPoints);
-            _myUserData.AddChallengeTMPointsText(_tmPoints);
+            _myUserData.AddTMPoints(_tmPoints);
 
             _onUploadDone?.Invoke();
         }
