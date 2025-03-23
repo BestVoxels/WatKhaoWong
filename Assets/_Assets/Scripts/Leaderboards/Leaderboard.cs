@@ -152,13 +152,20 @@ namespace WatKhaoWong.Leaderboards
             _myUserData.OnChallengeTMPointsAdded -= AddChallengeTMPointsToLeaderboard;
         }
 
-        private async void OnApplicationFocus(bool focusStatus)
+        private void OnApplicationFocus(bool focusStatus)
         {
             if (focusStatus)
             {
-                await DeleteTodayTMLeaderboardDaily();
+                // IMPORTANT : MUST 'LoadSave()' when open from background, To Get Latest Data from Server. ONLY for 'LoadSave()' that use 'Share Categories', eg LeaderboardStats, ServerStats, RemoteConfig.
 
-                await DeleteChallengeTMLeaderboardAfterEnd();
+                // Example Case :
+                // User A open App on Day 1 -> Uploads score into Today Leaderboard & Close App in Background.
+                // User B open App on Day 1 -> Uploads score into Today Leaderboard.
+                // User C open App on Day 2 -> Deletes Today Leaderboard & Uploads score into Today Leaderboard.
+                // User D open App on Day 2 -> Uploads score into Today Leaderboard.
+                // User A open App from Background on Day 2 -> Deletes Today Leaderboard (AGAIN! because it stills has old Data from Server!).
+                // This is why some users Data NOT showing on Today Leaderboard.
+                LoadSave();
 
                 // Clear All Record Category CachedRows so that it has to fetch from database again. Why all? IF 'today score' updated, that means 'alltime score' has to be updated as well.
                 Records.ClearAllCachedRows();

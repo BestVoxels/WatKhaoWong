@@ -53,20 +53,16 @@ namespace WatKhaoWong.Identities
                 //    Debug.LogWarning($"({index})");
                 //}
 
-                // -> Get 'TotalTMPoint' and copy into 'ChallengeTMPoint'
-                if (otherUserData.GetTotalTMPoints() > 0)
+                
+                if (otherUserData.GetTotalTMPoints() > 0 && otherUserData.GetChallengeTMPoints() != otherUserData.GetTotalTMPoints())
                 {
+                    // -> Get 'TotalTMPoint' and copy into 'ChallengeTMPoint'
                     _savingWrapper.ForceSaveAnyUser(ECategoryNode.Users, eachData.Key, EValueNode.ChallengeTMPoint, otherUserData.GetTotalTMPoints());
 
-                    Debug.LogWarning($"({index}) GetTotalTMPoints: {otherUserData.GetTotalTMPoints()}");
-                }
-
-                // -> Write 'ChallengeTMPoint' into 'LeaderboardTMChallenge'
-                if (otherUserData.GetTotalTMPoints() > 0)
-                {
+                    // -> Write 'ChallengeTMPoint' into 'LeaderboardTMChallenge'
                     _savingWrapper.ForceSaveAnyUser(ECategoryNode.LeaderboardTMChallenge, eachData.Key, EValueNode.ChallengeTMPoint, otherUserData.GetTotalTMPoints());
 
-                    Debug.LogWarning($"({index}) GetChallengeTMPoints: {otherUserData.GetChallengeTMPoints()}");
+                    Debug.LogWarning($"({index}) / ({eachData.Key}) This User's ChallengeTMPoints is NOT equals with TotalTMPoints. So Update on 'LeaderboardTMChallenge' and 'ChallengeTMPoints' nodes");
                 }
 
                 // -> Check IF User TodayTMPoint is not assign in TodayLeaderboard, IF SO add 'TodayTMPoint' into 'LeaderboardTMToday'

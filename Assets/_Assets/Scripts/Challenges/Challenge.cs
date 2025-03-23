@@ -91,6 +91,16 @@ namespace WatKhaoWong.Challenges
         {
             FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
         }
+
+        private void OnApplicationFocus(bool focusStatus)
+        {
+            if (focusStatus)
+            {
+                // IMPORTANT : MUST 'LoadSave()' when open from background, To Get Latest Data from Server. ONLY for 'LoadSave()' that use 'Share Categories', eg LeaderboardStats, ServerStats, RemoteConfig.
+                // Why? check 'Leadeboard.cs'
+                LoadSave();
+            }
+        }
         #endregion
 
 
