@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 using WatKhaoWong.SceneManagement;
@@ -11,6 +12,7 @@ using WatKhaoWong.Challenges;
 using Firebase.Auth;
 using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
+using WatKhaoWong.Utils.UI;
 
 namespace WatKhaoWong.Leaderboards
 {
@@ -35,6 +37,8 @@ namespace WatKhaoWong.Leaderboards
         [field: SerializeField] public Color32 SelectedColor { get; private set; }
         [field: SerializeField] public Color32 UnselectedColor { get; private set; }
         [field: Space]
+        [field: SerializeField] public LocalizedString LoadCategoryCompleted { get; private set; }
+        [field: SerializeField] public Color32 LoadCategoryCompletedColor { get; private set; }
         [field: SerializeField] public LocalizedString CantChangeCategory { get; private set; }
         [field: SerializeField] public Color32 CantChangeCategoryColor { get; private set; }
         [field: Space]
@@ -89,6 +93,8 @@ namespace WatKhaoWong.Leaderboards
         private SavingWrapper _savingWrapper;
         private MyUserData _myUserData;
         private ServerTime _serverTime;
+        private StatusText _statusText;
+        private List<UIState> _uiStates = new List<UIState>();
         #endregion
 
 
@@ -136,6 +142,14 @@ namespace WatKhaoWong.Leaderboards
             _challenge = GameObject.FindWithTag("Player").GetComponentInChildren<Challenge>();
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
             _serverTime = FindAnyObjectByType<ServerTime>();
+            _statusText = FindAnyObjectByType<StatusText>();
+
+            foreach (var each in GameObject.FindGameObjectsWithTag("Leaderboard"))
+            {
+                _uiStates.Add(each.GetComponentInChildren<UIState>(true));
+            }
+            
+            //_uiStates = FindObjectsByType<UIState>(FindObjectsInactive.Include, FindObjectsSortMode.None); // This way can't filter only "Leaderboard" tag
         }
 
         private void OnEnable()
@@ -257,11 +271,20 @@ namespace WatKhaoWong.Leaderboards
 
                     yield return data;
                 }
-                
+
+                // Updates State when Leaderboard got deleted, it has no data in it.
                 if (index == 0 && IsLeaderboardExists())
                 {
                     Records[Category].IsLeaderboardExists = false;
                     OnConditionIsLeaderboardExistsUpdated?.Invoke();
+                }
+
+                // Indicates whenn Leaderboard is loaded.
+                if (index > 0 && _uiStates.Any(e => e.gameObject.activeInHierarchy))
+                {
+                    string categoryName = CategoryName.First(e => e.category == Category).localizedString.GetLocalizedString();
+
+                    _statusText.Show(LoadCategoryCompleted.GetLocalizedString(categoryName), LoadCategoryCompletedColor);
                 }
 
                 yield break; // Important to stop here because 'await' will resume call and if we don't end here it will run code below too.

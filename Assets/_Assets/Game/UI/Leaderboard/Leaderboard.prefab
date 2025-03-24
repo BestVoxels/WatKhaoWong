@@ -780,9 +780,10 @@ GameObject:
   - component: {fileID: 2643507687155059389}
   - component: {fileID: 5722908259619943060}
   - component: {fileID: 279711486263971477}
+  - component: {fileID: 5431663954565708800}
   m_Layer: 5
   m_Name: Leaderboard
-  m_TagString: Untagged
+  m_TagString: Leaderboard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -880,6 +881,18 @@ MonoBehaviour:
   _countDownBannerEventTriggers:
   - {fileID: 6728760206656744623}
   - {fileID: 8935795782681357946}
+--- !u!114 &5431663954565708800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141416424307815111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85c2f6cff5dc441e38b983947d31947c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3005961401922867872
 GameObject:
   m_ObjectHideFlags: 0
