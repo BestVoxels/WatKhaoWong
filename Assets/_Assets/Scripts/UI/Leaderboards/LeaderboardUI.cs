@@ -24,7 +24,7 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Fields-- (In Class)
-        private float _waitAsyncTimeOut = 3f;
+        private float _waitAsyncTimeOut = 10f;
         private List<RowUI> _activeRowUIs = new List<RowUI>();
 
         private Leaderboard _leaderboard;
@@ -72,6 +72,8 @@ namespace WatKhaoWong.UI.Leaderboards
         #region --Methods-- (Custom PRIVATE) ~Row~
         private async Task BuildRows()
         {
+            ClearRows();
+
             //+Prevent some LeaderboardUI GameObject show Empty Data (No Rows), solve by make LeaderboardUI GameObject that comes after wait first then loads when Async is done.
             float timer = 0f;
             while (Leaderboard.IsAsyncRunning == true)
@@ -186,8 +188,6 @@ namespace WatKhaoWong.UI.Leaderboards
         {
             UpdateFilterButtonsUI();
             UpdateTexts();
-
-            ClearRows();
 
             await BuildRows(); // Have to call before 'SetupMyRow()' and have wait until it finished. So that it setup 'MyRank' properly.
 

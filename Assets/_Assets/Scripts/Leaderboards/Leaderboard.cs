@@ -179,11 +179,7 @@ namespace WatKhaoWong.Leaderboards
                 // User D open App on Day 2 -> Uploads score into Today Leaderboard.
                 // User A open App from Background on Day 2 -> Deletes Today Leaderboard (AGAIN! because it stills has old Data from Server!).
                 // This is why some users Data NOT showing on Today Leaderboard.
-                LoadSave();
-
-                // Clear All Record Category CachedRows so that it has to fetch from database again. Why all? IF 'today score' updated, that means 'alltime score' has to be updated as well.
-                Records.ClearAllCachedRows();
-                OnLeaderboardScoreUpdated?.Invoke();
+                LoadSave(); // DON'T  [Clear All Record Category CachedRows, because Rows will be missing, it mess up refresh order, just refresh in 'LoadSave()']
             }
         }
         #endregion
@@ -344,6 +340,7 @@ namespace WatKhaoWong.Leaderboards
 
             // Clear All Record Category CachedRows so that it has to fetch from database again.
             Records.ClearAllCachedRows();
+            OnLeaderboardScoreUpdated?.Invoke();
         }
 
         private async Task DeleteTodayTMLeaderboardDaily()

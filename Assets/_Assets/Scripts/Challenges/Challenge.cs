@@ -13,6 +13,14 @@ namespace WatKhaoWong.Challenges
 {
     public class Challenge : MonoBehaviour, IConditionEvaluator
     {
+        private enum RefreshUI
+        {
+            Yes,
+            No
+        }
+
+
+
         #region --Fields-- (Inspector)
         [Header("Challenge Stuffs - Text")]
         [SerializeField] private LocalizedString _dayText;
@@ -98,7 +106,7 @@ namespace WatKhaoWong.Challenges
             {
                 // IMPORTANT : MUST 'LoadSave()' when open from background, To Get Latest Data from Server. ONLY for 'LoadSave()' that use 'Share Categories', eg LeaderboardStats, ServerStats, RemoteConfig.
                 // Why? check 'Leadeboard.cs'
-                LoadSave();
+                LoadSave(RefreshUI.No);
             }
         }
         #endregion
@@ -323,7 +331,7 @@ namespace WatKhaoWong.Challenges
 
         private bool StartAndEndDateAreDefault() => _startDate == default && _endDate == default;
 
-        private async void LoadSave()
+        private async void LoadSave(RefreshUI refreshUI)
         {
             var data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.ChallengeTMStartDate);
             if (data != null)
@@ -361,7 +369,10 @@ namespace WatKhaoWong.Challenges
             await AutoLiveChallenge();
             await AutoEndChallenge();
 
-            OnDataUpdated?.Invoke();
+            if (refreshUI == RefreshUI.Yes)
+            {
+                OnDataUpdated?.Invoke();
+            }
         }
         #endregion
 
@@ -394,7 +405,7 @@ namespace WatKhaoWong.Challenges
         /// </summary>
         private void HandleStateChanged(object obj, EventArgs args)
         {
-            LoadSave(); // So Don't have to call on Awake()
+            LoadSave(RefreshUI.Yes); // So Don't have to call on Awake()
         }
         #endregion
     }
