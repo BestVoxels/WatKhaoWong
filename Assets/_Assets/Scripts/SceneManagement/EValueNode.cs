@@ -26,6 +26,8 @@ namespace WatKhaoWong.SceneManagement
         TimeStamp,
         LiveAppVersioniOS,
         LiveAppVersionAndroid,
+        InReviewAppVersioniOS,
+        InReviewAppVersionAndroid,
         LinkToUpdateAppiOS,
         LinkToUpdateAppAndroid,
         TMPointCapRequest,

@@ -34,24 +34,24 @@ namespace WatKhaoWong.Core
         private void EnforceAppVersion()
         {
 #if UNITY_IOS
-            if (string.IsNullOrWhiteSpace(_remoteConfigService.LiveAppVersioniOS))
+            if (string.IsNullOrWhiteSpace(_remoteConfigService.LiveAppVersioniOS) || string.IsNullOrWhiteSpace(_remoteConfigService.InReviewAppVersioniOS))
             {
                 return;
             }
 #elif UNITY_ANDROID
-            if (string.IsNullOrWhiteSpace(_remoteConfigService.LiveAppVersionAndroid))
+            if (string.IsNullOrWhiteSpace(_remoteConfigService.LiveAppVersionAndroid) || string.IsNullOrWhiteSpace(_remoteConfigService.InReviewAppVersionAndroid))
             {
                 return;
             }
 #endif
 
 #if UNITY_IOS
-            if (!_remoteConfigService.LiveAppVersioniOS.Equals(Application.version))
+            if ( !(_remoteConfigService.LiveAppVersioniOS.Equals(Application.version) || _remoteConfigService.InReviewAppVersioniOS.Equals(Application.version)) )
             {
                 Application.Quit();
             }
 #elif UNITY_ANDROID
-            if (!_remoteConfigService.LiveAppVersionAndroid.Equals(Application.version))
+            if ( !(_remoteConfigService.LiveAppVersionAndroid.Equals(Application.version) || _remoteConfigService.InReviewAppVersionAndroid.Equals(Application.version)) )
             {
                 Application.Quit();
             }

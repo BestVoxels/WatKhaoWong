@@ -34,6 +34,8 @@ namespace WatKhaoWong.Attributes
         #region --Properties-- (Auto)
         public string LiveAppVersioniOS { get; private set; } = null;
         public string LiveAppVersionAndroid { get; private set; } = null;
+        public string InReviewAppVersioniOS { get; private set; } = null;
+        public string InReviewAppVersionAndroid { get; private set; } = null;
         public string LinkToUpdateAppiOS { get; private set; } = null;
         public string LinkToUpdateAppAndroid { get; private set; } = null;
         public bool AllowAccountDeletion { get; private set; } = false;
@@ -75,12 +77,12 @@ namespace WatKhaoWong.Attributes
 
         //private async void Start()
         //{
-        //    bool existResult = await _savingWrapper.IsSaveExists(ECategoryNode.RemoteConfig, EValueNode.AllowAccountDeletion);
+        //    bool existResult = await _savingWrapper.IsSaveExists(ECategoryNode.RemoteConfig, EValueNode.InReviewAppVersionAndroid);
         //    print(existResult);
 
         //    if (!existResult)
         //    {
-        //        _savingWrapper.ForceSave(ECategoryNode.RemoteConfig, EValueNode.AllowAccountDeletion, true);
+        //        _savingWrapper.ForceSave(ECategoryNode.RemoteConfig, EValueNode.InReviewAppVersionAndroid, "1.0.2");
         //        print("ForceSave is working");
         //    }
         //}
@@ -96,6 +98,10 @@ namespace WatKhaoWong.Attributes
             if (data != null)
                 LiveAppVersioniOS = data.Value.ToString();
 
+            data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.InReviewAppVersioniOS);
+            if (data != null)
+                InReviewAppVersioniOS = data.Value.ToString();
+
             data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.LinkToUpdateAppiOS);
             if (data != null)
                 LinkToUpdateAppiOS = data.Value.ToString();
@@ -104,6 +110,10 @@ namespace WatKhaoWong.Attributes
             var data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.LiveAppVersionAndroid);
             if (data != null)
                 LiveAppVersionAndroid = data.Value.ToString();
+
+            data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.InReviewAppVersionAndroid);
+            if (data != null)
+                InReviewAppVersionAndroid = data.Value.ToString();
 
             data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.LinkToUpdateAppAndroid);
             if (data != null)
