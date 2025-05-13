@@ -26,8 +26,8 @@ namespace WatKhaoWong.Leaderboards
         [SerializeField] private ushort _maxRowNumber = 100;
         [Range(1, 3)]
         [SerializeField] private ushort _rewardWinnerMaxRowNumber = 1;
-        [Range(3, 5)]
-        [SerializeField] private ushort _recordWinnerMaxRowNumber = 3;
+        [Range(3, 100)]
+        [SerializeField] private ushort _recordWinnerMaxRowNumber = 20;
         #endregion
 
 
