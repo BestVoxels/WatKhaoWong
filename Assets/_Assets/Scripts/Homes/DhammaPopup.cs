@@ -13,6 +13,8 @@ namespace WatKhaoWong.Homes
         [SerializeField] private UnityEvent _onFacebook3ButtonClick;
         [SerializeField] private UnityEvent _onFacebook4ButtonClick;
 
+        [SerializeField] private UnityEvent _onInstagram1ButtonClick;
+
         [SerializeField] private UnityEvent _onYoutube1ButtonClick;
 
         [SerializeField] private UnityEvent _onTiktok1ButtonClick;
@@ -43,6 +45,11 @@ namespace WatKhaoWong.Homes
             _onFacebook4ButtonClick?.Invoke();
         }
 
+
+        public void OnInstagram1ButtonClick()
+        {
+            _onInstagram1ButtonClick?.Invoke();
+        }
 
         public void OnYoutube1ButtonClick()
         {

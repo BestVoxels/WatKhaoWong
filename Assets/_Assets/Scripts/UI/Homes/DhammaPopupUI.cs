@@ -16,6 +16,8 @@ namespace WatKhaoWong.UI.Homes
         [SerializeField] private Button _facebook3Button;
         [SerializeField] private Button _facebook4Button;
 
+        [SerializeField] private Button _instagram1Button;
+
         [SerializeField] private Button _youtube1Button;
 
         [SerializeField] private Button _tiktok1Button;
@@ -42,6 +44,8 @@ namespace WatKhaoWong.UI.Homes
             _facebook2Button.onClick.AddListener(Facebook2Button);
             _facebook3Button.onClick.AddListener(Facebook3Button);
             _facebook4Button.onClick.AddListener(Facebook4Button);
+
+            _instagram1Button.onClick.AddListener(Instagram1Button);
 
             _youtube1Button.onClick.AddListener(Youtube1Button);
             _tiktok1Button.onClick.AddListener(Tiktok1Button);
@@ -78,6 +82,11 @@ namespace WatKhaoWong.UI.Homes
             _playerDhammaPopup.OnFacebook4ButtonClick();
         }
 
+
+        private void Instagram1Button()
+        {
+            _playerDhammaPopup.OnInstagram1ButtonClick();
+        }
 
         private void Youtube1Button()
         {
