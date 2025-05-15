@@ -316,6 +316,18 @@ namespace WatKhaoWong.Leaderboards
                 return;
             }
 
+            await LoadNDeleteTodayTMLeaderboardDaily();
+
+            await LoadNDeleteChallengeTMLeaderboardAfterEnd();
+
+            // Clear All Record Category CachedRows so that it has to fetch from database again.
+            Records.ClearAllCachedRows();
+            OnLeaderboardScoreUpdated?.Invoke();
+        }
+
+        private async Task LoadNDeleteTodayTMLeaderboardDaily()
+        {
+            // LOAD FIRST
             _isLeaderboardTMTodayExists = await _savingWrapper.IsLeaderboardTMTodayExists();
 
             var data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfDayTM);
@@ -323,28 +335,9 @@ namespace WatKhaoWong.Leaderboards
             {
                 if (data.Value.ToString().TryParseGregorian(out DateTime result))
                     _leaderboardFirstUploadTimeOfDayTM = result;
-
-                await DeleteTodayTMLeaderboardDaily();
             }
 
-            _isLeaderboardTMChallengeExists = await _savingWrapper.IsLeaderboardTMChallengeExists();
-
-            data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfChallengeTM);
-            if (data != null)
-            {
-                if (data.Value.ToString().TryParseGregorian(out DateTime result))
-                    _leaderboardFirstUploadTimeOfChallengeTM = result;
-
-                await DeleteChallengeTMLeaderboardAfterEnd();
-            }
-
-            // Clear All Record Category CachedRows so that it has to fetch from database again.
-            Records.ClearAllCachedRows();
-            OnLeaderboardScoreUpdated?.Invoke();
-        }
-
-        private async Task DeleteTodayTMLeaderboardDaily()
-        {
+            // DELETE
             if (_leaderboardFirstUploadTimeOfDayTM == default) return;
 
             DateTime nowDate = await _serverTime.Now();
@@ -368,8 +361,19 @@ namespace WatKhaoWong.Leaderboards
             }
         }
 
-        private async Task DeleteChallengeTMLeaderboardAfterEnd()
+        private async Task LoadNDeleteChallengeTMLeaderboardAfterEnd()
         {
+            // LOAD FIRST
+            _isLeaderboardTMChallengeExists = await _savingWrapper.IsLeaderboardTMChallengeExists();
+
+            var data = await _savingWrapper.Load(ECategoryNode.LeaderboardStats, EValueNode.FirstUploadTimeOfChallengeTM);
+            if (data != null)
+            {
+                if (data.Value.ToString().TryParseGregorian(out DateTime result))
+                    _leaderboardFirstUploadTimeOfChallengeTM = result;
+            }
+
+            // DELETE
             if (_leaderboardFirstUploadTimeOfChallengeTM == default) return;
 
             if ((!_challenge.CanLive(_leaderboardFirstUploadTimeOfChallengeTM) || !await _challenge.CanLiveNow()) && _isLeaderboardTMChallengeExists)
@@ -455,7 +459,7 @@ namespace WatKhaoWong.Leaderboards
 
         private async void AddTodayTMPointsToLeaderboard(int score)
         {
-            await DeleteTodayTMLeaderboardDaily();
+            await LoadNDeleteTodayTMLeaderboardDaily();
 
             if (score <= 0) return;
 
@@ -471,7 +475,7 @@ namespace WatKhaoWong.Leaderboards
 
         private async void AddChallengeTMPointsToLeaderboard(int score)
         {
-            await DeleteChallengeTMLeaderboardAfterEnd();
+            await LoadNDeleteChallengeTMLeaderboardAfterEnd();
 
             if (score <= 0 || !await _challenge.CanLiveNow()) return;
 
