@@ -131,6 +131,7 @@ namespace WatKhaoWong.Leaderboards
 
         #region --Properties-- (Auto)
         public static bool IsAsyncRunning { get; private set; } = false;
+        public static bool ShowStatusRowLoaded { get; set; } = false;
         #endregion
 
 
@@ -170,6 +171,8 @@ namespace WatKhaoWong.Leaderboards
         {
             if (focusStatus)
             {
+                ShowStatusRowLoaded = false;
+
                 // IMPORTANT : MUST 'LoadSave()' when open from background, To Get Latest Data from Server. ONLY for 'LoadSave()' that use 'Share Categories', eg LeaderboardStats, ServerStats, RemoteConfig.
 
                 // Example Case :
@@ -275,8 +278,8 @@ namespace WatKhaoWong.Leaderboards
                     OnConditionIsLeaderboardExistsUpdated?.Invoke();
                 }
 
-                // Indicates whenn Leaderboard is loaded.
-                if (index > 0 && _uiStates.Any(e => e.gameObject.activeInHierarchy))
+                // Indicates when Leaderboard is loaded.
+                if (index > 0 && _uiStates.Any(e => e.gameObject.activeInHierarchy) && ShowStatusRowLoaded)
                 {
                     string categoryName = CategoryName.First(e => e.category == Category).localizedString.GetLocalizedString();
 
@@ -467,6 +470,8 @@ namespace WatKhaoWong.Leaderboards
 
             // Add score to leaderboard
             _savingWrapper.Save(ECategoryNode.LeaderboardTMToday, EValueNode.TodayTMPoint, score);
+
+            ShowStatusRowLoaded = false;
 
             // Clear All Record Category CachedRows so that it has to fetch from database again. Why all? IF 'today score' updated, that means 'alltime score' has to be updated as well.
             Records.ClearAllCachedRows();

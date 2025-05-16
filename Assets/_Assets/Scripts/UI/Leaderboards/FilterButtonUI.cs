@@ -66,9 +66,12 @@ namespace WatKhaoWong.UI.Leaderboards
                 string categoryName = _leaderboard.CategoryName.First(e => e.category == _leaderboard.Category).localizedString.GetLocalizedString();
 
                 _statusText.Show(_leaderboard.CantChangeCategory.GetLocalizedString(categoryName), _leaderboard.CantChangeCategoryColor);
+                Leaderboard.ShowStatusRowLoaded = true;
+
                 return;
             }
 
+            Leaderboard.ShowStatusRowLoaded = false;
             _leaderboard.Category = _category;
         }
         #endregion
