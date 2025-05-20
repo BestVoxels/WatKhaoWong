@@ -7,6 +7,8 @@ namespace WatKhaoWong.Utils
     public class SceneLoader : MonoBehaviour
     {
         #region --Fields-- (In Class)
+        private static bool _isLoading = false;
+
         private string _sceneName;
         private Coroutine _previousCoroutine;
         #endregion
@@ -31,7 +33,11 @@ namespace WatKhaoWong.Utils
         #region --Methods-- (Subscriber) ~UnityEvent~
         public void LoadScene(string sceneName)
         {
-            SceneManager.LoadScene(sceneName);
+            if (_isLoading) return;
+
+            _isLoading = true;
+
+            SceneManager.LoadSceneAsync(sceneName).completed += (AsyncOperation ao) => _isLoading = false;
         }
 
         public void SetSceneName(string sceneName) => _sceneName = sceneName;

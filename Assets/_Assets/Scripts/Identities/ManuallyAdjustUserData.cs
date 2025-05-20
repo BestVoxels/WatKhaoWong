@@ -53,17 +53,25 @@ namespace WatKhaoWong.Identities
                 //    Debug.LogWarning($"({index})");
                 //}
 
-                
-                if (otherUserData.GetTotalTMPoints() > 0 && otherUserData.GetChallengeTMPoints() != otherUserData.GetTotalTMPoints())
-                {
-                    // -> Get 'TotalTMPoint' and copy into 'ChallengeTMPoint'
-                    _savingWrapper.ForceSaveAnyUser(ECategoryNode.Users, eachData.Key, EValueNode.ChallengeTMPoint, otherUserData.GetTotalTMPoints());
 
-                    // -> Write 'ChallengeTMPoint' into 'LeaderboardTMChallenge'
-                    _savingWrapper.ForceSaveAnyUser(ECategoryNode.LeaderboardTMChallenge, eachData.Key, EValueNode.ChallengeTMPoint, otherUserData.GetTotalTMPoints());
+                //if (otherUserData.GetTotalTMPoints() > 0 && otherUserData.GetChallengeTMPoints() != otherUserData.GetTotalTMPoints())
+                //{
+                //    // -> Get 'TotalTMPoint' and copy into 'ChallengeTMPoint'
+                //    _savingWrapper.ForceSaveAnyUser(ECategoryNode.Users, eachData.Key, EValueNode.ChallengeTMPoint, otherUserData.GetTotalTMPoints());
 
-                    Debug.LogWarning($"({index}) / ({eachData.Key}) This User's ChallengeTMPoints is NOT equals with TotalTMPoints. So Update on 'LeaderboardTMChallenge' and 'ChallengeTMPoints' nodes");
-                }
+                //    // -> Write 'ChallengeTMPoint' into 'LeaderboardTMChallenge'
+                //    _savingWrapper.ForceSaveAnyUser(ECategoryNode.LeaderboardTMChallenge, eachData.Key, EValueNode.ChallengeTMPoint, otherUserData.GetTotalTMPoints());
+
+                //    Debug.LogWarning($"({index}) / ({eachData.Key}) This User's ChallengeTMPoints is NOT equals with TotalTMPoints. So Update on 'LeaderboardTMChallenge' and 'ChallengeTMPoints' nodes");
+                //}
+
+                //// -> Set 'ChallengeTMPoint' to 0. (WHEN CHALLENGE IS ENDED)
+                //if (otherUserData.GetTotalTMPoints() > 0 && otherUserData.GetChallengeTMPoints() != otherUserData.GetTotalTMPoints())
+                //{
+                //    _savingWrapper.ForceSaveAnyUser(ECategoryNode.Users, eachData.Key, EValueNode.ChallengeTMPoint, 0);
+
+                //    Debug.LogWarning($"({index}) / ({eachData.Key}) Set 'ChallengeTMPoints' to 0");
+                //}
 
                 // -> Check IF User TodayTMPoint is not assign in TodayLeaderboard, IF SO add 'TodayTMPoint' into 'LeaderboardTMToday'
                 if (otherUserData.GetFirstUploadTimeOfDayTM().Date == DateTime.Now.Date)
