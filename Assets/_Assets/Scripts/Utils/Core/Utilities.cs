@@ -1,3 +1,4 @@
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -319,6 +320,185 @@ namespace WatKhaoWong.Utils.Core
                 a = byte.Parse(hex.Substring(6, 2), System.Globalization.NumberStyles.HexNumber);
 
             return new Color32(r, g, b, a);
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Image~
+        /// <summary>
+        /// Compress Texture in to JPG. With optimized quality and save space.
+        /// </summary>
+        /// <param name="quality">JPG quality 90 is more than enough, save space up to 4-10 times compared to PNG.</param>
+        public static byte[] CompressToJPG(Texture2D original, int quality = 90)
+        {
+            return original.EncodeToJPG(quality);
+        }
+
+        /// <summary>
+        /// Get the file size in MB from a file path.
+        /// </summary>
+        public static float GetImageSizeMB(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                Debug.LogWarning("File not found at path: " + filePath);
+                return 0f;
+            }
+
+            long bytes = new FileInfo(filePath).Length;
+            return bytes / 1_000_000f; // Thi is 'decimal MB' format. For 'binary MB' (MiB) format use (1024f * 1024f) instead of (1,000,000f)
+        }
+
+        /// <summary>
+        /// Get the size in MB from a byte array (e.g. imageBytes).
+        /// </summary>
+        public static float GetImageSizeMB(byte[] data)
+        {
+            if (data == null || data.Length == 0)
+            {
+                Debug.LogWarning("Byte array is null or empty.");
+                return 0f;
+            }
+
+            return data.Length / 1_000_000f; // Thi is 'decimal MB' format. For 'binary MB' (MiB) format use (1024f * 1024f) instead of (1,000,000f)
+        }
+
+        /// <summary>
+        /// Estimate the memory usage in MB of a loaded Texture2D.
+        ///
+        /// Why Estimate?
+        /// Unlike the file size on disk (FileInfo.Length) or the byte array length (byte[].Length),
+        /// the memory usage of a Texture2D in Unity is not directly exposed and varies based on...
+        /// 
+        /// - Texture Compression : DXT1, ETC2, ASTC, etc.
+        /// - Mipmaps : If mipmaps are enabled, Unity stores smaller versions of the texture too
+        /// - Runtime Conversion : Unity might convert the format internally when uploading to the GPU
+        /// - Graphics API Differences : OpenGL, DirectX, Vulkan, and Metal all handle textures a bit differently
+        /// </summary>
+        public static float GetImageSizeMB(Texture2D texture)
+        {
+            if (texture == null)
+            {
+                Debug.LogWarning("Texture is null.");
+                return 0f;
+            }
+
+            int bitsPerPixel = GetBitsPerPixel(texture.format);
+            int mipCount = texture.mipmapCount > 1 ? 2 : 1; // Very rough multiplier for mipmaps
+            float totalBits = texture.width * texture.height * bitsPerPixel * mipCount;
+            float totalBytes = totalBits / 8f;
+            return totalBytes / 1_000_000f; // Thi is 'decimal MB' format. For 'binary MB' (MiB) format use (1024f * 1024f) instead of (1,000,000f)
+        }
+
+        /// <summary>
+        /// Get bits per pixel based on texture format.
+        /// </summary>
+        public static int GetBitsPerPixel(TextureFormat format)
+        {
+            switch (format)
+            {
+                case TextureFormat.Alpha8: return 8;
+                case TextureFormat.ARGB4444: return 16;
+                case TextureFormat.RGB24: return 24;
+                case TextureFormat.RGBA32: return 32;
+                case TextureFormat.ARGB32: return 32;
+                case TextureFormat.RGB565: return 16;
+                case TextureFormat.DXT1: return 4;
+                case TextureFormat.DXT5: return 8;
+                case TextureFormat.RGBA4444: return 16;
+                case TextureFormat.RHalf: return 16;
+                case TextureFormat.RGHalf: return 32;
+                case TextureFormat.RGBAHalf: return 64;
+                case TextureFormat.RFloat: return 32;
+                case TextureFormat.RGFloat: return 64;
+                case TextureFormat.RGBAFloat: return 128;
+                default:
+                    Debug.LogWarning($"Unknown bits-per-pixel for format: {format}, assuming 32.");
+                    return 32;
+            }
+        }
+
+        /// <summary>
+        /// NOT IDEAL: Image looks blurry even set to same resolution as Original Image.
+        /// </summary>
+        public static Texture2D ResizePreserveRatio(Texture2D source, int maxSize)
+        {
+            int width = source.width;
+            int height = source.height;
+
+            float ratio = (float)width / height;
+
+            int newWidth, newHeight;
+            if (width > height)
+            {
+                newWidth = maxSize;
+                newHeight = Mathf.RoundToInt(maxSize / ratio);
+            }
+            else
+            {
+                newHeight = maxSize;
+                newWidth = Mathf.RoundToInt(maxSize * ratio);
+            }
+
+            // Create a RenderTexture with new dimensions
+            RenderTexture rt = new RenderTexture(newWidth, newHeight, 24);
+            RenderTexture currentRT = RenderTexture.active;
+            RenderTexture.active = rt;
+
+            // Copy and scale the texture into the render texture
+            source.filterMode = FilterMode.Point;
+
+            Graphics.Blit(source, rt);
+
+            // Create a new Texture2D with the target size
+            Texture2D resized = new Texture2D(newWidth, newHeight, TextureFormat.RGBA32, false);
+            resized.ReadPixels(new Rect(0, 0, newWidth, newHeight), 0, 0);
+            resized.Apply();
+
+            // Clean up
+            RenderTexture.active = currentRT;
+            rt.Release();
+
+            return resized;
+        }
+
+        /// <summary>
+        /// NOT IDEAL: Image looks Pixelate when lower size down.
+        /// </summary>
+        public static Texture2D ResizePreserveRatioUsingCPU(Texture2D source, int maxSize)
+        {
+            int width = source.width;
+            int height = source.height;
+
+            float ratio = (float)width / height;
+
+            int newWidth, newHeight;
+            if (width > height)
+            {
+                newWidth = maxSize;
+                newHeight = Mathf.RoundToInt(maxSize / ratio);
+            }
+            else
+            {
+                newHeight = maxSize;
+                newWidth = Mathf.RoundToInt(maxSize * ratio);
+            }
+
+            Texture2D result = new Texture2D(newWidth, newHeight, TextureFormat.RGBA32, false);
+
+            for (int y = 0; y < newHeight; y++)
+            {
+                for (int x = 0; x < newWidth; x++)
+                {
+                    float u = (float)x / (newWidth - 1);
+                    float v = (float)y / (newHeight - 1);
+                    result.SetPixel(x, y, source.GetPixelBilinear(u, v));
+                }
+            }
+
+            result.Apply();
+            return result;
         }
         #endregion
     }
