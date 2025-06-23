@@ -24,6 +24,7 @@ namespace WatKhaoWong.UI
         public static event Action OnAllConditionCheckCalled;
         public static event Action OnHomeRefreshed;
         public static event Action OnPrayRefreshed;
+        public static event Action OnManageMembersRefreshed;
         public static event Action OnSettingRefreshed;
         //public static event Action OnAbbotHistoryRefreshed;
         public static event Action OnPopupRefreshed;
@@ -78,7 +79,7 @@ namespace WatKhaoWong.UI
             // TODO lets see what to subscribe to for HISTORY SYSTEM
 
             // SHARE POPUP SYSTEM
-            _accountPopup.OnProfileIconChangedByClick += () => { RefreshPrayUI(); };
+            _accountPopup.OnProfileIconChangedByClick += () => { RefreshPrayUI(); RefreshManageMembersUI(); };
 
             // LEADERBOARD SYSTEM
             _leaderboard.OnLeaderboardCategoryChanged += () => { RefreshLeaderboardUI(); ShowHideUIByRoles(); };
@@ -110,6 +111,7 @@ namespace WatKhaoWong.UI
         {
             RefreshHomeUI();
             RefreshPrayUI();
+            RefreshManageMembersUI();
             RefreshSettingUI();
             //RefreshAbbotHistoryUI();
             RefreshPopupUI();
@@ -134,6 +136,12 @@ namespace WatKhaoWong.UI
         {
             OnPrayRefreshed?.Invoke();
             //print("Refreshed Pray UI : " + OnPrayRefreshed?.GetInvocationList().Length);
+        }
+
+        public static void RefreshManageMembersUI()
+        {
+            OnManageMembersRefreshed?.Invoke();
+            //print("Refreshed Manage Members UI : " + OnManageMembersRefreshed?.GetInvocationList().Length);
         }
 
         public static void RefreshSettingUI()
@@ -182,6 +190,7 @@ namespace WatKhaoWong.UI
 
             OnHomeRefreshed = null;
             OnPrayRefreshed = null;
+            OnManageMembersRefreshed = null;
             OnSettingRefreshed = null;
             //OnAbbotHistoryRefreshed = null;
             OnPopupRefreshed = null;

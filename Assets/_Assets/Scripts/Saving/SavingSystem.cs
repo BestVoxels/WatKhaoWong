@@ -1,6 +1,9 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 using Firebase.Database;
+using Firebase.Storage;
+using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.Saving
 {
@@ -16,6 +19,7 @@ namespace WatKhaoWong.Saving
     {
         #region --Fields-- (In Class)
         private FirebaseDatabase _database;
+        private FirebaseStorage _storage;
         #endregion
 
 
@@ -25,12 +29,153 @@ namespace WatKhaoWong.Saving
         {
             //DatabaseReference root = FirebaseDatabase.DefaultInstance.RootReference;
             _database = FirebaseDatabase.DefaultInstance;
+            _storage = FirebaseStorage.DefaultInstance;
         }
         #endregion
 
 
 
-        #region --Methods-- (Custom PUBLIC)
+        #region --Methods-- (Custom PUBLIC) ~Firebase Storage~
+        /// <summary>
+        /// Upload Image to Firebase Storage. Compress to JPG (quality 90) first to reduce file size.
+        /// </summary>
+        public async Task<bool> UploadImage(string firebasePath, Texture2D textureImage, Dictionary<string, string> customMetadata, byte maxImageSizeInMB)
+        {
+            byte[] bytesImage = Utilities.CompressToJPG(textureImage);
+
+            Debug.Log($"File size after compress to JPG : {Utilities.GetImageSizeMB(bytesImage)}");
+
+            // Save Full Size is fine, system has MB limiter. No need to Resize to scale down.
+            if (Utilities.GetImageSizeMB(bytesImage) > maxImageSizeInMB)
+            {
+                return false;
+            }
+            // Make File Name Unique
+            //path = System.IO.Path.Combine(path, $"{System.Guid.NewGuid()}.jpg");
+
+            // For Adding Metadata to File
+            MetadataChange metadataChange = new MetadataChange()
+            {
+                ContentEncoding = "image/jpg",
+                CustomMetadata = customMetadata
+            };
+            // For Monitoring Upload Progress
+            StorageProgress<UploadState> progress = new StorageProgress<UploadState>(state =>
+            {
+                // called periodically during the upload
+                Debug.Log($"Progress: {state.BytesTransferred} of {state.TotalByteCount} bytes transferred.");
+            });
+
+            
+            // UPLOAD
+            StorageMetadata metadata = null;
+            try
+            {
+                metadata = await _storage.GetReference(firebasePath).PutBytesAsync(bytesImage, metadataChange, progress);
+
+                return true;
+            }
+            catch (Firebase.FirebaseException e)
+            {
+                Debug.LogError($"UploadImage to storage encountered an Error : ({e.ErrorCode}) {e.Message}");
+
+                return false;
+            }
+
+            //// GET URL to see data that just Uploaded
+            //Uri url = null;
+            //try
+            //{
+            //    url = await _storage.GetReference(firebasePath).GetDownloadUrlAsync();
+            //    Debug.Log($"Can Download Image from {url}");
+            //}
+            //catch (Firebase.FirebaseException e)
+            //{
+            //    Debug.LogError($"Get Download Url encountered an Error : ({e.ErrorCode}) {e.Message}");
+            //}
+        }
+
+        /// <summary>
+        /// Download Image from Firebase Storage
+        /// </summary>
+        public async Task<Texture2D> DownloadImage(string firebasePath, byte maxImageSizeInMB)
+        {
+            // For Monitoring Download Progress
+            StorageProgress<DownloadState> progress = new StorageProgress<DownloadState>(state =>
+            {
+                // called periodically during the download
+                Debug.Log($"Progress: {state.BytesTransferred} of {state.TotalByteCount} bytes downloaded.");
+            });
+
+            byte[] bytes = null;
+            try
+            {
+                bytes = await _storage.GetReference(firebasePath).GetBytesAsync(maxImageSizeInMB * 1024 * 1024, progress);
+
+                Debug.Log("Downloaded");
+            }
+            catch (Firebase.FirebaseException e)
+            {
+                Debug.LogError($"UploadImage to storage encountered an Error : ({e.ErrorCode}) {e.Message}");
+            }
+
+            Texture2D tex = new(2, 2);
+
+            tex.LoadImage(bytes);
+
+            return tex;
+        }
+
+        /// <summary>
+        /// Delete File from Firebase Storage
+        /// </summary>
+        public void DeleteFile(string firebasePath)
+        {
+            Debug.Log($"Called \"DeleteFile();\" with Firebase Path ({firebasePath})");
+
+            _storage.GetReference(firebasePath).DeleteAsync();
+        }
+
+        /// <summary>
+        /// Upload File to Firebase Storage
+        /// </summary>
+        public async void UploadFile(string firebasePath, string localFilePath)
+        {
+            await _storage.GetReference(firebasePath).PutFileAsync("file://" + localFilePath); // URI path file:// prefix works both iOS and Android.
+        }
+        // ------How to use UploadFile()------
+        //// Pick any file
+        //NativeFilePicker.PickFile((path) =>
+        //{
+        //    if (path == null)
+        //        _statusText.text = "Operation cancelled";
+        //    else
+        //    {
+        //        _statusText.text = $"Picked file: {path}";
+
+        //        _savingWrapper.UploadFile($"Users/{FirebaseUtils.CurrentUserID}/Profile/filename{System.IO.Path.GetExtension(path)}", path);
+        //    }
+        //});
+        // ------
+
+        /// <summary>
+        /// Download File from Firebase Storage
+        /// </summary>
+        public async void DownloadFile(string firebasePath, string localDownloadPath)
+        {
+            await _storage.GetReference(firebasePath).GetFileAsync("file://" + localDownloadPath); // URI path file:// prefix works both iOS and Android.
+        }
+        // ------How to use DownloadFile()------
+        //_savingWrapper.DownloadFile($"Users/{FirebaseUtils.CurrentUserID}/Profile/filename", Application.temporaryCachePath);
+
+        //// Export the file
+        //NativeFilePicker.ExportFile(Application.temporaryCachePath, (success) => Debug.Log("File exported: " + success));
+        // ------
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Firebase Database~
         /// <summary>
         /// Save Value to Firebase Database.
         /// </summary>
@@ -47,7 +192,7 @@ namespace WatKhaoWong.Saving
         public async Task<DataSnapshot> Load(string path)
         {
             //Debug.Log($"Called \"Load();\" with path ({path})");
-
+            
             DataSnapshot data = null;
             try
             {
@@ -116,11 +261,6 @@ namespace WatKhaoWong.Saving
 
             return data.Exists;
         }
-        #endregion
-
-        
-
-        #region --Methods-- (Custom PRIVATE)
         #endregion
     }
 }

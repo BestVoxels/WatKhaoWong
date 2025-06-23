@@ -88,7 +88,26 @@ namespace WatKhaoWong.SceneManagement
 
 
 
-        #region --Methods-- (Custom PUBLIC)
+        #region --Methods-- (Custom PUBLIC) ~Firebase Storage~
+        public async Task<bool> UploadImage(string firebasePath, Texture2D image, Dictionary<string, string> customMetadata, byte maxImageSizeInMB)
+        {
+            return await _savingSystem.value.UploadImage(firebasePath, image, customMetadata, maxImageSizeInMB);
+        }
+
+        public async Task<Texture2D> DownloadImage(string firebasePath, byte maxImageSizeInMB)
+        {
+            return await _savingSystem.value.DownloadImage(firebasePath, maxImageSizeInMB);
+        }
+
+        public void DeleteFile(string firebasePath)
+        {
+            _savingSystem.value.DeleteFile(firebasePath);
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Firebase Database~
         /// <summary>
         /// BECAREFUL! using this method can cause some errors!
         /// 1. Override Save file on Start()

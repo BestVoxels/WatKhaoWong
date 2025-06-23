@@ -36,6 +36,7 @@ namespace WatKhaoWong.Homes
         [SerializeField] private UnityEvent _onDhammaButtonClick;
         [SerializeField] private UnityEvent _onPrayButtonClick;
         [SerializeField] private UnityEvent _onBookMeditationButtonClick;
+        [SerializeField] private UnityEvent _onManageMembersButtonClick;
         [SerializeField] private UnityEvent _onSettingButtonClick;
         [SerializeField] private UnityEvent _onRankingButtonClick;
         #endregion
@@ -134,6 +135,11 @@ namespace WatKhaoWong.Homes
         public void OnBookMeditationButtonClick()
         {
             _onBookMeditationButtonClick?.Invoke();
+        }
+
+        public void OnManageMembersButtonClick()
+        {
+            _onManageMembersButtonClick?.Invoke();
         }
 
         public void OnSettingButtonClick()
