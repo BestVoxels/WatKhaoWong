@@ -344,7 +344,7 @@ public class TextController : MonoBehaviour
             if (mInvalidated == false || billboard.transform.hasChanged || mCanvas.transform.hasChanged)
             {
                 var rect = billboard.Rect;
-                if (rect != null)
+                if (rect != null && billboard.transform.position != null)
                     rect.transform.position = billboard.transform.position;
                 else
                     billboard.UIText.transform.position = billboard.transform.position;

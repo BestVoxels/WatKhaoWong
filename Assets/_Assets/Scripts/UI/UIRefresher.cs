@@ -25,6 +25,7 @@ namespace WatKhaoWong.UI
         public static event Action OnHomeRefreshed;
         public static event Action OnPrayRefreshed;
         public static event Action OnManageMembersRefreshed;
+        public static event Action OnMeditationRetreatRefreshed;
         public static event Action OnSettingRefreshed;
         //public static event Action OnAbbotHistoryRefreshed;
         public static event Action OnPopupRefreshed;
@@ -112,6 +113,7 @@ namespace WatKhaoWong.UI
             RefreshHomeUI();
             RefreshPrayUI();
             RefreshManageMembersUI();
+            RefreshMeditationRetreatUI();
             RefreshSettingUI();
             //RefreshAbbotHistoryUI();
             RefreshPopupUI();
@@ -142,6 +144,12 @@ namespace WatKhaoWong.UI
         {
             OnManageMembersRefreshed?.Invoke();
             //print("Refreshed Manage Members UI : " + OnManageMembersRefreshed?.GetInvocationList().Length);
+        }
+
+        public static void RefreshMeditationRetreatUI()
+        {
+            OnMeditationRetreatRefreshed?.Invoke();
+            //print("Refreshed Manage Members UI : " + OnMeditationRetreatRefreshed?.GetInvocationList().Length);
         }
 
         public static void RefreshSettingUI()
@@ -191,6 +199,7 @@ namespace WatKhaoWong.UI
             OnHomeRefreshed = null;
             OnPrayRefreshed = null;
             OnManageMembersRefreshed = null;
+            OnMeditationRetreatRefreshed = null;
             OnSettingRefreshed = null;
             //OnAbbotHistoryRefreshed = null;
             OnPopupRefreshed = null;

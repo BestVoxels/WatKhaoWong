@@ -21,13 +21,13 @@ namespace WatKhaoWong.Admin
 
 
         #region --Properties-- (Inspector)
-        [field: Header("Pray Text")]
+        [field: Header("Manage Members Text")]
         [field: SerializeField] public LocalizedString TotalUsersText { get; private set; }
         [field: SerializeField] public LocalizedString ActiveStayText { get; private set; }
 
         [field: Space]
 
-        [field: Header("Pray - Settings")]
+        [field: Header("Manage Members - Settings")]
         [field: SerializeField] public string ValueTextFormatBegin { get; private set; } = "<space=25><b><cspace=-3>";
         [field: SerializeField] public string ValueTextFormatEnd { get; private set; } = "</cspace></b>";
         #endregion

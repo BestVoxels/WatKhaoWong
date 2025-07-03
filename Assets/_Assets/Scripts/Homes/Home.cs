@@ -35,7 +35,7 @@ namespace WatKhaoWong.Homes
         [Space]
         [SerializeField] private UnityEvent _onDhammaButtonClick;
         [SerializeField] private UnityEvent _onPrayButtonClick;
-        [SerializeField] private UnityEvent _onBookMeditationButtonClick;
+        [SerializeField] private UnityEvent _onMeditationRetreatButtonClick;
         [SerializeField] private UnityEvent _onManageMembersButtonClick;
         [SerializeField] private UnityEvent _onSettingButtonClick;
         [SerializeField] private UnityEvent _onRankingButtonClick;
@@ -132,9 +132,9 @@ namespace WatKhaoWong.Homes
             _onPrayButtonClick?.Invoke();
         }
 
-        public void OnBookMeditationButtonClick()
+        public void OnMeditationRetreatButtonClick()
         {
-            _onBookMeditationButtonClick?.Invoke();
+            _onMeditationRetreatButtonClick?.Invoke();
         }
 
         public void OnManageMembersButtonClick()

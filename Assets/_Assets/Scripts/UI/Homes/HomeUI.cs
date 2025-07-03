@@ -18,7 +18,7 @@ namespace WatKhaoWong.UI.Homes
         [Space]
         [SerializeField] private Button _dhammaButton;
         [SerializeField] private Button _prayButton;
-        [SerializeField] private Button _bookMeditationButton;
+        [SerializeField] private Button _meditationRetreatButton;
         [SerializeField] private Button _manageMembersButton;
         [SerializeField] private Button _settingButton;
         [SerializeField] private Button _rankingButton;
@@ -49,7 +49,7 @@ namespace WatKhaoWong.UI.Homes
 
             _dhammaButton.onClick.AddListener(Dhamma);
             _prayButton.onClick.AddListener(Pray);
-            _bookMeditationButton.onClick.AddListener(BookMeditation);
+            _meditationRetreatButton.onClick.AddListener(MeditationRetreat);
             _manageMembersButton.onClick.AddListener(ManageMembers);
             _settingButton.onClick.AddListener(Setting);
             _rankingButton.onClick.AddListener(Ranking);
@@ -76,7 +76,7 @@ namespace WatKhaoWong.UI.Homes
 
         private void Dhamma() => _playerHome.OnDhammaButtonClick();
         private void Pray() => _playerHome.OnPrayButtonClick();
-        private void BookMeditation() => _playerHome.OnBookMeditationButtonClick();
+        private void MeditationRetreat() => _playerHome.OnMeditationRetreatButtonClick();
         private void ManageMembers() => _playerHome.OnManageMembersButtonClick();
         private void Setting() => _playerHome.OnSettingButtonClick();
         private void Ranking() => _playerHome.OnRankingButtonClick();

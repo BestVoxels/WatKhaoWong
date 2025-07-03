@@ -1,28 +1,24 @@
 ﻿using UnityEngine;
-using System.Collections;
 using ChartAndGraph;
 
 public class BarAnimation : MonoBehaviour
 {
     public AnimationCurve Curve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
-    public bool AnimateOnStart = true;
-   // public bool AnimateOnEnable = true;
+    public bool AnimateOnEnable = true;
     public float AnimationTime = 3f;
     BarChart barChart;
 
-	// Use this for initialization
-	void Start ()
+	void Start()
     {
         barChart = GetComponent<BarChart>();
-        if (AnimateOnStart)
-            Animate();
     }
- /*   public void OnEnable()
+
+    private void OnEnable()
     {
-        barChart = GetComponent<BarChart>();
         if (AnimateOnEnable)
             Animate();
-    }*/
+    }
+
     public void Animate()
     {
         if(barChart != null)
@@ -46,9 +42,4 @@ public class BarAnimation : MonoBehaviour
             barChart.DataSource.EndBatch();
         }
     }
-
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }
