@@ -272,11 +272,6 @@ namespace WatKhaoWong.SceneManagement
                     parentNode = EParentNode.Stats;
                     break;
 
-                case EValueNode.Level:
-                case EValueNode.XP:
-                    parentNode = EParentNode.Progression;
-                    break;
-
                 case EValueNode.TMPointCapRequest:
                 case EValueNode.TMPointCap:
                 case EValueNode.IsCustomTMPointCap:
@@ -287,6 +282,16 @@ namespace WatKhaoWong.SceneManagement
                 case EValueNode.FirstUploadTimeOfDayTM:
                 case EValueNode.FirstUploadTimeOfChallengeTM:
                     parentNode = EParentNode.TMPoints;
+                    break;
+
+                case EValueNode.TempleGuideConfirmed:
+                case EValueNode.TempleGuideConfirmedAt:
+                    parentNode = EParentNode.Agreement;
+                    break;
+
+                case EValueNode.Level:
+                case EValueNode.XP:
+                    parentNode = EParentNode.Progression;
                     break;
 
                 case EValueNode.State:

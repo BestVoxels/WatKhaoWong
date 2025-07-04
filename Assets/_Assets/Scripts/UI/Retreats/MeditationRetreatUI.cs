@@ -66,6 +66,11 @@ namespace WatKhaoWong.UI.Retreats
             UIRefresher.OnLocalizeDynamicString += RefreshStatUI;
         }
 
+        private void OnEnable()
+        {
+            RefreshUI(); // To Make Graph Value not reduced by 'BarAnimation.cs'
+        }
+
         private void Start()
         {
             RefreshUI();

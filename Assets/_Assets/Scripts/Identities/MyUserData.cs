@@ -210,6 +210,17 @@ namespace WatKhaoWong.Identities
 
             _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.IsCustomTMPointCap, _data.IsCustomTMPointCap);
         }
+
+        public async void SetTempleGuideConfirmedToTrue()
+        {
+            if (_data.TempleGuideConfirmed == true) return; // Only Allow set for the First Time
+
+            _data.TempleGuideConfirmed = true;
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TempleGuideConfirmed, true);
+
+            DateTime nowDate = await _serverTime.Now();
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TempleGuideConfirmedAt, nowDate.ToGregorianString());
+        }
         #endregion
 
 
@@ -430,6 +441,10 @@ namespace WatKhaoWong.Identities
                 ForceSetIsCustomTMPointCap(_defaultIsCustomTMPointCap);
             }
 
+            data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.TempleGuideConfirmed);
+            if (data != null)
+                _data.TempleGuideConfirmed = bool.Parse(data.Value.ToString());
+
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.FirstUploadTimeOfDayTM);
             if (data != null)
             {
@@ -530,6 +545,8 @@ namespace WatKhaoWong.Identities
         public int GetTMPointCap() => _data.TMPointCap;
 
         public bool GetIsCustomTMPointCap() => _data.IsCustomTMPointCap;
+
+        public bool GetTempleGuideConfirmed() => _data.TempleGuideConfirmed;
         #endregion
 
 

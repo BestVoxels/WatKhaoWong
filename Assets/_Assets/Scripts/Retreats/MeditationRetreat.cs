@@ -3,6 +3,7 @@ using UnityEngine.Localization;
 using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Attributes;
+using WatKhaoWong.Identities;
 
 namespace WatKhaoWong.Retreats
 {
@@ -38,9 +39,26 @@ namespace WatKhaoWong.Retreats
         [SerializeField] private UnityEvent _onBarHovered;
         [SerializeField] private UnityEvent _onNonHovered;
         [Space]
-        [SerializeField] private UnityEvent _onSubmitInfoButtonClick;
+        [SerializeField] private UnityEvent _onSubmitInfoButtonClickTGConfirmed;
+        [SerializeField] private UnityEvent _onSubmitInfoButtonClickTGNotConfirmed;
         [SerializeField] private UnityEvent _onStayFormButtonClick;
         [SerializeField] private UnityEvent _onMyInfoButtonClick;
+        #endregion
+
+
+
+        #region --Fields-- (In Class)
+        private MyUserData _myUserData;
+        #endregion
+
+
+
+        #region --Methods-- (Built In)
+        private void Awake()
+        {
+            GameObject player = GameObject.FindWithTag("Player");
+            _myUserData = player.GetComponentInChildren<MyUserData>();
+        }
         #endregion
 
 
@@ -106,7 +124,15 @@ namespace WatKhaoWong.Retreats
 
         public void OnSubmitInfoButtonClick()
         {
-            _onSubmitInfoButtonClick?.Invoke();
+            if (_myUserData.GetTempleGuideConfirmed())
+            {
+                // Check if "Consent is Ticked" -> Trigger Event "OnConsentTick" [This Event will trigger 'Submit Info' Page UI]
+                _onSubmitInfoButtonClickTGConfirmed?.Invoke();
+                return;
+            }
+
+            // Check if "Consent has not yet Ticked" -> Trigger Event "OnConsentIsNotTick" [This Event will trigger 'Read Temple Guide' Popup UI]
+            _onSubmitInfoButtonClickTGNotConfirmed?.Invoke();
         }
 
         public void OnStayFormButtonClick()

@@ -43,6 +43,7 @@ namespace WatKhaoWong.Identities
         internal bool IsCustomTMPointCap { get; set; } = false;
         internal DateTime FirstUploadTimeOfDayTM { get; set; }
         internal DateTime FirstUploadTimeOfChallengeTM { get; set; }
+        internal bool TempleGuideConfirmed { get; set; } = false;
         #endregion
 
 
@@ -52,7 +53,7 @@ namespace WatKhaoWong.Identities
         {
         }
 
-        internal Data(string firstName, string lastName, DateTime? memberSince, ProfileIconItem profileIcon, EUserRole role, string title, int level, int totalTMPoints, int todayTMPoints, int challengeTMPoints, int totalChallengeTMWon, int tmPointCapRequest, int tmPointCap, bool isCustomTMPointCap, DateTime firstUploadTimeOfDayTM, DateTime firstUploadTimeOfChallengeTM)
+        internal Data(string firstName, string lastName, DateTime? memberSince, ProfileIconItem profileIcon, EUserRole role, string title, int level, int totalTMPoints, int todayTMPoints, int challengeTMPoints, int totalChallengeTMWon, int tmPointCapRequest, int tmPointCap, bool isCustomTMPointCap, DateTime firstUploadTimeOfDayTM, DateTime firstUploadTimeOfChallengeTM, bool templeGuideConfirmed)
         {
             _nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             _nfi.NumberGroupSeparator = " ";
@@ -73,6 +74,7 @@ namespace WatKhaoWong.Identities
             IsCustomTMPointCap = isCustomTMPointCap;
             FirstUploadTimeOfDayTM = firstUploadTimeOfDayTM;
             FirstUploadTimeOfChallengeTM = firstUploadTimeOfChallengeTM;
+            TempleGuideConfirmed = templeGuideConfirmed;
         }
         #endregion
 

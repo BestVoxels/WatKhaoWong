@@ -8,6 +8,7 @@ namespace WatKhaoWong.SceneManagement
         Progression,
         Stats,
         TMPoints,
-        AccountStatus
+        AccountStatus,
+        Agreement
     }
 }

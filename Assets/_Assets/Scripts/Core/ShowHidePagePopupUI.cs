@@ -26,7 +26,9 @@ namespace WatKhaoWong.Core
         #region --Fields-- (In Class)
         private readonly int _pageIdle = Animator.StringToHash("PageUI Idle");
         private readonly int _pageOpen = Animator.StringToHash("PageUI Open");
+        private readonly int _pageOpenOpposite = Animator.StringToHash("PageUI Open Opposite");
         private readonly int _pageClose = Animator.StringToHash("PageUI Close");
+        private readonly int _pageCloseOpposite = Animator.StringToHash("PageUI Close Opposite");
         private readonly int _pageCloseInstant = Animator.StringToHash("PageUI Close Instant");
 
         private readonly int _popupIdle = Animator.StringToHash("PopupUI Idle");
@@ -114,12 +116,30 @@ namespace WatKhaoWong.Core
             s_popupDepth = 0;
         }
 
+        public void OpenPageOpposite(float delayBeforePlay)
+        {
+            if (_previousCoroutine != null)
+                StopCoroutine(_previousCoroutine);
+
+            _previousCoroutine = StartCoroutine(DelayPageAnimation(_pageOpenOpposite, delayBeforePlay, true));
+
+            s_popupDepth = 0;
+        }
+
         public void ClosePage(float delayBeforePlay)
         {
             if (_previousCoroutine != null)
                 StopCoroutine(_previousCoroutine);
 
             _previousCoroutine = StartCoroutine(DelayPageAnimation(_pageClose, delayBeforePlay, false));
+        }
+
+        public void ClosePageOpposite(float delayBeforePlay)
+        {
+            if (_previousCoroutine != null)
+                StopCoroutine(_previousCoroutine);
+
+            _previousCoroutine = StartCoroutine(DelayPageAnimation(_pageCloseOpposite, delayBeforePlay, false));
         }
 
         public void OpenPopup(Animator popupAnimator)
