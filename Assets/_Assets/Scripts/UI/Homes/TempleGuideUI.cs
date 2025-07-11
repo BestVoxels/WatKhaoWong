@@ -80,11 +80,8 @@ namespace WatKhaoWong.UI.Homes
         private void ConsentToggle(bool toggleStatus)
         {
             // Make it so that once ticked it can't be unchecked
-            if (toggleStatus == false)
-            {
-                _consentToggle.isOn = true;
-                return; 
-            }
+            _consentToggle.isOn = true;
+            _consentToggle.interactable = false;
 
             if (_submitInfoGameObject.activeSelf) return; // Make it Trigger only once.
 
