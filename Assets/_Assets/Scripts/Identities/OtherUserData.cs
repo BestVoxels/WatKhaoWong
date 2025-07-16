@@ -141,6 +141,8 @@ namespace WatKhaoWong.Identities
 
         public int GetTMPointCap() => _data.TMPointCap;
 
+        public int GetTMPointCapRound() => _data.TMPointCapRound;
+
         public bool GetIsCustomTMPointCap() => _data.IsCustomTMPointCap;
         #endregion
 

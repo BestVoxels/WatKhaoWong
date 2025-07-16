@@ -9,6 +9,7 @@ namespace WatKhaoWong.Utils.UI
         [Header("TM Points Events")]
         public UnityEvent<int> OnTMPointsUploadSucceeded;
         public UnityEvent<int> OnTMPointsUploadSucceededPartial;
+        public UnityEvent<int> OnTMPointsUploadSucceededCapRound;
         public UnityEvent OnTMPointsUploadFailedCap;
         public UnityEvent OnTMPointsUploadFailedZero;
         public UnityEvent OnTMPointsUploadFailedNegative;

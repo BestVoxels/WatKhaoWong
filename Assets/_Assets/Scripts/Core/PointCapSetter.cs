@@ -51,6 +51,7 @@ namespace WatKhaoWong.Core
                 return;
             }
 
+            // Set TMPointCap
             int TMPointCap = _myUserData.GetRole() switch
             {
                 EUserRole.Admin => _remoteConfigService.TMPointCapForAdmin,
@@ -63,6 +64,9 @@ namespace WatKhaoWong.Core
 
             if (!_myUserData.GetIsCustomTMPointCap())
                 _myUserData.ForceSetTMPointCap(TMPointCap);
+
+            // Set TMPointCapRound
+            _myUserData.ForceSetTMPointCapRound(_remoteConfigService.TMPointCapRound);
         }
         #endregion
     }

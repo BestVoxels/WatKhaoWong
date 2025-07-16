@@ -274,6 +274,7 @@ namespace WatKhaoWong.SceneManagement
 
                 case EValueNode.TMPointCapRequest:
                 case EValueNode.TMPointCap:
+                case EValueNode.TMPointCapRound:
                 case EValueNode.IsCustomTMPointCap:
                 case EValueNode.TodayTMPoint:
                 case EValueNode.TotalTMPoint:

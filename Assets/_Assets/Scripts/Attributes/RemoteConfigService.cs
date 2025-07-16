@@ -44,6 +44,7 @@ namespace WatKhaoWong.Attributes
         public int TMPointCapForDhammaForces { get; private set; } = -1;
         public int TMPointCapForDhammaPractitioner { get; private set; } = -1;
         public int TMPointCapForLayPeople { get; private set; } = -1;
+        public int TMPointCapRound { get; private set; } = -1;
         #endregion
 
 
@@ -143,6 +144,10 @@ namespace WatKhaoWong.Attributes
             data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.TMPointCapForLayPeople);
             if (data != null)
                 TMPointCapForLayPeople = int.Parse(data.Value.ToString());
+
+            data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.TMPointCapRound);
+            if (data != null)
+                TMPointCapRound = int.Parse(data.Value.ToString());
 
             OnLoaded?.Invoke();
         }

@@ -39,6 +39,8 @@ namespace WatKhaoWong.Identities
 
         public int GetTMPointCap();
 
+        public int GetTMPointCapRound();
+
         public bool GetIsCustomTMPointCap();
 
         public void UpdateProfileIcon(ProfileIconInspector oldUI, ProfileIconItem newIcon, float multiplierRatioForDecorator);

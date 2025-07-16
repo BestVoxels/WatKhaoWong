@@ -165,12 +165,12 @@ namespace WatKhaoWong.Identities
             OnMyUserDataUpdated?.Invoke();
         }
 
-        public async void AddTMPoints(int input)
+        public async void AddTMPoints(int input, bool capRoundPoints = true)
         {
-            await AddChallengeTMPoints(input);
-            AddTotalTMPoints(input);
+            await AddChallengeTMPoints(input, capRoundPoints);
+            AddTotalTMPoints(input, capRoundPoints);
 
-            await AddTodayTMPoints(input); // Call this last, since it changes 'TodayTMPoints' value and it will messup how 'CanAddPoints()' is calculate.
+            await AddTodayTMPoints(input, capRoundPoints); // Call this last, since it changes 'TodayTMPoints' value and it will messup how 'CanAddPoints()' is calculate.
         }
 
         public void AddTotalWonTMChallenge(int input)
@@ -193,6 +193,15 @@ namespace WatKhaoWong.Identities
 
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.TMPointCapRequest, _data.TMPointCapRequest);
             return true;
+        }
+
+        public void ForceSetTMPointCapRound(int input)
+        {
+            if (input <= 0) return;
+
+            _data.TMPointCapRound = input;
+
+            _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.TMPointCapRound, _data.TMPointCapRound);
         }
 
         public void ForceSetTMPointCap(int input)
@@ -226,8 +235,10 @@ namespace WatKhaoWong.Identities
 
 
         #region --Methods-- (Custom PRIVATE)
-        private void AddTotalTMPoints(int input)
+        private void AddTotalTMPoints(int input, bool capRoundPoints = true)
         {
+            bool didCap = false;
+
             if (input < 0)
             {
                 _pointUploadEvents.OnTMPointsUploadFailedNegative?.Invoke();
@@ -238,16 +249,23 @@ namespace WatKhaoWong.Identities
                 _pointUploadEvents.OnTMPointsUploadFailedZero?.Invoke();
                 return;
             }
-            if (!CanAddPoints(input, out int availableToAdd))
+
+            if (capRoundPoints) CapRoundPoints(ref input, out didCap);
+
+            if (!CanAddDailyPoints(input, out int availableToAdd))
             {
                 _pointUploadEvents.OnTMPointsUploadFailedCap?.Invoke();
                 return;
             }
 
+
             if (input == availableToAdd)
                 _pointUploadEvents.OnTMPointsUploadSucceeded?.Invoke(availableToAdd);
             else if (input != availableToAdd)
                 _pointUploadEvents.OnTMPointsUploadSucceededPartial?.Invoke(availableToAdd);
+            else if (didCap)
+                _pointUploadEvents.OnTMPointsUploadSucceededCapRound?.Invoke(input);
+
 
             _data.TotalTMPoints += availableToAdd;
 
@@ -255,12 +273,13 @@ namespace WatKhaoWong.Identities
             OnMyUserDataUpdated?.Invoke();
         }
 
-        private async Task AddTodayTMPoints(int input)
+        private async Task AddTodayTMPoints(int input, bool capRoundPoints = true)
         {
             await ResetTMPointsDaily();
 
             if (input <= 0) return;
-            if (!CanAddPoints(input, out int availableToAdd)) return;
+            if (capRoundPoints) CapRoundPoints(ref input, out bool didCap);
+            if (!CanAddDailyPoints(input, out int availableToAdd)) return;
 
             AssignTodayUploadTime();
 
@@ -271,12 +290,13 @@ namespace WatKhaoWong.Identities
             OnTodayTMPointsAdded?.Invoke(_data.TodayTMPoints);
         }
 
-        private async Task AddChallengeTMPoints(int input)
+        private async Task AddChallengeTMPoints(int input, bool capRoundPoints = true)
         {
             await ResetTMPointsAfterChallengeEnd();
 
             if (input <= 0 || !await _challenge.CanLiveNow()) return;
-            if (!CanAddPoints(input, out int availableToAdd)) return;
+            if (capRoundPoints) CapRoundPoints(ref input, out bool didCap);
+            if (!CanAddDailyPoints(input, out int availableToAdd)) return;
 
             AssignChallengeUploadTime();
 
@@ -347,7 +367,14 @@ namespace WatKhaoWong.Identities
                 _data.Role = EUserRole.Guest;
         }
 
-        public bool CanAddPoints(int inputPoints, out int availableToAdd)
+        private void CapRoundPoints(ref int inputPoints, out bool didCap)
+        {
+            didCap = inputPoints > GetTMPointCapRound();
+
+            inputPoints = Mathf.Clamp(inputPoints, 0, GetTMPointCapRound());
+        }
+
+        private bool CanAddDailyPoints(int inputPoints, out int availableToAdd)
         {
             int remaining = GetTMPointCap() - GetTodayTMPoints();
 
@@ -543,6 +570,8 @@ namespace WatKhaoWong.Identities
         public int GetTMPointCapRequest() => _data.TMPointCapRequest;
 
         public int GetTMPointCap() => _data.TMPointCap;
+
+        public int GetTMPointCapRound() => _data.TMPointCapRound;
 
         public bool GetIsCustomTMPointCap() => _data.IsCustomTMPointCap;
 

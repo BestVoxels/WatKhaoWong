@@ -33,6 +33,7 @@ namespace WatKhaoWong.SceneManagement
         TMPointCapRequest,
         TMPointCap,
         IsCustomTMPointCap,
+        TMPointCapRound,
         TMPointCapForAdmin,
         TMPointCapForPhra,
         TMPointCapForDhammaForces,
