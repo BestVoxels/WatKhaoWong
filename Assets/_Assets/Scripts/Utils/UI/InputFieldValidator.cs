@@ -42,6 +42,20 @@ namespace WatKhaoWong.Utils.UI
 
 
 
+        #region --Methods-- (Custom PUBLIC) ~General~
+        public bool ValidateNotNull(string inputText, InputFieldStatus fieldStatus, out string resultText, params (string Msg, Color32 Color)[] status)
+        {
+            if (IsNullOrWhiteSpace(inputText, fieldStatus, out resultText, (status[0].Msg, status[0].Color)))
+                return false;
+
+            fieldStatus.SetNormal();
+            resultText = inputText;
+            return true;
+        }
+        #endregion
+
+
+
         #region --Methods-- (Custom PUBLIC) ~Signup~
         public bool ValidateFirstName(string inputText, InputFieldStatus fieldStatus, out string resultText, byte minimum, params (string Msg, Color32 Color)[] status)
         {

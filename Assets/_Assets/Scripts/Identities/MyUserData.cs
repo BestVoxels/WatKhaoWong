@@ -230,6 +230,134 @@ namespace WatKhaoWong.Identities
             DateTime nowDate = await _serverTime.Now();
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.TempleGuideConfirmedAt, nowDate.ToGregorianString());
         }
+
+        public async Task SetDataGeneralInfo(string phoneNumber, string medical, string urgentPhoneNumber, string relation, string line, string fb, string ig, string tiktok)
+        {
+            _data.GeneralInfo = new GeneralInfo()
+            {
+                PhoneNumber = phoneNumber,
+                MedicalCondition = medical,
+                EmergencyContact = new EmergencyContact()
+                {
+                    PhoneNumber = urgentPhoneNumber,
+                    Relation = relation
+                },
+                SocialAccounts = new SocialAccounts()
+                {
+                    Line = line,
+                    Facebook = fb,
+                    Instagram = ig,
+                    Tiktok = tiktok
+                }
+            };
+
+            await _savingWrapper.SaveDataToMyUser(EParentNode.GeneralInfo, _data.GeneralInfo);
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Interface) ~Getter~
+        public string GetUserNameText()
+        {
+            if (!FirebaseUtils.IsAuthenticated())
+            {
+                _data.FirstName = _defaultFirstName.GetLocalizedString();
+                _data.LastName = _defaultLastName.GetLocalizedString();
+            }
+            else if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
+            {
+                return _loading.GetLocalizedString();
+            }
+
+            return _data.GetUserNameText();
+        }
+
+        public string GetMemberSinceText()
+        {
+            if (!FirebaseUtils.IsAuthenticated())
+                return $"{_defaultMemberSince.GetLocalizedString()}";
+            else if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
+                return "...";
+
+            return _data.GetMemberSinceText();
+        }
+
+        public ProfileIconItem GetProfileIcon()
+        {
+            if (_data.ProfileIcon == null)
+                _data.ProfileIcon = _defaultProfileIcon;
+
+            return _data.GetProfileIcon();
+        }
+
+        public EUserRole GetRole() => _data.GetRole();
+
+        public string GetTitleText()
+        {
+            if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
+                return "...";
+
+            return _data.GetTitleText();
+        }
+
+        public string GetLevelText()
+        {
+            if (_data.Level == 0)
+                _data.Level = _defaultLevel;
+
+            return _data.GetLevelText();
+        }
+
+        public string GetTotalTMPointsText() => _data.GetTotalTMPointsText();
+
+        public string GetTodayTMPointsText() => _data.GetTodayTMPointsText();
+
+        public string GetChallengeTMPointsText() => _data.GetChallengeTMPointsText();
+
+        public string GetTotalChallengeTMWonText() => _data.GetTotalChallengeTMWonText();
+
+        public int GetTotalTMPoints() => _data.TotalTMPoints;
+
+        public int GetTodayTMPoints() => _data.TodayTMPoints;
+
+        public int GetChallengeTMPoints() => _data.ChallengeTMPoints;
+
+        public int GetTotalChallengeTMWon() => _data.TotalChallengeTMWon;
+
+        public int GetTMPointCapRequest() => _data.TMPointCapRequest;
+
+        public int GetTMPointCap() => _data.TMPointCap;
+
+        public int GetTMPointCapRound() => _data.TMPointCapRound;
+
+        public bool GetIsCustomTMPointCap() => _data.IsCustomTMPointCap;
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Setter~
+        public bool GetTempleGuideConfirmed() => _data.TempleGuideConfirmed;
+
+        public async Task GetDataGeneralInfo()
+        {
+            if (_data.GeneralInfo == null)
+            {
+                _data.GeneralInfo = await _savingWrapper.LoadDataFromMyUser<GeneralInfo>(EParentNode.GeneralInfo);
+            }
+
+            //print(_data.GeneralInfo.PhoneNumber);
+            //print(_data.GeneralInfo.MedicalCondition);
+            //print(_data.GeneralInfo.EmergencyContact.PhoneNumber);
+            //print(_data.GeneralInfo.EmergencyContact.Relation);
+            //print(_data.GeneralInfo.SocialAccounts.Line);
+            //print(_data.GeneralInfo.SocialAccounts.Facebook);
+            //print(_data.GeneralInfo.SocialAccounts.Instagram);
+            //print(_data.GeneralInfo.SocialAccounts.Tiktok);
+
+            // '_data.GeneralInfo.SocialAccounts.Line == null' is the way to check if there is no value
+
+        }
         #endregion
 
 
@@ -495,87 +623,6 @@ namespace WatKhaoWong.Identities
             
             OnMyUserDataUpdated?.Invoke();
         }
-        #endregion
-
-
-
-        #region --Methods-- (Interface) ~Getter~
-        public string GetUserNameText()
-        {
-            if (!FirebaseUtils.IsAuthenticated())
-            {
-                _data.FirstName = _defaultFirstName.GetLocalizedString();
-                _data.LastName = _defaultLastName.GetLocalizedString();
-            }
-            else if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
-            {
-                return _loading.GetLocalizedString();
-            }
-
-            return _data.GetUserNameText();
-        }
-
-        public string GetMemberSinceText()
-        {
-            if (!FirebaseUtils.IsAuthenticated())
-                return $"{_defaultMemberSince.GetLocalizedString()}";
-            else if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
-                return "...";
-
-            return _data.GetMemberSinceText();
-        }
-
-        public ProfileIconItem GetProfileIcon()
-        {
-            if (_data.ProfileIcon == null)
-                _data.ProfileIcon = _defaultProfileIcon;
-
-            return _data.GetProfileIcon();
-        }
-
-        public EUserRole GetRole() => _data.GetRole();
-
-        public string GetTitleText()
-        {
-            if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
-                return "...";
-
-            return _data.GetTitleText();
-        }
-
-        public string GetLevelText()
-        {
-            if (_data.Level == 0)
-                _data.Level = _defaultLevel;
-
-            return _data.GetLevelText();
-        }
-
-        public string GetTotalTMPointsText() => _data.GetTotalTMPointsText();
-
-        public string GetTodayTMPointsText() => _data.GetTodayTMPointsText();
-
-        public string GetChallengeTMPointsText() => _data.GetChallengeTMPointsText();
-
-        public string GetTotalChallengeTMWonText() => _data.GetTotalChallengeTMWonText();
-
-        public int GetTotalTMPoints() => _data.TotalTMPoints;
-
-        public int GetTodayTMPoints() => _data.TodayTMPoints;
-
-        public int GetChallengeTMPoints() => _data.ChallengeTMPoints;
-
-        public int GetTotalChallengeTMWon() => _data.TotalChallengeTMWon;
-
-        public int GetTMPointCapRequest() => _data.TMPointCapRequest;
-
-        public int GetTMPointCap() => _data.TMPointCap;
-
-        public int GetTMPointCapRound() => _data.TMPointCapRound;
-
-        public bool GetIsCustomTMPointCap() => _data.IsCustomTMPointCap;
-
-        public bool GetTempleGuideConfirmed() => _data.TempleGuideConfirmed;
         #endregion
 
 

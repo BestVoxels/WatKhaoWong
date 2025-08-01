@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Identities;
+using System.Globalization;
 
 namespace WatKhaoWong.Retreats
 {
@@ -48,6 +49,8 @@ namespace WatKhaoWong.Retreats
 
 
         #region --Fields-- (In Class)
+        private NumberFormatInfo _nfi;
+
         private MyUserData _myUserData;
         #endregion
 
@@ -58,6 +61,12 @@ namespace WatKhaoWong.Retreats
         {
             GameObject player = GameObject.FindWithTag("Player");
             _myUserData = player.GetComponentInChildren<MyUserData>();
+        }
+
+        private void Start()
+        {
+            _nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
+            _nfi.NumberGroupSeparator = " ";
         }
         #endregion
 
@@ -79,7 +88,7 @@ namespace WatKhaoWong.Retreats
             if (days < 0)
                 return $"??? {_dayText.GetLocalizedString()}";
 
-            return $"{_valueBegin}{days}{_valueEnd} {_dayText.GetLocalizedString()}{S(days)}";
+            return $"{_valueBegin}{days.ToString("#,0", _nfi)}{_valueEnd} {_dayText.GetLocalizedString()}{S(days)}";
         }
 
         public string VisitsString(int visits)
@@ -87,7 +96,7 @@ namespace WatKhaoWong.Retreats
             if (visits < 0)
                 return $"??? {_visitText.GetLocalizedString()}";
 
-            return $"{_valueBegin}{visits}{_valueEnd} {_visitText.GetLocalizedString()}{S(visits)}";
+            return $"{_valueBegin}{visits.ToString("#,0", _nfi)}{_valueEnd} {_visitText.GetLocalizedString()}{S(visits)}";
         }
 
         public string AvgString(int days, int visits)
@@ -103,7 +112,7 @@ namespace WatKhaoWong.Retreats
                 result = Math.Round(avg, 1, MidpointRounding.AwayFromZero);
             }
 
-            return _avgText.GetLocalizedString($"{_valueBegin}{result}{_valueEnd} {_dayText.GetLocalizedString()}{S(result)}");
+            return _avgText.GetLocalizedString($"{_valueBegin}{result.ToString("#,0", _nfi)}{_valueEnd} {_dayText.GetLocalizedString()}{S(result)}");
         }
 
         public string S(decimal input) => input > 1 ? _sText.GetLocalizedString() : "";

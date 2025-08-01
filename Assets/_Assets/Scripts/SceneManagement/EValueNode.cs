@@ -2,6 +2,8 @@ namespace WatKhaoWong.SceneManagement
 {
     /// <summary>
     /// ***** IMPORTANT!!! When Add new enum also Add new 'Switch() Case' at 'SavingWrapper.cs' *****
+    ///
+    /// use with '.SetValueAsync()' not like the one in 'DataNode' class that has to use with '.SetRawJsonValueAsync()'
     /// </summary>
     public enum EValueNode
     {

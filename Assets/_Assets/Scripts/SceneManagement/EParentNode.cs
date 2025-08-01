@@ -9,6 +9,12 @@ namespace WatKhaoWong.SceneManagement
         Stats,
         TMPoints,
         AccountStatus,
-        Agreement
+        Agreement,
+        GeneralInfo,    // use 'DataNode' class with '.SetRawJsonValueAsync()'
+        NationalIDInfo,    // use 'DataNode' class with '.SetRawJsonValueAsync()'
+        PassportInfo,    // use 'DataNode' class with '.SetRawJsonValueAsync()'
+        ActiveAccommodation,    // use 'DataNode' class with '.SetRawJsonValueAsync()'
+        PastAccommodation,    // use 'DataNode' class with '.SetRawJsonValueAsync()'
+        Images
     }
 }

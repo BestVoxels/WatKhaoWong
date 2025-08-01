@@ -1782,6 +1782,77 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _statusSucceeded:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 96315344178634752
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusSucceededColor:
+    serializedVersion: 2
+    rgba: 4288011303
+  <MinimumPhoneNumberLength>k__BackingField: 9
+  <MaximumPhoneNumberLength>k__BackingField: 10
+  <StatusInvalidPhoneNumber>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3069197672448
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusInvalidPhoneNumberColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusPhoneNumberTooShort>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3105906221056
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusPhoneNumberTooShortColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusPhoneNumberTooLong>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 3700373315584
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusPhoneNumberTooLongColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <StatusMustBeFilled>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 96315315477012480
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusMustBeFilledColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  _onValidateTextSucceeded:
+    m_PersistentCalls:
+      m_Calls: []
+  _onValidateTextFailed:
+    m_PersistentCalls:
+      m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &2533615835104897766
 MonoBehaviour:
   m_ObjectHideFlags: 0

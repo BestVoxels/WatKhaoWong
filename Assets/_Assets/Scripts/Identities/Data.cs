@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Globalization;
 using WatKhaoWong.Utils.Core;
+using WatKhaoWong.SceneManagement;
 
 namespace WatKhaoWong.Identities
 {
@@ -45,6 +46,8 @@ namespace WatKhaoWong.Identities
         internal DateTime FirstUploadTimeOfDayTM { get; set; }
         internal DateTime FirstUploadTimeOfChallengeTM { get; set; }
         internal bool TempleGuideConfirmed { get; set; } = false;
+
+        internal GeneralInfo GeneralInfo { get; set; } = null;
         #endregion
 
 
@@ -52,31 +55,8 @@ namespace WatKhaoWong.Identities
         #region --Constructors-- (INTERNAL)
         internal Data()
         {
-        }
-
-        internal Data(string firstName, string lastName, DateTime? memberSince, ProfileIconItem profileIcon, EUserRole role, string title, int level, int totalTMPoints, int todayTMPoints, int challengeTMPoints, int totalChallengeTMWon, int tmPointCapRequest, int tmPointCap, int tmPointCapRound, bool isCustomTMPointCap, DateTime firstUploadTimeOfDayTM, DateTime firstUploadTimeOfChallengeTM, bool templeGuideConfirmed)
-        {
             _nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             _nfi.NumberGroupSeparator = " ";
-
-            FirstName = firstName;
-            LastName = lastName;
-            MemberSince = memberSince;
-            ProfileIcon = profileIcon;
-            Role = role;
-            Title = title;
-            Level = level;
-            TotalTMPoints = totalTMPoints;
-            TodayTMPoints = todayTMPoints;
-            ChallengeTMPoints = challengeTMPoints;
-            TotalChallengeTMWon = totalChallengeTMWon;
-            TMPointCapRequest = tmPointCapRequest;
-            TMPointCap = tmPointCap;
-            TMPointCapRound = tmPointCapRound;
-            IsCustomTMPointCap = isCustomTMPointCap;
-            FirstUploadTimeOfDayTM = firstUploadTimeOfDayTM;
-            FirstUploadTimeOfChallengeTM = firstUploadTimeOfChallengeTM;
-            TempleGuideConfirmed = templeGuideConfirmed;
         }
         #endregion
 

@@ -143,6 +143,15 @@ namespace WatKhaoWong.SceneManagement
             _savingSystem.value.Save(Path.Combine(ECategoryNode.LeaderboardTMChallengeWinner.ToString(), challengeID, userID, EValueNode.ChallengeTMPoint.ToString()), saveValue);
         }
 
+        public async Task SaveDataToMyUser(EParentNode parentNode, DataNode dataNode)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return;
+            if (IsSaveProtectionActive()) return; // Avoid Override Save file with Default Values of UI or Player Default State.
+
+            await _savingSystem.value.SaveDataWithKey(GetMyUserPath(parentNode), dataNode);
+        }
+
+
         public async Task<DataSnapshot> Load(ECategoryNode categoryNode, EValueNode valueNode)
         {
             if (!FirebaseUtils.IsAuthenticated()) return null;
@@ -156,6 +165,14 @@ namespace WatKhaoWong.SceneManagement
             // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
 
             return await _savingSystem.value.Load(GetPath(categoryNode, valueNode));
+        }
+
+        public async Task<T> LoadDataFromMyUser<T>(EParentNode parentNode)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return default;
+            // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
+
+            return await _savingSystem.value.LoadJson<T>(GetMyUserPath(parentNode));
         }
 
         public async Task<DataSnapshot> LoadOtherUser(string otherUserID)
@@ -346,6 +363,11 @@ namespace WatKhaoWong.SceneManagement
 
             if (FirebaseUtils.CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
             return Path.Combine(categoryNode.ToString(), FirebaseUtils.CurrentUserID, valueNodePath);
+        }
+
+        private string GetMyUserPath(EParentNode parentNode)
+        {
+            return Path.Combine(ECategoryNode.Users.ToString(), FirebaseUtils.CurrentUserID, parentNode.ToString());
         }
         #endregion
 

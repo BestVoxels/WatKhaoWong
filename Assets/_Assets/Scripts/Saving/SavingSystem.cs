@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using UnityEngine;
 using Firebase.Database;
 using Firebase.Storage;
@@ -261,6 +262,83 @@ namespace WatKhaoWong.Saving
 
             return data.Exists;
         }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Firebase Database~  ~JSON~
+        /// <summary>
+        /// Save JSON Value to Firebase Database.
+        /// </summary>
+        public async Task SaveJson(string path, object dataObject)
+        {
+            string jsonString = JsonConvert.SerializeObject(dataObject);
+
+            await _database.GetReference(path).SetRawJsonValueAsync(jsonString);
+        }
+
+        /// <summary>
+        /// Load JSON Value from Firebase Database.
+        /// </summary>
+        public async Task<T> LoadJson<T>(string path)
+        {
+            DataSnapshot dataSnapshot = await Load(path);
+
+            string jsonString = dataSnapshot.GetRawJsonValue();
+
+            return JsonConvert.DeserializeObject<T>(jsonString);
+        }
+
+        // --DELETE is same method as above--
+        // -> _database.GetReference("Users/UserID/GeneralInfo/MedicalCondition").SetRawJsonValueAsync(json);
+        // -> _database.GetReference("Users/UserID/GeneralInfo/MedicalCondition").RemoveValueAsync();
+        // Can nail down to specific path as well "Users/UserID/GeneralInfo/MedicalCondition"
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Firebase Database~  ~JSON with Unique Key~
+        /// <summary>
+        /// Save JSON with Unique Key to Firebase Database.
+        /// </summary>
+        public async Task<string> SaveDataWithKey(string path, object dataObject)
+        {
+            string jsonString = JsonConvert.SerializeObject(dataObject);
+
+            DatabaseReference databaseReference = _database.GetReference(path).Push();
+
+            await databaseReference.SetRawJsonValueAsync(jsonString);
+
+            return databaseReference.Key;
+        }
+
+        /// <summary>
+        /// Load JSON with Unique Key from Firebase Database.
+        /// </summary>
+        public async IAsyncEnumerable<DataSnapshot> LoadChildren(string path)
+        {
+            IEnumerable<DataSnapshot> dataSnapshots = (await Load(path)).Children;
+
+            foreach (DataSnapshot child in dataSnapshots)
+            {
+                yield return child;
+            }
+        }
+
+        public async IAsyncEnumerable<T> LoadChildrenJson<T>(string path)
+        {
+            await foreach (DataSnapshot child in LoadChildren(path))
+            {
+                string jsonString = child.GetRawJsonValue();
+
+                yield return JsonConvert.DeserializeObject<T>(jsonString);
+            }
+        }
+
+        // --DELETE is same method as above--
+        // -> _database.GetReference("Users/UserID/PastAccommodation").Push().SetRawJsonValueAsync(json);
+        // -> _database.GetReference("Users/UserID/PastAccommodation/pushedKey").RemoveValueAsync();
+        // Can nail down to specific path as well "Users/UserID/PastAccommodation/pushedKey/something"
         #endregion
     }
 }
