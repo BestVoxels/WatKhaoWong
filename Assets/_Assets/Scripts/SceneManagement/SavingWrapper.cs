@@ -148,7 +148,7 @@ namespace WatKhaoWong.SceneManagement
             if (!FirebaseUtils.IsAuthenticated()) return;
             if (IsSaveProtectionActive()) return; // Avoid Override Save file with Default Values of UI or Player Default State.
 
-            await _savingSystem.value.SaveDataWithKey(GetMyUserPath(parentNode), dataNode);
+            await _savingSystem.value.SaveJson(GetMyUserPath(parentNode), dataNode);
         }
 
 
