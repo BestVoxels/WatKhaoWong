@@ -26,6 +26,8 @@ namespace WatKhaoWong.Attributes
 
 
         #region --Fields-- (In Class)
+        private bool _isLoading = false;
+
         private SavingWrapper _savingWrapper;
         #endregion
 
@@ -94,7 +96,13 @@ namespace WatKhaoWong.Attributes
         #region --Methods-- (Custom PRIVATE)
         private async void ForceLoadConfigWithoutAuth()
         {
+            if (_isLoading) return;
+
+            _isLoading = true;
+
 #if UNITY_IOS
+            // TODO Create time out system when 'it loads too long like minutes' it should popup User to check For INTERNET CONNECTION!!!
+
             var data = await _savingWrapper.ForceLoad(ECategoryNode.RemoteConfig, EValueNode.LiveAppVersioniOS);
             if (data != null)
                 LiveAppVersioniOS = data.Value.ToString();
@@ -150,6 +158,8 @@ namespace WatKhaoWong.Attributes
                 TMPointCapRound = int.Parse(data.Value.ToString());
 
             OnLoaded?.Invoke();
+
+            _isLoading = false;
         }
         #endregion
 

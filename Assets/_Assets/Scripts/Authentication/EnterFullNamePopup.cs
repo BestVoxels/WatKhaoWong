@@ -4,6 +4,7 @@ using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Identities;
 using WatKhaoWong.Utils.UI;
+using WatKhaoWong.Utils.Localization;
 
 namespace WatKhaoWong.Authentication
 {

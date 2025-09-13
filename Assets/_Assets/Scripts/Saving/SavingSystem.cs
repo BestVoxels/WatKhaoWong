@@ -180,11 +180,11 @@ namespace WatKhaoWong.Saving
         /// <summary>
         /// Save Value to Firebase Database.
         /// </summary>
-        public void Save(string path, object saveValue)
+        public async Task Save(string path, object saveValue)
         {
             //Debug.Log($"Called \"Save();\" value of ({saveValue}) with path ({path})");
             
-            _database.GetReference(path).SetValueAsync(saveValue);
+            await _database.GetReference(path).SetValueAsync(saveValue);
         }
 
         /// <summary>
@@ -283,6 +283,8 @@ namespace WatKhaoWong.Saving
         public async Task<T> LoadJson<T>(string path)
         {
             DataSnapshot dataSnapshot = await Load(path);
+
+            if (dataSnapshot == null) return default;
 
             string jsonString = dataSnapshot.GetRawJsonValue();
 

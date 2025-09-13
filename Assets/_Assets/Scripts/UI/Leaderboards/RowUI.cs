@@ -5,6 +5,7 @@ using WatKhaoWong.Identities;
 using WatKhaoWong.Leaderboards;
 using WatKhaoWong.UI.Identities;
 using UnityEngine.Pool;
+using WatKhaoWong.Utils.Localization;
 
 namespace WatKhaoWong.UI.Leaderboards
 {
@@ -51,7 +52,7 @@ namespace WatKhaoWong.UI.Leaderboards
         private IUserData _userData;
         private OtherAccountPopupUI _otherAccountPopupUI;
         private IObjectPool<RowUI> _rowUIPool;
-        private TitleLocalizer _titleLocalizer;
+        private Localizer _localizer;
         #endregion
 
 
@@ -67,7 +68,7 @@ namespace WatKhaoWong.UI.Leaderboards
         {
             _row = GameObject.FindWithTag("Player").GetComponentInChildren<Row>();
 
-            _titleLocalizer = FindAnyObjectByType<TitleLocalizer>();  // For 'RowType.Myself'
+            _localizer = FindAnyObjectByType<Localizer>();  // For 'RowType.Myself'
 
             _rowButton.onClick.AddListener(RowClick);
         }
@@ -90,7 +91,7 @@ namespace WatKhaoWong.UI.Leaderboards
         {
             _rowUIPool = rowUIPool;
 
-            _titleLocalizer = FindAnyObjectByType<TitleLocalizer>();  // For 'RowType.OtherUser'
+            _localizer = FindAnyObjectByType<Localizer>();  // For 'RowType.OtherUser'
             _otherAccountPopupUI = FindAnyObjectByType<OtherAccountPopupUI>(FindObjectsInactive.Include);  // For 'RowType.OtherUser'
         }
 
@@ -207,7 +208,7 @@ namespace WatKhaoWong.UI.Leaderboards
 
         private void RefreshTitleUI()
         {
-            _titleText.text = _titleLocalizer.Localize(_userData.GetTitleText());
+            _titleText.text = _localizer.LocalizeUserTitle(_userData.GetTitleText());
         }
         #endregion
     }

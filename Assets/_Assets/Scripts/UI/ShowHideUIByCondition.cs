@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
 using WatKhaoWong.Utils.Conditions;
-using WatKhaoWong.UI;
 using WatKhaoWong.Attributes;
 
-namespace WatKhaoWong.Core
+namespace WatKhaoWong.UI
 {
     public class ShowHideUIByCondition : MonoBehaviour
     {

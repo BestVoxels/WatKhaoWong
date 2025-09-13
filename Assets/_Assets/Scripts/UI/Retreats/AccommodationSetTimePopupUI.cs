@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Retreats;
 using Bitsplash.DatePicker;
-using WatKhaoWong.Utils.UI;
 using WatKhaoWong.Attributes;
 using Firebase.Auth;
+using Michsky.MUIP;
 
 namespace WatKhaoWong.UI.Retreats
 {
@@ -16,29 +16,32 @@ namespace WatKhaoWong.UI.Retreats
         [Header("Popup Header UI Stuffs")]
         [SerializeField] private Button _closeButton;
 
-        //[Header("Challenge Creation Popup UI Stuffs")]
-        //[SerializeField] private DatePickerSettings _datePickerStart;
-        //[SerializeField] private DatePickerSettings _datePickerEnd;
-        //[Space]
-        //[SerializeField] private TMP_Text _startDateText;
-        //[SerializeField] private TMP_Text _endDateText;
-        //[SerializeField] private TMP_Text _durationText;
+        [Header("Accommodation Set Time Popup UI Stuffs")]
+        [SerializeField] private SwitchManager _notStayingOvernightSwitch;
+        [Space]
+        [SerializeField] private DatePickerSettings _datePickerStart;
+        [SerializeField] private DatePickerSettings _datePickerEnd;
+        [Space]
+        [SerializeField] private TMP_Text _startDateText;
+        [SerializeField] private TMP_Text _endDateText;
+        [SerializeField] private TMP_Text _durationText;
         [Space]
         [SerializeField] private Button _cancelButton;
         [SerializeField] private Button _confirmButton;
+        [Space]
+        [SerializeField] private GameObject[] _gameObjectsToShowHide;
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        //private DateTime _startDate;
-        //private DateTime _endDate;
-        //private TimeSpan _duration;
+        private EIsStaying _isStaying;
+        private DateTime _startDate;
+        private DateTime _endDate;
+        private TimeSpan _duration;
 
-        //private StatusText _statusText;
         private AccommodationSetTimePopup _setTimePopup;
-        //private Challenge _challenge;
-        //private ServerTime _serverTime;
+        private ServerTime _serverTime;
         #endregion
 
 
@@ -47,52 +50,55 @@ namespace WatKhaoWong.UI.Retreats
         private void Awake()
         {
             _setTimePopup = GameObject.FindWithTag("Player").GetComponentInChildren<AccommodationSetTimePopup>();
-            //_challenge = GameObject.FindWithTag("Player").GetComponentInChildren<Challenge>();
-            //_statusText = FindAnyObjectByType<StatusText>();
-            //_serverTime = FindAnyObjectByType<ServerTime>();
+            _serverTime = FindAnyObjectByType<ServerTime>();
 
             _closeButton.onClick.AddListener(Close);
 
             _cancelButton.onClick.AddListener(Cancel);
             _confirmButton.onClick.AddListener(Confirm);
 
-            //_datePickerStart.Content.OnSelectionChanged.AddListener(SelectedDateOnStartCalendar);
-            ////_datePickerStart.Content.OnDisplayChanged.AddListener(() => print("StartCalendar: Calls when Click Change Month or Year"));
-            
-            //_datePickerEnd.Content.OnSelectionChanged.AddListener(SelectedDateOnEndCalendar);
-            ////_datePickerEnd.Content.OnDisplayChanged.AddListener(() => print("EndCalendar: Calls when Click Change Month or Year"));
+            _notStayingOvernightSwitch.onValueChanged.AddListener(ToggleOvernightSwitch);
 
-            //UIRefresher.OnLocalizeDynamicString += RefreshUI;
+            _datePickerStart.Content.OnSelectionChanged.AddListener(SelectedDateOnStartCalendar);
+            //_datePickerStart.Content.OnDisplayChanged.AddListener(() => print("StartCalendar: Calls when Click Change Month or Year"));
+
+            _datePickerEnd.Content.OnSelectionChanged.AddListener(SelectedDateOnEndCalendar);
+            //_datePickerEnd.Content.OnDisplayChanged.AddListener(() => print("EndCalendar: Calls when Click Change Month or Year"));
+
+            UIRefresher.OnLocalizeDynamicString += RefreshUI;
         }
 
-        //private void OnEnable()
-        //{
-        //    FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged;
-        //}
+        private void OnEnable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged;
+        }
 
-        //private void Start()
-        //{
-        //    RefreshUI();
-        //}
+        private void Start()
+        {
+            RefreshUI();
 
-        //private void OnDisable()
-        //{
-        //    FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
-        //}
+            _notStayingOvernightSwitch.SetOff();
+            ToggleOvernightSwitch(_notStayingOvernightSwitch.isOn);
+        }
+
+        private void OnDisable()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
+        }
         #endregion
 
 
 
-        //#region --Methods-- (Custom PRIVATE)
-        //private void RefreshUI()
-        //{
-        //    _startDateText.text = _setTimePopup.StartDateFormat.GetLocalizedString(_challenge.FormatDateString(_startDate, _setTimePopup.DateStringFormat));
+        #region --Methods-- (Custom PRIVATE)
+        private void RefreshUI()
+        {
+            _startDateText.text = _setTimePopup.StartDateText.GetLocalizedString(_setTimePopup.FormatDateString(_startDate, _setTimePopup.DateStringFormat));
 
-        //    _endDateText.text = _setTimePopup.EndDateFormat.GetLocalizedString(_challenge.FormatDateString(_endDate, _setTimePopup.DateStringFormat));
+            _endDateText.text = _setTimePopup.EndDateText.GetLocalizedString(_setTimePopup.FormatDateString(_endDate, _setTimePopup.DateStringFormat));
 
-        //    _durationText.text = _setTimePopup.DurationFormat.GetLocalizedString(_challenge.FormatDurationString(_duration));
-        //}
-        //#endregion
+            _durationText.text = _setTimePopup.DurationText.GetLocalizedString(_setTimePopup.FormatDurationString(_duration));
+        }
+        #endregion
 
 
 
@@ -103,6 +109,22 @@ namespace WatKhaoWong.UI.Retreats
 
 
         #region --Methods-- (Subscriber)
+        private void ToggleOvernightSwitch(bool isNotStaying)
+        {
+            _isStaying = isNotStaying ? EIsStaying.NotStaying : EIsStaying.Staying;
+
+            _setTimePopup.SetIsStayingOvernight(_isStaying);
+
+            // Update UI accordingly
+            foreach (var each in _gameObjectsToShowHide)
+            {
+                each.SetActive(!isNotStaying);
+            }
+
+            if (isNotStaying)
+                _endDate = default;
+        }
+
         private void Cancel()
         {
             _setTimePopup.OnCancelButtonClick();
@@ -110,49 +132,46 @@ namespace WatKhaoWong.UI.Retreats
 
         private void Confirm()
         {
-            //if (_setTimePopup.ValidateChallengePopup(_startDate, _endDate))
-            if (true)
+            if (_setTimePopup.ValidateSetTimePopup(_startDate, _endDate))
             {
-                //_setTimePopup.SetDataAwaitConfirmation(_startDate, _endDate, _duration);
+                _setTimePopup.SetDataReadyForUse(_isStaying, _startDate, _endDate, _duration);
 
                 _setTimePopup.OnConfirmButtonClick();
             }
             else
             {
                 _setTimePopup.OnConfirmButtonCantClick();
-
-                //_statusText.Show(_setTimePopup.StatusCreateFailed.GetLocalizedString(), _setTimePopup.StatusCreateFailedColor);
             }
         }
 
-        //private void SelectedDateOnStartCalendar()
-        //{
-        //    _startDate = _datePickerStart.Content.Selection.GetItem(0); // To get multiple Date, check 'SelectionTutorial.cs' line 60
-        //    _duration = _setTimePopup.GetChallengeDuration(_startDate, _endDate);
-        //    _setTimePopup.ValidateStartDate(_startDate, _endDate);
+        private void SelectedDateOnStartCalendar()
+        {
+            _startDate = _datePickerStart.Content.Selection.GetItem(0); // To get multiple Date, check 'SelectionTutorial.cs' line 60
+            _duration = _setTimePopup.GetDuration(_startDate, _endDate);
+            _setTimePopup.ValidateStartDate(_startDate, _endDate);
 
-        //    RefreshUI();
-        //}
+            RefreshUI();
+        }
 
-        //private void SelectedDateOnEndCalendar()
-        //{
-        //    _endDate = _datePickerEnd.Content.Selection.GetItem(0); // To get multiple Date, check 'SelectionTutorial.cs' line 60
-        //    _duration = _setTimePopup.GetChallengeDuration(_startDate, _endDate);
-        //    _setTimePopup.ValidateEndDate(_startDate, _endDate);
+        private void SelectedDateOnEndCalendar()
+        {
+            _endDate = _datePickerEnd.Content.Selection.GetItem(0); // To get multiple Date, check 'SelectionTutorial.cs' line 60
+            _duration = _setTimePopup.GetDuration(_startDate, _endDate);
+            _setTimePopup.ValidateEndDate(_startDate, _endDate);
 
-        //    RefreshUI();
-        //}
+            RefreshUI();
+        }
 
-        ///// <summary>
-        ///// Will be called once after FirebaseAuth instance is created. Around the time of Awake().
-        ///// </summary>
-        //private async void HandleStateChanged(object obj, EventArgs args)
-        //{
-        //    DateTime nowDate = await _serverTime.Now();
+        /// <summary>
+        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake().
+        /// </summary>
+        private async void HandleStateChanged(object obj, EventArgs args)
+        {
+            DateTime nowDate = await _serverTime.Now();
 
-        //    _datePickerStart.Content.SetMarkerColor(nowDate);
-        //    _datePickerEnd.Content.SetMarkerColor(nowDate);
-        //}
+            _datePickerStart.Content.SetMarkerColor(nowDate);
+            _datePickerEnd.Content.SetMarkerColor(nowDate);
+        }
         #endregion
     }
 }

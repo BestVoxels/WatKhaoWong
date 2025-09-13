@@ -13,8 +13,8 @@ namespace WatKhaoWong.SceneManagement
         GeneralInfo,    // use 'DataNode' class with '.SetRawJsonValueAsync()'
         NationalIDInfo,    // use 'DataNode' class with '.SetRawJsonValueAsync()'
         PassportInfo,    // use 'DataNode' class with '.SetRawJsonValueAsync()'
-        ActiveAccommodation,    // use 'DataNode' class with '.SetRawJsonValueAsync()'
-        PastAccommodation,    // use 'DataNode' class with '.SetRawJsonValueAsync()'
+        ActiveStay,    // use 'DataNode' class with '.SetRawJsonValueAsync()'
+        PastStay,    // use 'DataNode' class with '.SetRawJsonValueAsync()'
         Images
     }
 }

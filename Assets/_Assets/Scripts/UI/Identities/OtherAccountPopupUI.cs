@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Identities;
+using WatKhaoWong.Utils.Localization;
 
 namespace WatKhaoWong.UI.Identities
 {
@@ -34,7 +35,7 @@ namespace WatKhaoWong.UI.Identities
         #region --Fields-- (In Class)
         private IUserData _userData;
         private OtherAccountPopup _otherAccountPopup;
-        private TitleLocalizer _titleLocalizer;
+        private Localizer _localizer;
         #endregion
 
 
@@ -49,7 +50,7 @@ namespace WatKhaoWong.UI.Identities
         private void Awake()
         {
             _otherAccountPopup = GameObject.FindWithTag("Player").GetComponentInChildren<OtherAccountPopup>();
-            _titleLocalizer = FindAnyObjectByType<TitleLocalizer>();
+            _localizer = FindAnyObjectByType<Localizer>();
 
             _closeButton.onClick.AddListener(Close);
         }
@@ -74,7 +75,7 @@ namespace WatKhaoWong.UI.Identities
             _userData.UpdateProfileIcon(_icon, _userData.GetProfileIcon(), MultiplierRatioForDecorator);
 
             _userNameText.text = _userData.GetUserNameText();
-            _userTitleText.text = _titleLocalizer.Localize(_userData.GetTitleText());
+            _userTitleText.text = _localizer.LocalizeUserTitle(_userData.GetTitleText());
             _userLevelText.text = _userData.GetLevelText();
 
             _allTimeTMPointsText.text = _userData.GetTotalTMPointsText();

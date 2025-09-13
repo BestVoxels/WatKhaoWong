@@ -1351,6 +1351,7 @@ Transform:
   - {fileID: 5678461660514629473}
   - {fileID: 1617545815102208418}
   - {fileID: 8829268326045058168}
+  - {fileID: 8504617780612852721}
   - {fileID: 618373755854242039}
   m_Father: {fileID: 5923315315416972317}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2268,6 +2269,151 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  _maxDaysAllowed: 7
+  _statusStartDateIsNull:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 110460688059588608
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusStartDateIsNullColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusStartDateIsInPast:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 110460856343453696
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusStartDateIsInPastColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusStartDateIsAfterEndDate:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 110460943278792704
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusStartDateIsAfterEndDateColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusEndDateIsNull:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 110461036027437056
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusEndDateIsNullColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusEndDateIsInPast:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 110461138498478080
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusEndDateIsInPastColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusEndDateIsBeforeStartDate:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 110461169100120064
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusEndDateIsBeforeStartDateColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusBothDateIsSameDate:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 110461308409733120
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusBothDateIsSameDateColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _statusExceedsMaxDays:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 110461366618284032
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _statusExceedsMaxDaysColor:
+    serializedVersion: 2
+    rgba: 4285887999
+  _dayText:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 32706125824
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _sText:
+    m_TableReference:
+      m_TableCollectionName: GUID:9edd1468ee2974e498f53771fc6e220b
+    m_TableEntryReference:
+      m_KeyId: 92172967936
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <DateStringFormat>k__BackingField: 'dddd, MMMM d, yyyy
+
+    HH:mm'
+  <StartDateText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 109005971211149312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <EndDateText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 109006249624854528
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <DurationText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 109006557558071296
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -2301,6 +2447,9 @@ MonoBehaviour:
   _onConfirmButtonCantClick:
     m_PersistentCalls:
       m_Calls: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &3190760644435608514
 GameObject:
   m_ObjectHideFlags: 0
@@ -4608,6 +4757,19 @@ MonoBehaviour:
   _statusSucceededColor:
     serializedVersion: 2
     rgba: 4288011303
+  <StatusMustBeFilled>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
+    m_TableEntryReference:
+      m_KeyId: 96315315477012480
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <StatusMustBeFilledColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4285887999
+  <DayFormat>k__BackingField: d/M/yyyy
   _onSetTimeButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -4654,6 +4816,21 @@ MonoBehaviour:
   _onValidateTextFailed:
     m_PersistentCalls:
       m_Calls: []
+  _onPrintButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1908285290424802923}
+        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
+        m_MethodName: OpenUrl
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: www.bestvoxels.com
+          m_BoolArgument: 0
+        m_CallState: 2
   references:
     version: 2
     RefIds: []
@@ -5850,6 +6027,7 @@ MonoBehaviour:
     m_LocalVariables: []
   _defaultProfileIcon: {fileID: 11400000, guid: c2ac1f107ef784c5ea99406cb9b6b13f,
     type: 2}
+  _defaultAccountStatus: 0
   _defaultIsCustomTMPointCap: 0
   _defaultLevel: 1
   references:
@@ -5879,6 +6057,50 @@ MonoBehaviour:
     isShowOnStart: 0
   - animator: {fileID: 0}
     isShowOnStart: 0
+--- !u!1 &6511865713876867801
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8504617780612852721}
+  - component: {fileID: 9213363692027281852}
+  m_Layer: 0
+  m_Name: Account Status System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8504617780612852721
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6511865713876867801}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2637654065332200263}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9213363692027281852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6511865713876867801}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f932f6f4e8b74aaa80ce0da712f0912, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6565616550765219436
 GameObject:
   m_ObjectHideFlags: 0
@@ -6024,7 +6246,7 @@ GameObject:
   - component: {fileID: 5453957320850827884}
   - component: {fileID: 307593366267584820}
   m_Layer: 0
-  m_Name: Title Localizer
+  m_Name: Localizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6057,6 +6279,47 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad9fc8d254e44d5eb3c13e762e29378, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _LocalizedAccountStatusEntries:
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+      m_TableEntryReference:
+        m_KeyId: 25758714861445120
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    accountStatus: 0
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+      m_TableEntryReference:
+        m_KeyId: 25759491231309824
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    accountStatus: 1
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+      m_TableEntryReference:
+        m_KeyId: 25759492623818752
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    accountStatus: 2
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+      m_TableEntryReference:
+        m_KeyId: 25759640682749952
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    accountStatus: 3
   _LocalizedTitleEntries:
   - localizedString:
       m_TableReference:
@@ -6188,6 +6451,68 @@ MonoBehaviour:
       m_WaitForCompletion: 0
       m_LocalVariables: []
     userTitle: 10
+  _LocalizedActivityEntries:
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+      m_TableEntryReference:
+        m_KeyId: 22151850470924288
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    activityType: 2
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+      m_TableEntryReference:
+        m_KeyId: 22151372525789184
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    activityType: 1
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+      m_TableEntryReference:
+        m_KeyId: 22151099841503232
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    activityType: 0
+  _LocalizedHasCarEntries:
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+      m_TableEntryReference:
+        m_KeyId: 22893454227922944
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    hasCar: 1
+  - localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+      m_TableEntryReference:
+        m_KeyId: 22892688679362560
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+    hasCar: 0
+  _dateEndsOn:
+    m_TableReference:
+      m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+    m_TableEntryReference:
+      m_KeyId: 16361916141133824
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _dayFormat: d/M/yyyy
   references:
     version: 2
     RefIds: []

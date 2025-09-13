@@ -8,7 +8,7 @@ public class EditorMenu
 {
     private static void InstanciateCanvas(string path)
     {
-        Canvas[] canvases = GameObject.FindObjectsOfType<Canvas>();
+        Canvas[] canvases = GameObject.FindObjectsByType<Canvas>(FindObjectsSortMode.None);
         if (canvases == null || canvases.Length == 0)
         {
             EditorUtility.DisplayDialog("No canvas in scene", "Please add a canvas to the scene and try again", "Ok");

@@ -1,8 +1,10 @@
 using Firebase.Database;
 using System;
+using Newtonsoft.Json;
 using WatKhaoWong.CoreItems;
 using WatKhaoWong.SceneManagement;
 using WatKhaoWong.Utils.Core;
+using WatKhaoWong.Utils.Localization;
 
 namespace WatKhaoWong.Identities
 {
@@ -91,6 +93,10 @@ namespace WatKhaoWong.Identities
             if (data != null)
                 if (data.ToString().TryParseGregorian(out DateTime result))
                     _data.FirstUploadTimeOfDayTM = result;
+
+            string jsonData = bigData.Child(EParentNode.AccountStatus.ToString()).GetRawJsonValue();
+            if (jsonData != null)
+                _data.AccountStatus = JsonConvert.DeserializeObject<AccountStatus>(jsonData);
         }
         #endregion
 
@@ -114,6 +120,8 @@ namespace WatKhaoWong.Identities
 
             return _data.GetProfileIcon();
         }
+
+        public AccountStatus GetAccountStatus() => _data.GetAccountStatus();
 
         public EUserRole GetRole() => _data.GetRole();
 
@@ -152,6 +160,11 @@ namespace WatKhaoWong.Identities
         public void UpdateProfileIcon(ProfileIconInspector oldUI, ProfileIconItem newIcon, float multiplierRatioForDecorator)
         {
             _data.UpdateProfileIcon(oldUI, newIcon, multiplierRatioForDecorator);
+        }
+
+        public void UpdateAccountStatus(AccountStatusInspector oldStatus, AccountStatus newStatus, Localizer localizer)
+        {
+            _data.UpdateAccountStatus(oldStatus, newStatus, localizer);
         }
         #endregion
     }

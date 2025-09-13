@@ -15,6 +15,9 @@ namespace WatKhaoWong.SceneManagement
         LeaderboardTMChallenge,
         LeaderboardTMChallengeWinner,
         ServerStats, // Share Category
-        RemoteConfig // Share Category
+        RemoteConfig, // Share Category
+        ActiveStay, // Share Category
+        ScheduledStay, // Share Category
+        StayRequests // Share Category
     }
 }

@@ -44,6 +44,7 @@ namespace WatKhaoWong.SceneManagement
         AllowAccountDeletion,
         State,
         TempleGuideConfirmed,
-        TempleGuideConfirmedAt
+        TempleGuideConfirmedAt,
+        KeyId
     }
 }

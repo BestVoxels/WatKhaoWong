@@ -631,6 +631,43 @@ MonoBehaviour:
     m_Localized: Select Arrival Date
     m_Metadata:
       m_Items: []
+  - m_Id: 110460688059588608
+    m_Localized: Please select an Arrival Date on the first calendar.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110461366618284032
+    m_Localized: 'Maximum stay per visit: {0}'
+    m_Metadata:
+      m_Items:
+      - rid: 8467956339120275496
+  - m_Id: 110460856343453696
+    m_Localized: "The Arrival Date cannot be in the past. Please select today\u2019s
+      date or a date in the future."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110461138498478080
+    m_Localized: The Departure Date cannot be in the past. Please select a date in
+      the future.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110460943278792704
+    m_Localized: The Arrival Date cannot be after the Departure Date. Please select
+      a date earlier than the Departure Date.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110461169100120064
+    m_Localized: The Departure Date cannot be before the Arrival Date. Please select
+      a date after the Arrival Date.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110461308409733120
+    m_Localized: The Arrival Date and Departure Date cannot be the same date!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 110461036027437056
+    m_Localized: Please select a Departure Date on the second calendar.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds:
@@ -648,3 +685,4 @@ MonoBehaviour:
         - id: 109005971211149312
         - id: 109006249624854528
         - id: 109006557558071296
+        - id: 110461366618284032

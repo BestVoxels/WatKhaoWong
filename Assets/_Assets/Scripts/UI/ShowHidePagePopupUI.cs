@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using WatKhaoWong.Identities;
 
-namespace WatKhaoWong.Core
+namespace WatKhaoWong.UI
 {
     /// <summary>
     /// Place on any GameObject that itself won't get disabled so that it can Show/Hide another GameObject

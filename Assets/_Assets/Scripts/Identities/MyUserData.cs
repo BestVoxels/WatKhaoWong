@@ -5,6 +5,7 @@ using UnityEngine.Localization;
 using WatKhaoWong.CoreItems;
 using WatKhaoWong.SceneManagement;
 using WatKhaoWong.Utils.Core;
+using WatKhaoWong.Utils.Localization;
 using WatKhaoWong.Utils.UI;
 using WatKhaoWong.Utils.Conditions;
 using WatKhaoWong.Challenges;
@@ -29,6 +30,7 @@ namespace WatKhaoWong.Identities
         [SerializeField] private LocalizedString _defaultMemberSince;
         [SerializeField] private LocalizedString _loading;
         [SerializeField] private ProfileIconItem _defaultProfileIcon;
+        [SerializeField] private EAccountStatus _defaultAccountStatus;
         [SerializeField] private bool _defaultIsCustomTMPointCap = false;
         [SerializeField] private int _defaultLevel;
         #endregion
@@ -137,6 +139,57 @@ namespace WatKhaoWong.Identities
             _data.ProfileIcon = input;
 
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.ProfileIconID, _data.ProfileIcon.ItemID);
+            OnMyUserDataUpdated?.Invoke();
+        }
+
+        public async Task SetAccountStatusDefault()
+        {
+            await SetDataAccountStatus(updateCheckinAt: true, _defaultAccountStatus);
+        }
+
+        public async Task SetDataAccountStatus(bool updateCheckinAt, EAccountStatus? eStatus = null, DateTime? banEndDate = null, string notesText = null, string notesColor = null)
+        {
+            DateTime nowDate = await _serverTime.Now();
+
+            AccountStatus oldStatus = (_data.AccountStatus == null) ? new AccountStatus() : _data.AccountStatus;
+            string lastCheckinAtText = updateCheckinAt ? nowDate.ToGregorianString() : oldStatus.LastCheckinAt;
+            string banEndDateText = (banEndDate == null) ? oldStatus.BanEndDate : banEndDate.ToGregorianString();
+
+            StatusInfo oldStatusInfo = (oldStatus.StatusInfo == null) ? new StatusInfo() : oldStatus.StatusInfo;
+            string statusText = (eStatus == null) ? oldStatusInfo.Status : eStatus.ToString();
+            string statusUpdatedAtText = (eStatus == null || (oldStatusInfo.Status == eStatus.ToString() && oldStatusInfo.StatusUpdatedAt != null)) ? oldStatusInfo.StatusUpdatedAt : nowDate.ToGregorianString();
+
+            NotesInfo oldNotesInfo = (oldStatus.NotesInfo == null) ? new NotesInfo() : oldStatus.NotesInfo;
+            string notesInfoText = (notesText == null) ? oldNotesInfo.Text : notesText;
+            string notesInfoColor = (notesColor == null) ? oldNotesInfo.Color : notesColor;
+
+            _data.AccountStatus = new AccountStatus()
+            {
+                LastCheckinAt = lastCheckinAtText,
+                StatusInfo = new StatusInfo()
+                {
+                    Status = statusText,
+                    StatusUpdatedAt = statusUpdatedAtText
+                },
+                BanEndDate = banEndDateText,
+                NotesInfo = new NotesInfo()
+                {
+                    Text = notesInfoText,
+                    Color = notesInfoColor
+                }
+            };
+
+            await _savingWrapper.SaveDataToMyUser(EParentNode.AccountStatus, _data.AccountStatus);
+            OnMyUserDataUpdated?.Invoke();
+        }
+
+        public async Task SetPartialAccountStatus(string pathUnderAccountStatus, string value)
+        {
+            AccountStatus accountStatus = _data.AccountStatus;
+
+            // _data.AccountStatus have to be updated for UI to changed "_data.AccountStatus = ..."
+
+            await _savingWrapper.SaveToMyUser(EParentNode.AccountStatus, pathUnderAccountStatus, value);
             OnMyUserDataUpdated?.Invoke();
         }
 
@@ -253,6 +306,23 @@ namespace WatKhaoWong.Identities
 
             await _savingWrapper.SaveDataToMyUser(EParentNode.GeneralInfo, _data.GeneralInfo);
         }
+
+        public async Task SetDataActiveStay(string keyId, EStayStatus status)
+        {
+            DateTime nowDate = await _serverTime.Now();
+
+            _data.ActiveStay = new ActiveStay()
+            {
+                KeyId = keyId,
+                StatusInfo = new StatusInfo()
+                {
+                    Status = status.ToString(),
+                    StatusUpdatedAt = nowDate.ToGregorianString()
+                }
+            };
+
+            await _savingWrapper.SaveDataToMyUser(EParentNode.ActiveStay, _data.ActiveStay);
+        }
         #endregion
 
 
@@ -289,6 +359,24 @@ namespace WatKhaoWong.Identities
                 _data.ProfileIcon = _defaultProfileIcon;
 
             return _data.GetProfileIcon();
+        }
+
+        public AccountStatus GetAccountStatus()
+        {
+            if (!IsAccountStatusExists())
+            {
+                AccountStatus accountStatus = new AccountStatus()
+                {
+                    StatusInfo = new StatusInfo()
+                    {
+                        Status = _defaultAccountStatus.ToString(),
+                    }
+                };
+
+                _data.AccountStatus = accountStatus;
+            }
+
+            return _data.GetAccountStatus();
         }
 
         public EUserRole GetRole() => _data.GetRole();
@@ -341,23 +429,54 @@ namespace WatKhaoWong.Identities
 
         public async Task GetDataGeneralInfo()
         {
+            // TODO create private methods to check like 'GetMyEntryFromStayRequests'
             if (_data.GeneralInfo == null)
             {
                 _data.GeneralInfo = await _savingWrapper.LoadDataFromMyUser<GeneralInfo>(EParentNode.GeneralInfo);
             }
 
-            //print(_data.GeneralInfo.PhoneNumber);
-            //print(_data.GeneralInfo.MedicalCondition);
-            //print(_data.GeneralInfo.EmergencyContact.PhoneNumber);
-            //print(_data.GeneralInfo.EmergencyContact.Relation);
-            //print(_data.GeneralInfo.SocialAccounts.Line);
-            //print(_data.GeneralInfo.SocialAccounts.Facebook);
-            //print(_data.GeneralInfo.SocialAccounts.Instagram);
-            //print(_data.GeneralInfo.SocialAccounts.Tiktok);
-
             // '_data.GeneralInfo.SocialAccounts.Line == null' is the way to check if there is no value
 
         }
+
+        public async Task GetDataActiveStay()
+        {
+            // TODO create private methods to check like 'GetMyEntryFromStayRequests'
+            if (_data.ActiveStay == null)
+            {
+                _data.ActiveStay = await _savingWrapper.LoadDataFromMyUser<ActiveStay>(EParentNode.ActiveStay);
+            }
+        }
+
+        public async Task<StayEntry> GetMyEntryFromStayRequests()
+        {
+            if (!IsStayEntryExists())
+            {
+                await LoadMyEntryFromStayRequests();
+
+                if (!IsStayEntryExists()) return null; // Incase can't find my 'StayEntry' under 'StayRequests' Category
+            }
+
+            return _data.StayEntry;
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC)
+        public async Task LoadMyEntryFromStayRequests()
+        {
+            _data.StayEntry = await _savingWrapper.LoadMyEntryFromStayRequests();
+        }
+
+        public bool IsStayEntryExists() => !(_data.StayEntry == null);
+
+        public async Task LoadAccountStatus()
+        {
+            _data.AccountStatus = await _savingWrapper.LoadDataFromMyUser<AccountStatus>(EParentNode.AccountStatus);
+        }
+
+        public bool IsAccountStatusExists() => !(_data.AccountStatus == null);
         #endregion
 
 
@@ -547,6 +666,9 @@ namespace WatKhaoWong.Identities
                 _data.ProfileIcon = BaseItem.GetFromID(id) as ProfileIconItem;
             }
 
+            _data.AccountStatus = await _savingWrapper.LoadDataFromMyUser<AccountStatus>(EParentNode.AccountStatus);
+
+
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.Role);
             if (data != null)
             {
@@ -631,6 +753,11 @@ namespace WatKhaoWong.Identities
         public void UpdateProfileIcon(ProfileIconInspector oldUI, ProfileIconItem newIcon, float multiplierRatioForDecorator)
         {
             _data.UpdateProfileIcon(oldUI, newIcon, multiplierRatioForDecorator);
+        }
+
+        public void UpdateAccountStatus(AccountStatusInspector oldStatus, AccountStatus newStatus, Localizer localizer)
+        {
+            _data.UpdateAccountStatus(oldStatus, newStatus, localizer);
         }
 
         bool? IConditionEvaluator.Evaluate(EConditionType conditionType, EConditionValue[] conditionValues)

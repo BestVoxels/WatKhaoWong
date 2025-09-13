@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Utils.UI;
+using WatKhaoWong.Utils.Localization;
 using WatKhaoWong.Identities;
 using WatKhaoWong.SceneManagement;
 
@@ -47,7 +48,7 @@ namespace WatKhaoWong.UI.Identities
         private MyUserData _myUserData;
         private StatusText _statusText;
         private SavingWrapper _savingWrapper;
-        private TitleLocalizer _titleLocalizer;
+        private Localizer _localizer;
         #endregion
 
 
@@ -65,13 +66,13 @@ namespace WatKhaoWong.UI.Identities
             _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
             _statusText = FindAnyObjectByType<StatusText>();
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
-            _titleLocalizer = FindAnyObjectByType<TitleLocalizer>();
+            _localizer = FindAnyObjectByType<Localizer>();
 
             _closeButton.onClick.AddListener(Close);
             _modifyButton.onClick.AddListener(OnModifyButtonClicked);
 
             UIRefresher.OnPopupRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
-            UIRefresher.OnLocalizeDynamicString += () => _userTitleText.text = _titleLocalizer.Localize(_myUserData.GetTitleText());
+            UIRefresher.OnLocalizeDynamicString += () => _userTitleText.text = _localizer.LocalizeUserTitle(_myUserData.GetTitleText());
 
             PopulateProfileIconList();
         }
@@ -97,7 +98,7 @@ namespace WatKhaoWong.UI.Identities
             _myUserData.UpdateProfileIcon(_icon, _myUserData.GetProfileIcon(), MultiplierRatioForDecorator);
 
             _userNameText.text = _myUserData.GetUserNameText();
-            _userTitleText.text = _titleLocalizer.Localize(_myUserData.GetTitleText());
+            _userTitleText.text = _localizer.LocalizeUserTitle(_myUserData.GetTitleText());
             _userLevelText.text = _myUserData.GetLevelText();
 
             _allTimeTMPointsText.text = _myUserData.GetTotalTMPointsText();

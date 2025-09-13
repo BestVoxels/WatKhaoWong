@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Globalization;
 using WatKhaoWong.Utils.Core;
+using WatKhaoWong.Utils.Localization;
 using WatKhaoWong.SceneManagement;
 
 namespace WatKhaoWong.Identities
@@ -22,6 +23,11 @@ namespace WatKhaoWong.Identities
     internal class Data
     {
         #region --Fields-- (In Class)
+        private readonly Color32 _green = new Color32(100, 255, 0, 255); // 64FF00
+        private readonly Color32 _softRed = new Color32(255, 124, 0, 255); // FF7C00
+        private readonly Color32 _red = new Color32(255, 46, 0, 255); // FF2E00
+        private readonly Color32 _pink = new Color32(255, 0, 252, 255); // FF00FC
+
         private readonly NumberFormatInfo _nfi;
         #endregion
 
@@ -47,7 +53,10 @@ namespace WatKhaoWong.Identities
         internal DateTime FirstUploadTimeOfChallengeTM { get; set; }
         internal bool TempleGuideConfirmed { get; set; } = false;
 
+        internal AccountStatus AccountStatus { get; set; } = null;
         internal GeneralInfo GeneralInfo { get; set; } = null;
+        internal ActiveStay ActiveStay { get; set; } = null;
+        internal StayEntry StayEntry { get; set; } = null;
         #endregion
 
 
@@ -68,6 +77,8 @@ namespace WatKhaoWong.Identities
         internal string GetMemberSinceText() => $"{MemberSince.ToGregorianOnlyDateString()}";
 
         internal ProfileIconItem GetProfileIcon() => ProfileIcon;
+
+        internal AccountStatus GetAccountStatus() => AccountStatus;
 
         internal EUserRole GetRole() => Role;
 
@@ -121,6 +132,41 @@ namespace WatKhaoWong.Identities
 
             // Don't Call "_savingWrapper.Save()" because at the beginning it will saves default value and the actual save file will be gone.
             ProfileIcon = newIcon; // Don't Call "SetProfileIcon()" because don't want "OnAccountDataUpdated?.Invoke()" to run. PREVENT Infinite Loop & Program Crashes.
+        }
+
+        internal void UpdateAccountStatus(AccountStatusInspector oldStatus, AccountStatus newStatus, Localizer localizer)
+        {
+            // Compute for Status Text
+            oldStatus.statusText.text = localizer.LocalizeAccountStatus(newStatus.StatusInfo.Status);
+
+            // Compute for Color
+            Enum.TryParse(newStatus.StatusInfo.Status, true, out EAccountStatus accountStatus);
+
+            oldStatus.infoText.gameObject.SetActive(false);
+
+            switch (accountStatus)
+            {
+                case EAccountStatus.Normal:
+                    oldStatus.indicatorImage.color = _green;
+                    break;
+
+                case EAccountStatus.BanTemporary:
+                    oldStatus.indicatorImage.color = _softRed;
+                    oldStatus.infoText.gameObject.SetActive(true);
+
+
+                    newStatus.BanEndDate.TryParseGregorian(out DateTime endDate);
+                    oldStatus.infoText.text = localizer.FormatBanEndDate(endDate);
+                    break;
+
+                case EAccountStatus.BanPermanent:
+                    oldStatus.indicatorImage.color = _red;
+                    break;
+
+                case EAccountStatus.VIP:
+                    oldStatus.indicatorImage.color = _pink;
+                    break;
+            }
         }
         #endregion
     }

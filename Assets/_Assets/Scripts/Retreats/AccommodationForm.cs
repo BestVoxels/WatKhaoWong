@@ -1,41 +1,34 @@
-using Unity.Android.Gradle;
+using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Identities;
+using WatKhaoWong.SceneManagement;
 using WatKhaoWong.Utils.UI;
+using WatKhaoWong.Utils.Core;
+using WatKhaoWong.Utils.Localization;
 
 namespace WatKhaoWong.Retreats
 {
     public class AccommodationForm : Page
     {
         #region --Fields-- (Inspector)
-        [Header("Submit Info Status Text")]
+        [Header("Accommodation Form Status Text")]
         [SerializeField] private LocalizedString _statusSucceeded;
         [SerializeField] private Color32 _statusSucceededColor;
         #endregion
 
 
 
-        //#region --Properties-- (Inspector)
-        //[field: Header("Submit Info General Settings")]
-        //[field: SerializeField] public byte MinimumPhoneNumberLength { get; private set; } = 9;
-        //[field: SerializeField] public byte MaximumPhoneNumberLength { get; private set; } = 10;
-        //[field: Space]
-        //[field: Header("Submit Info Status Text")]
-        //[field: SerializeField] public LocalizedString StatusInvalidPhoneNumber { get; private set; }
-        //[field: SerializeField] public Color32 StatusInvalidPhoneNumberColor { get; private set; }
-        //[field: Space]
-        //[field: SerializeField] public LocalizedString StatusPhoneNumberTooShort { get; private set; }
-        //[field: SerializeField] public Color32 StatusPhoneNumberTooShortColor { get; private set; }
-        //[field: Space]
-        //[field: SerializeField] public LocalizedString StatusPhoneNumberTooLong { get; private set; }
-        //[field: SerializeField] public Color32 StatusPhoneNumberTooLongColor { get; private set; }
-        //[field: Space]
-        //[field: SerializeField] public LocalizedString StatusMustBeFilled { get; private set; }
-        //[field: SerializeField] public Color32 StatusMustBeFilledColor { get; private set; }
-        //#endregion
+        #region --Properties-- (Inspector)
+        [field: Header("Accommodation Form - Status Text")]
+        [field: SerializeField] public LocalizedString StatusMustBeFilled { get; private set; }
+        [field: SerializeField] public Color32 StatusMustBeFilledColor { get; private set; }
+
+        [field: Header("Accommodation Form - Day Format on Button")]
+        [field: SerializeField] public string DayFormat { get; private set; } = "d/M/yyyy";
+        #endregion
 
 
 
@@ -44,12 +37,27 @@ namespace WatKhaoWong.Retreats
         [SerializeField] private UnityEvent _onSetTimeButtonClick;
         [SerializeField] private UnityEvent _onValidateTextSucceeded;
         [SerializeField] private UnityEvent _onValidateTextFailed;
+        [Space]
+        [SerializeField] private UnityEvent _onPrintButtonClick;
+        #endregion
+
+
+
+        #region --Events-- (Delegate as Action)
+        public event Action<StayEntry> OnUploadedToServer;
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        //private MyUserData _myUserData;
+        private byte _activityIndex;
+        private SetTimeData _setTimeData;
+        private EHasCar _hasCar;
+        private string _plateNumber;
+
+        private MyUserData _myUserData;
+        private SavingWrapper _savingWrapper;
+        private ServerTime _serverTime;
         private StatusText _statusText;
         #endregion
 
@@ -59,8 +67,10 @@ namespace WatKhaoWong.Retreats
         private void Awake()
         {
             GameObject player = GameObject.FindWithTag("Player");
+            _myUserData = player.GetComponentInChildren<MyUserData>();
 
-            //_myUserData = player.GetComponentInChildren<MyUserData>();
+            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
+            _serverTime = FindAnyObjectByType<ServerTime>();
             _statusText = FindAnyObjectByType<StatusText>();
         }
         #endregion
@@ -73,8 +83,13 @@ namespace WatKhaoWong.Retreats
             _onSetTimeButtonClick?.Invoke();
         }
 
-        public async void OnValidateSucceeded(string phoneNumber, string medical, string urgentPhoneNumber, string relation, string line, string fb, string ig, string tiktok)
+        public void OnValidateSucceeded(byte activityIndex, SetTimeData setTimeData, EHasCar hasCar, string plateNumber)
         {
+            _activityIndex = activityIndex;
+            _setTimeData = setTimeData;
+            _hasCar = hasCar;
+            _plateNumber = plateNumber;
+
             _onValidateTextSucceeded?.Invoke();
         }
 
@@ -82,17 +97,52 @@ namespace WatKhaoWong.Retreats
         {
             _onValidateTextFailed?.Invoke();
         }
+
+        public void OnPrintButtonClick()
+        {
+            _onPrintButtonClick?.Invoke();
+        }
         #endregion
 
 
 
         #region --Methods-- (Subscriber) ~UnityEvent~
-        public void UploadToServer()
+        public async void UploadToServer()
         {
-            //await _myUserData.SetDataGeneralInfo(phoneNumber, medical, urgentPhoneNumber, relation, line, fb, ig, tiktok);
+            DateTime nowDate = await _serverTime.Now();
+
+            StayEntry stayEntry = new StayEntry()
+            {
+                UserId = FirebaseUtils.CurrentUserID,
+                Activity = ((EActivityType)_activityIndex).ToString(),
+                StayInfo = new StayInfo()
+                {
+                    IsStaying = _setTimeData.isStayingOvernight.ToString(),
+                    StartDate = _setTimeData.startDate.ToGregorianString(),
+                    EndDate = _setTimeData.endDate.ToGregorianString()
+                },
+                Transportation = new Transportation()
+                {
+                    HasCar = _hasCar.ToString(),
+                    CarPlateNumber = _plateNumber
+                },
+                StatusInfo = new StatusInfo()
+                {
+                    Status = EStayStatus.Pending.ToString(),
+                    StatusUpdatedAt = nowDate.ToGregorianString()
+                }
+            };
+
+            // Upload to Server -> 'Stay Requests' Category
+            string keyId = await _savingWrapper.SaveDataWithKey(ECategoryNode.StayRequests, stayEntry);
+
+            // Upload to Server -> 'User Themselves' Active Stay
+            await _myUserData.SetDataActiveStay(keyId, EStayStatus.Pending);
+
+            // Let Subscriber class use 'stayEntry' data to update UI
+            OnUploadedToServer?.Invoke(stayEntry);
 
             _statusText.Show(_statusSucceeded.GetLocalizedString(), _statusSucceededColor);
-            print("Upload Data to Server!");
         }
         #endregion
     }

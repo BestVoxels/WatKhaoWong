@@ -1,3 +1,6 @@
+using WatKhaoWong.SceneManagement;
+using WatKhaoWong.Utils.Localization;
+
 namespace WatKhaoWong.Identities
 {
     /// <summary>
@@ -12,6 +15,8 @@ namespace WatKhaoWong.Identities
         public string GetMemberSinceText();
 
         public ProfileIconItem GetProfileIcon();
+
+        public AccountStatus GetAccountStatus();
 
         public EUserRole GetRole();
 
@@ -44,5 +49,7 @@ namespace WatKhaoWong.Identities
         public bool GetIsCustomTMPointCap();
 
         public void UpdateProfileIcon(ProfileIconInspector oldUI, ProfileIconItem newIcon, float multiplierRatioForDecorator);
+
+        public void UpdateAccountStatus(AccountStatusInspector oldStatus, AccountStatus newStatus, Localizer localizer);
     }
 }

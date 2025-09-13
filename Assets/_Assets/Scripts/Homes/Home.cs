@@ -3,6 +3,7 @@ using UnityEngine.Events;
 using UnityEngine.Localization;
 using WatKhaoWong.Identities;
 using WatKhaoWong.Utils.Core;
+using WatKhaoWong.Utils.Localization;
 
 namespace WatKhaoWong.Homes
 {
@@ -45,7 +46,7 @@ namespace WatKhaoWong.Homes
 
         #region --Fields-- (In Class)
         private MyUserData _myUserData;
-        private TitleLocalizer _titleLocalizer;
+        private Localizer _localizer;
         #endregion
 
 
@@ -56,7 +57,7 @@ namespace WatKhaoWong.Homes
             GameObject player = GameObject.FindWithTag("Player");
 
             _myUserData = player.GetComponentInChildren<MyUserData>();
-            _titleLocalizer = FindAnyObjectByType<TitleLocalizer>();
+            _localizer = FindAnyObjectByType<Localizer>();
         }
         #endregion
 
@@ -80,7 +81,7 @@ namespace WatKhaoWong.Homes
             if (FirebaseUtils.IsAuthenticated() && _myUserData.IsLoadingFromServer == true)
                 text = _welcomeTextForUser.GetLocalizedString(_loading.GetLocalizedString());
             else if (FirebaseUtils.IsAuthenticated())
-                text = _welcomeTextForUser.GetLocalizedString( $"{_titleLocalizer.Localize(_myUserData.GetTitleText())}\n{_myUserData.GetUserNameText()}" );
+                text = _welcomeTextForUser.GetLocalizedString( $"{_localizer.LocalizeUserTitle(_myUserData.GetTitleText())}\n{_myUserData.GetUserNameText()}" );
             else
                 text = _welcomeTextForGuest.GetLocalizedString();
 

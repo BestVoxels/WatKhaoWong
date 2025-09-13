@@ -1,4 +1,4 @@
-namespace WatKhaoWong.Identities
+namespace WatKhaoWong.Utils.Localization
 {
     public enum EUserTitle
     {
