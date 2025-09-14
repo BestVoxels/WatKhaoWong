@@ -24,7 +24,13 @@ namespace WatKhaoWong.Identities
         private void Start()
         {
             if (_firstTime == false)
-                ManuallyAdjustUsersScore();
+            {
+                //ManuallyAdjustUsersScore();
+
+                ManuallyCountTotalScoreFromLeaderboardTMChallenge();
+
+                //ManuallyCountTotalScoreFromUsers();
+            }
         }
         #endregion
 
@@ -73,21 +79,94 @@ namespace WatKhaoWong.Identities
                 //    Debug.LogWarning($"({index}) / ({eachData.Key}) Set 'ChallengeTMPoints' to 0");
                 //}
 
-                // -> Check IF User TodayTMPoint is not assign in TodayLeaderboard, IF SO add 'TodayTMPoint' into 'LeaderboardTMToday'
-                if (otherUserData.GetFirstUploadTimeOfDayTM().Date == DateTime.Now.Date)
-                {
-                    if ((await _savingWrapper.ForceIsSaveExists(ECategoryNode.LeaderboardTMToday, eachData.Key, EValueNode.TodayTMPoint)) == false)
-                    {
-                        _savingWrapper.ForceSaveAnyUser(ECategoryNode.LeaderboardTMToday, eachData.Key, EValueNode.TodayTMPoint, otherUserData.GetTodayTMPoints());
+                //// -> Check IF User TodayTMPoint is not assign in TodayLeaderboard, IF SO add 'TodayTMPoint' into 'LeaderboardTMToday'
+                //if (otherUserData.GetFirstUploadTimeOfDayTM().Date == DateTime.Now.Date)
+                //{
+                //    if ((await _savingWrapper.ForceIsSaveExists(ECategoryNode.LeaderboardTMToday, eachData.Key, EValueNode.TodayTMPoint)) == false)
+                //    {
+                //        _savingWrapper.ForceSaveAnyUser(ECategoryNode.LeaderboardTMToday, eachData.Key, EValueNode.TodayTMPoint, otherUserData.GetTodayTMPoints());
 
-                        Debug.LogWarning($"({index}) / ({eachData.Key}) This User has NO data in 'LeaderboardTMToday'");
-                    }
+                //        Debug.LogWarning($"({index}) / ({eachData.Key}) This User has NO data in 'LeaderboardTMToday'");
+                //    }
+                //}
+
+                //_firstTime = true;
+                //Debug.LogWarning("DONE");
+            }
+        }
+
+        /// <summary>
+        /// Sum Total Score from 'LeaderboardTMChallenge' leaderboard
+        /// </summary>
+        private async void ManuallyCountTotalScoreFromLeaderboardTMChallenge()
+        {
+            ushort totalPeople = 0;
+            ushort totalPeopleWithoutScore = 0;
+            int totalScore = 0;
+
+            await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValue(ECategoryNode.LeaderboardTMChallenge, EValueNode.ChallengeTMPoint, 1000))
+            {
+                ++totalPeople;
+                DataSnapshot data = eachData.Child("ChallengeTMPoint");
+                if (!data.Exists)
+                {
+                    ++totalPeopleWithoutScore;
+                    continue;
                 }
+
+                int eachUserScore = int.Parse(data.Value.ToString());
+
+                totalScore += eachUserScore;
+
+                Debug.LogWarning($"{totalPeople} : data.Child(\"ChallengeTMPoint\").Value -> {eachUserScore}");
             }
 
-            Debug.LogWarning("DONE");
+            Debug.LogWarning($"Total People : {totalPeople}");
+
+            Debug.LogWarning($"Total People Without Score: {totalPeopleWithoutScore}");
+            Debug.LogWarning($"Total People WITH Score: {totalPeople - totalPeopleWithoutScore}");
+
+            Debug.LogWarning($"Total Score : {totalScore}");
 
             _firstTime = true;
+            Debug.LogWarning("DONE");
+        }
+
+        /// <summary>
+        /// Sum Total Score from 'LeaderboardTMChallenge' leaderboard
+        /// </summary>
+        private async void ManuallyCountTotalScoreFromUsers()
+        {
+            ushort totalPeople = 0;
+            ushort totalPeopleWithoutScore = 0;
+            int totalScore = 0;
+
+            await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValue(ECategoryNode.Users, EValueNode.TotalTMPoint, 1000))
+            {
+                ++totalPeople;
+                DataSnapshot data = eachData.Child("TMPoints").Child("TotalTMPoint");
+                if (!data.Exists)
+                {
+                    ++totalPeopleWithoutScore;
+                    continue;
+                }
+
+                int eachUserScore = int.Parse(data.Value.ToString());
+
+                totalScore += eachUserScore;
+
+                Debug.LogWarning($"{totalPeople} : data.Child(\"TotalTMPoint\").Value -> {eachUserScore}");
+            }
+
+            Debug.LogWarning($"Total People : {totalPeople}");
+
+            Debug.LogWarning($"Total People Without Score: {totalPeopleWithoutScore}");
+            Debug.LogWarning($"Total People WITH Score: {totalPeople - totalPeopleWithoutScore}");
+
+            Debug.LogWarning($"Total Score : {totalScore}");
+
+            _firstTime = true;
+            Debug.LogWarning("DONE");
         }
         #endregion
     }
