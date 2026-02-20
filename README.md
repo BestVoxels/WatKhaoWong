@@ -33,7 +33,9 @@ This project demonstrates a **Serverless Architecture** optimized for high-perfo
 Below are the core modules of the application, demonstrating the full software development lifecycle from architecture to production.
 
 ### **1. Production Deployment & SDLC**
-<img width="1434" height="1189" alt="Image" src="https://github.com/user-attachments/assets/46a042aa-4493-4d92-bafc-eb1f56ee5914" />
+<img width="717" height="594.5" alt="Image" src="https://github.com/user-attachments/assets/46a042aa-4493-4d92-bafc-eb1f56ee5914" />
+
+<img width="522.5" height="474.5" alt="Image" src="https://github.com/user-attachments/assets/451fd23d-dfd7-484c-bd41-f170ea0763de" />
 
 **Full Lifecycle Management**
 I independently managed the build pipeline, compliance, and App Store Optimization (ASO) for both iOS and Android. The app maintains a **99.8% crash-free session rate** in production.
