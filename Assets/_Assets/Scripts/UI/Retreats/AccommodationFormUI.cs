@@ -54,6 +54,7 @@ namespace WatKhaoWong.UI.Retreats
         private Localizer _localizer;
         private AccommodationSetTimePopup _setTimePopup;
         private AccommodationForm _accommodationForm;
+        private StayEntryRow _stayEntryRow;
         private InputFieldValidator _inputFieldValidator;
         private InputFieldStatus _plateNumberInputFieldStatus;
         #endregion
@@ -67,6 +68,7 @@ namespace WatKhaoWong.UI.Retreats
             _myUserData = player.GetComponentInChildren<MyUserData>();
             _setTimePopup = player.GetComponentInChildren<AccommodationSetTimePopup>();
             _accommodationForm = player.GetComponentInChildren<AccommodationForm>();
+            _stayEntryRow = player.GetComponentInChildren<StayEntryRow>();
 
             _localizer = FindAnyObjectByType<Localizer>();
 
@@ -84,6 +86,8 @@ namespace WatKhaoWong.UI.Retreats
             _confirmButton.onClick.AddListener(Confirm);
             _printButton.onClick.AddListener(Print);
 
+            _stayEntryRow.OnAddedToServer += RefreshUIWithServerData;
+            _stayEntryRow.OnDeletedFromServer += (nullEntry) => RefreshUIWithServerData(nullEntry, null);
             UIRefresher.OnMeditationRetreatRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
             UIRefresher.OnLocalizeDynamicString += () => { SetTextWhenEntryExists(); RefreshAccountStatusUI(); }; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
@@ -91,7 +95,7 @@ namespace WatKhaoWong.UI.Retreats
         private void OnEnable()
         {
             _setTimePopup.OnValidated += UpdateTextOnButtonSetTime;
-            _accommodationForm.OnUploadedToServer += UploadToServer;
+            _accommodationForm.OnUploadedToServer += RefreshUIWithServerData;
         }
 
         private void Start()
@@ -102,7 +106,7 @@ namespace WatKhaoWong.UI.Retreats
         private void OnDisable()
         {
             _setTimePopup.OnValidated -= UpdateTextOnButtonSetTime;
-            _accommodationForm.OnUploadedToServer -= UploadToServer;
+            _accommodationForm.OnUploadedToServer -= RefreshUIWithServerData;
         }
         #endregion
 
@@ -127,7 +131,11 @@ namespace WatKhaoWong.UI.Retreats
 
         private bool IsStatusBanned()
         {
-            Enum.TryParse(_myUserData.GetAccountStatus().StatusInfo.Status, true, out EAccountStatus eStatus);
+            AccountStatus accountStatus = _myUserData.GetAccountStatus();
+            if (accountStatus == null) return false; // Default is not Ban
+            if (accountStatus.StatusInfo == null) return false; // Default is not Ban
+
+            Enum.TryParse(accountStatus.StatusInfo.Status, true, out EAccountStatus eStatus);
 
             return eStatus == EAccountStatus.BanTemporary || eStatus == EAccountStatus.BanPermanent;
         }
@@ -139,6 +147,9 @@ namespace WatKhaoWong.UI.Retreats
             _reasonBannedPanel.SetActive(true);
 
             AccountStatus accountStatus = _myUserData.GetAccountStatus();
+            if (accountStatus == null) return;
+            if (accountStatus.StatusInfo == null) return;
+
             _reasonText.text = accountStatus.NotesInfo.Text;
 
             ColorUtility.TryParseHtmlString(accountStatus.NotesInfo.Color, out Color notesColor);
@@ -148,13 +159,13 @@ namespace WatKhaoWong.UI.Retreats
         private async void ShowResultTextsUI()
         {
             if (_stayEntry == null)
-                _stayEntry = await _myUserData.GetMyEntryFromStayRequests();
+                _stayEntry = await _myUserData.GetActiveStayEntry();
 
             _formPanel.SetActive(true);
             _printPanel.SetActive(false);
             _reasonBannedPanel.SetActive(false);
 
-            ShowHideUIWhenEntryExists();
+            ShowHideFormUIBaseOnStayEntryExists();
 
             SetTextWhenEntryExists();
         }
@@ -169,32 +180,34 @@ namespace WatKhaoWong.UI.Retreats
             return status;
         }
 
-        private void ShowHideUIWhenEntryExists()
+        private void ShowHideFormUIBaseOnStayEntryExists()
         {
-            if (_stayEntry == null) return;
+            bool isEntryNull = _stayEntry == null;
 
-            _activityDropdown.gameObject.SetActive(false);
-            _setTimeButton.gameObject.SetActive(false);
-            _hasCarSwitch.gameObject.SetActive(false);
+            _activityDropdown.gameObject.SetActive(isEntryNull);
+            _setTimeButton.gameObject.SetActive(isEntryNull);
+            _hasCarSwitch.gameObject.SetActive(isEntryNull);
 
-            _activityResultText.gameObject.SetActive(true);
-            _setTimeResultText.gameObject.SetActive(true);
-            _hasCarResultText.gameObject.SetActive(true);
-
+            _activityResultText.gameObject.SetActive(!isEntryNull);
+            _setTimeResultText.gameObject.SetActive(!isEntryNull);
+            _hasCarResultText.gameObject.SetActive(!isEntryNull);
             
-            if (GetHasCar() == EHasCar.Has)
+            if (isEntryNull || GetHasCar() == EHasCar.Has)
             {
-                _plateNumberInputField.gameObject.SetActive(false);
+                _hasCarSwitch.isOn = true;
+                ShowHidePlateNumber(true);
 
-                _plateNumberResultText.gameObject.SetActive(true);
+                _plateNumberInputField.gameObject.SetActive(isEntryNull);
+
+                _plateNumberResultText.gameObject.SetActive(!isEntryNull);
             }
             else if (GetHasCar() == EHasCar.None)
             {
                 ShowHidePlateNumber(false);
             }
 
-            _uploadPanel.SetActive(false);
-            _printPanel.SetActive(true);
+            _uploadPanel.SetActive(isEntryNull);
+            _printPanel.SetActive(!isEntryNull);
         }
 
         private void SetTextWhenEntryExists()
@@ -211,6 +224,8 @@ namespace WatKhaoWong.UI.Retreats
 
             if (GetHasCar() == EHasCar.Has)
                 _plateNumberResultText.text = _stayEntry.Transportation.CarPlateNumber;
+            else
+                _plateNumberResultText.text = _accommodationForm.NoDataText.GetLocalizedString();
         }
 
         private EHasCar GetHasCar() => (EHasCar)Enum.Parse(typeof(EHasCar), _stayEntry.Transportation.HasCar);
@@ -242,8 +257,11 @@ namespace WatKhaoWong.UI.Retreats
             _plateNumberInputField.text, _plateNumberInputFieldStatus, out _plateNumber,
             (_accommodationForm.StatusMustBeFilled.GetLocalizedString(), _accommodationForm.StatusMustBeFilledColor));
 
-        private void UploadToServer(StayEntry stayEntry)
+        public void RefreshUIWithServerData(StayEntry stayEntry, EStayStatus? stayStatus)
         {
+            if (stayStatus == EStayStatus.Completed || stayStatus == EStayStatus.Rejected)
+                return;
+
             _stayEntry = stayEntry;
 
             ShowResultTextsUI();
@@ -254,6 +272,8 @@ namespace WatKhaoWong.UI.Retreats
             if (Validate())
             {
                 EHasCar hasCar = _hasCarSwitch.isOn ? EHasCar.Has : EHasCar.None;
+                if (hasCar == EHasCar.None)
+                    _plateNumber = null;
 
                 _accommodationForm.OnValidateSucceeded((byte)_activityDropdown.index, _setTimePopup.GetData(), hasCar, _plateNumber);
             }

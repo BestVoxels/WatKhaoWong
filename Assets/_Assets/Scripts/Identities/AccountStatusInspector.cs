@@ -9,5 +9,6 @@ namespace WatKhaoWong.Identities
         public TMP_Text statusText;
         public Image indicatorImage;
         public TMP_Text infoText;
+        public TMP_Text notesText;
     }
 }

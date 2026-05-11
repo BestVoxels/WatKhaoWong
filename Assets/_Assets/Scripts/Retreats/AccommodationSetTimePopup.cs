@@ -81,6 +81,7 @@ namespace WatKhaoWong.Retreats
 
 
         #region --Fields-- (In Class)
+        private bool _allowPastDate = false;
         private EIsStaying _isStayingOvernight;
         private DateTime _startDate;
         private DateTime _endDate;
@@ -126,8 +127,15 @@ namespace WatKhaoWong.Retreats
             return duration;
         }
 
-        public bool ValidateSetTimePopup()
+        public void SetAllowPastDate(bool allowPastDate)
         {
+            _allowPastDate = allowPastDate;
+        }
+
+        public bool ValidateSetTimePopup(bool allowPastDate = false)
+        {
+            _allowPastDate = allowPastDate;
+
             if (!ValidateStartDate(_startDate, _endDate)) return false;
             if (!ValidateEndDate(_startDate, _endDate)) return false;
 
@@ -151,7 +159,7 @@ namespace WatKhaoWong.Retreats
                 _statusText.Show(_statusStartDateIsNull.GetLocalizedString(), _statusStartDateIsNullColor);
                 return false;
             }
-            if (startDate.Date < _serverTimeNow.Date)
+            if (!_allowPastDate && startDate.Date < _serverTimeNow.Date)
             {
                 _statusText.Show(_statusStartDateIsInPast.GetLocalizedString(), _statusStartDateIsInPastColor);
                 return false;
@@ -189,7 +197,7 @@ namespace WatKhaoWong.Retreats
                 _statusText.Show(_statusEndDateIsNull.GetLocalizedString(), _statusEndDateIsNullColor);
                 return false;
             }
-            if (endDate.Date < _serverTimeNow.Date)
+            if (!_allowPastDate && endDate.Date < _serverTimeNow.Date)
             {
                 _statusText.Show(_statusEndDateIsInPast.GetLocalizedString(), _statusEndDateIsInPastColor);
                 return false;
@@ -212,6 +220,8 @@ namespace WatKhaoWong.Retreats
 
             return true;
         }
+
+        public EIsStaying GetIsStayingOvernight() => _isStayingOvernight;
 
         public void SetIsStayingOvernight(EIsStaying isStayingOvernight)
         {
@@ -237,6 +247,21 @@ namespace WatKhaoWong.Retreats
             };
 
             return data;
+        }
+
+        public void ClearOnValidatedSubscribers()
+        {
+            OnValidated = null;
+        }
+
+        public void ClearDateData()
+        {
+            // No Need to reset '_isStayingOvernight = default' just make it same like what is showing on UI
+            _startDate = default;
+            _endDate = default;
+            _duration = default;
+
+            _allowPastDate = false;
         }
         #endregion
 

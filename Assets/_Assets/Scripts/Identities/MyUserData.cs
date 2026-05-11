@@ -30,7 +30,6 @@ namespace WatKhaoWong.Identities
         [SerializeField] private LocalizedString _defaultMemberSince;
         [SerializeField] private LocalizedString _loading;
         [SerializeField] private ProfileIconItem _defaultProfileIcon;
-        [SerializeField] private EAccountStatus _defaultAccountStatus;
         [SerializeField] private bool _defaultIsCustomTMPointCap = false;
         [SerializeField] private int _defaultLevel;
         #endregion
@@ -142,13 +141,18 @@ namespace WatKhaoWong.Identities
             OnMyUserDataUpdated?.Invoke();
         }
 
-        public async Task SetAccountStatusDefault()
+        public async Task SetAccountStatusDefault(EAccountStatus eAccountStatus)
         {
-            await SetDataAccountStatus(updateCheckinAt: true, _defaultAccountStatus);
+            await SetDataAccountStatus(updateCheckinAt: true, eAccountStatus);
         }
-
+        /// <summary>
+        /// Allow Partial Adding, no need to have all Info at once, can add partial
+        /// This is WHY parameter is one by one like this.
+        /// </summary>
         public async Task SetDataAccountStatus(bool updateCheckinAt, EAccountStatus? eStatus = null, DateTime? banEndDate = null, string notesText = null, string notesColor = null)
         {
+            if (!IsAccountStatusExists()) await LoadAccountStatus();
+
             DateTime nowDate = await _serverTime.Now();
 
             AccountStatus oldStatus = (_data.AccountStatus == null) ? new AccountStatus() : _data.AccountStatus;
@@ -183,15 +187,15 @@ namespace WatKhaoWong.Identities
             OnMyUserDataUpdated?.Invoke();
         }
 
-        public async Task SetPartialAccountStatus(string pathUnderAccountStatus, string value)
-        {
-            AccountStatus accountStatus = _data.AccountStatus;
+        //public async Task SetPartialAccountStatus(string pathUnderAccountStatus, string value)
+        //{
+        //    AccountStatus accountStatus = _data.AccountStatus;
 
-            // _data.AccountStatus have to be updated for UI to changed "_data.AccountStatus = ..."
+        //    // _data.AccountStatus have to be updated for UI to change "_data.AccountStatus = ..."
 
-            await _savingWrapper.SaveToMyUser(EParentNode.AccountStatus, pathUnderAccountStatus, value);
-            OnMyUserDataUpdated?.Invoke();
-        }
+        //    await _savingWrapper.SaveToMyUser(EParentNode.AccountStatus, pathUnderAccountStatus, value);
+        //    OnMyUserDataUpdated?.Invoke();
+        //}
 
         public void ForceSetRole(EUserRole role)
         {
@@ -284,8 +288,93 @@ namespace WatKhaoWong.Identities
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.TempleGuideConfirmedAt, nowDate.ToGregorianString());
         }
 
-        public async Task SetDataGeneralInfo(string phoneNumber, string medical, string urgentPhoneNumber, string relation, string line, string fb, string ig, string tiktok)
+        /// <summary>
+        /// NOT Allow Partial Adding, NEED all Info at once
+        /// This is WHY parameter is using its Class as a Group.
+        /// </summary>
+        public async Task SetDataActiveStay(ActiveStay activeStay)
         {
+            _data.ActiveStay = activeStay;
+
+            await _savingWrapper.SaveDataToMyUser(EParentNode.ActiveStay, _data.ActiveStay);
+        }
+
+        /// <summary>
+        /// Allow Partial Adding, no need to have all Info at once, can add partial
+        /// This is WHY parameter is one by one like this.
+        /// </summary>
+        public async Task SetDataNationalIDInfo(string id = null, string gd = null, string pf = null, string fName = null, string lName = null, string bDate = null, string iDate = null, string eDate = null, string hN = null, string subd = null, string d = null, string p = null, string c = null)
+        {
+            if (!IsNationalIDInfoExists()) await LoadNationalIDInfo();
+
+            NationalIDInfo old = (_data.NationalIDInfo == null) ? new NationalIDInfo() : _data.NationalIDInfo;
+            string nId = (id == null) ? old.NationalID : id;
+            string gender = (gd == null) ? old.Gender : gd;
+            string prefix = (pf == null) ? old.Prefix : pf;
+            string firstName = (fName == null) ? old.FirstName : fName;
+            string lastName = (lName == null) ? old.LastName : lName;
+            string birthDate = (bDate == null) ? old.BirthDate : bDate;
+            string issueDate = (iDate == null) ? old.IssueDate : iDate;
+            string expireDate = (eDate == null) ? old.ExpireDate : eDate;
+            string houseNumber = (hN == null) ? old.HouseNumber : hN;
+            string subDistrict = (subd == null) ? old.Subdistrict : subd;
+            string district = (d == null) ? old.District : d;
+            string province = (p == null) ? old.Province : p;
+            string country = (c == null) ? old.Country : c;
+
+            _data.NationalIDInfo = new NationalIDInfo()
+            {
+                NationalID = nId,
+                Gender = gender,
+                Prefix = prefix,
+                FirstName = firstName,
+                LastName = lastName,
+                BirthDate = birthDate,
+                IssueDate = issueDate,
+                ExpireDate = expireDate,
+                HouseNumber = houseNumber,
+                Subdistrict = subDistrict,
+                District = district,
+                Province = province,
+                Country = country
+            };
+
+            await _savingWrapper.SaveDataToMyUser(EParentNode.NationalIDInfo, _data.NationalIDInfo);
+        }
+
+        /// <summary>
+        /// NOT Allow Partial Adding, NEED all Info at once
+        /// This is WHY parameter is using its Class as a Group.
+        /// </summary>
+        public async Task SetDataPassportInfo(PassportInfo passportInfo)
+        {
+            _data.PassportInfo = passportInfo;
+
+            await _savingWrapper.SaveDataToMyUser(EParentNode.PassportInfo, _data.PassportInfo);
+        }
+
+        /// <summary>
+        /// Allow Partial Adding, no need to have all Info at once, can add partial
+        /// This is WHY parameter is one by one like this.
+        /// </summary>
+        public async Task SetDataGeneralInfo(string pN = null, string mC = null, string uPN = null, string r = null, string l = null, string fb = null, string ig = null, string tt = null)
+        {
+            if (!IsGeneralInfoExists()) await LoadGeneralInfo();
+
+            GeneralInfo old = (_data.GeneralInfo == null) ? new GeneralInfo() : _data.GeneralInfo;
+            string phoneNumber = (pN == null) ? old.PhoneNumber : pN;
+            string medical = (mC == null) ? old.MedicalCondition : mC;
+
+            EmergencyContact oldEmergencyContact = (old.EmergencyContact == null) ? new EmergencyContact() : old.EmergencyContact;
+            string urgentPhoneNumber = (uPN == null) ? oldEmergencyContact.PhoneNumber : uPN;
+            string relation = (r == null) ? oldEmergencyContact.Relation : r;
+
+            SocialAccounts oldSocialAccounts = (old.SocialAccounts == null) ? new SocialAccounts() : old.SocialAccounts;
+            string line = (l == null) ? oldSocialAccounts.Line : l;
+            string facebook = (fb == null) ? oldSocialAccounts.Facebook : fb;
+            string instagram = (ig == null) ? oldSocialAccounts.Instagram : ig;
+            string tiktok = (tt == null) ? oldSocialAccounts.Tiktok : tt;
+
             _data.GeneralInfo = new GeneralInfo()
             {
                 PhoneNumber = phoneNumber,
@@ -298,30 +387,13 @@ namespace WatKhaoWong.Identities
                 SocialAccounts = new SocialAccounts()
                 {
                     Line = line,
-                    Facebook = fb,
-                    Instagram = ig,
+                    Facebook = facebook,
+                    Instagram = instagram,
                     Tiktok = tiktok
                 }
             };
 
             await _savingWrapper.SaveDataToMyUser(EParentNode.GeneralInfo, _data.GeneralInfo);
-        }
-
-        public async Task SetDataActiveStay(string keyId, EStayStatus status)
-        {
-            DateTime nowDate = await _serverTime.Now();
-
-            _data.ActiveStay = new ActiveStay()
-            {
-                KeyId = keyId,
-                StatusInfo = new StatusInfo()
-                {
-                    Status = status.ToString(),
-                    StatusUpdatedAt = nowDate.ToGregorianString()
-                }
-            };
-
-            await _savingWrapper.SaveDataToMyUser(EParentNode.ActiveStay, _data.ActiveStay);
         }
         #endregion
 
@@ -361,23 +433,7 @@ namespace WatKhaoWong.Identities
             return _data.GetProfileIcon();
         }
 
-        public AccountStatus GetAccountStatus()
-        {
-            if (!IsAccountStatusExists())
-            {
-                AccountStatus accountStatus = new AccountStatus()
-                {
-                    StatusInfo = new StatusInfo()
-                    {
-                        Status = _defaultAccountStatus.ToString(),
-                    }
-                };
-
-                _data.AccountStatus = accountStatus;
-            }
-
-            return _data.GetAccountStatus();
-        }
+        public AccountStatus GetAccountStatus() => _data.GetAccountStatus();
 
         public EUserRole GetRole() => _data.GetRole();
 
@@ -424,59 +480,168 @@ namespace WatKhaoWong.Identities
 
 
 
-        #region --Methods-- (Custom PUBLIC) ~Setter~
+        #region --Methods-- (Custom PUBLIC) ~Getter~
         public bool GetTempleGuideConfirmed() => _data.TempleGuideConfirmed;
 
-        public async Task GetDataGeneralInfo()
-        {
-            // TODO create private methods to check like 'GetMyEntryFromStayRequests'
-            if (_data.GeneralInfo == null)
-            {
-                _data.GeneralInfo = await _savingWrapper.LoadDataFromMyUser<GeneralInfo>(EParentNode.GeneralInfo);
-            }
-
-            // '_data.GeneralInfo.SocialAccounts.Line == null' is the way to check if there is no value
-
-        }
-
-        public async Task GetDataActiveStay()
-        {
-            // TODO create private methods to check like 'GetMyEntryFromStayRequests'
-            if (_data.ActiveStay == null)
-            {
-                _data.ActiveStay = await _savingWrapper.LoadDataFromMyUser<ActiveStay>(EParentNode.ActiveStay);
-            }
-        }
-
-        public async Task<StayEntry> GetMyEntryFromStayRequests()
+        public async Task<StayEntry> GetActiveStayEntry()
         {
             if (!IsStayEntryExists())
             {
-                await LoadMyEntryFromStayRequests();
+                ActiveStay activeStay = await GetDataActiveStay();
+                if (!IsActiveStayExists()) return null;
+
+                Enum.TryParse(activeStay.StatusInfo.Status, true, out EStayStatus eStatus);
+                switch (eStatus)
+                {
+                    case EStayStatus.Pending:
+                        await LoadMyEntryFromStayRequests();
+                        break;
+
+                    case EStayStatus.Scheduled:
+                        await LoadMyEntryFromScheduledStay();
+                        break;
+
+                    case EStayStatus.Active:
+                        await LoadMyEntryFromActiveStay();
+                        break;
+                }
 
                 if (!IsStayEntryExists()) return null; // Incase can't find my 'StayEntry' under 'StayRequests' Category
             }
 
             return _data.StayEntry;
         }
+
+        public async Task<ActiveStay> GetDataActiveStay()
+        {
+            if (!IsActiveStayExists())
+            {
+                await LoadActiveStay();
+
+                if (!IsActiveStayExists()) return null; // Incase can't find my 'ActiveStay' under MyUser Category
+            }
+
+            return _data.ActiveStay;
+        }
+
+        public async Task<NationalIDInfo> GetDataNationalIDInfo()
+        {
+            if (!IsNationalIDInfoExists())
+            {
+                await LoadNationalIDInfo();
+
+                if (!IsNationalIDInfoExists()) return null; // Incase can't find my 'NationalIDInfo' under MyUser Category
+            }
+
+            return _data.NationalIDInfo;
+        }
+
+        public async Task<PassportInfo> GetDataPassportInfo()
+        {
+            if (!IsPassportInfoExists())
+            {
+                await LoadPassportInfo();
+
+                if (!IsPassportInfoExists()) return null; // Incase can't find my 'PassportInfo' under MyUser Category
+            }
+
+            return _data.PassportInfo;
+        }
+
+        public async Task<GeneralInfo> GetDataGeneralInfo()
+        {
+            if (!IsGeneralInfoExists())
+            {
+                await LoadGeneralInfo();
+
+                if (!IsGeneralInfoExists()) return null; // Incase can't find my 'GeneralInfo' under MyUser Category
+            }
+
+            return _data.GeneralInfo;
+        }
         #endregion
 
 
 
-        #region --Methods-- (Custom PUBLIC)
-        public async Task LoadMyEntryFromStayRequests()
-        {
-            _data.StayEntry = await _savingWrapper.LoadMyEntryFromStayRequests();
-        }
+        #region --Methods-- (Custom PUBLIC & PRIVATE) ~Meditation Retreat~
+        // -Account Status-
+        public bool IsAccountStatusExists() => !(_data.AccountStatus == null);
 
-        public bool IsStayEntryExists() => !(_data.StayEntry == null);
-
-        public async Task LoadAccountStatus()
+        private async Task LoadAccountStatus()
         {
             _data.AccountStatus = await _savingWrapper.LoadDataFromMyUser<AccountStatus>(EParentNode.AccountStatus);
         }
+        
 
-        public bool IsAccountStatusExists() => !(_data.AccountStatus == null);
+        // -Stay Entry-
+        public bool IsStayEntryExists() => !(_data.StayEntry == null);
+
+        public void DeleteStayEntry() => _data.StayEntry = null;
+
+        private async Task LoadMyEntryFromStayRequests()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.StayEntry = await _savingWrapper.LoadMyEntryFromStayRequests();
+        }
+        private async Task LoadMyEntryFromScheduledStay()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.StayEntry = await _savingWrapper.LoadMyEntryFromScheduledStay();
+        }
+        private async Task LoadMyEntryFromActiveStay()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.StayEntry = await _savingWrapper.LoadMyEntryFromActiveStay();
+        }
+
+
+        // -Active Stay-
+        public bool IsActiveStayExists() => !(_data.ActiveStay == null);
+
+        public void DeleteActiveStay() => _data.ActiveStay = null;
+
+        private async Task LoadActiveStay()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.ActiveStay = await _savingWrapper.LoadDataFromMyUser<ActiveStay>(EParentNode.ActiveStay);
+        }
+
+
+        // -National ID-
+        public bool IsNationalIDInfoExists() => !(_data.NationalIDInfo == null);
+
+        private async Task LoadNationalIDInfo()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.NationalIDInfo = await _savingWrapper.LoadDataFromMyUser<NationalIDInfo>(EParentNode.NationalIDInfo);
+        }
+
+
+        // -Passport-
+        public bool IsPassportInfoExists() => !(_data.PassportInfo == null);
+
+        private async Task LoadPassportInfo()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.PassportInfo = await _savingWrapper.LoadDataFromMyUser<PassportInfo>(EParentNode.PassportInfo);
+        }
+
+
+        // -General Info-
+        public bool IsGeneralInfoExists() => !(_data.GeneralInfo == null);
+
+        private async Task LoadGeneralInfo()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.GeneralInfo = await _savingWrapper.LoadDataFromMyUser<GeneralInfo>(EParentNode.GeneralInfo);
+        }
         #endregion
 
 

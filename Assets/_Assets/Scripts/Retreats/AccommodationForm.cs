@@ -26,6 +26,9 @@ namespace WatKhaoWong.Retreats
         [field: SerializeField] public LocalizedString StatusMustBeFilled { get; private set; }
         [field: SerializeField] public Color32 StatusMustBeFilledColor { get; private set; }
 
+        [field: Header("Accommodation Form - Default Text to show when no Data")]
+        [field: SerializeField] public LocalizedString NoDataText { get; private set; }
+
         [field: Header("Accommodation Form - Day Format on Button")]
         [field: SerializeField] public string DayFormat { get; private set; } = "d/M/yyyy";
         #endregion
@@ -44,7 +47,7 @@ namespace WatKhaoWong.Retreats
 
 
         #region --Events-- (Delegate as Action)
-        public event Action<StayEntry> OnUploadedToServer;
+        public event Action<StayEntry, EStayStatus?> OnUploadedToServer;
         #endregion
 
 
@@ -88,8 +91,8 @@ namespace WatKhaoWong.Retreats
             _activityIndex = activityIndex;
             _setTimeData = setTimeData;
             _hasCar = hasCar;
-            _plateNumber = plateNumber;
-
+            _plateNumber = FilterPlateNumber(hasCar, plateNumber);
+            
             _onValidateTextSucceeded?.Invoke();
         }
 
@@ -101,6 +104,18 @@ namespace WatKhaoWong.Retreats
         public void OnPrintButtonClick()
         {
             _onPrintButtonClick?.Invoke();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE)
+        private string FilterPlateNumber(EHasCar hasCar, string plateNumber)
+        {
+            if (hasCar == EHasCar.None)
+                return null;
+
+            return plateNumber;
         }
         #endregion
 
@@ -128,19 +143,29 @@ namespace WatKhaoWong.Retreats
                 },
                 StatusInfo = new StatusInfo()
                 {
-                    Status = EStayStatus.Pending.ToString(),
+                    Status = EStayStatus.Pending.ToString(), // This will always be 'Pending' because either 'Scheduled' or 'Active' Admin will decide on another UI Page.
                     StatusUpdatedAt = nowDate.ToGregorianString()
-                }
+                },
+                Reputation = EReputation.Normal.ToString()
             };
 
             // Upload to Server -> 'Stay Requests' Category
             string keyId = await _savingWrapper.SaveDataWithKey(ECategoryNode.StayRequests, stayEntry);
 
             // Upload to Server -> 'User Themselves' Active Stay
-            await _myUserData.SetDataActiveStay(keyId, EStayStatus.Pending);
+            ActiveStay activeStay = new ActiveStay()
+            {
+                KeyId = keyId,
+                StatusInfo = new StatusInfo()
+                {
+                    Status = EStayStatus.Pending.ToString(), // This will always be 'Pending' because either 'Scheduled' or 'Active' Admin will decide on another UI Page.
+                    StatusUpdatedAt = nowDate.ToGregorianString()
+                }
+            };
+            await _myUserData.SetDataActiveStay(activeStay);
 
             // Let Subscriber class use 'stayEntry' data to update UI
-            OnUploadedToServer?.Invoke(stayEntry);
+            OnUploadedToServer?.Invoke(stayEntry, EStayStatus.Pending);
 
             _statusText.Show(_statusSucceeded.GetLocalizedString(), _statusSucceededColor);
         }

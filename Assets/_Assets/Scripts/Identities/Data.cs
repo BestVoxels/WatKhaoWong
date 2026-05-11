@@ -23,6 +23,8 @@ namespace WatKhaoWong.Identities
     internal class Data
     {
         #region --Fields-- (In Class)
+        private readonly Color32 _defaultTextColor = new Color32(41, 41, 58, 255); // 29293A
+
         private readonly Color32 _green = new Color32(100, 255, 0, 255); // 64FF00
         private readonly Color32 _softRed = new Color32(255, 124, 0, 255); // FF7C00
         private readonly Color32 _red = new Color32(255, 46, 0, 255); // FF2E00
@@ -54,6 +56,8 @@ namespace WatKhaoWong.Identities
         internal bool TempleGuideConfirmed { get; set; } = false;
 
         internal AccountStatus AccountStatus { get; set; } = null;
+        internal NationalIDInfo NationalIDInfo { get; set; } = null;
+        internal PassportInfo PassportInfo { get; set; } = null;
         internal GeneralInfo GeneralInfo { get; set; } = null;
         internal ActiveStay ActiveStay { get; set; } = null;
         internal StayEntry StayEntry { get; set; } = null;
@@ -137,35 +141,58 @@ namespace WatKhaoWong.Identities
         internal void UpdateAccountStatus(AccountStatusInspector oldStatus, AccountStatus newStatus, Localizer localizer)
         {
             // Compute for Status Text
-            oldStatus.statusText.text = localizer.LocalizeAccountStatus(newStatus.StatusInfo.Status);
+            if (newStatus == null) return;
 
-            // Compute for Color
-            Enum.TryParse(newStatus.StatusInfo.Status, true, out EAccountStatus accountStatus);
-
-            oldStatus.infoText.gameObject.SetActive(false);
-
-            switch (accountStatus)
+            if (newStatus.StatusInfo != null)
             {
-                case EAccountStatus.Normal:
-                    oldStatus.indicatorImage.color = _green;
-                    break;
+                oldStatus.statusText.text = localizer.LocalizeAccountStatus(newStatus.StatusInfo.Status);
 
-                case EAccountStatus.BanTemporary:
-                    oldStatus.indicatorImage.color = _softRed;
-                    oldStatus.infoText.gameObject.SetActive(true);
+                // Compute for Color
+                Enum.TryParse(newStatus.StatusInfo.Status, true, out EAccountStatus accountStatus);
+
+                oldStatus.infoText.gameObject.SetActive(false);
+
+                switch (accountStatus)
+                {
+                    case EAccountStatus.Normal:
+                        oldStatus.indicatorImage.color = _green;
+                        break;
+
+                    case EAccountStatus.BanTemporary:
+                        oldStatus.indicatorImage.color = _softRed;
+                        oldStatus.infoText.gameObject.SetActive(true);
 
 
-                    newStatus.BanEndDate.TryParseGregorian(out DateTime endDate);
-                    oldStatus.infoText.text = localizer.FormatBanEndDate(endDate);
-                    break;
+                        newStatus.BanEndDate.TryParseGregorian(out DateTime endDate);
+                        oldStatus.infoText.text = localizer.FormatBanEndDate(endDate);
+                        break;
 
-                case EAccountStatus.BanPermanent:
-                    oldStatus.indicatorImage.color = _red;
-                    break;
+                    case EAccountStatus.BanPermanent:
+                        oldStatus.indicatorImage.color = _red;
+                        break;
 
-                case EAccountStatus.VIP:
-                    oldStatus.indicatorImage.color = _pink;
-                    break;
+                    case EAccountStatus.VIP:
+                        oldStatus.indicatorImage.color = _pink;
+                        break;
+                }
+            }
+
+            // Compute for Additional Notes
+            if (newStatus.NotesInfo != null)
+            {
+                bool hasNotes = !string.IsNullOrWhiteSpace(newStatus.NotesInfo.Text);
+
+                oldStatus.notesText.gameObject.SetActive(hasNotes);
+
+                if (hasNotes)
+                {
+                    oldStatus.notesText.text = newStatus.NotesInfo.Text;
+
+                    if (ColorUtility.TryParseHtmlString(newStatus.NotesInfo.Color, out Color notesColor))
+                        oldStatus.notesText.color = notesColor;
+                    else
+                        oldStatus.notesText.color = _defaultTextColor;
+                }
             }
         }
         #endregion

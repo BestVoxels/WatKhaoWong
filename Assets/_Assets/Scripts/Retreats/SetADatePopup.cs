@@ -16,12 +16,8 @@ namespace WatKhaoWong.Retreats
         [SerializeField] private LocalizedString _statusDateIsNull;
         [SerializeField] private Color32 _statusDateIsNullColor;
         [Space]
-        [SerializeField] private LocalizedString _statusDateIsInPast;
-        [SerializeField] private Color32 _statusDateIsInPastColor;
-
-        //[Header("Set A Date - For Displaying Text")]
-        //[SerializeField] private LocalizedString _dayText;
-        //[SerializeField] private LocalizedString _sText;
+        [SerializeField] private LocalizedString _statusDateMustBeInFuture;
+        [SerializeField] private Color32 _statusDateMustBeInFutureColor;
         #endregion
 
 
@@ -104,9 +100,9 @@ namespace WatKhaoWong.Retreats
                 _statusText.Show(_statusDateIsNull.GetLocalizedString(), _statusDateIsNullColor);
                 return false;
             }
-            if (date.Date < _serverTimeNow.Date)
+            if (date.Date <= _serverTimeNow.Date)
             {
-                _statusText.Show(_statusDateIsInPast.GetLocalizedString(), _statusDateIsInPastColor);
+                _statusText.Show(_statusDateMustBeInFuture.GetLocalizedString(), _statusDateMustBeInFutureColor);
                 return false;
             }
 
@@ -127,22 +123,9 @@ namespace WatKhaoWong.Retreats
 
 
         #region --Methods-- (Custom PUBLIC) ~For Displaying~
-        public string FormatButtonString(DateTime date, string format)
-        {
-            return $"({date.ToGregorianString(format)})";
-        }
+        public string FormatInfoString(DateTime date, string format) => (date == default) ? "???" : $"({date.ToGregorianString(format)})";
 
         public string FormatDateString(DateTime date, string format) => (date == default) ? "-" : $"<u>{date.ToGregorianString(format)}</u>";
-
-        //public string DaysString(int days)
-        //{
-        //    if (days < 0)
-        //        return $"??? {_dayText.GetLocalizedString()}";
-
-        //    return $"{days} {_dayText.GetLocalizedString()}{S(days)}";
-        //}
-
-        //public string S(int input) => input > 1 ? _sText.GetLocalizedString() : "";
         #endregion
 
 

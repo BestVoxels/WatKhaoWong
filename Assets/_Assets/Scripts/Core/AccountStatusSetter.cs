@@ -1,12 +1,19 @@
 using System.Threading.Tasks;
 using UnityEngine;
 using WatKhaoWong.Identities;
-//using WatKhaoWong.Utils.Localization;
+using WatKhaoWong.Utils.Localization;
+using WatKhaoWong.SceneManagement;
 
 namespace WatKhaoWong.Core
 {
     public class AccountStatusSetter : MonoBehaviour
     {
+        #region --Fields-- (Inspector)
+        [SerializeField] private EAccountStatus _defaultStatus = EAccountStatus.Normal;
+        #endregion
+
+
+
         #region --Fields-- (In Class)
         private MyUserData _myUserData;
         #endregion
@@ -43,7 +50,7 @@ namespace WatKhaoWong.Core
 
         //    if (Input.GetKeyDown(KeyCode.Alpha2))
         //    {
-        //        await _myUserData.SetDataAccountStatus(false, EAccountStatus.Normal);
+        //        await _myUserData.SetDataAccountStatus(false, EAccountStatus.Normal, null, "Reason 1 .....\nReason 2 ......\nReason 3 ......", "#34eb7d");
         //    }
 
         //    if (Input.GetKeyDown(KeyCode.Alpha3))
@@ -76,9 +83,10 @@ namespace WatKhaoWong.Core
                 return;
             }
 
-            if (!_myUserData.IsAccountStatusExists())
+            AccountStatus accountStatus = _myUserData.GetAccountStatus();
+            if (!_myUserData.IsAccountStatusExists() || accountStatus.StatusInfo == null)
             {
-                await _myUserData.SetAccountStatusDefault();
+                await _myUserData.SetAccountStatusDefault(_defaultStatus);
             }
         }
 

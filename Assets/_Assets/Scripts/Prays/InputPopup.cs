@@ -2,15 +2,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
+using WatKhaoWong.Identities;
 
 namespace WatKhaoWong.Prays
 {
     public class InputPopup : Popup
     {
         #region --Fields-- (Inspector)
-        [Header("Input Popup Validation Settings")]
-        [Range(1, 9999)]
-        [SerializeField] private int _maximumPointInput;
         #endregion
 
 
@@ -36,6 +34,21 @@ namespace WatKhaoWong.Prays
 
 
 
+        #region --Fields-- (In Class)
+        private MyUserData _myUserData;
+        #endregion
+
+
+
+        #region --Methods-- (Built In)
+        private void Awake()
+        {
+            _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
+        }
+        #endregion
+
+
+
         #region --Methods-- (Custom PUBLIC)
         public bool Validate(int inputNumber, out string validateStatus)
         {
@@ -49,7 +62,7 @@ namespace WatKhaoWong.Prays
                 validateStatus = StatusTextNoZero.GetLocalizedString();
                 return false;
             }
-            else if (inputNumber > _maximumPointInput)
+            else if (inputNumber > _myUserData.GetTMPointCap())
             {
                 validateStatus = StatusTextTooHigh.GetLocalizedString();
                 return false;

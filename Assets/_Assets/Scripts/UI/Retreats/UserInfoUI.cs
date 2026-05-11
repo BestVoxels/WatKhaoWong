@@ -1,17 +1,18 @@
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Retreats;
-using WatKhaoWong.Utils.UI;
-using Michsky.MUIP;
 using WatKhaoWong.Identities;
-using WatKhaoWong.SceneManagement;
-using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Utils.Localization;
+using WatKhaoWong.SceneManagement;
+using UnityEngine.EventSystems;
 using System;
 
 namespace WatKhaoWong.UI.Retreats
 {
+    [RequireComponent(typeof(StayEntryRowUIPool))]
     public class UserInfoUI : MonoBehaviour
     {
         #region --Fields-- (Inspector)
@@ -19,43 +20,51 @@ namespace WatKhaoWong.UI.Retreats
         [SerializeField] private Button _backButton;
         [SerializeField] private Button _changeLangButton;
 
-        [Header("AccommodationForm UI Stuffs")]
+        [Header("UserInfo UI Stuffs - Main")]
+        [SerializeField] private Transform _tabsTransform;
+        [SerializeField] private Button _viewEditButton;
+        [Space]
+        [SerializeField] private GameObject _generalInfoGameObject;
+        [SerializeField] private GameObject _personalInfoGameObject;
+        [SerializeField] private GameObject[] _toShowHideByMode;
+        [SerializeField] private GameObject[] _toShowHideByModeOnlyAdmin;
+
+        [Header("UserInfo UI Stuffs - General Info")]
+        [SerializeField] private EventTrigger _userProfileEventTrigger;
+        [SerializeField] private EventTrigger _userIDCardEventTrigger;
+        [Space]
         [SerializeField] private AccountStatusInspector _accountStatusUI;
+        [SerializeField] private StayEntryRowUI _adderEntryUI; // TODO maybe useful for something in the future.
+        [SerializeField] private StayEntryRowUI _pendingEntryUI;
+        [SerializeField] private StayEntryRowUI _currentEntryUI;
         [Space]
-        [SerializeField] private CustomDropdown _activityDropdown;
-        [SerializeField] private Button _setTimeButton;
-        [SerializeField] private SwitchManager _hasCarSwitch;
-        [SerializeField] private TMP_InputField _plateNumberInputField;
-        [Space]
-        [SerializeField] private TMP_Text _activityResultText;
-        [SerializeField] private TMP_Text _setTimeResultText;
-        [SerializeField] private TMP_Text _hasCarResultText;
-        [SerializeField] private TMP_Text _plateNumberResultText;
-        [Space]
-        [SerializeField] private Button _confirmButton;
-        [SerializeField] private Button _printButton;
-        [Space]
-        [SerializeField] private GameObject _rowMenuPlateNumber;
-        [SerializeField] private GameObject _uploadPanel;
-        [SerializeField] private GameObject _printPanel;
-        [SerializeField] private GameObject _formPanel;
-        [SerializeField] private GameObject _reasonBannedPanel;
-        [Space]
-        [SerializeField] private TMP_Text _reasonText;
+        [SerializeField] private GameObject[] _pendingApprovalGameObjects;
+        [SerializeField] private GameObject[] _currentStayGameObjects;
+        [SerializeField] private GameObject _historyNoDataGameObject;
+
+        [Header("UserInfo UI Stuffs - Personal Info")]
+        [SerializeField] private PersonalRowUI _personalRowUI; // TODO maybe useful for something in the future.
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        private string _plateNumber;
-        private StayEntry _stayEntry;
+        private List<StayEntryRowUI> _activeRowUIs = new List<StayEntryRowUI>();
+        private bool _refreshedOnce = false;
 
         private MyUserData _myUserData;
         private Localizer _localizer;
-        private SetADatePopup _setADatePopup;
-        private UserInfo _userInfo; // REASON THAT IT DOESN"T WORK WHEN CLICK BACK BUTTON!!!!
-        private InputFieldValidator _inputFieldValidator;
-        private InputFieldStatus _plateNumberInputFieldStatus;
+        private UserInfo _userInfo;
+        private StayEntryRow _stayEntryRow;
+        private AccommodationForm _accommodationForm;
+        private StatusSetter _statusSetter;
+        private StayEntryRowUIPool _rowUIPool;
+        #endregion
+
+
+
+        #region --Fields-- (Constant)
+        private const float WaitAsyncTimeOut = 10f;
         #endregion
 
 
@@ -65,44 +74,54 @@ namespace WatKhaoWong.UI.Retreats
         {
             GameObject player = GameObject.FindWithTag("Player");
             _myUserData = player.GetComponentInChildren<MyUserData>();
-            _setADatePopup = player.GetComponentInChildren<SetADatePopup>();
             _userInfo = player.GetComponentInChildren<UserInfo>();
-
+            _stayEntryRow = player.GetComponentInChildren<StayEntryRow>();
+            _accommodationForm = player.GetComponentInChildren<AccommodationForm>();
+            _statusSetter = player.GetComponentInChildren<StatusSetter>();
             _localizer = FindAnyObjectByType<Localizer>();
-
-            _inputFieldValidator = FindAnyObjectByType<InputFieldValidator>();
-            _plateNumberInputFieldStatus = _plateNumberInputField.GetComponent<InputFieldStatus>();
+            _rowUIPool = GetComponent<StayEntryRowUIPool>();
             
+            // Main
             _backButton.onClick.AddListener(Back);
             _changeLangButton.onClick.AddListener(ChangeLang);
 
-            // No need to subscribe to dropdown since we can just get its value when user click 'Confirm'
-            _setTimeButton.onClick.AddListener(SetTime);
-            _hasCarSwitch.onValueChanged.AddListener(ShowHidePlateNumber);
-            _plateNumberInputField.onEndEdit.AddListener(inputText => IsPlateNumberValidated());
+            _viewEditButton.onClick.AddListener(ViewEdit);
 
-            _confirmButton.onClick.AddListener(Confirm);
-            _printButton.onClick.AddListener(Print);
+            // General Info
+            EventTrigger.Entry entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerClick;
+            entry.callback.AddListener((BaseEventData data) => UserProfile((PointerEventData)data));
+            _userProfileEventTrigger.triggers.Add(entry);
 
-            UIRefresher.OnMeditationRetreatRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
-            UIRefresher.OnLocalizeDynamicString += () => { SetTextWhenEntryExists(); RefreshAccountStatusUI(); }; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
+            entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerClick;
+            entry.callback.AddListener((BaseEventData data) => UserIDCard((PointerEventData)data));
+            _userIDCardEventTrigger.triggers.Add(entry);
+
+            // Others
+            _stayEntryRow.OnAddedToServer += (stayEntry, stayStatus) => { BuildAllStayEntryRowUIAgain(); RefreshViewEditMode(); };
+            _stayEntryRow.OnDeletedFromServer += (nullEntry) => BuildAllStayEntryRowUIAgain();
+            _accommodationForm.OnUploadedToServer += (stayEntry, stayStatus) => BuildAllStayEntryRowUIAgain();
+
+            UIRefresher.OnUserInfoRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
+            UIRefresher.OnLocalizeDynamicString += () => { RefreshAccountStatusUI(); RefreshViewEditButtonText(); }; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
 
         private void OnEnable()
         {
-            _setADatePopup.OnValidated += UpdateTextOnButtonSetTime;
-            _userInfo.OnUploadedToServer += UploadToServer;
+            _statusSetter.OnUploadedToServer += StatusSetterUploadToServer;
         }
 
         private void Start()
         {
             RefreshUI();
+
+            SetupTabsUI();
         }
 
         private void OnDisable()
         {
-            _setADatePopup.OnValidated -= UpdateTextOnButtonSetTime;
-            _userInfo.OnUploadedToServer -= UploadToServer;
+            _statusSetter.OnUploadedToServer -= StatusSetterUploadToServer;
         }
         #endregion
 
@@ -111,161 +130,224 @@ namespace WatKhaoWong.UI.Retreats
         #region --Methods-- (Custom PRIVATE)
         private void RefreshUI()
         {
+            RefreshGroupsToShowHide();
+
+            RefreshTabsUI();
+
+            RefreshViewEditMode();
+
             RefreshAccountStatusUI();
 
-            if (IsStatusBanned())
-            {
-                ShowReasonBannedUI();
-            }
-            else
-            {
-                ShowResultTextsUI();
-            }
+            BuildAllStayEntryRowUI();
         }
 
         private void RefreshAccountStatusUI() => _myUserData.UpdateAccountStatus(_accountStatusUI, _myUserData.GetAccountStatus(), _localizer);
+        #endregion
 
-        private bool IsStatusBanned()
+
+
+        #region --Methods-- (Custom PRIVATE) ~Rows~
+        private void BuildAllStayEntryRowUIAgain()
         {
-            Enum.TryParse(_myUserData.GetAccountStatus().StatusInfo.Status, true, out EAccountStatus eStatus);
-
-            return eStatus == EAccountStatus.BanTemporary || eStatus == EAccountStatus.BanPermanent;
+            _refreshedOnce = false;
+            BuildAllStayEntryRowUI();
         }
 
-        private void ShowReasonBannedUI()
+        private async void BuildAllStayEntryRowUI()
         {
-            _formPanel.SetActive(false);
-            _printPanel.SetActive(false);
-            _reasonBannedPanel.SetActive(true);
+            if (_refreshedOnce) return;
 
-            AccountStatus accountStatus = _myUserData.GetAccountStatus();
-            _reasonText.text = accountStatus.NotesInfo.Text;
+            await BuildHistoryRows();
 
-            ColorUtility.TryParseHtmlString(accountStatus.NotesInfo.Color, out Color notesColor);
-            _reasonText.color = notesColor;
+            BuildPendingOrActiveRows();
+
+            _refreshedOnce = true;
         }
 
-        private async void ShowResultTextsUI()
+        private async Task BuildHistoryRows()
         {
-            if (_stayEntry == null)
-                _stayEntry = await _myUserData.GetMyEntryFromStayRequests();
+            ClearRows();
 
-            _formPanel.SetActive(true);
-            _printPanel.SetActive(false);
-            _reasonBannedPanel.SetActive(false);
-
-            ShowHideUIWhenEntryExists();
-
-            SetTextWhenEntryExists();
-        }
-
-        private bool Validate()
-        {
-            bool status = true;
-
-            if (!IsSetTimeValidated()) status = false;
-            if (_hasCarSwitch.isOn && !IsPlateNumberValidated()) status = false;
-
-            return status;
-        }
-
-        private void ShowHideUIWhenEntryExists()
-        {
-            if (_stayEntry == null) return;
-
-            _activityDropdown.gameObject.SetActive(false);
-            _setTimeButton.gameObject.SetActive(false);
-            _hasCarSwitch.gameObject.SetActive(false);
-
-            _activityResultText.gameObject.SetActive(true);
-            _setTimeResultText.gameObject.SetActive(true);
-            _hasCarResultText.gameObject.SetActive(true);
-
-            
-            if (GetHasCar() == EHasCar.Has)
+            //+Prevent some LeaderboardUI GameObject show Empty Data (No Rows), solve by make LeaderboardUI GameObject that comes after wait first then loads when Async is done.
+            float timer = 0f;
+            while (UserInfo.IsAsyncRunning == true)
             {
-                _plateNumberInputField.gameObject.SetActive(false);
+                timer += Time.deltaTime;
 
-                _plateNumberResultText.gameObject.SetActive(true);
-            }
-            else if (GetHasCar() == EHasCar.None)
-            {
-                ShowHidePlateNumber(false);
+                if (timer >= WaitAsyncTimeOut) return;
+
+                await Task.Delay(100);
             }
 
-            _uploadPanel.SetActive(false);
-            _printPanel.SetActive(true);
+            ClearRows(); //+Prevent duplicates Rows Bug.
+
+            short rowCounter = 1;
+            await foreach ((StayEntry StayEntry, string KeyId) each in _userInfo.GetRows())
+            {
+                StayEntryRowUI createdPrefab = _rowUIPool.Pool.Get();
+
+                createdPrefab.transform.SetSiblingIndex(rowCounter - 1); // -1 bcuz Index starts at 0.
+                createdPrefab.Setup(each.StayEntry, each.KeyId,  rowCounter);
+
+                _activeRowUIs.Add(createdPrefab);
+
+                ++rowCounter;
+            }
+
+            if (_activeRowUIs.Count == 0)
+                ShowHideHistoryNoDataText(true);
+            else
+                ShowHideHistoryNoDataText(false);
         }
 
-        private void SetTextWhenEntryExists()
+        private async void BuildPendingOrActiveRows()
         {
-            if (_stayEntry == null) return;
+            ShowHidePendingEntryUI(false);
+            ShowHideCurrentEntryUI(false);
 
-            _activityResultText.text = _localizer.LocalizeActivityType(_stayEntry.Activity);
+            StayEntry stayEntry = await _myUserData.GetActiveStayEntry();
+            if (stayEntry == null) return;
 
-            _stayEntry.StayInfo.StartDate.TryParseGregorian(out DateTime startDate);
-            _stayEntry.StayInfo.EndDate.TryParseGregorian(out DateTime endDate);       // todo dfghjkjhgfdsdfghjk
-            _setTimeResultText.text = _setADatePopup.FormatButtonString(startDate, _userInfo.DayFormat);
+            ActiveStay activeStay = await _myUserData.GetDataActiveStay();
+            if (activeStay == null) return;
 
-            _hasCarResultText.text = _localizer.LocalizeHasCar(_stayEntry.Transportation.HasCar);
+            Enum.TryParse(stayEntry.StatusInfo.Status, true, out EStayStatus eStatus);
+            switch (eStatus)
+            {
+                case EStayStatus.Pending:
+                    ShowHidePendingEntryUI(true);
+                    _pendingEntryUI.Setup(stayEntry, activeStay.KeyId);
+                    break;
 
-            if (GetHasCar() == EHasCar.Has)
-                _plateNumberResultText.text = _stayEntry.Transportation.CarPlateNumber;
+                case EStayStatus.Scheduled:
+                case EStayStatus.Active:
+                    ShowHideCurrentEntryUI(true);
+                    _currentEntryUI.Setup(stayEntry, activeStay.KeyId);
+                    break;
+            }
         }
 
-        private EHasCar GetHasCar() => (EHasCar)Enum.Parse(typeof(EHasCar), _stayEntry.Transportation.HasCar);
+        private void ClearRows()
+        {
+            foreach (StayEntryRowUI eachRow in _activeRowUIs)
+                eachRow.Release();
+
+            _activeRowUIs.Clear();
+        }
+
+        private void ShowHidePendingEntryUI(bool toShow)
+        {
+            foreach (GameObject each in _pendingApprovalGameObjects)
+                each.SetActive(toShow);
+        }
+
+        private void ShowHideCurrentEntryUI(bool toShow)
+        {
+            foreach (GameObject each in _currentStayGameObjects)
+                each.SetActive(toShow);
+        }
+
+        private void ShowHideHistoryNoDataText(bool toShow)
+        {
+            _historyNoDataGameObject.SetActive(toShow);
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE) ~Tab~
+        private void RefreshGroupsToShowHide()
+        {
+            switch (_userInfo.Tab)
+            {
+                case EUserInfoTab.GeneralInfo:
+                    _generalInfoGameObject.SetActive(true);
+                    _personalInfoGameObject.SetActive(false);
+                    break;
+
+                case EUserInfoTab.PersonalInfo:
+                    _generalInfoGameObject.SetActive(false);
+                    _personalInfoGameObject.SetActive(true);
+                    break;
+            }
+        }
+
+        private void SetupTabsUI()
+        {
+            foreach (UserInfoTabUI tab in _tabsTransform.GetComponentsInChildren<UserInfoTabUI>())
+            {
+                tab.Setup(_userInfo);
+            }
+        }
+
+        private void RefreshTabsUI()
+        {
+            foreach (UserInfoTabUI tab in _tabsTransform.GetComponentsInChildren<UserInfoTabUI>())
+            {
+                tab.UpdateColor();
+            }
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE) ~View Edit Button~
+        private void RefreshViewEditMode()
+        {
+            RefreshViewEditButtonText();
+
+            ShowHideUIByViewEditMode();
+        }
+
+        private void RefreshViewEditButtonText()
+        {
+            TMP_Text buttonText = _viewEditButton.GetComponentInChildren<TMP_Text>();
+            buttonText.text = (_userInfo.ViewEditMode == EViewEditMode.View) ? _userInfo.EditButtonText.GetLocalizedString() : _userInfo.ViewButtonText.GetLocalizedString();
+        }
+
+        private void ShowHideUIByViewEditMode()
+        {
+            bool showOnEditMode = _userInfo.ViewEditMode == EViewEditMode.Edit;
+
+            foreach (GameObject each in _toShowHideByMode)
+                each.SetActive(showOnEditMode);
+
+            foreach (GameObject each in _toShowHideByModeOnlyAdmin)
+            {
+                if (_myUserData.GetRole() == EUserRole.Admin)
+                    each.SetActive(showOnEditMode);
+                else
+                    each.SetActive(false);
+            }
+        }
         #endregion
 
 
 
         #region --Methods-- (Subscriber) ~Page Header UI~
-        private void Back() => _userInfo.OnBackButtonClick(); // TODO use method from '_userInfo' to back to previous page.
+        private void Back() => _userInfo.OnBackButtonClick();
         private void ChangeLang() => _userInfo.OnChangeLangButtonClick();
         #endregion
 
 
 
         #region --Methods-- (Subscriber)
-        private void SetTime() => _userInfo.OnSetTimeButtonClick();
-        private void UpdateTextOnButtonSetTime(DateTime date)
+        private void ViewEdit()
         {
-            TMP_Text buttonText = _setTimeButton.GetComponentInChildren<TMP_Text>();
+            _userInfo.ViewEditMode = (_userInfo.ViewEditMode == EViewEditMode.View) ? EViewEditMode.Edit : EViewEditMode.View;
 
-            buttonText.text = _setADatePopup.FormatButtonString(date, _userInfo.DayFormat);
+            RefreshViewEditButtonText();
+
+            _userInfo.OnViewEditButtonClick();
         }
 
-        private void ShowHidePlateNumber(bool hasCar) => _rowMenuPlateNumber.SetActive(hasCar);
+        private void UserProfile(PointerEventData data) => _userInfo.OnUserProfileClick();
 
-        private bool IsSetTimeValidated() => _setADatePopup.ValidateSetADatePopup();
+        private void UserIDCard(PointerEventData data) => _userInfo.OnUserIDCardClick();
 
-        private bool IsPlateNumberValidated() => _inputFieldValidator.ValidateNotNull(
-            _plateNumberInputField.text, _plateNumberInputFieldStatus, out _plateNumber,
-            (_userInfo.StatusMustBeFilled.GetLocalizedString(), _userInfo.StatusMustBeFilledColor));
-
-        private void UploadToServer(StayEntry stayEntry)
+        private void StatusSetterUploadToServer()
         {
-            _stayEntry = stayEntry;
-
-            ShowResultTextsUI();
-        }
-
-        private void Confirm()
-        {
-            if (Validate())
-            {
-                EHasCar hasCar = _hasCarSwitch.isOn ? EHasCar.Has : EHasCar.None;
-
-                _userInfo.OnValidateSucceeded((byte)_activityDropdown.index, _setADatePopup.GetData(), hasCar, _plateNumber);
-            }
-            else
-            {
-                _userInfo.OnValidateFailed();
-            }
-        }
-
-        private void Print()
-        {
-            _userInfo.OnPrintButtonClick();
+            // TODO do something when StatusSetter upload to server...
         }
         #endregion
     }

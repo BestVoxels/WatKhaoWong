@@ -5,6 +5,7 @@ using UnityEngine;
 using Firebase.Database;
 using Firebase.Storage;
 using WatKhaoWong.Utils.Core;
+using System;
 
 namespace WatKhaoWong.Saving
 {
@@ -193,7 +194,7 @@ namespace WatKhaoWong.Saving
         public async Task<DataSnapshot> Load(string path)
         {
             //Debug.Log($"Called \"Load();\" with path ({path})");
-            
+
             DataSnapshot data = null;
             try
             {
@@ -319,7 +320,12 @@ namespace WatKhaoWong.Saving
         /// </summary>
         public async IAsyncEnumerable<DataSnapshot> LoadChildren(string path)
         {
-            IEnumerable<DataSnapshot> dataSnapshots = (await Load(path)).Children;
+            await WaitForFirebaseReady(_database);
+
+            DataSnapshot dataSnapshot = await Load(path);
+            if (dataSnapshot == null) yield break;
+
+            IEnumerable<DataSnapshot> dataSnapshots = dataSnapshot.Children;
 
             foreach (DataSnapshot child in dataSnapshots)
             {
@@ -341,6 +347,43 @@ namespace WatKhaoWong.Saving
         // -> _database.GetReference("Users/UserID/PastAccommodation").Push().SetRawJsonValueAsync(json);
         // -> _database.GetReference("Users/UserID/PastAccommodation/pushedKey").RemoveValueAsync();
         // Can nail down to specific path as well "Users/UserID/PastAccommodation/pushedKey/something"
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE) ~Utils~
+        /// <summary>
+        /// Need this method to fix issue when combine GetValueAsync() with async iteration (IAsyncEnumerable),
+        /// though using GetValueAsync() alone does NOT causing issue.
+        ///
+        /// check - "https://chatgpt.com/share/69072025-07b4-8004-bab1-e19127f04058"
+        /// CMD+F search for an Answer "combine GetValueAsync() with certain async iteration patterns (IAsyncEnumerable)"
+        /// </summary>
+        ///
+        private static TaskCompletionSource<bool> _tcs = new TaskCompletionSource<bool>();
+
+        public static async Task WaitForFirebaseReady(FirebaseDatabase database, int timeoutMs = 50000)
+        {
+            DatabaseReference connectedRef = database.GetReference(".info/connected");
+
+            EventHandler<ValueChangedEventArgs> handler = null;
+            handler = (s, e) =>
+            {
+                if (e.Snapshot?.Value is bool connected && connected)
+                {
+                    connectedRef.ValueChanged -= handler;
+                    _tcs.TrySetResult(true);
+                }
+            };
+
+            connectedRef.ValueChanged += handler;
+
+            // Wait until connected or timeout
+            await Task.WhenAny(_tcs.Task, Task.Delay(timeoutMs));
+
+            // Clean up listener
+            connectedRef.ValueChanged -= handler;
+        }
         #endregion
     }
 }

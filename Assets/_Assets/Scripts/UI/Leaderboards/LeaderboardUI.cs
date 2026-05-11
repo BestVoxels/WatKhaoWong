@@ -24,13 +24,18 @@ namespace WatKhaoWong.UI.Leaderboards
 
 
         #region --Fields-- (In Class)
-        private float _waitAsyncTimeOut = 10f;
         private List<RowUI> _activeRowUIs = new List<RowUI>();
 
         private Leaderboard _leaderboard;
         private Challenge _challenge;
         private MyUserData _myUserData;
         private RowUIPool _rowUIPool;
+        #endregion
+
+
+
+        #region --Fields-- (Constant)
+        private const float WaitAsyncTimeOut = 10f;
         #endregion
 
 
@@ -80,7 +85,7 @@ namespace WatKhaoWong.UI.Leaderboards
             {
                 timer += Time.deltaTime;
 
-                if (timer >= _waitAsyncTimeOut) return;
+                if (timer >= WaitAsyncTimeOut) return;
 
                 await Task.Delay(100);
             }

@@ -47,6 +47,8 @@ namespace WatKhaoWong.Retreats
 
 
         #region --Fields-- (In Class)
+        private string _phoneNumber, _medical, _urgentPhoneNumber, _relation, _line, _fb, _ig, _tiktok;
+
         private MyUserData _myUserData;
         private StatusText _statusText;
         #endregion
@@ -66,11 +68,16 @@ namespace WatKhaoWong.Retreats
 
 
         #region --Methods-- (Custom PUBLIC) ~Page UI Buttons~
-        public async void OnValidateSucceeded(string phoneNumber, string medical, string urgentPhoneNumber, string relation, string line, string fb, string ig, string tiktok)
+        public void OnValidateSucceeded(string phoneNumber, string medical, string urgentPhoneNumber, string relation, string line, string fb, string ig, string tiktok)
         {
-            await _myUserData.SetDataGeneralInfo(phoneNumber, medical, urgentPhoneNumber, relation, line, fb, ig, tiktok);
-
-            _statusText.Show(_statusSucceeded.GetLocalizedString(), _statusSucceededColor);
+            _phoneNumber = phoneNumber;
+            _medical = medical;
+            _urgentPhoneNumber = urgentPhoneNumber;
+            _relation = relation;
+            _line = line;
+            _fb = fb;
+            _ig = ig;
+            _tiktok = tiktok;
 
             _onValidateTextSucceeded?.Invoke();
         }
@@ -78,6 +85,17 @@ namespace WatKhaoWong.Retreats
         public void OnValidateFailed()
         {
             _onValidateTextFailed?.Invoke();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber) ~UnityEvent~
+        public async void UploadToServer()
+        {
+            await _myUserData.SetDataGeneralInfo(_phoneNumber, _medical, _urgentPhoneNumber, _relation, _line, _fb, _ig, _tiktok);
+
+            _statusText.Show(_statusSucceeded.GetLocalizedString(), _statusSucceededColor);
         }
         #endregion
     }

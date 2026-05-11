@@ -1603,7 +1603,7 @@ PrefabInstance:
     - target: {fileID: 31136049371754568, guid: 49817cb28b85b4453b9d0ef6195e0831,
         type: 3}
       propertyPath: m_fontSize
-      value: 66.95
+      value: 61.75
       objectReference: {fileID: 0}
     - target: {fileID: 31136049371754568, guid: 49817cb28b85b4453b9d0ef6195e0831,
         type: 3}
@@ -1748,7 +1748,7 @@ PrefabInstance:
     - target: {fileID: 9066677164155306218, guid: 49817cb28b85b4453b9d0ef6195e0831,
         type: 3}
       propertyPath: m_fontSize
-      value: 30.5
+      value: 32.75
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1977,7 +1977,7 @@ PrefabInstance:
     - target: {fileID: 7030903631046351914, guid: 6ec9b8f6461494c0e99a7ef3406371fe,
         type: 3}
       propertyPath: m_fontSize
-      value: 45
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 7909129562857777497, guid: 6ec9b8f6461494c0e99a7ef3406371fe,
         type: 3}
@@ -2423,7 +2423,7 @@ PrefabInstance:
     - target: {fileID: 8600479539874347395, guid: 6d6b363b25ed042e1b3e2c1d41f483fc,
         type: 3}
       propertyPath: m_fontSize
-      value: 45
+      value: 50
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2694,7 +2694,7 @@ PrefabInstance:
     - target: {fileID: 8186393283631751957, guid: 8e61cabb7ed6c4a75b9d33dafd955143,
         type: 3}
       propertyPath: m_Value
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8291225509939945021, guid: 8e61cabb7ed6c4a75b9d33dafd955143,
         type: 3}
@@ -3069,6 +3069,36 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8943920241257615420, guid: 0ac3f2f3f4c4544ec9f69d6d58dd821b,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943920241257615420, guid: 0ac3f2f3f4c4544ec9f69d6d58dd821b,
+        type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943920241257615420, guid: 0ac3f2f3f4c4544ec9f69d6d58dd821b,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943920241257615420, guid: 0ac3f2f3f4c4544ec9f69d6d58dd821b,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943920241257615420, guid: 0ac3f2f3f4c4544ec9f69d6d58dd821b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8943920241257615420, guid: 0ac3f2f3f4c4544ec9f69d6d58dd821b,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3089,6 +3119,18 @@ MonoBehaviour:
 --- !u!114 &1206930615383950399 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4513113275425332582, guid: 0ac3f2f3f4c4544ec9f69d6d58dd821b,
+    type: 3}
+  m_PrefabInstance: {fileID: 3323143726478563673}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1825413547756187155 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3984285371438724938, guid: 0ac3f2f3f4c4544ec9f69d6d58dd821b,
     type: 3}
   m_PrefabInstance: {fileID: 3323143726478563673}
   m_PrefabAsset: {fileID: 0}
@@ -3327,7 +3369,7 @@ PrefabInstance:
     - target: {fileID: 1530791873953404735, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
       propertyPath: m_fontSize
-      value: 45
+      value: 55
       objectReference: {fileID: 0}
     - target: {fileID: 1530791873953404735, guid: de0a1848707c24d58b78301d898bb3ed,
         type: 3}
@@ -3700,6 +3742,7 @@ MonoBehaviour:
     statusText: {fileID: 4822668279207286896}
     indicatorImage: {fileID: 690934730588252278}
     infoText: {fileID: 1206930615383950399}
+    notesText: {fileID: 1825413547756187155}
   _activityDropdown: {fileID: 6725330780770429331}
   _setTimeButton: {fileID: 7456804042359521388}
   _hasCarSwitch: {fileID: 1366490805422100932}

@@ -9,11 +9,20 @@ namespace WatKhaoWong.Utils.Localization
     public class Localizer : MonoBehaviour
     {
         #region --Fields-- (Inspector)
-        [Header("Clipboard Status Text")]
+        [Header("Localize")]
         [SerializeField] private LocalizedAccountStatusEntry[] _LocalizedAccountStatusEntries;
         [SerializeField] private LocalizedTitleEntry[] _LocalizedTitleEntries;
         [SerializeField] private LocalizedActivityEntry[] _LocalizedActivityEntries;
+        [SerializeField] private LocalizedBuildingNameEntry[] _LocalizedBuildingNameEntries;
         [SerializeField] private LocalizedHasCarEntry[] _LocalizedHasCarEntries;
+        [SerializeField] private LocalizedReputationEntry[] _LocalizedReputationEntries;
+
+        [Header("Colorize")]
+        [Tooltip("Default Color when Enum Parsing is not working corrently.")]
+        [SerializeField] private Color32 _defaultColor;
+        [Space]
+        [SerializeField] private ColorizedAccountStatusEntry[] _colorizedAccountStatusEntries;
+        [SerializeField] private ColorizedReputationEntry[] _colorizedReputationEntries;
 
         [Header("Formatter")]
         [SerializeField] private LocalizedString _dateEndsOn;
@@ -23,6 +32,15 @@ namespace WatKhaoWong.Utils.Localization
 
 
         #region --Methods-- (Custom PUBLIC)
+        public string FormatBanEndDate(DateTime endDate)
+        {
+            return $"({_dateEndsOn.GetLocalizedString()} : {endDate.ToGregorianString(_dayFormat)})";
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Localize~
         public string LocalizeAccountStatus(string eAccountStatusText)
         {
             if (Enum.TryParse(eAccountStatusText, true, out EAccountStatus accountStatus))
@@ -47,6 +65,14 @@ namespace WatKhaoWong.Utils.Localization
             return eActivityText;
         }
 
+        public string LocalizeBuildingName(string eBuildingNameText)
+        {
+            if (Enum.TryParse(eBuildingNameText, true, out EBuildingName buildingName))
+                return _LocalizedBuildingNameEntries.First(e => e.buildingName == buildingName).localizedString.GetLocalizedString();
+
+            return eBuildingNameText;
+        }
+
         public string LocalizeHasCar(string eHasCarText)
         {
             if (Enum.TryParse(eHasCarText, true, out EHasCar hasCar))
@@ -55,9 +81,32 @@ namespace WatKhaoWong.Utils.Localization
             return eHasCarText;
         }
 
-        public string FormatBanEndDate(DateTime endDate)
+        public string LocalizeReputation(string eReputationText)
         {
-            return $"({_dateEndsOn.GetLocalizedString()} : {endDate.ToGregorianString(_dayFormat)})";
+            if (Enum.TryParse(eReputationText, true, out EReputation reputation))
+                return _LocalizedReputationEntries.First(e => e.reputation == reputation).localizedString.GetLocalizedString();
+
+            return eReputationText;
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Colorize~
+        public Color32 ColorizeAccountStatus(string eAccountStatusText)
+        {
+            if (Enum.TryParse(eAccountStatusText, true, out EAccountStatus accountStatus))
+                return _colorizedAccountStatusEntries.First(e => e.accountStatus == accountStatus).color;
+
+            return _defaultColor;
+        }
+
+        public Color32 ColorizeReputation(string eReputationText)
+        {
+            if (Enum.TryParse(eReputationText, true, out EReputation reputation))
+                return _colorizedReputationEntries.First(e => e.reputation == reputation).color;
+
+            return _defaultColor;
         }
         #endregion
 
@@ -82,7 +131,14 @@ namespace WatKhaoWong.Utils.Localization
         public class LocalizedActivityEntry
         {
             public LocalizedString localizedString;
-            public EActivityType activityType = EActivityType.MeditationRetreat;
+                public EActivityType activityType = EActivityType.MeditationRetreat;
+        }
+
+        [System.Serializable]
+        public class LocalizedBuildingNameEntry
+        {
+            public LocalizedString localizedString;
+            public EBuildingName buildingName = EBuildingName.MonkHut;
         }
 
         [System.Serializable]
@@ -90,6 +146,27 @@ namespace WatKhaoWong.Utils.Localization
         {
             public LocalizedString localizedString;
             public EHasCar hasCar = EHasCar.None;
+        }
+
+        [System.Serializable]
+        public class LocalizedReputationEntry
+        {
+            public LocalizedString localizedString;
+            public EReputation reputation = EReputation.Normal;
+        }
+
+        [System.Serializable]
+        public class ColorizedAccountStatusEntry
+        {
+            public Color32 color;
+            public EAccountStatus accountStatus = EAccountStatus.Normal;
+        }
+
+        [System.Serializable]
+        public class ColorizedReputationEntry
+        {
+            public Color32 color;
+            public EReputation reputation = EReputation.Normal;
         }
         #endregion
     }

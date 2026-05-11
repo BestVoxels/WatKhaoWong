@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Firebase.Database;
 using Firebase.Auth;
 using System;
+using Newtonsoft.Json;
 
 namespace WatKhaoWong.SceneManagement
 {
@@ -151,20 +152,20 @@ namespace WatKhaoWong.SceneManagement
             await _savingSystem.value.Save(Path.Combine(GetMyUserPath(parentNode), pathUnderParent), saveValue);
         }
 
-        public async Task SaveDataToMyUser(EParentNode parentNode, DataNode dataNode)
-        {
-            if (!FirebaseUtils.IsAuthenticated()) return;
-            if (IsSaveProtectionActive()) return; // Avoid Override Save file with Default Values of UI or Player Default State.
-
-            await _savingSystem.value.SaveJson(GetMyUserPath(parentNode), dataNode);
-        }
-
         public async Task SaveData(ECategoryNode categoryNode, DataNode dataNode)
         {
             if (!FirebaseUtils.IsAuthenticated()) return;
             if (IsSaveProtectionActive()) return; // Avoid Override Save file with Default Values of UI or Player Default State.
 
             await _savingSystem.value.SaveJson(Path.Combine(categoryNode.ToString()), dataNode);
+        }
+
+        public async Task SaveDataToMyUser(EParentNode parentNode, DataNode dataNode)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return;
+            if (IsSaveProtectionActive()) return; // Avoid Override Save file with Default Values of UI or Player Default State.
+
+            await _savingSystem.value.SaveJson(GetMyUserPath(parentNode), dataNode);
         }
 
         public async Task<string> SaveDataWithKey(ECategoryNode categoryNode, DataNode dataNode)
@@ -175,6 +176,29 @@ namespace WatKhaoWong.SceneManagement
             return await _savingSystem.value.SaveDataWithKey(Path.Combine(categoryNode.ToString()), dataNode);
         }
 
+        public async Task SaveDataToExistingKey(ECategoryNode categoryNode, string keyId, DataNode dataNode)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return;
+            if (IsSaveProtectionActive()) return; // Avoid Override Save file with Default Values of UI or Player Default State.
+
+            await _savingSystem.value.SaveJson(Path.Combine(categoryNode.ToString(), keyId), dataNode);
+        }
+
+        public async Task<string> SaveDataWithKeyToMyUser(EParentNode parentNode, DataNode dataNode)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return default;
+            if (IsSaveProtectionActive()) return default; // Avoid Override Save file with Default Values of UI or Player Default State.
+
+            return await _savingSystem.value.SaveDataWithKey(GetMyUserPath(parentNode), dataNode);
+        }
+
+        public async Task SaveDataToExistingKeyToMyUser(EParentNode parentNode, string keyId, DataNode dataNode)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return;
+            if (IsSaveProtectionActive()) return; // Avoid Override Save file with Default Values of UI or Player Default State.
+
+            await _savingSystem.value.SaveJson(Path.Combine(GetMyUserPath(parentNode), keyId), dataNode);
+        }
 
 
         public async Task<DataSnapshot> Load(ECategoryNode categoryNode, EValueNode valueNode)
@@ -227,6 +251,35 @@ namespace WatKhaoWong.SceneManagement
             }
         }
 
+        public async IAsyncEnumerable<(StayEntry, string)> LoadPastEntryFromMyUser()
+        {
+            if (!FirebaseUtils.IsAuthenticated()) yield break;
+            // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
+            
+            await foreach (DataSnapshot each in _savingSystem.value.LoadChildren(GetMyUserPath(EParentNode.PastStay)))
+            {
+                string key = each.Key;
+
+                string jsonString = each.GetRawJsonValue();
+                StayEntry stayEntry = JsonConvert.DeserializeObject<StayEntry>(jsonString);
+
+                yield return (stayEntry, key);
+            }
+        }
+
+        public async Task<string> LoadActiveStayKeyIDFromMyUser()
+        {
+            DataSnapshot keyIdSnapshot = await _savingSystem.value.Load(Path.Combine(ECategoryNode.Users.ToString(), FirebaseUtils.CurrentUserID, EParentNode.ActiveStay.ToString(), EValueNode.KeyId.ToString()));
+
+            if (keyIdSnapshot == null)
+            {
+                //Debug.LogWarning("Can't find 'KeyId' probably no 'ActiveStay' under my 'User' Category");
+                return null;
+            }
+
+            return keyIdSnapshot.Value.ToString();
+        }
+
         //public async Task<T> LoadDataWithKey<T>(ECategoryNode categoryNode, DataNode dataNode)
         //{
         //    // Loop first using "LoadChildrenJson()" method
@@ -234,20 +287,16 @@ namespace WatKhaoWong.SceneManagement
         //    // Return that to user as a type based on what user want.
         //}
 
+        /// <summary>
+        /// This method should be used by 'MyUserData.cs' only.
+        /// </summary>
         public async Task<StayEntry> LoadMyEntryFromStayRequests()
         {
             if (!FirebaseUtils.IsAuthenticated()) return default;
             // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
 
-            DataSnapshot keyIdSnapshot = await _savingSystem.value.Load( Path.Combine(ECategoryNode.Users.ToString(), FirebaseUtils.CurrentUserID, EParentNode.ActiveStay.ToString(), EValueNode.KeyId.ToString()) );
-
-            if (keyIdSnapshot == null)
-            {
-                Debug.LogWarning("Can't find 'KeyId' probably no 'ActiveStay' under my 'User' Category");
-                return null;
-            }
-
-            string keyID = keyIdSnapshot.Value.ToString();
+            string keyID = await LoadActiveStayKeyIDFromMyUser();
+            if (keyID == null) return null;
 
             // Now directly fetch StayRequest by 'KeyId'
             StayEntry stayEntry = await _savingSystem.value.LoadJson<StayEntry>( Path.Combine(ECategoryNode.StayRequests.ToString(), keyID) );
@@ -259,10 +308,55 @@ namespace WatKhaoWong.SceneManagement
             }
 
             return stayEntry;
-
-            //string activity = stayEntrySnapshot.Child("Activity").Value.ToString();
-            //string status = stayEntrySnapshot.Child("Status").Value.ToString();
         }
+
+        /// <summary>
+        /// This method should be used by 'MyUserData.cs' only.
+        /// </summary>
+        public async Task<StayEntry> LoadMyEntryFromScheduledStay()
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return default;
+            // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
+
+            string keyID = await LoadActiveStayKeyIDFromMyUser();
+            if (keyID == null) return null;
+
+            // Now directly fetch ScheduledStay by 'KeyId'
+            StayEntry stayEntry = await _savingSystem.value.LoadJson<StayEntry>(Path.Combine(ECategoryNode.ScheduledStay.ToString(), keyID));
+
+            if (stayEntry == null)
+            {
+                Debug.LogWarning("Can't find 'StayEntry' under 'ScheduledStay' Category");
+                return null;
+            }
+
+            return stayEntry;
+        }
+
+        /// <summary>
+        /// This method should be used by 'MyUserData.cs' only.
+        /// </summary>
+        public async Task<StayEntry> LoadMyEntryFromActiveStay()
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return default;
+            // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
+
+            string keyID = await LoadActiveStayKeyIDFromMyUser();
+            if (keyID == null) return null;
+
+            // Now directly fetch ActiveStay by 'KeyId'
+            StayEntry stayEntry = await _savingSystem.value.LoadJson<StayEntry>(Path.Combine(ECategoryNode.ActiveStay.ToString(), keyID));
+
+            if (stayEntry == null)
+            {
+                Debug.LogWarning("Can't find 'StayEntry' under 'ActiveStay' Category");
+                return null;
+            }
+
+            return stayEntry;
+        }
+
+        
 
 
 
@@ -271,6 +365,38 @@ namespace WatKhaoWong.SceneManagement
             if (!FirebaseUtils.IsAuthenticated()) return;
 
             _savingSystem.value.Delete(GetPath(categoryNode, valueNode));
+        }
+
+        public void DeleteFromMyUser(EParentNode parentNode, string pathUnderParent = null)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return;
+
+            if (pathUnderParent == null)
+            {
+                _savingSystem.value.Delete(GetMyUserPath(parentNode));
+                return;
+            }
+
+            _savingSystem.value.Delete(Path.Combine(GetMyUserPath(parentNode), pathUnderParent));
+        }
+
+        public void DeleteActiveStayEntry(string entryKeyId)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return;
+
+            _savingSystem.value.Delete(Path.Combine(ECategoryNode.ActiveStay.ToString(), entryKeyId));
+        }
+        public void DeleteScheduledStayEntry(string entryKeyId)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return;
+
+            _savingSystem.value.Delete(Path.Combine(ECategoryNode.ScheduledStay.ToString(), entryKeyId));
+        }
+        public void DeleteStayRequestsEntry(string entryKeyId)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return;
+
+            _savingSystem.value.Delete(Path.Combine(ECategoryNode.StayRequests.ToString(), entryKeyId));
         }
 
         public void ForceDeleteLeaderboardTMToday()

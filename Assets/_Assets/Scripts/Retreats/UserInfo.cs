@@ -1,64 +1,115 @@
+using System.Collections.Generic;
 using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
-using WatKhaoWong.Identities;
 using WatKhaoWong.SceneManagement;
-using WatKhaoWong.Utils.UI;
-using WatKhaoWong.Utils.Core;
-using WatKhaoWong.Utils.Localization;
 
 namespace WatKhaoWong.Retreats
 {
     public class UserInfo : Page
     {
         #region --Fields-- (Inspector)
-        [Header("Accommodation Form Status Text")]
-        [SerializeField] private LocalizedString _statusSucceeded;
-        [SerializeField] private Color32 _statusSucceededColor;
+        [Header("UserInfo Settings")]
+        [SerializeField] private EUserInfoTab _defaultTab;
+        [SerializeField] private EViewEditMode _defaultViewEditMode;
         #endregion
 
 
 
         #region --Properties-- (Inspector)
-        [field: Header("Accommodation Form - Status Text")]
+        [field: Header("User Info - Status Text")]
+        [field: SerializeField] public LocalizedString StatusRecordAdded { get; private set; }
+        [field: SerializeField] public Color32 StatusRecordAddedColor { get; private set; }
+        [field: SerializeField] public LocalizedString StatusChangesSaved { get; private set; }
+        [field: SerializeField] public Color32 StatusChangesSavedColor { get; private set; }
+        [field: SerializeField] public LocalizedString StatusRecordDeleted { get; private set; }
+        [field: SerializeField] public Color32 StatusRecordDeletedColor { get; private set; }
         [field: SerializeField] public LocalizedString StatusMustBeFilled { get; private set; }
         [field: SerializeField] public Color32 StatusMustBeFilledColor { get; private set; }
+        [field: SerializeField] public LocalizedString StatusCantAddCurExists { get; private set; }
+        [field: SerializeField] public Color32 StatusCantAddCurExistsColor { get; private set; }
+        [field: Space]
+        [field: Header("User Info - Default Text to show when no Data")]
+        [field: SerializeField] public LocalizedString NoDataText { get; private set; }
+        [field: SerializeField] public Color32 DefaultNotesTextColor { get; private set; }
+        [field: Space]
+        [field: Header("User Info - Phone Number on Personal Info Tab")]
+        [field: SerializeField] public byte MinimumPhoneNumberLength { get; private set; } = 9;
+        [field: SerializeField] public byte MaximumPhoneNumberLength { get; private set; } = 10;
+        [field: Space]
+        [field: SerializeField] public LocalizedString StatusInvalidPhoneNumber { get; private set; }
+        [field: SerializeField] public Color32 StatusInvalidPhoneNumberColor { get; private set; }
+        [field: SerializeField] public LocalizedString StatusPhoneNumberTooShort { get; private set; }
+        [field: SerializeField] public Color32 StatusPhoneNumberTooShortColor { get; private set; }
+        [field: SerializeField] public LocalizedString StatusPhoneNumberTooLong { get; private set; }
+        [field: SerializeField] public Color32 StatusPhoneNumberTooLongColor { get; private set; }
 
-        [field: Header("Accommodation Form - Day Format on Button")]
-        [field: SerializeField] public string DayFormat { get; private set; } = "d/M/yyyy";
+        [field: Header("User Info - Tab Settings")]
+        [field: SerializeField] public Color32 SelectedColor { get; private set; }
+        [field: SerializeField] public Color32 UnselectedColor { get; private set; }
+
+        [field: Header("User Info - Edit/View Button")]
+        [field: SerializeField] public LocalizedString EditButtonText { get; private set; }
+        [field: SerializeField] public LocalizedString ViewButtonText { get; private set; }
         #endregion
 
 
 
         #region --Events-- (UnityEvent)
-        [Header("Accommodation Form UI Event")]
-        [SerializeField] private UnityEvent _onSetTimeButtonClick;
-        [SerializeField] private UnityEvent _onValidateTextSucceeded;
-        [SerializeField] private UnityEvent _onValidateTextFailed;
+        [Header("User Info UI Event")]
+        [SerializeField] private UnityEvent _onViewEditButtonClick;
         [Space]
-        [SerializeField] private UnityEvent _onPrintButtonClick;
+        [SerializeField] private UnityEvent _onUserProfileClick;
+        [SerializeField] private UnityEvent _onUserIDCardClick;
         #endregion
 
 
 
         #region --Events-- (Delegate as Action)
-        public event Action<StayEntry> OnUploadedToServer;
+        public event Action OnTabChanged;
+        public event Action<EViewEditMode> OnModeChanged;
+        #endregion
+
+
+
+        #region --Properties-- (Auto)
+        public static bool IsAsyncRunning { get; private set; } = false;
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        private byte _activityIndex;
-        private DateTime _dataTime;
-        private EHasCar _hasCar;
-        private string _plateNumber;
-
-        private MyUserData _myUserData;
         private SavingWrapper _savingWrapper;
-        private ServerTime _serverTime;
-        private StatusText _statusText;
+        #endregion
+
+
+
+        #region --Properties-- (With Backing Fields)
+        public EUserInfoTab Tab
+        {
+            get => _defaultTab;
+
+            set
+            {
+                _defaultTab = value;
+
+                OnTabChanged?.Invoke();
+            }
+        }
+
+        public EViewEditMode ViewEditMode
+        {
+            get => _defaultViewEditMode;
+
+            set
+            {
+                _defaultViewEditMode = value;
+
+                OnModeChanged?.Invoke(value);
+            }
+        }
         #endregion
 
 
@@ -66,86 +117,61 @@ namespace WatKhaoWong.Retreats
         #region --Methods-- (Built In)
         private void Awake()
         {
-            GameObject player = GameObject.FindWithTag("Player");
-            _myUserData = player.GetComponentInChildren<MyUserData>();
-
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
-            _serverTime = FindAnyObjectByType<ServerTime>();
-            _statusText = FindAnyObjectByType<StatusText>();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~History Row~
+        public async IAsyncEnumerable<(StayEntry, string)> GetRows()
+        {
+            //+Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.
+            //+Prevent some LeaderboardUI GameObject show Empty Data (No Rows), solve by make LeaderboardUI GameObject that comes after wait first then loads when Async is done.
+            if (IsAsyncRunning) yield break;
+
+            IsAsyncRunning = true;
+
+            IAsyncEnumerable<(StayEntry, string)> rows = _savingWrapper.LoadPastEntryFromMyUser();
+
+            if (rows == null)
+            {
+                Debug.LogError("Error : There is no data on Server. Because 'rows' is null.");
+                IsAsyncRunning = false;
+                yield break;
+            }
+
+            await foreach ((StayEntry, string) eachData in rows)
+            {
+                yield return eachData;
+            }
+
+            IsAsyncRunning = false;
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PUBLIC) ~Page UI Buttons~
-        public void OnSetTimeButtonClick()
+        public void OnViewEditButtonClick()
         {
-            _onSetTimeButtonClick?.Invoke();
+            _onViewEditButtonClick?.Invoke();
         }
 
-        public void OnValidateSucceeded(byte activityIndex, DateTime dateTime, EHasCar hasCar, string plateNumber)
+        public void OnUserProfileClick()
         {
-            _activityIndex = activityIndex;
-            _dataTime = dateTime;
-            _hasCar = hasCar;
-            _plateNumber = plateNumber;
-
-            _onValidateTextSucceeded?.Invoke();
+            _onUserProfileClick?.Invoke();
         }
 
-        public void OnValidateFailed()
+        public void OnUserIDCardClick()
         {
-            _onValidateTextFailed?.Invoke();
-        }
-
-        public void OnPrintButtonClick()
-        {
-            _onPrintButtonClick?.Invoke();
+            _onUserIDCardClick?.Invoke();
         }
         #endregion
 
 
 
         #region --Methods-- (Subscriber) ~UnityEvent~
-        public async void UploadToServer()
-        {
-            DateTime nowDate = await _serverTime.Now();
-
-            StayEntry stayEntry = new StayEntry()
-            {
-                UserId = FirebaseUtils.CurrentUserID,
-                Activity = ((EActivityType)_activityIndex).ToString(),
-                //StayInfo = new StayInfo()
-                //{
-                //    IsStaying = _dataTime.isStayingOvernight.ToString(),
-                //    StartDate = _dataTime.startDate.ToGregorianString(),
-                //    EndDate = _dataTime.endDate.ToGregorianString()
-                //},
-                Transportation = new Transportation()
-                {
-                    HasCar = _hasCar.ToString(),
-                    CarPlateNumber = _plateNumber
-                },
-                StatusInfo = new StatusInfo()
-                {
-                    Status = EStayStatus.Pending.ToString(),
-                    StatusUpdatedAt = nowDate.ToGregorianString()
-                }
-            };
-
-            // Upload to Server -> 'Stay Requests' Category
-            string keyId = await _savingWrapper.SaveDataWithKey(ECategoryNode.StayRequests, stayEntry);
-
-            // Upload to Server -> 'User Themselves' Active Stay
-            await _myUserData.SetDataActiveStay(keyId, EStayStatus.Pending);
-
-            // Let Subscriber class use 'stayEntry' data to update UI
-            OnUploadedToServer?.Invoke(stayEntry);
-
-            _statusText.Show(_statusSucceeded.GetLocalizedString(), _statusSucceededColor);
-        }
-
-        // TODO Create PUblic method for other Page to set (2 methods) for 2 different animation styles. For them to set Previous Page.
         #endregion
     }
 }

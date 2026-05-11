@@ -13,6 +13,13 @@ namespace WatKhaoWong.Attributes
 
 
 
+        #region MyRegion
+        private bool _isOpenOpposite;
+        private IShowHidePagePopupUI _iShowHidePagePopupUI;
+        #endregion
+
+
+
         #region --Methods-- (Custom PUBLIC) ~Page Header UI~
         public void OnBackButtonClick()
         {
@@ -22,6 +29,32 @@ namespace WatKhaoWong.Attributes
         public void OnChangeLangButtonClick()
         {
             _onChangeLangButtonClick?.Invoke();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber) ~UnityEvent~
+        public void OpenPreviousPage()
+        {
+            if (_isOpenOpposite)
+                _iShowHidePagePopupUI.OpenPageOpposite(0f);
+            else
+                _iShowHidePagePopupUI.OpenPage(0f);
+        }
+
+        public void SetPreviousPageToOpen(GameObject showHidePagePopupUI)
+        {
+            _iShowHidePagePopupUI = showHidePagePopupUI.GetComponent<IShowHidePagePopupUI>();
+
+            _isOpenOpposite = false;
+        }
+
+        public void SetPreviousPageToOpenOpposite(GameObject showHidePagePopupUI)
+        {
+            _iShowHidePagePopupUI = showHidePagePopupUI.GetComponent<IShowHidePagePopupUI>();
+
+            _isOpenOpposite = true;
         }
         #endregion
     }

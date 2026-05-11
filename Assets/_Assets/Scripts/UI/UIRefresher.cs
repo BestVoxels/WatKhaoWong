@@ -6,6 +6,7 @@ using WatKhaoWong.Settings;
 using WatKhaoWong.Identities;
 using WatKhaoWong.Leaderboards;
 using WatKhaoWong.Attributes;
+using WatKhaoWong.Retreats;
 
 namespace WatKhaoWong.UI
 {
@@ -30,6 +31,7 @@ namespace WatKhaoWong.UI
         //public static event Action OnAbbotHistoryRefreshed;
         public static event Action OnPopupRefreshed;
         public static event Action OnLeaderboardRefreshed;
+        public static event Action OnUserInfoRefreshed;
         public static event Action OnLocalizeDynamicString;
         public static event Action OnUIShowedHidByRoles;
         #endregion
@@ -41,6 +43,7 @@ namespace WatKhaoWong.UI
         private NotificationPopup _notificationPopup;
         private AccountPopup _accountPopup;
         private Leaderboard _leaderboard;
+        private UserInfo _userInfo;
         private Challenge _challenge;
         private RemoteConfigService _remoteConfigService;
         #endregion
@@ -56,6 +59,7 @@ namespace WatKhaoWong.UI
             _notificationPopup = player.GetComponentInChildren<NotificationPopup>();
             _accountPopup = player.GetComponentInChildren<AccountPopup>();
             _leaderboard = player.GetComponentInChildren<Leaderboard>();
+            _userInfo = player.GetComponentInChildren<UserInfo>();
             _challenge = player.GetComponentInChildren<Challenge>();
             _remoteConfigService = FindAnyObjectByType<RemoteConfigService>(FindObjectsInactive.Include);
         }
@@ -86,6 +90,10 @@ namespace WatKhaoWong.UI
             _leaderboard.OnLeaderboardCategoryChanged += () => { RefreshLeaderboardUI(); ShowHideUIByRoles(); };
             _leaderboard.OnLeaderboardScoreUpdated += RefreshLeaderboardUI;
             _challenge.OnDataUpdated += () => { RefreshPopupUI(); ShowHideUIByRoles(); RefreshLeaderboardUI(); };
+
+            // USER INFO SYSTEM
+            _userInfo.OnTabChanged += () => { RefreshUserInfoUI(); };
+            _userInfo.OnModeChanged += (mode) => { RefreshUserInfoUI(); };
 
             // CONDITION SYSTEM
             _leaderboard.OnConditionIsLeaderboardExistsUpdated += () => { CallAllConditionCheck(); RefreshLeaderboardUI(); };
@@ -118,6 +126,7 @@ namespace WatKhaoWong.UI
             //RefreshAbbotHistoryUI();
             RefreshPopupUI();
             RefreshLeaderboardUI();
+            RefreshUserInfoUI();
             ShowHideUIByRoles();
             //print("Refreshed All UI");
         }
@@ -176,6 +185,12 @@ namespace WatKhaoWong.UI
             //print("Refreshed Leaderboard UI : " + OnLeaderboardRefreshed?.GetInvocationList().Length);
         }
 
+        public static void RefreshUserInfoUI()
+        {
+            OnUserInfoRefreshed?.Invoke();
+            //print("Refreshed UserInfo UI : " + OnUserInfoRefreshed?.GetInvocationList().Length);
+        }
+
         public static void LocalizeDynamicString()
         {
             OnLocalizeDynamicString?.Invoke();
@@ -204,6 +219,7 @@ namespace WatKhaoWong.UI
             //OnAbbotHistoryRefreshed = null;
             OnPopupRefreshed = null;
             OnLeaderboardRefreshed = null;
+            OnUserInfoRefreshed = null;
             OnLocalizeDynamicString = null;
             OnUIShowedHidByRoles = null;
         }
