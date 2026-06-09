@@ -13,7 +13,7 @@ namespace WatKhaoWong.Utils.Core
             {
                 if (IsAuthenticated()) return FirebaseAuth.DefaultInstance.CurrentUser.UserId;
 
-                Debug.LogError("Some Class is trying to get 'CurrentUserID' but User is NOT Authenticate Yet, so will get 'null' instead");
+                Debug.LogWarning("Some Class is trying to get 'CurrentUserID' but User is NOT Authenticate Yet, so will get 'null' instead");
                 return null;
             }
         }

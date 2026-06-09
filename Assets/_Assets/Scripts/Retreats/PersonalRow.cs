@@ -65,6 +65,7 @@ namespace WatKhaoWong.Retreats
         private string _line, _facebook, _ig, _tiktok;
 
         private MyUserData _myUserData;
+        private IUserData _userData;
         private UserInfo _userInfo;
         private StatusText _statusText;
         #endregion
@@ -78,14 +79,18 @@ namespace WatKhaoWong.Retreats
             _myUserData = player.GetComponentInChildren<MyUserData>();
             _userInfo = player.GetComponentInChildren<UserInfo>();
             _statusText = FindAnyObjectByType<StatusText>();
+
+            _userData = _myUserData;
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PUBLIC) ~Page UI Buttons~
-        public void OnIdCardValidateSucceeded(string nationalId, string gender, string prefix, string fName, string lName, string birthDate, string issueDate, string expireDate, string houseNumber, string subDistrict, string district, string province, string country)
+        public void OnIdCardValidateSucceeded(IUserData userData, string nationalId, string gender, string prefix, string fName, string lName, string birthDate, string issueDate, string expireDate, string houseNumber, string subDistrict, string district, string province, string country)
         {
+            _userData = userData;
+
             _nationalId = nationalId;
             _gender = gender;
             _prefix = prefix;
@@ -108,8 +113,10 @@ namespace WatKhaoWong.Retreats
         }
 
 
-        public void OnPassportValidateSucceeded(PassportInfo passportInfo)
+        public void OnPassportValidateSucceeded(IUserData userData, PassportInfo passportInfo)
         {
+            _userData = userData;
+
             _passportInfo = passportInfo;
 
             _onPassportValidateSucceeded?.Invoke();
@@ -120,8 +127,10 @@ namespace WatKhaoWong.Retreats
         }
 
 
-        public void OnMyInfoValidateSucceeded(string phoneNumber, string medical)
+        public void OnMyInfoValidateSucceeded(IUserData userData, string phoneNumber, string medical)
         {
+            _userData = userData;
+
             _phoneNumber = phoneNumber;
             _medical = medical;
 
@@ -133,8 +142,10 @@ namespace WatKhaoWong.Retreats
         }
 
 
-        public void OnEmergencyContactValidateSucceeded(string urgentPhoneNumber, string urgentPhoneRelate)
+        public void OnEmergencyContactValidateSucceeded(IUserData userData, string urgentPhoneNumber, string urgentPhoneRelate)
         {
+            _userData = userData;
+
             _urgentPhoneNumber = urgentPhoneNumber;
             _urgentPhoneRelate = urgentPhoneRelate;
 
@@ -146,8 +157,10 @@ namespace WatKhaoWong.Retreats
         }
 
 
-        public void OnSocialMediaValidateSucceeded(string line, string facebook, string ig, string tiktok)
+        public void OnSocialMediaValidateSucceeded(IUserData userData, string line, string facebook, string ig, string tiktok)
         {
+            _userData = userData;
+
             _line = line;
             _facebook = facebook;
             _ig = ig;
@@ -174,10 +187,10 @@ namespace WatKhaoWong.Retreats
         public async void UploadIdCardToServer()
         {
             // Upload to Server -> 'User Themselves' National ID Info
-            await _myUserData.SetDataNationalIDInfo(_nationalId, _gender, _prefix, _fName, _lName, _birthDate, _issueDate, _expireDate, _houseNumber, _subDistrict, _district, _province, _country);
+            await _userData.SetDataNationalIDInfo(_nationalId, _gender, _prefix, _fName, _lName, _birthDate, _issueDate, _expireDate, _houseNumber, _subDistrict, _district, _province, _country);
 
             // Incase Subscriber class wanted to do something when uploaded
-            OnNationalUploadedToServer?.Invoke(await _myUserData.GetDataNationalIDInfo()); // Get Data from server so it shows other value that is null as well
+            OnNationalUploadedToServer?.Invoke(await _userData.GetDataNationalIDInfo()); // Get Data from server so it shows other value that is null as well
 
             UploadSideWork();
         }
@@ -187,10 +200,10 @@ namespace WatKhaoWong.Retreats
             if (!IsAdmin()) return;
 
             // Upload to Server -> 'User Themselves' Passport Info
-            await _myUserData.SetDataPassportInfo(_passportInfo);
+            await _userData.SetDataPassportInfo(_passportInfo);
 
             // Incase Subscriber class wanted to do something when uploaded
-            OnPassportUploadedToServer?.Invoke(await _myUserData.GetDataPassportInfo()); // Get Data from server so it shows other value that is null as well
+            OnPassportUploadedToServer?.Invoke(await _userData.GetDataPassportInfo()); // Get Data from server so it shows other value that is null as well
 
             UploadSideWork();
         }
@@ -198,10 +211,10 @@ namespace WatKhaoWong.Retreats
         public async void UploadMyInfoToServer()
         {
             // Upload to Server -> 'User Themselves' General Info
-            await _myUserData.SetDataGeneralInfo(_phoneNumber, _medical, null, null, null, null, null, null);
+            await _userData.SetDataGeneralInfo(_phoneNumber, _medical, null, null, null, null, null, null);
 
             // Incase Subscriber class wanted to do something when uploaded
-            OnGeneralUploadedToServer?.Invoke(await _myUserData.GetDataGeneralInfo()); // Get Data from server so it shows other value that is null as well
+            OnGeneralUploadedToServer?.Invoke(await _userData.GetDataGeneralInfo()); // Get Data from server so it shows other value that is null as well
 
             UploadSideWork();
         }
@@ -209,10 +222,10 @@ namespace WatKhaoWong.Retreats
         public async void UploadEmergencyContactToServer()
         {
             // Upload to Server -> 'User Themselves' General Info
-            await _myUserData.SetDataGeneralInfo(null, null, _urgentPhoneNumber, _urgentPhoneRelate, null, null, null, null);
+            await _userData.SetDataGeneralInfo(null, null, _urgentPhoneNumber, _urgentPhoneRelate, null, null, null, null);
 
             // Incase Subscriber class wanted to do something when uploaded
-            OnGeneralUploadedToServer?.Invoke(await _myUserData.GetDataGeneralInfo()); // Get Data from server so it shows other value that is null as well
+            OnGeneralUploadedToServer?.Invoke(await _userData.GetDataGeneralInfo()); // Get Data from server so it shows other value that is null as well
 
             UploadSideWork();
         }
@@ -220,10 +233,10 @@ namespace WatKhaoWong.Retreats
         public async void UploadSocialMediaToServer()
         {
             // Upload to Server -> 'User Themselves' General Info
-            await _myUserData.SetDataGeneralInfo(null, null, null, null, _line, _facebook, _ig, _tiktok);
+            await _userData.SetDataGeneralInfo(null, null, null, null, _line, _facebook, _ig, _tiktok);
 
             // Incase Subscriber class wanted to do something when uploaded
-            OnGeneralUploadedToServer?.Invoke(await _myUserData.GetDataGeneralInfo()); // Get Data from server so it shows other value that is null as well
+            OnGeneralUploadedToServer?.Invoke(await _userData.GetDataGeneralInfo()); // Get Data from server so it shows other value that is null as well
 
             UploadSideWork();
         }

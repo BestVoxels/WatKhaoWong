@@ -108,7 +108,150 @@ namespace WatKhaoWong.Identities
 
 
 
-        #region --Methods-- (Custom PUBLIC) ~Setter~
+        #region --Methods-- (Interface)
+        bool? IConditionEvaluator.Evaluate(EConditionType conditionType, EConditionValue[] conditionValues)
+        {
+            switch (conditionType)
+            {
+                case EConditionType.IsRoleEquals:
+                    byte stringStartIndex = (byte)EConditionType.IsRoleEquals;
+                    string enumString = conditionValues[0].ToString()[stringStartIndex..];
+
+                    if (!Enum.TryParse(enumString, true, out EUserRole result))
+                        return false;
+
+                    return GetRole() == result;
+
+                case EConditionType.IsAuthenticated:
+                    return FirebaseUtils.IsAuthenticated();
+
+                case EConditionType.HasAllTimeTMPoint:
+                    return _data.TotalTMPoints > 0;
+
+                case EConditionType.HasTodayTMPoint:
+                    return _data.TodayTMPoints > 0;
+
+                case EConditionType.HasChallengeTMPoint:
+                    return _data.ChallengeTMPoints > 0;
+
+                case EConditionType.HasChallengeTMWon:
+                    return _data.TotalChallengeTMWon > 0;
+
+                    //// ---DEBUGGER PURPOSE--- search for 'EConditionType.cs | MyUserData.cs | ShowHideUIByCondition.cs'
+                    //case EConditionType.True:
+                    //    return true;
+
+                    //case EConditionType.False:
+                    //    return false;
+            }
+
+            return null;
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber)
+        /// <summary>
+        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake(). And at time of assiging to 'FirebaseAuth.DefaultInstance.StateChanged'
+        /// </summary>
+        private void HandleStateChanged(object obj, EventArgs args)
+        {
+            LoadSave(); // So Don't have to call on Awake()
+
+            SetRoleToGuestIfNoAuthen(); // So Don't have to call on Awake()
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Legacy) ~GETTER/UPDATER~
+        public string GetUserKeyID() => FirebaseUtils.CurrentUserID;
+
+        public string GetUserNameText()
+        {
+            if (!FirebaseUtils.IsAuthenticated())
+            {
+                _data.FirstName = _defaultFirstName.GetLocalizedString();
+                _data.LastName = _defaultLastName.GetLocalizedString();
+            }
+            else if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
+            {
+                return _loading.GetLocalizedString();
+            }
+
+            return _data.GetUserNameText();
+        }
+
+        public string GetMemberSinceText()
+        {
+            if (!FirebaseUtils.IsAuthenticated())
+                return $"{_defaultMemberSince.GetLocalizedString()}";
+            else if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
+                return "...";
+
+            return _data.GetMemberSinceText();
+        }
+
+        public EUserRole GetRole() => _data.GetRole();
+
+        public string GetTitleText()
+        {
+            if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
+                return "...";
+
+            return _data.GetTitleText();
+        }
+
+        public string GetLevelText()
+        {
+            if (_data.Level == 0)
+                _data.Level = _defaultLevel;
+
+            return _data.GetLevelText();
+        }
+
+        public string GetTotalTMPointsText() => _data.GetTotalTMPointsText();
+
+        public string GetTodayTMPointsText() => _data.GetTodayTMPointsText();
+
+        public string GetChallengeTMPointsText() => _data.GetChallengeTMPointsText();
+
+        public string GetTotalChallengeTMWonText() => _data.GetTotalChallengeTMWonText();
+
+        public int GetTotalTMPoints() => _data.TotalTMPoints;
+
+        public int GetTodayTMPoints() => _data.TodayTMPoints;
+
+        public int GetChallengeTMPoints() => _data.ChallengeTMPoints;
+
+        public int GetTotalChallengeTMWon() => _data.TotalChallengeTMWon;
+
+        public int GetTMPointCapRequest() => _data.TMPointCapRequest;
+
+        public int GetTMPointCap() => _data.TMPointCap;
+
+        public int GetTMPointCapRound() => _data.TMPointCapRound;
+
+        public bool GetIsCustomTMPointCap() => _data.IsCustomTMPointCap;
+
+        public ProfileIconItem GetProfileIcon()
+        {
+            if (_data.ProfileIcon == null)
+                _data.ProfileIcon = _defaultProfileIcon;
+
+            return _data.GetProfileIcon();
+        }
+
+        public void UpdateProfileIcon(ProfileIconInspector oldUI, ProfileIconItem newIcon, float multiplierRatioForDecorator)
+        {
+            _data.UpdateProfileIcon(oldUI, newIcon, multiplierRatioForDecorator);
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Legacy) ~SETTER~
         public void ForceSetFirstName(string input)
         {
             _data.FirstName = input;
@@ -133,69 +276,13 @@ namespace WatKhaoWong.Identities
             OnMyUserDataUpdated?.Invoke();
         }
 
-        public void SetProfileIcon(ProfileIconItem input)
+        public void SaveProfileIcon(ProfileIconItem input)
         {
             _data.ProfileIcon = input;
-
+            
             _savingWrapper.Save(ECategoryNode.Users, EValueNode.ProfileIconID, _data.ProfileIcon.ItemID);
             OnMyUserDataUpdated?.Invoke();
         }
-
-        public async Task SetAccountStatusDefault(EAccountStatus eAccountStatus)
-        {
-            await SetDataAccountStatus(updateCheckinAt: true, eAccountStatus);
-        }
-        /// <summary>
-        /// Allow Partial Adding, no need to have all Info at once, can add partial
-        /// This is WHY parameter is one by one like this.
-        /// </summary>
-        public async Task SetDataAccountStatus(bool updateCheckinAt, EAccountStatus? eStatus = null, DateTime? banEndDate = null, string notesText = null, string notesColor = null)
-        {
-            if (!IsAccountStatusExists()) await LoadAccountStatus();
-
-            DateTime nowDate = await _serverTime.Now();
-
-            AccountStatus oldStatus = (_data.AccountStatus == null) ? new AccountStatus() : _data.AccountStatus;
-            string lastCheckinAtText = updateCheckinAt ? nowDate.ToGregorianString() : oldStatus.LastCheckinAt;
-            string banEndDateText = (banEndDate == null) ? oldStatus.BanEndDate : banEndDate.ToGregorianString();
-
-            StatusInfo oldStatusInfo = (oldStatus.StatusInfo == null) ? new StatusInfo() : oldStatus.StatusInfo;
-            string statusText = (eStatus == null) ? oldStatusInfo.Status : eStatus.ToString();
-            string statusUpdatedAtText = (eStatus == null || (oldStatusInfo.Status == eStatus.ToString() && oldStatusInfo.StatusUpdatedAt != null)) ? oldStatusInfo.StatusUpdatedAt : nowDate.ToGregorianString();
-
-            NotesInfo oldNotesInfo = (oldStatus.NotesInfo == null) ? new NotesInfo() : oldStatus.NotesInfo;
-            string notesInfoText = (notesText == null) ? oldNotesInfo.Text : notesText;
-            string notesInfoColor = (notesColor == null) ? oldNotesInfo.Color : notesColor;
-
-            _data.AccountStatus = new AccountStatus()
-            {
-                LastCheckinAt = lastCheckinAtText,
-                StatusInfo = new StatusInfo()
-                {
-                    Status = statusText,
-                    StatusUpdatedAt = statusUpdatedAtText
-                },
-                BanEndDate = banEndDateText,
-                NotesInfo = new NotesInfo()
-                {
-                    Text = notesInfoText,
-                    Color = notesInfoColor
-                }
-            };
-
-            await _savingWrapper.SaveDataToMyUser(EParentNode.AccountStatus, _data.AccountStatus);
-            OnMyUserDataUpdated?.Invoke();
-        }
-
-        //public async Task SetPartialAccountStatus(string pathUnderAccountStatus, string value)
-        //{
-        //    AccountStatus accountStatus = _data.AccountStatus;
-
-        //    // _data.AccountStatus have to be updated for UI to change "_data.AccountStatus = ..."
-
-        //    await _savingWrapper.SaveToMyUser(EParentNode.AccountStatus, pathUnderAccountStatus, value);
-        //    OnMyUserDataUpdated?.Invoke();
-        //}
 
         public void ForceSetRole(EUserRole role)
         {
@@ -276,377 +363,11 @@ namespace WatKhaoWong.Identities
 
             _savingWrapper.ForceSave(ECategoryNode.Users, EValueNode.IsCustomTMPointCap, _data.IsCustomTMPointCap);
         }
-
-        public async void SetTempleGuideConfirmedToTrue()
-        {
-            if (_data.TempleGuideConfirmed == true) return; // Only Allow set for the First Time
-
-            _data.TempleGuideConfirmed = true;
-            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TempleGuideConfirmed, true);
-
-            DateTime nowDate = await _serverTime.Now();
-            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TempleGuideConfirmedAt, nowDate.ToGregorianString());
-        }
-
-        /// <summary>
-        /// NOT Allow Partial Adding, NEED all Info at once
-        /// This is WHY parameter is using its Class as a Group.
-        /// </summary>
-        public async Task SetDataActiveStay(ActiveStay activeStay)
-        {
-            _data.ActiveStay = activeStay;
-
-            await _savingWrapper.SaveDataToMyUser(EParentNode.ActiveStay, _data.ActiveStay);
-        }
-
-        /// <summary>
-        /// Allow Partial Adding, no need to have all Info at once, can add partial
-        /// This is WHY parameter is one by one like this.
-        /// </summary>
-        public async Task SetDataNationalIDInfo(string id = null, string gd = null, string pf = null, string fName = null, string lName = null, string bDate = null, string iDate = null, string eDate = null, string hN = null, string subd = null, string d = null, string p = null, string c = null)
-        {
-            if (!IsNationalIDInfoExists()) await LoadNationalIDInfo();
-
-            NationalIDInfo old = (_data.NationalIDInfo == null) ? new NationalIDInfo() : _data.NationalIDInfo;
-            string nId = (id == null) ? old.NationalID : id;
-            string gender = (gd == null) ? old.Gender : gd;
-            string prefix = (pf == null) ? old.Prefix : pf;
-            string firstName = (fName == null) ? old.FirstName : fName;
-            string lastName = (lName == null) ? old.LastName : lName;
-            string birthDate = (bDate == null) ? old.BirthDate : bDate;
-            string issueDate = (iDate == null) ? old.IssueDate : iDate;
-            string expireDate = (eDate == null) ? old.ExpireDate : eDate;
-            string houseNumber = (hN == null) ? old.HouseNumber : hN;
-            string subDistrict = (subd == null) ? old.Subdistrict : subd;
-            string district = (d == null) ? old.District : d;
-            string province = (p == null) ? old.Province : p;
-            string country = (c == null) ? old.Country : c;
-
-            _data.NationalIDInfo = new NationalIDInfo()
-            {
-                NationalID = nId,
-                Gender = gender,
-                Prefix = prefix,
-                FirstName = firstName,
-                LastName = lastName,
-                BirthDate = birthDate,
-                IssueDate = issueDate,
-                ExpireDate = expireDate,
-                HouseNumber = houseNumber,
-                Subdistrict = subDistrict,
-                District = district,
-                Province = province,
-                Country = country
-            };
-
-            await _savingWrapper.SaveDataToMyUser(EParentNode.NationalIDInfo, _data.NationalIDInfo);
-        }
-
-        /// <summary>
-        /// NOT Allow Partial Adding, NEED all Info at once
-        /// This is WHY parameter is using its Class as a Group.
-        /// </summary>
-        public async Task SetDataPassportInfo(PassportInfo passportInfo)
-        {
-            _data.PassportInfo = passportInfo;
-
-            await _savingWrapper.SaveDataToMyUser(EParentNode.PassportInfo, _data.PassportInfo);
-        }
-
-        /// <summary>
-        /// Allow Partial Adding, no need to have all Info at once, can add partial
-        /// This is WHY parameter is one by one like this.
-        /// </summary>
-        public async Task SetDataGeneralInfo(string pN = null, string mC = null, string uPN = null, string r = null, string l = null, string fb = null, string ig = null, string tt = null)
-        {
-            if (!IsGeneralInfoExists()) await LoadGeneralInfo();
-
-            GeneralInfo old = (_data.GeneralInfo == null) ? new GeneralInfo() : _data.GeneralInfo;
-            string phoneNumber = (pN == null) ? old.PhoneNumber : pN;
-            string medical = (mC == null) ? old.MedicalCondition : mC;
-
-            EmergencyContact oldEmergencyContact = (old.EmergencyContact == null) ? new EmergencyContact() : old.EmergencyContact;
-            string urgentPhoneNumber = (uPN == null) ? oldEmergencyContact.PhoneNumber : uPN;
-            string relation = (r == null) ? oldEmergencyContact.Relation : r;
-
-            SocialAccounts oldSocialAccounts = (old.SocialAccounts == null) ? new SocialAccounts() : old.SocialAccounts;
-            string line = (l == null) ? oldSocialAccounts.Line : l;
-            string facebook = (fb == null) ? oldSocialAccounts.Facebook : fb;
-            string instagram = (ig == null) ? oldSocialAccounts.Instagram : ig;
-            string tiktok = (tt == null) ? oldSocialAccounts.Tiktok : tt;
-
-            _data.GeneralInfo = new GeneralInfo()
-            {
-                PhoneNumber = phoneNumber,
-                MedicalCondition = medical,
-                EmergencyContact = new EmergencyContact()
-                {
-                    PhoneNumber = urgentPhoneNumber,
-                    Relation = relation
-                },
-                SocialAccounts = new SocialAccounts()
-                {
-                    Line = line,
-                    Facebook = facebook,
-                    Instagram = instagram,
-                    Tiktok = tiktok
-                }
-            };
-
-            await _savingWrapper.SaveDataToMyUser(EParentNode.GeneralInfo, _data.GeneralInfo);
-        }
         #endregion
 
 
 
-        #region --Methods-- (Interface) ~Getter~
-        public string GetUserNameText()
-        {
-            if (!FirebaseUtils.IsAuthenticated())
-            {
-                _data.FirstName = _defaultFirstName.GetLocalizedString();
-                _data.LastName = _defaultLastName.GetLocalizedString();
-            }
-            else if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
-            {
-                return _loading.GetLocalizedString();
-            }
-
-            return _data.GetUserNameText();
-        }
-
-        public string GetMemberSinceText()
-        {
-            if (!FirebaseUtils.IsAuthenticated())
-                return $"{_defaultMemberSince.GetLocalizedString()}";
-            else if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
-                return "...";
-
-            return _data.GetMemberSinceText();
-        }
-
-        public ProfileIconItem GetProfileIcon()
-        {
-            if (_data.ProfileIcon == null)
-                _data.ProfileIcon = _defaultProfileIcon;
-
-            return _data.GetProfileIcon();
-        }
-
-        public AccountStatus GetAccountStatus() => _data.GetAccountStatus();
-
-        public EUserRole GetRole() => _data.GetRole();
-
-        public string GetTitleText()
-        {
-            if (FirebaseUtils.IsAuthenticated() && IsLoadingFromServer == true)
-                return "...";
-
-            return _data.GetTitleText();
-        }
-
-        public string GetLevelText()
-        {
-            if (_data.Level == 0)
-                _data.Level = _defaultLevel;
-
-            return _data.GetLevelText();
-        }
-
-        public string GetTotalTMPointsText() => _data.GetTotalTMPointsText();
-
-        public string GetTodayTMPointsText() => _data.GetTodayTMPointsText();
-
-        public string GetChallengeTMPointsText() => _data.GetChallengeTMPointsText();
-
-        public string GetTotalChallengeTMWonText() => _data.GetTotalChallengeTMWonText();
-
-        public int GetTotalTMPoints() => _data.TotalTMPoints;
-
-        public int GetTodayTMPoints() => _data.TodayTMPoints;
-
-        public int GetChallengeTMPoints() => _data.ChallengeTMPoints;
-
-        public int GetTotalChallengeTMWon() => _data.TotalChallengeTMWon;
-
-        public int GetTMPointCapRequest() => _data.TMPointCapRequest;
-
-        public int GetTMPointCap() => _data.TMPointCap;
-
-        public int GetTMPointCapRound() => _data.TMPointCapRound;
-
-        public bool GetIsCustomTMPointCap() => _data.IsCustomTMPointCap;
-        #endregion
-
-
-
-        #region --Methods-- (Custom PUBLIC) ~Getter~
-        public bool GetTempleGuideConfirmed() => _data.TempleGuideConfirmed;
-
-        public async Task<StayEntry> GetActiveStayEntry()
-        {
-            if (!IsStayEntryExists())
-            {
-                ActiveStay activeStay = await GetDataActiveStay();
-                if (!IsActiveStayExists()) return null;
-
-                Enum.TryParse(activeStay.StatusInfo.Status, true, out EStayStatus eStatus);
-                switch (eStatus)
-                {
-                    case EStayStatus.Pending:
-                        await LoadMyEntryFromStayRequests();
-                        break;
-
-                    case EStayStatus.Scheduled:
-                        await LoadMyEntryFromScheduledStay();
-                        break;
-
-                    case EStayStatus.Active:
-                        await LoadMyEntryFromActiveStay();
-                        break;
-                }
-
-                if (!IsStayEntryExists()) return null; // Incase can't find my 'StayEntry' under 'StayRequests' Category
-            }
-
-            return _data.StayEntry;
-        }
-
-        public async Task<ActiveStay> GetDataActiveStay()
-        {
-            if (!IsActiveStayExists())
-            {
-                await LoadActiveStay();
-
-                if (!IsActiveStayExists()) return null; // Incase can't find my 'ActiveStay' under MyUser Category
-            }
-
-            return _data.ActiveStay;
-        }
-
-        public async Task<NationalIDInfo> GetDataNationalIDInfo()
-        {
-            if (!IsNationalIDInfoExists())
-            {
-                await LoadNationalIDInfo();
-
-                if (!IsNationalIDInfoExists()) return null; // Incase can't find my 'NationalIDInfo' under MyUser Category
-            }
-
-            return _data.NationalIDInfo;
-        }
-
-        public async Task<PassportInfo> GetDataPassportInfo()
-        {
-            if (!IsPassportInfoExists())
-            {
-                await LoadPassportInfo();
-
-                if (!IsPassportInfoExists()) return null; // Incase can't find my 'PassportInfo' under MyUser Category
-            }
-
-            return _data.PassportInfo;
-        }
-
-        public async Task<GeneralInfo> GetDataGeneralInfo()
-        {
-            if (!IsGeneralInfoExists())
-            {
-                await LoadGeneralInfo();
-
-                if (!IsGeneralInfoExists()) return null; // Incase can't find my 'GeneralInfo' under MyUser Category
-            }
-
-            return _data.GeneralInfo;
-        }
-        #endregion
-
-
-
-        #region --Methods-- (Custom PUBLIC & PRIVATE) ~Meditation Retreat~
-        // -Account Status-
-        public bool IsAccountStatusExists() => !(_data.AccountStatus == null);
-
-        private async Task LoadAccountStatus()
-        {
-            _data.AccountStatus = await _savingWrapper.LoadDataFromMyUser<AccountStatus>(EParentNode.AccountStatus);
-        }
-        
-
-        // -Stay Entry-
-        public bool IsStayEntryExists() => !(_data.StayEntry == null);
-
-        public void DeleteStayEntry() => _data.StayEntry = null;
-
-        private async Task LoadMyEntryFromStayRequests()
-        {
-            if (_savingWrapper == null) await Task.Yield();
-
-            _data.StayEntry = await _savingWrapper.LoadMyEntryFromStayRequests();
-        }
-        private async Task LoadMyEntryFromScheduledStay()
-        {
-            if (_savingWrapper == null) await Task.Yield();
-
-            _data.StayEntry = await _savingWrapper.LoadMyEntryFromScheduledStay();
-        }
-        private async Task LoadMyEntryFromActiveStay()
-        {
-            if (_savingWrapper == null) await Task.Yield();
-
-            _data.StayEntry = await _savingWrapper.LoadMyEntryFromActiveStay();
-        }
-
-
-        // -Active Stay-
-        public bool IsActiveStayExists() => !(_data.ActiveStay == null);
-
-        public void DeleteActiveStay() => _data.ActiveStay = null;
-
-        private async Task LoadActiveStay()
-        {
-            if (_savingWrapper == null) await Task.Yield();
-
-            _data.ActiveStay = await _savingWrapper.LoadDataFromMyUser<ActiveStay>(EParentNode.ActiveStay);
-        }
-
-
-        // -National ID-
-        public bool IsNationalIDInfoExists() => !(_data.NationalIDInfo == null);
-
-        private async Task LoadNationalIDInfo()
-        {
-            if (_savingWrapper == null) await Task.Yield();
-
-            _data.NationalIDInfo = await _savingWrapper.LoadDataFromMyUser<NationalIDInfo>(EParentNode.NationalIDInfo);
-        }
-
-
-        // -Passport-
-        public bool IsPassportInfoExists() => !(_data.PassportInfo == null);
-
-        private async Task LoadPassportInfo()
-        {
-            if (_savingWrapper == null) await Task.Yield();
-
-            _data.PassportInfo = await _savingWrapper.LoadDataFromMyUser<PassportInfo>(EParentNode.PassportInfo);
-        }
-
-
-        // -General Info-
-        public bool IsGeneralInfoExists() => !(_data.GeneralInfo == null);
-
-        private async Task LoadGeneralInfo()
-        {
-            if (_savingWrapper == null) await Task.Yield();
-
-            _data.GeneralInfo = await _savingWrapper.LoadDataFromMyUser<GeneralInfo>(EParentNode.GeneralInfo);
-        }
-        #endregion
-
-
-
-        #region --Methods-- (Custom PRIVATE)
+        #region --Methods-- (Legacy) ~Utilities~
         private void AddTotalTMPoints(int input, bool capRoundPoints = true)
         {
             bool didCap = false;
@@ -794,7 +515,11 @@ namespace WatKhaoWong.Identities
 
             return availableToAdd > 0;
         }
+        #endregion
 
+
+
+        #region --Methods-- (Legacy) ~LOADER~
         private async void LoadSave()
         {
             if (!FirebaseUtils.IsAuthenticated()) return;
@@ -831,8 +556,8 @@ namespace WatKhaoWong.Identities
                 _data.ProfileIcon = BaseItem.GetFromID(id) as ProfileIconItem;
             }
 
-            _data.AccountStatus = await _savingWrapper.LoadDataFromMyUser<AccountStatus>(EParentNode.AccountStatus);
-
+            // Belongs to Meditation Retreat data
+            _data.AccountStatus = await _savingWrapper.LoadDataFromUser<AccountStatus>(FirebaseUtils.CurrentUserID, EParentNode.AccountStatus);
 
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.Role);
             if (data != null)
@@ -883,6 +608,7 @@ namespace WatKhaoWong.Identities
                 ForceSetIsCustomTMPointCap(_defaultIsCustomTMPointCap);
             }
 
+            // Belongs to Meditation Retreat data
             data = await _savingWrapper.Load(ECategoryNode.Users, EValueNode.TempleGuideConfirmed);
             if (data != null)
                 _data.TempleGuideConfirmed = bool.Parse(data.Value.ToString());
@@ -907,75 +633,385 @@ namespace WatKhaoWong.Identities
 
             LoadCompletionSource.TrySetResult(true);
             IsLoadingFromServer = false;
-            
+
             OnMyUserDataUpdated?.Invoke();
         }
         #endregion
 
 
 
-        #region --Methods-- (Interface)
-        public void UpdateProfileIcon(ProfileIconInspector oldUI, ProfileIconItem newIcon, float multiplierRatioForDecorator)
+        #region --Methods-- (Meditation Retreat) ~GETTER/UPDATER~
+        public bool GetTempleGuideConfirmed() => _data.TempleGuideConfirmed;
+
+
+        // -Stay Entry-
+        public async Task<StayEntry> GetActiveStayEntry()
         {
-            _data.UpdateProfileIcon(oldUI, newIcon, multiplierRatioForDecorator);
+            if (!IsStayEntryExists())
+            {
+                ActiveStay activeStay = await GetDataActiveStay();
+                if (!IsActiveStayExists()) return null;
+
+                Enum.TryParse(activeStay.StatusInfo.Status, true, out EStayStatus eStatus);
+                switch (eStatus)
+                {
+                    case EStayStatus.Pending:
+                        await LoadMyEntryFromStayRequests();
+                        break;
+
+                    case EStayStatus.Scheduled:
+                        await LoadMyEntryFromScheduledStay();
+                        break;
+
+                    case EStayStatus.Active:
+                        await LoadMyEntryFromActiveStay();
+                        break;
+                }
+
+                if (!IsStayEntryExists()) return null; // Incase can't find my 'StayEntry' under 'StayRequests' Category
+            }
+
+            return _data.StayEntry;
         }
+
+
+        // -Active Stay-
+        public async Task<ActiveStay> GetDataActiveStay()
+        {
+            if (!IsActiveStayExists())
+            {
+                await LoadActiveStay();
+
+                if (!IsActiveStayExists()) return null; // Incase can't find my 'ActiveStay' under MyUser Category
+            }
+
+            return _data.ActiveStay;
+        }
+
+
+        // -National ID-
+        public async Task<NationalIDInfo> GetDataNationalIDInfo()
+        {
+            if (!IsNationalIDInfoExists())
+            {
+                await LoadNationalIDInfo();
+
+                if (!IsNationalIDInfoExists()) return null; // Incase can't find my 'NationalIDInfo' under MyUser Category
+            }
+
+            return _data.NationalIDInfo;
+        }
+
+
+        // -Passport-
+        public async Task<PassportInfo> GetDataPassportInfo()
+        {
+            if (!IsPassportInfoExists())
+            {
+                await LoadPassportInfo();
+
+                if (!IsPassportInfoExists()) return null; // Incase can't find my 'PassportInfo' under MyUser Category
+            }
+
+            return _data.PassportInfo;
+        }
+
+
+        // -General Info-
+        public async Task<GeneralInfo> GetDataGeneralInfo()
+        {
+            if (!IsGeneralInfoExists())
+            {
+                await LoadGeneralInfo();
+
+                if (!IsGeneralInfoExists()) return null; // Incase can't find my 'GeneralInfo' under MyUser Category
+            }
+
+            return _data.GeneralInfo;
+        }
+
+
+        // -Account Status-
+        public AccountStatus GetAccountStatus() => _data.GetAccountStatus();
 
         public void UpdateAccountStatus(AccountStatusInspector oldStatus, AccountStatus newStatus, Localizer localizer)
         {
             _data.UpdateAccountStatus(oldStatus, newStatus, localizer);
         }
 
-        bool? IConditionEvaluator.Evaluate(EConditionType conditionType, EConditionValue[] conditionValues)
+
+        // -Mini Info-
+        public void UpdateMiniInfo(MiniInfoInspector miniInfoInspector, NationalIDInfo nationalIDInfo, PassportInfo passportInfo, Localizer localizer, ServerTime serverTime)
         {
-            switch (conditionType)
-            {
-                case EConditionType.IsRoleEquals:
-                    byte stringStartIndex = (byte)EConditionType.IsRoleEquals;
-                    string enumString = conditionValues[0].ToString()[stringStartIndex..];
-
-                    if (!Enum.TryParse(enumString, true, out EUserRole result))
-                        return false;
-
-                    return GetRole() == result;
-
-                case EConditionType.IsAuthenticated:
-                    return FirebaseUtils.IsAuthenticated();
-
-                case EConditionType.HasAllTimeTMPoint:
-                    return _data.TotalTMPoints > 0;
-
-                case EConditionType.HasTodayTMPoint:
-                    return _data.TodayTMPoints > 0;
-
-                case EConditionType.HasChallengeTMPoint:
-                    return _data.ChallengeTMPoints > 0;
-
-                case EConditionType.HasChallengeTMWon:
-                    return _data.TotalChallengeTMWon > 0;
-
-                //// ---DEBUGGER PURPOSE--- search for 'EConditionType.cs | MyUserData.cs | ShowHideUIByCondition.cs'
-                //case EConditionType.True:
-                //    return true;
-
-                //case EConditionType.False:
-                //    return false;
-            }
-
-            return null;
+            _data.UpdateMiniInfo(miniInfoInspector, nationalIDInfo, passportInfo, localizer, serverTime);
         }
         #endregion
 
 
 
-        #region --Methods-- (Subscriber)
-        /// <summary>
-        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake().
-        /// </summary>
-        private void HandleStateChanged(object obj, EventArgs args)
+        #region --Methods-- (Meditation Retreat) ~SETTER~
+        public async void SetTempleGuideConfirmedToTrue()
         {
-            LoadSave(); // So Don't have to call on Awake()
+            if (_data.TempleGuideConfirmed == true) return; // Only Allow set for the First Time
 
-            SetRoleToGuestIfNoAuthen(); // So Don't have to call on Awake()
+            _data.TempleGuideConfirmed = true;
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TempleGuideConfirmed, true);
+
+            DateTime nowDate = await _serverTime.Now();
+            _savingWrapper.Save(ECategoryNode.Users, EValueNode.TempleGuideConfirmedAt, nowDate.ToGregorianString());
+        }
+
+
+        // -Active Stay-
+        /// <summary>
+        /// NOT Allow Partial Adding, NEED all Info at once
+        /// This is WHY parameter is using its Class as a Group.
+        /// </summary>
+        public async Task SetDataActiveStay(ActiveStay activeStay)
+        {
+            _data.ActiveStay = activeStay;
+
+            await _savingWrapper.SaveDataToUser(GetUserKeyID(), EParentNode.ActiveStay, _data.ActiveStay);
+        }
+
+
+        // -National ID-
+        /// <summary>
+        /// Allow Partial Adding, no need to have all Info at once, can add partial
+        /// This is WHY parameter is one by one like this.
+        /// </summary>
+        public async Task SetDataNationalIDInfo(string id = null, string gd = null, string pf = null, string fName = null, string lName = null, string bDate = null, string iDate = null, string eDate = null, string hN = null, string subd = null, string d = null, string p = null, string c = null)
+        {
+            if (!IsNationalIDInfoExists()) await LoadNationalIDInfo();
+
+            NationalIDInfo old = (_data.NationalIDInfo == null) ? new NationalIDInfo() : _data.NationalIDInfo;
+            string nId = (id == null) ? old.NationalID : id;
+            string gender = (gd == null) ? old.Gender : gd;
+            string prefix = (pf == null) ? old.Prefix : pf;
+            string firstName = (fName == null) ? old.FirstName : fName;
+            string lastName = (lName == null) ? old.LastName : lName;
+            string birthDate = (bDate == null) ? old.BirthDate : bDate;
+            string issueDate = (iDate == null) ? old.IssueDate : iDate;
+            string expireDate = (eDate == null) ? old.ExpireDate : eDate;
+            string houseNumber = (hN == null) ? old.HouseNumber : hN;
+            string subDistrict = (subd == null) ? old.Subdistrict : subd;
+            string district = (d == null) ? old.District : d;
+            string province = (p == null) ? old.Province : p;
+            string country = (c == null) ? old.Country : c;
+
+            _data.NationalIDInfo = new NationalIDInfo()
+            {
+                NationalID = nId,
+                Gender = gender,
+                Prefix = prefix,
+                FirstName = firstName,
+                LastName = lastName,
+                BirthDate = birthDate,
+                IssueDate = issueDate,
+                ExpireDate = expireDate,
+                HouseNumber = houseNumber,
+                Subdistrict = subDistrict,
+                District = district,
+                Province = province,
+                Country = country
+            };
+
+            await _savingWrapper.SaveDataToUser(GetUserKeyID(), EParentNode.NationalIDInfo, _data.NationalIDInfo);
+        }
+
+
+        // -Passport-
+        /// <summary>
+        /// NOT Allow Partial Adding, NEED all Info at once
+        /// This is WHY parameter is using its Class as a Group.
+        /// </summary>
+        public async Task SetDataPassportInfo(PassportInfo passportInfo)
+        {
+            _data.PassportInfo = passportInfo;
+
+            await _savingWrapper.SaveDataToUser(GetUserKeyID(), EParentNode.PassportInfo, _data.PassportInfo);
+        }
+
+        // -General Info-
+        /// <summary>
+        /// Allow Partial Adding, no need to have all Info at once, can add partial
+        /// This is WHY parameter is one by one like this.
+        /// </summary>
+        public async Task SetDataGeneralInfo(string pN = null, string mC = null, string uPN = null, string r = null, string l = null, string fb = null, string ig = null, string tt = null)
+        {
+            if (!IsGeneralInfoExists()) await LoadGeneralInfo();
+
+            GeneralInfo old = (_data.GeneralInfo == null) ? new GeneralInfo() : _data.GeneralInfo;
+            string phoneNumber = (pN == null) ? old.PhoneNumber : pN;
+            string medical = (mC == null) ? old.MedicalCondition : mC;
+
+            EmergencyContact oldEmergencyContact = (old.EmergencyContact == null) ? new EmergencyContact() : old.EmergencyContact;
+            string urgentPhoneNumber = (uPN == null) ? oldEmergencyContact.PhoneNumber : uPN;
+            string relation = (r == null) ? oldEmergencyContact.Relation : r;
+
+            SocialAccounts oldSocialAccounts = (old.SocialAccounts == null) ? new SocialAccounts() : old.SocialAccounts;
+            string line = (l == null) ? oldSocialAccounts.Line : l;
+            string facebook = (fb == null) ? oldSocialAccounts.Facebook : fb;
+            string instagram = (ig == null) ? oldSocialAccounts.Instagram : ig;
+            string tiktok = (tt == null) ? oldSocialAccounts.Tiktok : tt;
+
+            _data.GeneralInfo = new GeneralInfo()
+            {
+                PhoneNumber = phoneNumber,
+                MedicalCondition = medical,
+                EmergencyContact = new EmergencyContact()
+                {
+                    PhoneNumber = urgentPhoneNumber,
+                    Relation = relation
+                },
+                SocialAccounts = new SocialAccounts()
+                {
+                    Line = line,
+                    Facebook = facebook,
+                    Instagram = instagram,
+                    Tiktok = tiktok
+                }
+            };
+
+            await _savingWrapper.SaveDataToUser(GetUserKeyID(), EParentNode.GeneralInfo, _data.GeneralInfo);
+        }
+
+
+        // -Account Status-
+        public async Task SetAccountStatusDefault(EAccountStatus eAccountStatus)
+        {
+            await SetDataAccountStatus(updateCheckinAt: true, eAccountStatus);
+        }
+        /// <summary>
+        /// Allow Partial Adding, no need to have all Info at once, can add partial
+        /// This is WHY parameter is one by one like this.
+        /// </summary>
+        public async Task SetDataAccountStatus(bool updateCheckinAt, EAccountStatus? eStatus = null, DateTime? banEndDate = null, string notesText = null, string notesColor = null)
+        {
+            if (!IsAccountStatusExists()) await LoadAccountStatus();
+
+            DateTime nowDate = await _serverTime.Now();
+
+            AccountStatus oldStatus = (_data.AccountStatus == null) ? new AccountStatus() : _data.AccountStatus;
+            string lastCheckinAtText = updateCheckinAt ? nowDate.ToGregorianString() : oldStatus.LastCheckinAt;
+            string banEndDateText = (banEndDate == null) ? oldStatus.BanEndDate : banEndDate.ToGregorianString();
+
+            StatusInfo oldStatusInfo = (oldStatus.StatusInfo == null) ? new StatusInfo() : oldStatus.StatusInfo;
+            string statusText = (eStatus == null) ? oldStatusInfo.Status : eStatus.ToString();
+            string statusUpdatedAtText = (eStatus == null || (oldStatusInfo.Status == eStatus.ToString() && oldStatusInfo.StatusUpdatedAt != null)) ? oldStatusInfo.StatusUpdatedAt : nowDate.ToGregorianString();
+
+            NotesInfo oldNotesInfo = (oldStatus.NotesInfo == null) ? new NotesInfo() : oldStatus.NotesInfo;
+            string notesInfoText = (notesText == null) ? oldNotesInfo.Text : notesText;
+            string notesInfoColor = (notesColor == null) ? oldNotesInfo.Color : notesColor;
+
+            _data.AccountStatus = new AccountStatus()
+            {
+                LastCheckinAt = lastCheckinAtText,
+                StatusInfo = new StatusInfo()
+                {
+                    Status = statusText,
+                    StatusUpdatedAt = statusUpdatedAtText
+                },
+                BanEndDate = banEndDateText,
+                NotesInfo = new NotesInfo()
+                {
+                    Text = notesInfoText,
+                    Color = notesInfoColor
+                }
+            };
+
+            await _savingWrapper.SaveDataToUser(GetUserKeyID(), EParentNode.AccountStatus, _data.AccountStatus);
+            OnMyUserDataUpdated?.Invoke();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Meditation Retreat) ~Utilities~
+        // -Stay Entry-
+        public bool IsStayEntryExists() => !(_data.StayEntry == null);
+
+        public void DeleteStayEntry() => _data.StayEntry = null;
+
+
+        // -Active Stay-
+        public bool IsActiveStayExists() => !(_data.ActiveStay == null);
+
+        public void DeleteActiveStay() => _data.ActiveStay = null;
+
+
+        // -National ID-
+        public bool IsNationalIDInfoExists() => !(_data.NationalIDInfo == null);
+        // -Passport-
+        public bool IsPassportInfoExists() => !(_data.PassportInfo == null);
+        // -General Info-
+        public bool IsGeneralInfoExists() => !(_data.GeneralInfo == null);
+
+
+        // -Account Status-
+        public bool IsAccountStatusExists() => !(_data.AccountStatus == null);
+        #endregion
+
+
+
+        #region --Methods-- (Meditation Retreat) ~LOADER~
+        // -Stay Entry-
+        private async Task LoadMyEntryFromStayRequests()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.StayEntry = await _savingWrapper.LoadUserEntryFromStayRequests(FirebaseUtils.CurrentUserID);
+        }
+        private async Task LoadMyEntryFromScheduledStay()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.StayEntry = await _savingWrapper.LoadUserEntryFromScheduledStay(FirebaseUtils.CurrentUserID);
+        }
+        private async Task LoadMyEntryFromActiveStay()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.StayEntry = await _savingWrapper.LoadUserEntryFromActiveStay(FirebaseUtils.CurrentUserID);
+        }
+
+
+        // -Active Stay-
+        private async Task LoadActiveStay()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.ActiveStay = await _savingWrapper.LoadDataFromUser<ActiveStay>(FirebaseUtils.CurrentUserID, EParentNode.ActiveStay);
+        }
+
+
+        // -National ID-
+        private async Task LoadNationalIDInfo()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.NationalIDInfo = await _savingWrapper.LoadDataFromUser<NationalIDInfo>(FirebaseUtils.CurrentUserID, EParentNode.NationalIDInfo);
+        }
+        // -Passport-
+        private async Task LoadPassportInfo()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.PassportInfo = await _savingWrapper.LoadDataFromUser<PassportInfo>(FirebaseUtils.CurrentUserID, EParentNode.PassportInfo);
+        }
+        // -General Info-
+        private async Task LoadGeneralInfo()
+        {
+            if (_savingWrapper == null) await Task.Yield();
+
+            _data.GeneralInfo = await _savingWrapper.LoadDataFromUser<GeneralInfo>(FirebaseUtils.CurrentUserID, EParentNode.GeneralInfo);
+        }
+
+
+        // -Account Status-
+        private async Task LoadAccountStatus()
+        {
+            _data.AccountStatus = await _savingWrapper.LoadDataFromUser<AccountStatus>(FirebaseUtils.CurrentUserID, EParentNode.AccountStatus);
         }
         #endregion
     }

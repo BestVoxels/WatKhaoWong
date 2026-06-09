@@ -75,6 +75,8 @@ namespace WatKhaoWong.Retreats
         private UserInputStayEntryData _userInputData;
 
         private MyUserData _myUserData;
+        private IUserData _userData;
+        private EUserInfoView _currentView = EUserInfoView.MyUser;
         private UserInfo _userInfo;
         private AccommodationSetTimePopup _setTimePopup;
         private SavingWrapper _savingWrapper;
@@ -97,6 +99,10 @@ namespace WatKhaoWong.Retreats
             _serverTime = FindAnyObjectByType<ServerTime>();
             _localizer = FindAnyObjectByType<Localizer>();
             _statusText = FindAnyObjectByType<StatusText>();
+
+            _userData = _myUserData;
+
+            _userInfo.OnViewSetup += SetupNewView; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
         }
         #endregion
 
@@ -242,7 +248,7 @@ namespace WatKhaoWong.Retreats
 
             StayEntry stayEntry = new StayEntry()
             {
-                UserId = FirebaseUtils.CurrentUserID, // TODO my or other userID 
+                UserId = _userData.GetUserKeyID(),
                 Activity = ((EActivityType)_userInputData.activityIndex).ToString(),
                 StayInfo = new StayInfo()
                 {
@@ -287,7 +293,17 @@ namespace WatKhaoWong.Retreats
         #endregion
 
 
-        
+
+        #region --Methods-- (Subscriber)
+        private void SetupNewView(EUserInfoView newView, IUserData userData)
+        {
+            _currentView = newView;
+            _userData = userData;
+        }
+        #endregion
+
+
+
         #region --Methods-- (Subscriber) ~UnityEvent~
         /// <summary>
         /// No need to add 'Pending' entry.
@@ -310,7 +326,7 @@ namespace WatKhaoWong.Retreats
 
                     // -> ADD : under User's PastStay
                     stayEntry = await GetStayEntryFromUserInputData(EStayStatus.Completed);
-                    await _savingWrapper.SaveDataWithKeyToMyUser(EParentNode.PastStay, stayEntry);
+                    await _savingWrapper.SaveDataWithKeyToUser(_userData.GetUserKeyID(), EParentNode.PastStay, stayEntry);
 
                     OnAddedToServer?.Invoke(stayEntry, EStayStatus.Completed);
                     break;
@@ -318,7 +334,7 @@ namespace WatKhaoWong.Retreats
                 // --- Active ---
                 case ETimePeriod.Present:
                     // IF there is Current Entry can't add!
-                    if (_myUserData.IsActiveStayExists())
+                    if (_userData.IsActiveStayExists())
                     {
                         _statusText.Show(_userInfo.StatusCantAddCurExists.GetLocalizedString(), _userInfo.StatusCantAddCurExistsColor);
                         return;
@@ -332,7 +348,7 @@ namespace WatKhaoWong.Retreats
 
                     // -> ADD : under User's ActiveStay
                     activeStay = await GetActiveStay(keyId, EStayStatus.Active);
-                    await _myUserData.SetDataActiveStay(activeStay);
+                    await _userData.SetDataActiveStay(activeStay);
 
                     OnAddedToServer?.Invoke(stayEntry, EStayStatus.Active);
                     break;
@@ -340,7 +356,7 @@ namespace WatKhaoWong.Retreats
                 // --- Scheduled ---
                 case ETimePeriod.Future:
                     // IF there is Current Entry can't add!
-                    if (_myUserData.IsActiveStayExists())
+                    if (_userData.IsActiveStayExists())
                     {
                         _statusText.Show(_userInfo.StatusCantAddCurExists.GetLocalizedString(), _userInfo.StatusCantAddCurExistsColor);
                         return;
@@ -354,7 +370,7 @@ namespace WatKhaoWong.Retreats
 
                     // -> ADD : under User's ActiveStay
                     activeStay = await GetActiveStay(keyId, EStayStatus.Scheduled);
-                    await _myUserData.SetDataActiveStay(activeStay);
+                    await _userData.SetDataActiveStay(activeStay);
 
                     OnAddedToServer?.Invoke(stayEntry, EStayStatus.Scheduled);
                     break;
@@ -384,7 +400,7 @@ namespace WatKhaoWong.Retreats
             {
                 // -> UPDATE : under User's ActiveStay
                 ActiveStay activeStay = await GetActiveStay(_systemData.keyId, (EStayStatus)_systemData.status);
-                await _myUserData.SetDataActiveStay(activeStay);
+                await _userData.SetDataActiveStay(activeStay);
 
                 // -> UPDATE : under StayRequest/ScheduledStay/ActiveStay's Category
                 switch (_systemData.status)
@@ -407,7 +423,7 @@ namespace WatKhaoWong.Retreats
             if (_systemData.status == EStayStatus.Completed || _systemData.status == EStayStatus.Rejected)
             {
                 // -> UPDATE : under User's PastStay
-                await _savingWrapper.SaveDataToExistingKeyToMyUser(EParentNode.PastStay, _systemData.keyId, stayEntry);
+                await _savingWrapper.SaveDataToExistingKeyToUser(_userData.GetUserKeyID(), EParentNode.PastStay, _systemData.keyId, stayEntry);
             }
 
             OnUpdatedOnServer?.Invoke(stayEntry, _systemData.status);
@@ -429,7 +445,7 @@ namespace WatKhaoWong.Retreats
             if (_systemData.status == EStayStatus.Pending || _systemData.status == EStayStatus.Active || _systemData.status == EStayStatus.Scheduled)
             {
                 // -> DELETE : under User's ActiveStay
-                _savingWrapper.DeleteFromMyUser(EParentNode.ActiveStay);
+                _savingWrapper.DeleteFromUser(_userData.GetUserKeyID(), EParentNode.ActiveStay);
 
                 // -> DELETE : under StayRequest/ScheduledStay/ActiveStay's Category
                 switch (_systemData.status)
@@ -448,15 +464,15 @@ namespace WatKhaoWong.Retreats
                 }
 
                 // Reset Data so it UI updates accordingly
-                _myUserData.DeleteActiveStay();
-                _myUserData.DeleteStayEntry();
+                _userData.DeleteActiveStay();
+                _userData.DeleteStayEntry();
             }
 
             // --- Past ---
             if (_systemData.status == EStayStatus.Completed || _systemData.status == EStayStatus.Rejected)
             {
                 // -> DELETE : under User's PastStay
-                _savingWrapper.DeleteFromMyUser(EParentNode.PastStay, _systemData.keyId);
+                _savingWrapper.DeleteFromUser(_userData.GetUserKeyID(), EParentNode.PastStay, _systemData.keyId);
             }
 
             OnDeletedFromServer?.Invoke(null);

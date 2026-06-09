@@ -61,7 +61,7 @@ namespace WatKhaoWong.Authentication
 
         #region --Methods-- (Subscriber)
         /// <summary>
-        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake().
+        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake(). And at time of assiging to 'FirebaseAuth.DefaultInstance.StateChanged'
         /// </summary>
         private void HandleStateChanged(object obj, EventArgs args)
         {

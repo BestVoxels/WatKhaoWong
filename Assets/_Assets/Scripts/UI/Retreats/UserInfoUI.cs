@@ -9,6 +9,10 @@ using WatKhaoWong.Utils.Localization;
 using WatKhaoWong.SceneManagement;
 using UnityEngine.EventSystems;
 using System;
+using WatKhaoWong.Utils.Core;
+using Firebase.Auth;
+using WatKhaoWong.UI.Leaderboards;
+using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.UI.Retreats
 {
@@ -17,6 +21,7 @@ namespace WatKhaoWong.UI.Retreats
     {
         #region --Fields-- (Inspector)
         [Header("Page Header UI Stuffs")]
+        [SerializeField] private TMP_Text _headerText;
         [SerializeField] private Button _backButton;
         [SerializeField] private Button _changeLangButton;
 
@@ -30,10 +35,13 @@ namespace WatKhaoWong.UI.Retreats
         [SerializeField] private GameObject[] _toShowHideByModeOnlyAdmin;
 
         [Header("UserInfo UI Stuffs - General Info")]
+        [SerializeField] private ProfileIconInspector _icon;
+        // TODO create one for National ID Card Image
         [SerializeField] private EventTrigger _userProfileEventTrigger;
         [SerializeField] private EventTrigger _userIDCardEventTrigger;
         [Space]
         [SerializeField] private AccountStatusInspector _accountStatusUI;
+        [SerializeField] private MiniInfoInspector _miniInfoInspectorUI;
         [SerializeField] private StayEntryRowUI _adderEntryUI; // TODO maybe useful for something in the future.
         [SerializeField] private StayEntryRowUI _pendingEntryUI;
         [SerializeField] private StayEntryRowUI _currentEntryUI;
@@ -51,13 +59,17 @@ namespace WatKhaoWong.UI.Retreats
         #region --Fields-- (In Class)
         private List<StayEntryRowUI> _activeRowUIs = new List<StayEntryRowUI>();
         private bool _refreshedOnce = false;
+        private EUserInfoView _currentView = EUserInfoView.MyUser;
 
         private MyUserData _myUserData;
-        private Localizer _localizer;
+        private IUserData _userData;
         private UserInfo _userInfo;
+        private AccountPopup _accountPopup;
         private StayEntryRow _stayEntryRow;
         private AccommodationForm _accommodationForm;
         private StatusSetter _statusSetter;
+        private Localizer _localizer;
+        private ServerTime _serverTime;
         private StayEntryRowUIPool _rowUIPool;
         #endregion
 
@@ -65,6 +77,7 @@ namespace WatKhaoWong.UI.Retreats
 
         #region --Fields-- (Constant)
         private const float WaitAsyncTimeOut = 10f;
+        private const float MultiplierRatioForDecorator = 160f / 135f;  // Formula : [CHANGE THIS] UserUI Profile's Size  %  [FIX] Inventory Profile's Size (original looks)
         #endregion
 
 
@@ -75,12 +88,16 @@ namespace WatKhaoWong.UI.Retreats
             GameObject player = GameObject.FindWithTag("Player");
             _myUserData = player.GetComponentInChildren<MyUserData>();
             _userInfo = player.GetComponentInChildren<UserInfo>();
+            _accountPopup = player.GetComponentInChildren<AccountPopup>();
             _stayEntryRow = player.GetComponentInChildren<StayEntryRow>();
             _accommodationForm = player.GetComponentInChildren<AccommodationForm>();
             _statusSetter = player.GetComponentInChildren<StatusSetter>();
             _localizer = FindAnyObjectByType<Localizer>();
+            _serverTime = FindAnyObjectByType<ServerTime>();
             _rowUIPool = GetComponent<StayEntryRowUIPool>();
-            
+
+            _userData = _myUserData;
+
             // Main
             _backButton.onClick.AddListener(Back);
             _changeLangButton.onClick.AddListener(ChangeLang);
@@ -104,9 +121,14 @@ namespace WatKhaoWong.UI.Retreats
             _accommodationForm.OnUploadedToServer += (stayEntry, stayStatus) => BuildAllStayEntryRowUIAgain();
 
             UIRefresher.OnUserInfoRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
-            UIRefresher.OnLocalizeDynamicString += () => { RefreshAccountStatusUI(); RefreshViewEditButtonText(); }; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
-        }
+            UIRefresher.OnLocalizeDynamicString += RefreshUI;// Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
 
+            _userInfo.OnViewSetup += SetupNewView; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
+
+            FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged;
+            FirebaseAuth.DefaultInstance.StateChanged += HandleStateChanged; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
+        }
+        
         private void OnEnable()
         {
             _statusSetter.OnUploadedToServer += StatusSetterUploadToServer;
@@ -117,6 +139,11 @@ namespace WatKhaoWong.UI.Retreats
             RefreshUI();
 
             SetupTabsUI();
+        }
+
+        private void OnDestroy()
+        {
+            FirebaseAuth.DefaultInstance.StateChanged -= HandleStateChanged; // We need to Unsubscribe because this is 'FirebaseAuth' not out Event. So we can't know for sure when it will be reset.
         }
 
         private void OnDisable()
@@ -132,16 +159,24 @@ namespace WatKhaoWong.UI.Retreats
         {
             RefreshGroupsToShowHide();
 
+            RefreshHeaderUI();
+
             RefreshTabsUI();
 
             RefreshViewEditMode();
 
+            RefreshProfileIconUI();
             RefreshAccountStatusUI();
+            RefreshMiniInfoUI();
 
             BuildAllStayEntryRowUI();
         }
 
-        private void RefreshAccountStatusUI() => _myUserData.UpdateAccountStatus(_accountStatusUI, _myUserData.GetAccountStatus(), _localizer);
+        private void RefreshProfileIconUI() => _userData.UpdateProfileIcon(_icon, _userData.GetProfileIcon(), MultiplierRatioForDecorator);
+
+        private void RefreshAccountStatusUI() => _userData.UpdateAccountStatus(_accountStatusUI, _userData.GetAccountStatus(), _localizer);
+
+        private async void RefreshMiniInfoUI() => _userData.UpdateMiniInfo(_miniInfoInspectorUI, await _userData.GetDataNationalIDInfo(), await _userData.GetDataPassportInfo(), _localizer, _serverTime);
         #endregion
 
 
@@ -182,7 +217,7 @@ namespace WatKhaoWong.UI.Retreats
             ClearRows(); //+Prevent duplicates Rows Bug.
 
             short rowCounter = 1;
-            await foreach ((StayEntry StayEntry, string KeyId) each in _userInfo.GetRows())
+            await foreach ((StayEntry StayEntry, string KeyId) each in _userInfo.GetRows(_userData.GetUserKeyID()))
             {
                 StayEntryRowUI createdPrefab = _rowUIPool.Pool.Get();
 
@@ -205,10 +240,10 @@ namespace WatKhaoWong.UI.Retreats
             ShowHidePendingEntryUI(false);
             ShowHideCurrentEntryUI(false);
 
-            StayEntry stayEntry = await _myUserData.GetActiveStayEntry();
+            StayEntry stayEntry = await _userData.GetActiveStayEntry();
             if (stayEntry == null) return;
 
-            ActiveStay activeStay = await _myUserData.GetDataActiveStay();
+            ActiveStay activeStay = await _userData.GetDataActiveStay();
             if (activeStay == null) return;
 
             Enum.TryParse(stayEntry.StatusInfo.Status, true, out EStayStatus eStatus);
@@ -230,7 +265,7 @@ namespace WatKhaoWong.UI.Retreats
         private void ClearRows()
         {
             foreach (StayEntryRowUI eachRow in _activeRowUIs)
-                eachRow.Release();
+                _rowUIPool.Pool.Release(eachRow);
 
             _activeRowUIs.Clear();
         }
@@ -250,6 +285,32 @@ namespace WatKhaoWong.UI.Retreats
         private void ShowHideHistoryNoDataText(bool toShow)
         {
             _historyNoDataGameObject.SetActive(toShow);
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE) ~Tab~
+        private void RefreshHeaderUI()
+        {
+            if (_currentView == EUserInfoView.MyUser)
+            {
+                _headerText.text = _userInfo.ViewEditMode switch
+                {
+                    EViewEditMode.View => _userInfo.MyProfileTitleText.GetLocalizedString(),
+                    EViewEditMode.Edit => _userInfo.EditMyProfileTitleText.GetLocalizedString(),
+                    _ => ""
+                };
+            }
+            else if (_currentView == EUserInfoView.OtherUser)
+            {
+                _headerText.text = _userInfo.ViewEditMode switch
+                {
+                    EViewEditMode.View => _userInfo.UserProfileTitleText.GetLocalizedString(),
+                    EViewEditMode.Edit => _userInfo.EditUserProfileTitleText.GetLocalizedString(),
+                    _ => ""
+                };
+            }
         }
         #endregion
 
@@ -341,13 +402,63 @@ namespace WatKhaoWong.UI.Retreats
             _userInfo.OnViewEditButtonClick();
         }
 
-        private void UserProfile(PointerEventData data) => _userInfo.OnUserProfileClick();
+        private void UserProfile(PointerEventData data)
+        {
+            // IF Mode is View Mode then Enter edit Mode
+            if (_userInfo.ViewEditMode == EViewEditMode.View)
+            {
+                ViewEdit();
+                return;
+            }
 
-        private void UserIDCard(PointerEventData data) => _userInfo.OnUserIDCardClick();
+            // Open Popup
+            if (_currentView == EUserInfoView.MyUser)
+                _userInfo.OnUserProfileClickAsMySelf();
+            else if (_currentView == EUserInfoView.OtherUser)
+            {
+                _userInfo.OnUserProfileClickAsOtherUser();
+                _accountPopup.Setup(_userData);
+            }
+        }
+
+        private void UserIDCard(PointerEventData data)
+        {
+            // IF Mode is View Mode then Enter edit Mode
+            if (_userInfo.ViewEditMode == EViewEditMode.View)
+            {
+                ViewEdit();
+                return;
+            }
+
+            // Open Popup
+            if (_currentView == EUserInfoView.MyUser)
+                _userInfo.OnUserIDCardClickAsMyself();
+            else if (_currentView == EUserInfoView.OtherUser)
+                _userInfo.OnUserIDCardClickAsOtherUser();
+        }
 
         private void StatusSetterUploadToServer()
         {
-            // TODO do something when StatusSetter upload to server...
+            // When StatusSetter upload to server...
+            RefreshAccountStatusUI();
+        }
+
+        private void SetupNewView(EUserInfoView newView, IUserData userData)
+        {
+            _currentView = newView;
+            _userData = userData;
+
+            RefreshUI();
+
+            BuildAllStayEntryRowUIAgain();
+        }
+
+        /// <summary>
+        /// Will be called once after FirebaseAuth instance is created. Around the time of Awake(). And at time of assiging to 'FirebaseAuth.DefaultInstance.StateChanged'
+        /// </summary>
+        private void HandleStateChanged(object obj, EventArgs args)
+        {
+            _refreshedOnce = false;
         }
         #endregion
     }

@@ -50,6 +50,7 @@ namespace WatKhaoWong.Retreats
         private string _notes;
 
         private MyUserData _myUserData;
+        private IUserData _userData;
         private Localizer _localizer;
         private StatusText _statusText;
         #endregion
@@ -63,6 +64,8 @@ namespace WatKhaoWong.Retreats
             _myUserData = player.GetComponentInChildren<MyUserData>();
             _localizer = FindAnyObjectByType<Localizer>();
             _statusText = FindAnyObjectByType<StatusText>();
+
+            _userData = _myUserData;
         }
         #endregion
 
@@ -74,8 +77,10 @@ namespace WatKhaoWong.Retreats
             _onSetTimeButtonClick?.Invoke();
         }
 
-        public void OnValidateSucceeded(byte accountStatusIndex, DateTime dateEndsOn, string notes)
+        public void OnValidateSucceeded(IUserData userData, byte accountStatusIndex, DateTime dateEndsOn, string notes)
         {
+            _userData = userData;
+
             _accountStatusIndex = accountStatusIndex;
             _dateEndsOn = dateEndsOn;
             _notes = notes;
@@ -99,7 +104,7 @@ namespace WatKhaoWong.Retreats
             string notes = _notes;
             string notesColor = string.IsNullOrWhiteSpace(_notes) ? "" : "#" + ColorUtility.ToHtmlStringRGB(_localizer.ColorizeAccountStatus(accountStatus.ToString()));
 
-            await _myUserData.SetDataAccountStatus(
+            await _userData.SetDataAccountStatus(
                 updateCheckinAt: false,
                 accountStatus,
                 dateTime,

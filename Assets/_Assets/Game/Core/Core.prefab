@@ -404,6 +404,24 @@ MonoBehaviour:
   <StatusInformUserColor>k__BackingField:
     serializedVersion: 2
     rgba: 0
+  <MyInfoTitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 69800809193472
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <UserInfoTitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:050845ab2f9bc465c849989fe03f4f17
+    m_TableEntryReference:
+      m_KeyId: 72190572617728
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   _onAccountProfileChangedByClick:
     m_PersistentCalls:
       m_Calls: []
@@ -1428,6 +1446,18 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
         m_MethodName: ClosePageOpposite
         m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5073534146836879691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Retreats.UserInfo, Assembly-WatKhaoWong-Retreats
+        m_MethodName: ShowMyUser
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4173,6 +4203,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5073534146836879691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Retreats.UserInfo, Assembly-WatKhaoWong-Retreats
+        m_MethodName: SetPreviousPageToOpenOpposite
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 4570650834472422047}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _onMeditationRetreatButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -4276,6 +4318,18 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5073534146836879691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Retreats.UserInfo, Assembly-WatKhaoWong-Retreats
+        m_MethodName: SetPreviousPageToOpenOpposite
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 4284119393299924498}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4974,6 +5028,42 @@ MonoBehaviour:
   <UnselectedColor>k__BackingField:
     serializedVersion: 2
     rgba: 4290687917
+  <MyProfileTitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+    m_TableEntryReference:
+      m_KeyId: 1487756320768
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <EditMyProfileTitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+    m_TableEntryReference:
+      m_KeyId: 30835661903749120
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <UserProfileTitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+    m_TableEntryReference:
+      m_KeyId: 30835861187715072
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <EditUserProfileTitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+    m_TableEntryReference:
+      m_KeyId: 30835895543259136
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <EditButtonText>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
@@ -4995,10 +5085,64 @@ MonoBehaviour:
   _onViewEditButtonClick:
     m_PersistentCalls:
       m_Calls: []
-  _onUserProfileClick:
+  _onUserProfileClickAsMyself:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1677259490705401639}
+        m_TargetAssemblyTypeName: WatKhaoWong.Identities.AccountPopup, Assembly-WatKhaoWong-Identity
+        m_MethodName: ShowMyUser
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8705845222389736811}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: OpenPopupIfNotGuest
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onUserProfileClickAsOtherUser:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1677259490705401639}
+        m_TargetAssemblyTypeName: WatKhaoWong.Identities.AccountPopup, Assembly-WatKhaoWong-Identity
+        m_MethodName: ShowOtherUser
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8705845222389736811}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: OpenPopupIfNotGuest
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onUserIDCardClickAsMyself:
     m_PersistentCalls:
       m_Calls: []
-  _onUserIDCardClick:
+  _onUserIDCardClickAsOtherUser:
     m_PersistentCalls:
       m_Calls: []
   references:
@@ -5154,6 +5298,18 @@ MonoBehaviour:
   _onUserProfileClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1677259490705401639}
+        m_TargetAssemblyTypeName: WatKhaoWong.Identities.AccountPopup, Assembly-WatKhaoWong-Identity
+        m_MethodName: ShowMyUser
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 8705845222389736811}
         m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: OpenPopupIfNotGuest
@@ -5181,6 +5337,18 @@ MonoBehaviour:
   _onUserStatsClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1677259490705401639}
+        m_TargetAssemblyTypeName: WatKhaoWong.Identities.AccountPopup, Assembly-WatKhaoWong-Identity
+        m_MethodName: ShowMyUser
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 8705845222389736811}
         m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
         m_MethodName: OpenPopupIfNotGuest
@@ -7984,6 +8152,15 @@ MonoBehaviour:
     m_WaitForCompletion: 0
     m_LocalVariables: []
   _dayFormat: d/M/yyyy
+  _ageText:
+    m_TableReference:
+      m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+    m_TableEntryReference:
+      m_KeyId: 30861350816178176
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   references:
     version: 2
     RefIds: []
@@ -8753,8 +8930,20 @@ MonoBehaviour:
   _onClickMyselfRow:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4956454277919580197}
-        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+      - m_Target: {fileID: 1677259490705401639}
+        m_TargetAssemblyTypeName: WatKhaoWong.Identities.AccountPopup, Assembly-WatKhaoWong-Identity
+        m_MethodName: ShowMyUser
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8705845222389736811}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
         m_MethodName: OpenPopupIfNotGuest
         m_Mode: 2
         m_Arguments:
@@ -8780,8 +8969,8 @@ MonoBehaviour:
   _onClickOtherUserRow:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 4956454277919580197}
-        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
+      - m_Target: {fileID: 8705845222389736811}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
         m_MethodName: OpenPopupIfNotGuest
         m_Mode: 2
         m_Arguments:
@@ -11378,6 +11567,57 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onUserProfileButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8705845222389736811}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5073534146836879691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Retreats.UserInfo, Assembly-WatKhaoWong-Retreats
+        m_MethodName: ClosePreviousPage
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5073534146836879691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Retreats.UserInfo, Assembly-WatKhaoWong-Retreats
+        m_MethodName: ShowOtherUser
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5578088579055343095}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: OpenPage
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

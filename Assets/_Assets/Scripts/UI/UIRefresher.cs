@@ -84,7 +84,7 @@ namespace WatKhaoWong.UI
             // TODO lets see what to subscribe to for HISTORY SYSTEM
 
             // SHARE POPUP SYSTEM
-            _accountPopup.OnProfileIconChangedByClick += () => { RefreshPrayUI(); RefreshManageMembersUI(); };
+            _accountPopup.OnProfileIconChangedByClick += () => { RefreshPrayUI(); RefreshManageMembersUI(); RefreshUserInfoUI(); };
 
             // LEADERBOARD SYSTEM
             _leaderboard.OnLeaderboardCategoryChanged += () => { RefreshLeaderboardUI(); ShowHideUIByRoles(); };

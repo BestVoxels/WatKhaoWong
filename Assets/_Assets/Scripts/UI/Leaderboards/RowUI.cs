@@ -68,7 +68,7 @@ namespace WatKhaoWong.UI.Leaderboards
         {
             _row = GameObject.FindWithTag("Player").GetComponentInChildren<Row>();
 
-            _localizer = FindAnyObjectByType<Localizer>();  // For 'RowType.Myself'
+            _localizer = FindAnyObjectByType<Localizer>();
 
             _rowButton.onClick.AddListener(RowClick);
         }
@@ -91,7 +91,7 @@ namespace WatKhaoWong.UI.Leaderboards
         {
             _rowUIPool = rowUIPool;
 
-            _localizer = FindAnyObjectByType<Localizer>();  // For 'RowType.OtherUser'
+            _localizer = FindAnyObjectByType<Localizer>();
             _otherAccountPopupUI = FindAnyObjectByType<OtherAccountPopupUI>(FindObjectsInactive.Include);  // For 'RowType.OtherUser'
         }
 
@@ -208,6 +208,8 @@ namespace WatKhaoWong.UI.Leaderboards
 
         private void RefreshTitleUI()
         {
+            if (_localizer == null || _userData == null) return;
+
             _titleText.text = _localizer.LocalizeUserTitle(_userData.GetTitleText());
         }
         #endregion

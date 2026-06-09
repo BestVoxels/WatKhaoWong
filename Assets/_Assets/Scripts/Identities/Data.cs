@@ -4,6 +4,8 @@ using System.Globalization;
 using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Utils.Localization;
 using WatKhaoWong.SceneManagement;
+using UnityEngine.Localization;
+using WatKhaoWong.Attributes;
 
 namespace WatKhaoWong.Identities
 {
@@ -143,14 +145,13 @@ namespace WatKhaoWong.Identities
             // Compute for Status Text
             if (newStatus == null) return;
 
+            oldStatus.infoText.gameObject.SetActive(false);
             if (newStatus.StatusInfo != null)
             {
                 oldStatus.statusText.text = localizer.LocalizeAccountStatus(newStatus.StatusInfo.Status);
 
                 // Compute for Color
                 Enum.TryParse(newStatus.StatusInfo.Status, true, out EAccountStatus accountStatus);
-
-                oldStatus.infoText.gameObject.SetActive(false);
 
                 switch (accountStatus)
                 {
@@ -178,6 +179,7 @@ namespace WatKhaoWong.Identities
             }
 
             // Compute for Additional Notes
+            oldStatus.notesText.gameObject.SetActive(false);
             if (newStatus.NotesInfo != null)
             {
                 bool hasNotes = !string.IsNullOrWhiteSpace(newStatus.NotesInfo.Text);
@@ -194,6 +196,43 @@ namespace WatKhaoWong.Identities
                         oldStatus.notesText.color = _defaultTextColor;
                 }
             }
+        }
+
+        internal async void UpdateMiniInfo(MiniInfoInspector miniInfoInspector, NationalIDInfo nationalIDInfo, PassportInfo passportInfo, Localizer localizer, ServerTime serverTime)
+        {
+            // First CHECK for 'NationalIDInfo'
+            if (nationalIDInfo != null && localizer != null)
+            {
+                miniInfoInspector.nameText.text = $"{nationalIDInfo.Prefix} {nationalIDInfo.FirstName} {nationalIDInfo.LastName}";
+
+                // Calculate age
+                if (serverTime != null && nationalIDInfo.BirthDate.TryParseGregorianOnlyDateFormat(out DateTime birthDate))
+                {
+                    int age = DateExtension.CalculateAge(birthDate, await serverTime.Now());
+                    miniInfoInspector.ageText.text = localizer.FormatAge(age);
+                }
+
+                return;
+            }
+
+            // Second CHECK for 'PassportInfo'
+            if (passportInfo != null && localizer != null)
+            {
+                miniInfoInspector.nameText.text = passportInfo.FullName;
+
+                // Calculate age
+                if (serverTime != null && passportInfo.BirthDate.TryParseGregorianOnlyDateFormat(out DateTime birthDate))
+                {
+                    int age = DateExtension.CalculateAge(birthDate, await serverTime.Now());
+                    miniInfoInspector.ageText.text = localizer.FormatAge(age);
+                }
+
+                return;
+            }
+
+            // Third IF none exists USE DEFAULT names & hide age
+            miniInfoInspector.nameText.text = GetUserNameText();
+            miniInfoInspector.ageText.text = string.Empty;
         }
         #endregion
     }

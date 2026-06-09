@@ -14,6 +14,7 @@ namespace WatKhaoWong.UI.Identities
     {
         #region --Fields-- (Inspector)
         [Header("Popup Header UI Stuffs")]
+        [SerializeField] private TMP_Text _headerText;
         [SerializeField] private Button _closeButton;
 
         [Space]
@@ -43,9 +44,11 @@ namespace WatKhaoWong.UI.Identities
 
         #region --Fields-- (In Class)
         private readonly List<ProfileIconUI> _profileIcons = new List<ProfileIconUI>();
+        private EAccountPopupView _currentView = EAccountPopupView.MyUser;
 
         private AccountPopup _accountPopup;
         private MyUserData _myUserData;
+        private IUserData _userData;
         private StatusText _statusText;
         private SavingWrapper _savingWrapper;
         private Localizer _localizer;
@@ -68,11 +71,15 @@ namespace WatKhaoWong.UI.Identities
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
             _localizer = FindAnyObjectByType<Localizer>();
 
+            _userData = _myUserData;
+
             _closeButton.onClick.AddListener(Close);
             _modifyButton.onClick.AddListener(OnModifyButtonClicked);
 
             UIRefresher.OnPopupRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
-            UIRefresher.OnLocalizeDynamicString += () => _userTitleText.text = _localizer.LocalizeUserTitle(_myUserData.GetTitleText());
+            UIRefresher.OnLocalizeDynamicString += () => _userTitleText.text = _localizer.LocalizeUserTitle(_userData.GetTitleText());
+
+            _accountPopup.OnViewSetup += SetupNewView; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
 
             PopulateProfileIconList();
         }
@@ -92,21 +99,23 @@ namespace WatKhaoWong.UI.Identities
         {
             RefreshToggleStatusUI();
 
+            RefreshHeaderUI();
+
             var nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             nfi.NumberGroupSeparator = " ";
 
-            _myUserData.UpdateProfileIcon(_icon, _myUserData.GetProfileIcon(), MultiplierRatioForDecorator);
+            _userData.UpdateProfileIcon(_icon, _userData.GetProfileIcon(), MultiplierRatioForDecorator);
 
-            _userNameText.text = _myUserData.GetUserNameText();
-            _userTitleText.text = _localizer.LocalizeUserTitle(_myUserData.GetTitleText());
-            _userLevelText.text = _myUserData.GetLevelText();
+            _userNameText.text = _userData.GetUserNameText();
+            _userTitleText.text = _localizer.LocalizeUserTitle(_userData.GetTitleText());
+            _userLevelText.text = _userData.GetLevelText();
 
-            _allTimeTMPointsText.text = _myUserData.GetTotalTMPointsText();
-            _todayTMPointsText.text = _myUserData.GetTodayTMPointsText();
-            _challengeTMPointsText.text = _myUserData.GetChallengeTMPointsText();
+            _allTimeTMPointsText.text = _userData.GetTotalTMPointsText();
+            _todayTMPointsText.text = _userData.GetTodayTMPointsText();
+            _challengeTMPointsText.text = _userData.GetChallengeTMPointsText();
 
-            _totalChallengeTMWonText.text = _myUserData.GetTotalChallengeTMWonText();
-            _memberSinceText.text = _myUserData.GetMemberSinceText();
+            _totalChallengeTMWonText.text = _userData.GetTotalChallengeTMWonText();
+            _memberSinceText.text = _userData.GetMemberSinceText();
 
             _profilePicHeaderText.text = $"<#f8913f>{_profileIcons.Count.ToString("#,0", nfi)}</color>";
         }
@@ -125,7 +134,7 @@ namespace WatKhaoWong.UI.Identities
         /// </summary>
         private void RefreshToggleStatusUI()
         {
-            ProfileIconItem target = _myUserData.GetProfileIcon();
+            ProfileIconItem target = _userData.GetProfileIcon();
 
             _profileIcons.ForEach(eachIconUI =>
             {
@@ -142,6 +151,20 @@ namespace WatKhaoWong.UI.Identities
 
 
 
+        #region --Methods-- (Custom PRIVATE) ~Tab~
+        private void RefreshHeaderUI()
+        {
+            _headerText.text = _currentView switch
+            {
+                EAccountPopupView.MyUser => _accountPopup.MyInfoTitleText.GetLocalizedString(),
+                EAccountPopupView.OtherUser => _accountPopup.UserInfoTitleText.GetLocalizedString(),
+                _ => ""
+            };
+        }
+        #endregion
+
+
+
         #region --Methods-- (Subscriber) ~Popup Header UI~
         private void Close() => _accountPopup.OnCloseButtonClick();
         #endregion
@@ -153,8 +176,8 @@ namespace WatKhaoWong.UI.Identities
         {
             if (isOn)
             {
-                _myUserData.UpdateProfileIcon(_icon, selectedProfileIcon, MultiplierRatioForDecorator);
-                _savingWrapper.Save(ECategoryNode.Users, EValueNode.ProfileIconID, selectedProfileIcon.ItemID);
+                _userData.UpdateProfileIcon(_icon, selectedProfileIcon, MultiplierRatioForDecorator);
+                _userData.SaveProfileIcon(selectedProfileIcon);
 
                 _accountPopup.OnAccountProfileChangedByClick();
             }
@@ -163,6 +186,14 @@ namespace WatKhaoWong.UI.Identities
         private void OnModifyButtonClicked()
         {
             _statusText.Show(_accountPopup.StatusInformUser.GetLocalizedString(), _accountPopup.StatusInformUserColor);
+        }
+
+        private void SetupNewView(EAccountPopupView newView, IUserData userData)
+        {
+            _currentView = newView;
+            _userData = userData;
+
+            RefreshUI();
         }
         #endregion
     }

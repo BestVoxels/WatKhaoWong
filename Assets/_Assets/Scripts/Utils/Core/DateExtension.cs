@@ -58,6 +58,25 @@ namespace WatKhaoWong.Utils.Core
         {
             return DateTime.TryParseExact(dateString, OnlyDateFormat, GregorianCulture, DateTimeStyles.None, out result);
         }
+
+        public static int CalculateAge(DateTime birthDate, DateTime nowDate)
+        {
+            // Assume if more than 2400, user meant to be in Buddhism
+            if (birthDate.Year > 2400)
+            {
+                birthDate = birthDate.AddYears(-543);
+            }
+
+            int age = nowDate.Year - birthDate.Year;
+
+            // If CurrentDate NOT YET pass User's Birthday
+            if (nowDate < birthDate.Date.AddYears(age)) // nowDate without .Date is great so we can have TimeStamp data to knows if it passes midnight when compare another one using .Date | .AddYears() is temporary it doesn't actually add to 'birthDay'
+            {
+                age--;
+            }
+
+            return age;
+        }
         #endregion
     }
 }

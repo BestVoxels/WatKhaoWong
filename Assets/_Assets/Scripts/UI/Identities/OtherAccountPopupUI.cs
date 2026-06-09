@@ -2,6 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Identities;
+using WatKhaoWong.Retreats;
 using WatKhaoWong.Utils.Localization;
 
 namespace WatKhaoWong.UI.Identities
@@ -21,6 +22,8 @@ namespace WatKhaoWong.UI.Identities
         [SerializeField] private TMP_Text _userNameText;
         [SerializeField] private TMP_Text _userTitleText;
         [SerializeField] private TMP_Text _userLevelText;
+        [Space]
+        [SerializeField] private Button _userProfileButton;
 
         [Header("User Stats")]
         [SerializeField] private TMP_Text _allTimeTMPointsText;
@@ -28,13 +31,18 @@ namespace WatKhaoWong.UI.Identities
         [SerializeField] private TMP_Text _challengeTMPointsText;
         [SerializeField] private TMP_Text _totalChallengeTMWonText;
         [SerializeField] private TMP_Text _memberSinceText;
+
+        [Header("Settings")]
+        [SerializeField] private GameObject[] _toShowHideOnlyAdmin;
         #endregion
 
 
 
         #region --Fields-- (In Class)
         private IUserData _userData;
+        private MyUserData _myUserData;
         private OtherAccountPopup _otherAccountPopup;
+        private UserInfo _userInfo;
         private Localizer _localizer;
         #endregion
 
@@ -49,10 +57,13 @@ namespace WatKhaoWong.UI.Identities
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _otherAccountPopup = GameObject.FindWithTag("Player").GetComponentInChildren<OtherAccountPopup>();
+            GameObject player = GameObject.FindWithTag("Player");
+            _myUserData = player.GetComponentInChildren<MyUserData>();
+            _otherAccountPopup = player.GetComponentInChildren<OtherAccountPopup>();
             _localizer = FindAnyObjectByType<Localizer>();
-
+            _userInfo = player.GetComponentInChildren<UserInfo>();
             _closeButton.onClick.AddListener(Close);
+            _userProfileButton.onClick.AddListener(OnUserProfileButtonClicked);
         }
         #endregion
 
@@ -84,6 +95,16 @@ namespace WatKhaoWong.UI.Identities
 
             _totalChallengeTMWonText.text = _userData.GetTotalChallengeTMWonText();
             _memberSinceText.text = _userData.GetMemberSinceText();
+
+            ShowHideUIByRole();
+        }
+
+        private void ShowHideUIByRole()
+        {
+            foreach (GameObject each in _toShowHideOnlyAdmin)
+            {
+                each.SetActive(_myUserData.GetRole() == EUserRole.Admin); // use '_myUserData' because we want to know if current user is Admin not the one that get clicked.
+            }
         }
         #endregion
 
@@ -91,6 +112,17 @@ namespace WatKhaoWong.UI.Identities
 
         #region --Methods-- (Subscriber) ~Popup Header UI~
         private void Close() => _otherAccountPopup.OnCloseButtonClick();
+        #endregion
+
+
+
+        #region --Methods-- (Subscriber)
+        private void OnUserProfileButtonClicked()
+        {
+            _otherAccountPopup.OnUserProfileButtonClick();
+
+            _userInfo.Setup(_userData);
+        }
         #endregion
     }
 }

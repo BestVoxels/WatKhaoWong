@@ -31,6 +31,7 @@ namespace WatKhaoWong.UI.Retreats
         #region --Fields-- (In Class)
         private static GameObject s_curEditRowUI;
         private bool _isInitialized = false;
+        private bool _isEditing = false;
 
         private UserInfo _userInfo;
         private StayEntryRow _stayEntryRow;
@@ -108,6 +109,8 @@ namespace WatKhaoWong.UI.Retreats
 
         public void Setup(StayEntry stayEntry, string keyId, short rowIndex = -1)
         {
+            Initialize(); // Incase Awake() got disabled in the beginning.
+
             _resultStayEntry = stayEntry;
             _resultKeyId = keyId;
             _rowIndex = rowIndex;
@@ -137,11 +140,11 @@ namespace WatKhaoWong.UI.Retreats
                 _stayEntryRow.ClearOnUpdatedToServerSubscribers();
 
             // then Subscribe again.
-            _setTimePopup.OnValidated += (DateTime start, DateTime end) => { UpdateTextOnButtonSetTime(start, end); ShowHideBuildingAndRoomUI(); };
+            _setTimePopup.OnValidated += (DateTime start, DateTime end) => { UpdateTextOnButtonSetTime(start, end); ShowHideBuildingAndRoomUI(IsStayingOvernightFromUI()); };
             if (!IsAdderRow())
             {
+                // Put it here because it needs to Resubscribe Again & Again
                 _stayEntryRow.OnUpdatedOnServer += (stayEntry, stayStatus) => { RefreshUIWithServerData(stayEntry, stayStatus); _accommodationFormUI.RefreshUIWithServerData(stayEntry, stayStatus); };
-                //_stayEntryRow.OnUpdatedOnServer += ; // Put it here because it needs to Resubscribe Again & Again
             }
         }
 
@@ -150,6 +153,8 @@ namespace WatKhaoWong.UI.Retreats
         private void RefreshUI()
         {
             ShowResultTextUI();
+
+            UpdateShowHideUI();
         }
 
         private void SetupIndexResultFromDropdown()
@@ -222,13 +227,13 @@ namespace WatKhaoWong.UI.Retreats
             _stayEntryRow = player.GetComponentInChildren<StayEntryRow>();
             _setTimePopup = player.GetComponentInChildren<AccommodationSetTimePopup>();
             _myUserData = player.GetComponentInChildren<MyUserData>();
-            _localizer = FindAnyObjectByType<Localizer>();
+            _localizer = FindAnyObjectByType<Localizer>(FindObjectsInactive.Include);
             _inputFieldValidator = FindAnyObjectByType<InputFieldValidator>();
             _accommodationFormUI = FindAnyObjectByType<AccommodationFormUI>(FindObjectsInactive.Include);
 
             if (!IsAdderRow())
             {
-                _editButton.onClick.AddListener(ToggleEditingUI);
+                _editButton.onClick.AddListener(() => { _isEditing = !_isEditing; ToggleEditingUI(); });
                 _deleteButton.onClick.AddListener(DeleteButton);
 
                 _userInfo.OnModeChanged += ShowModifierPanelUI; // put here so it continues to works event when on PersonalInfo, GenearlInfo tabs
@@ -300,13 +305,41 @@ namespace WatKhaoWong.UI.Retreats
 
             // HasCar & PlateNumber
             _ui.hasCarResultText.text = _localizer.LocalizeHasCar(_resultStayEntry.Transportation.HasCar);
-            if (GetHasCar() == EHasCar.Has)
+            if (IsHasCarFromResult())
                 _ui.plateNumberResultText.text = _resultStayEntry.Transportation.CarPlateNumber;
             else
                 _ui.plateNumberResultText.text = _userInfo.NoDataText.GetLocalizedString();
         }
 
-        private EHasCar GetHasCar() => (EHasCar)Enum.Parse(typeof(EHasCar), _resultStayEntry.Transportation.HasCar);
+        private void UpdateShowHideUI()
+        {
+            if (_isEditing || IsAdderRow())
+            {
+                ShowHidePlateNumber(IsHasCarFromUI());
+                ShowHideBuildingAndRoomUI(true); // This always has to reset anyways since popup UI gets reset
+            }
+            else
+            {
+                ShowHidePlateNumber(IsHasCarFromResult());
+                ShowHideBuildingAndRoomUI(IsStayingOvernightFromResult());
+            }
+        }
+
+        private bool IsHasCarFromResult()
+        {
+            if (_resultStayEntry == null)
+                return true;
+
+            return ((EHasCar)Enum.Parse(typeof(EHasCar), _resultStayEntry.Transportation.HasCar)) == EHasCar.Has;
+        }
+
+        private bool IsStayingOvernightFromResult()
+        {
+            if (_resultStayEntry == null)
+                return true;
+
+            return ((EIsStaying)Enum.Parse(typeof(EIsStaying), _resultStayEntry.StayInfo.IsStaying)) == EIsStaying.Staying;
+        }
         #endregion
 
 
@@ -321,8 +354,8 @@ namespace WatKhaoWong.UI.Retreats
                 RevertTextOnButtonSetTime();
                 status = false;
             }
-            if (!IsPendingRow() && IsStayingOvernight() && !IsRoomNumberValidated()) status = false;
-            if (_ui.hasCarSwitch.isOn && !IsPlateNumberValidated()) status = false;
+            if (!IsPendingRow() && IsStayingOvernightFromUI() && !IsRoomNumberValidated()) status = false;
+            if (IsHasCarFromUI() && !IsPlateNumberValidated()) status = false;
 
             return status;
         }
@@ -337,7 +370,9 @@ namespace WatKhaoWong.UI.Retreats
 
         private bool IsSetTimeValidated() => _setTimePopup.ValidateSetTimePopup(GetAllowPastDate());
 
-        private bool IsStayingOvernight() => _setTimePopup.GetIsStayingOvernight() == EIsStaying.Staying;
+        private bool IsStayingOvernightFromUI() => _setTimePopup.GetIsStayingOvernight() == EIsStaying.Staying;
+
+        private bool IsHasCarFromUI() => _ui.hasCarSwitch.isOn;
         #endregion
 
 
@@ -347,40 +382,47 @@ namespace WatKhaoWong.UI.Retreats
         {
             if (IsAdderRow()) return;
             if (!IsAdmin()) return;
-
+            
             bool isEditing = mode == EViewEditMode.Edit;
 
             _modifierButtonsPanel.SetActive(isEditing);
+
+            // Disabled IsEditing and its UI back when EViewEditMode is 'View'
+            if (mode == EViewEditMode.View)
+            {
+                _isEditing = false;
+                ToggleEditingUI();
+            }
         }
 
         private void ToggleEditingUI()
         {
-            bool isEditing = _ui.activityDropdown.gameObject.activeSelf;
+            UpdateShowHideUI();
 
-            _ui.activityDropdown.gameObject.SetActive(!isEditing);
-            _ui.setTimeButton.gameObject.SetActive(!isEditing);
-            _ui.hasCarSwitch.gameObject.SetActive(!isEditing);
-            _ui.plateNumberInputField.gameObject.SetActive(!isEditing);
+            _ui.activityDropdown.gameObject.SetActive(_isEditing);
+            _ui.setTimeButton.gameObject.SetActive(_isEditing);
+            _ui.hasCarSwitch.gameObject.SetActive(_isEditing);
+            _ui.plateNumberInputField.gameObject.SetActive(_isEditing);
 
-            _ui.activityResultText.gameObject.SetActive(isEditing);
-            _ui.setTimeResultText.gameObject.SetActive(isEditing);
-            _ui.hasCarResultText.gameObject.SetActive(isEditing);
-            _ui.plateNumberResultText.gameObject.SetActive(isEditing);
+            _ui.activityResultText.gameObject.SetActive(!_isEditing);
+            _ui.setTimeResultText.gameObject.SetActive(!_isEditing);
+            _ui.hasCarResultText.gameObject.SetActive(!_isEditing);
+            _ui.plateNumberResultText.gameObject.SetActive(!_isEditing);
 
             if (!IsPendingRow())
             {
-                _ui.buildingDropdown.gameObject.SetActive(!isEditing);
-                _ui.roomNumberInputField.gameObject.SetActive(!isEditing);
-                _ui.notesInputField.gameObject.SetActive(!isEditing);
-                _ui.reputationDropdown.gameObject.SetActive(!isEditing);
+                _ui.buildingDropdown.gameObject.SetActive(_isEditing);
+                _ui.roomNumberInputField.gameObject.SetActive(_isEditing);
+                _ui.notesInputField.gameObject.SetActive(_isEditing);
+                _ui.reputationDropdown.gameObject.SetActive(_isEditing);
 
-                _ui.buildingResultText.gameObject.SetActive(isEditing);
-                _ui.roomNumberResultText.gameObject.SetActive(isEditing);
-                _ui.notesResultText.gameObject.SetActive(isEditing);
-                _ui.reputationResultText.gameObject.SetActive(isEditing);
+                _ui.buildingResultText.gameObject.SetActive(!_isEditing);
+                _ui.roomNumberResultText.gameObject.SetActive(!_isEditing);
+                _ui.notesResultText.gameObject.SetActive(!_isEditing);
+                _ui.reputationResultText.gameObject.SetActive(!_isEditing);
             }
 
-            _ui.confirmPanelGameObject.gameObject.SetActive(!isEditing);
+            _ui.confirmPanelGameObject.gameObject.SetActive(_isEditing);
         }
 
         private void ActivityDropdown(int index)
@@ -420,12 +462,12 @@ namespace WatKhaoWong.UI.Retreats
             _reputationIndex = (byte)index;
         }
 
-        private void ShowHideBuildingAndRoomUI()
+        private void ShowHideBuildingAndRoomUI(bool isStaying)
         {
             if (IsPendingRow()) return;
             
-            _ui.buildingMenuGameObject.SetActive(IsStayingOvernight());
-            _ui.roomNumberMenuGameObject.SetActive(IsStayingOvernight());
+            _ui.buildingMenuGameObject.SetActive(isStaying);
+            _ui.roomNumberMenuGameObject.SetActive(isStaying);
         }
 
         private void RefreshUIWithServerData(StayEntry stayEntry, EStayStatus? stayStatus)
@@ -434,7 +476,7 @@ namespace WatKhaoWong.UI.Retreats
 
             _resultStayEntry = stayEntry;
 
-            ShowResultTextUI();
+            RefreshUI();
         }
 
         private void Confirm()
@@ -449,7 +491,7 @@ namespace WatKhaoWong.UI.Retreats
                     rowType = _rowType
                 };
 
-                EHasCar hasCarData = _ui.hasCarSwitch.isOn ? EHasCar.Has : EHasCar.None;
+                EHasCar hasCarData = IsHasCarFromUI() ? EHasCar.Has : EHasCar.None;
 
                 if (!IsPendingRow())
                     _notes = _ui.notesInputField.text;

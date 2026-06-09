@@ -5,6 +5,7 @@ using UnityEngine.Events;
 using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.SceneManagement;
+using WatKhaoWong.Identities;
 
 namespace WatKhaoWong.Retreats
 {
@@ -50,6 +51,12 @@ namespace WatKhaoWong.Retreats
         [field: SerializeField] public Color32 SelectedColor { get; private set; }
         [field: SerializeField] public Color32 UnselectedColor { get; private set; }
 
+        [field: Header("User Info - Title Text")]
+        [field: SerializeField] public LocalizedString MyProfileTitleText { get; private set; }
+        [field: SerializeField] public LocalizedString EditMyProfileTitleText { get; private set; }
+        [field: SerializeField] public LocalizedString UserProfileTitleText { get; private set; }
+        [field: SerializeField] public LocalizedString EditUserProfileTitleText { get; private set; }
+
         [field: Header("User Info - Edit/View Button")]
         [field: SerializeField] public LocalizedString EditButtonText { get; private set; }
         [field: SerializeField] public LocalizedString ViewButtonText { get; private set; }
@@ -61,8 +68,10 @@ namespace WatKhaoWong.Retreats
         [Header("User Info UI Event")]
         [SerializeField] private UnityEvent _onViewEditButtonClick;
         [Space]
-        [SerializeField] private UnityEvent _onUserProfileClick;
-        [SerializeField] private UnityEvent _onUserIDCardClick;
+        [SerializeField] private UnityEvent _onUserProfileClickAsMyself;
+        [SerializeField] private UnityEvent _onUserProfileClickAsOtherUser;
+        [SerializeField] private UnityEvent _onUserIDCardClickAsMyself;
+        [SerializeField] private UnityEvent _onUserIDCardClickAsOtherUser;
         #endregion
 
 
@@ -70,6 +79,7 @@ namespace WatKhaoWong.Retreats
         #region --Events-- (Delegate as Action)
         public event Action OnTabChanged;
         public event Action<EViewEditMode> OnModeChanged;
+        public event Action<EUserInfoView, IUserData> OnViewSetup;
         #endregion
 
 
@@ -81,6 +91,9 @@ namespace WatKhaoWong.Retreats
 
 
         #region --Fields-- (In Class)
+        private EUserInfoView _currentView;
+
+        private MyUserData _myUserData;
         private SavingWrapper _savingWrapper;
         #endregion
 
@@ -117,14 +130,21 @@ namespace WatKhaoWong.Retreats
         #region --Methods-- (Built In)
         private void Awake()
         {
+            GameObject player = GameObject.FindWithTag("Player");
+            _myUserData = player.GetComponentInChildren<MyUserData>();
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
+        }
+
+        private void Start()
+        {
+            ShowMyUser();
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PUBLIC) ~History Row~
-        public async IAsyncEnumerable<(StayEntry, string)> GetRows()
+        public async IAsyncEnumerable<(StayEntry, string)> GetRows(string userID)
         {
             //+Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.
             //+Prevent some LeaderboardUI GameObject show Empty Data (No Rows), solve by make LeaderboardUI GameObject that comes after wait first then loads when Async is done.
@@ -132,7 +152,7 @@ namespace WatKhaoWong.Retreats
 
             IsAsyncRunning = true;
 
-            IAsyncEnumerable<(StayEntry, string)> rows = _savingWrapper.LoadPastEntryFromMyUser();
+            IAsyncEnumerable<(StayEntry, string)> rows = _savingWrapper.LoadPastEntryFromUser(userID);
 
             if (rows == null)
             {
@@ -158,20 +178,54 @@ namespace WatKhaoWong.Retreats
             _onViewEditButtonClick?.Invoke();
         }
 
-        public void OnUserProfileClick()
+        public void OnUserProfileClickAsMySelf()
         {
-            _onUserProfileClick?.Invoke();
+            _onUserProfileClickAsMyself?.Invoke();
         }
 
-        public void OnUserIDCardClick()
+        public void OnUserProfileClickAsOtherUser()
         {
-            _onUserIDCardClick?.Invoke();
+            _onUserProfileClickAsOtherUser?.Invoke();
+        }
+
+        public void OnUserIDCardClickAsMyself()
+        {
+            print("User ID CARD clicked as Myself");
+
+            _onUserIDCardClickAsMyself?.Invoke();
+        }
+
+        public void OnUserIDCardClickAsOtherUser()
+        {
+            print("User ID CARD clicked as Other User");
+
+            _onUserIDCardClickAsOtherUser?.Invoke();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~Page Setup~
+        public void Setup(IUserData userData)
+        {
+            OnViewSetup?.Invoke(_currentView, userData);
         }
         #endregion
 
 
 
         #region --Methods-- (Subscriber) ~UnityEvent~
+        public void ShowMyUser()
+        {
+            _currentView = EUserInfoView.MyUser;
+
+            Setup(_myUserData);
+        }
+
+        public void ShowOtherUser()
+        {
+            _currentView = EUserInfoView.OtherUser;
+        }
         #endregion
     }
 }

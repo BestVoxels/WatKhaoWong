@@ -27,6 +27,8 @@ namespace WatKhaoWong.Utils.Localization
         [Header("Formatter")]
         [SerializeField] private LocalizedString _dateEndsOn;
         [SerializeField] private string _dayFormat;
+        [Space]
+        [SerializeField] private LocalizedString _ageText;
         #endregion
 
 
@@ -35,6 +37,11 @@ namespace WatKhaoWong.Utils.Localization
         public string FormatBanEndDate(DateTime endDate)
         {
             return $"({_dateEndsOn.GetLocalizedString()} : {endDate.ToGregorianString(_dayFormat)})";
+        }
+
+        public string FormatAge(int age)
+        {
+            return _ageText.GetLocalizedString(age);
         }
         #endregion
 

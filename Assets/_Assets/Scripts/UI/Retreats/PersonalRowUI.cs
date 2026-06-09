@@ -190,6 +190,8 @@ namespace WatKhaoWong.UI.Retreats
         private PersonalRow _personalRow;
         private MyUserData _myUserData;
         private UserInfo _userInfo;
+        private IUserData _userData;
+        private EUserInfoView _currentView = EUserInfoView.MyUser;
         private InputFieldValidator _inputFieldValidator;
         #endregion
 
@@ -204,7 +206,10 @@ namespace WatKhaoWong.UI.Retreats
             _userInfo = player.GetComponentInChildren<UserInfo>();
             _inputFieldValidator = FindAnyObjectByType<InputFieldValidator>();
 
-            _userInfo.OnModeChanged += HandleUIByEditMode; // put here so it continues to works even when on PersonalInfo, GenearlInfo tabs
+            _userData = _myUserData;
+
+            _userInfo.OnModeChanged += (eEditMode) => { RefreshUI(); HandleUIByEditMode(eEditMode); }; // put here so it continues to works even when on PersonalInfo, GenearlInfo tabs
+            _userInfo.OnViewSetup += SetupNewView; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
 
             _personalRow.OnNationalUploadedToServer += UploadNationalToServer;
             _personalRow.OnPassportUploadedToServer += UploadPassportToServer;
@@ -290,7 +295,8 @@ namespace WatKhaoWong.UI.Retreats
         #region --Methods-- (Custom PRIVATE) ~Viewer~
         private async void SetTextWhenNationalIDExists()
         {
-            _nationalIDInfo = await _myUserData.GetDataNationalIDInfo();
+            _nationalIDInfo = await _userData.GetDataNationalIDInfo();
+            ResetNationalIDText();
             ShowHideIDCardSectionUI(true);
 
             if (_nationalIDInfo == null)
@@ -317,7 +323,8 @@ namespace WatKhaoWong.UI.Retreats
 
         private async void SetTextWhenPassportExists()
         {
-            _passportInfo = await _myUserData.GetDataPassportInfo();
+            _passportInfo = await _userData.GetDataPassportInfo();
+            ResetPassportText();
             ShowHidePassportSectionUI(true);
 
             if (_passportInfo == null)
@@ -338,7 +345,8 @@ namespace WatKhaoWong.UI.Retreats
 
         private async void SetTextWhenGeneralInfoExists()
         {
-            _generalInfo = await _myUserData.GetDataGeneralInfo();
+            _generalInfo = await _userData.GetDataGeneralInfo();
+            ResetGeneralInfoText();
 
             if (_generalInfo == null) return;
 
@@ -352,7 +360,7 @@ namespace WatKhaoWong.UI.Retreats
                 _urgentPhoneNumberRT.text = _generalInfo.EmergencyContact.PhoneNumber;
                 _urgentPhoneRelateRT.text = _generalInfo.EmergencyContact.Relation;
             }
-
+            
             // -Social Media-
             if (_generalInfo.SocialAccounts != null)
             {
@@ -365,16 +373,63 @@ namespace WatKhaoWong.UI.Retreats
 
         private void ShowHideIDCardSectionUI(bool toShow)
         {
-            if (toShow == false && IsAdmin()) return;
+            if (_userInfo.ViewEditMode == EViewEditMode.Edit && IsAdmin()) toShow = true;
 
             _iDCardSectionToShowHide.SetActive(toShow);
         }
 
         private void ShowHidePassportSectionUI(bool toShow)
         {
-            if (toShow == false && IsAdmin()) return;
+            if (_userInfo.ViewEditMode == EViewEditMode.Edit && IsAdmin()) toShow = true;
 
             _passportSectionToShowHide.SetActive(toShow);
+        }
+
+        private void ResetNationalIDText()
+        {
+            // -National ID-
+            _nationalIdRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _genderRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _prefixRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _fNameRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _lNameRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _birthDateRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _issueDateRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _expireDateRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _houseNumberRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _subDistrictRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _districtRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _provinceRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _countryRT.text = _userInfo.NoDataText.GetLocalizedString();
+        }
+
+        private void ResetPassportText()
+        {
+            // -Passport-
+            _ppNumberRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _ppNationalityRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _ppGenderRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _ppFullNameRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _ppBirthDateRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _ppIssueDateRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _ppExpireDateRT.text = _userInfo.NoDataText.GetLocalizedString();
+        }
+
+        private void ResetGeneralInfoText()
+        {
+            // -My Info-
+            _phoneNumberRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _medicalRT.text = _userInfo.NoDataText.GetLocalizedString();
+
+            // -Emergency Contact-
+            _urgentPhoneNumberRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _urgentPhoneRelateRT.text = _userInfo.NoDataText.GetLocalizedString();
+
+            // -Social Media-
+            _lineRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _facebookRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _igRT.text = _userInfo.NoDataText.GetLocalizedString();
+            _tiktokRT.text = _userInfo.NoDataText.GetLocalizedString();
         }
         #endregion
 
@@ -453,6 +508,14 @@ namespace WatKhaoWong.UI.Retreats
 
 
         #region --Methods-- (Subscriber)
+        private void SetupNewView(EUserInfoView newView, IUserData userData)
+        {
+            _currentView = newView;
+            _userData = userData;
+
+            RefreshUI();
+        }
+
         private void HandleUIByEditMode(EViewEditMode mode)
         {
             bool isEditing = mode == EViewEditMode.Edit;
@@ -648,7 +711,7 @@ namespace WatKhaoWong.UI.Retreats
         {
             if (ValidateIdCard())
             {
-                _personalRow.OnIdCardValidateSucceeded(_nationalId, _gender, _prefix, _fName, _lName, _birthDate, _issueDate, _expireDate, _houseNumber, _subDistrict, _district, _province, _country);
+                _personalRow.OnIdCardValidateSucceeded(_userData, _nationalId, _gender, _prefix, _fName, _lName, _birthDate, _issueDate, _expireDate, _houseNumber, _subDistrict, _district, _province, _country);
             }
             else
             {
@@ -700,7 +763,7 @@ namespace WatKhaoWong.UI.Retreats
                     ExpireDate = _ppExpireDate
                 };
 
-                _personalRow.OnPassportValidateSucceeded(passportInfo);
+                _personalRow.OnPassportValidateSucceeded(_userData, passportInfo);
             }
             else
             {
@@ -725,7 +788,7 @@ namespace WatKhaoWong.UI.Retreats
         {
             if (ValidateMyInfo())
             {
-                _personalRow.OnMyInfoValidateSucceeded(_phoneNumber, _medical);
+                _personalRow.OnMyInfoValidateSucceeded(_userData, _phoneNumber, _medical);
             }
             else
             {
@@ -750,7 +813,7 @@ namespace WatKhaoWong.UI.Retreats
         {
             if (ValidateEmergencyContact())
             {
-                _personalRow.OnEmergencyContactValidateSucceeded(_urgentPhoneNumber, _urgentPhoneRelate);
+                _personalRow.OnEmergencyContactValidateSucceeded(_userData, _urgentPhoneNumber, _urgentPhoneRelate);
             }
             else
             {
@@ -761,7 +824,7 @@ namespace WatKhaoWong.UI.Retreats
         // -Social Media-
         private void ConfirmSocialMedia()
         {
-            _personalRow.OnSocialMediaValidateSucceeded(_line, _facebook, _ig, _tiktok);
+            _personalRow.OnSocialMediaValidateSucceeded(_userData, _line, _facebook, _ig, _tiktok);
         }
         #endregion
     }

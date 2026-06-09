@@ -43,6 +43,14 @@ namespace WatKhaoWong.Attributes
                 _iShowHidePagePopupUI.OpenPage(0f);
         }
 
+        public void ClosePreviousPage()
+        {
+            if (_isOpenOpposite)
+                _iShowHidePagePopupUI.ClosePageOpposite(0f);
+            else
+                _iShowHidePagePopupUI.ClosePage(0f);
+        }
+
         public void SetPreviousPageToOpen(GameObject showHidePagePopupUI)
         {
             _iShowHidePagePopupUI = showHidePagePopupUI.GetComponent<IShowHidePagePopupUI>();
