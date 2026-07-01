@@ -13,6 +13,12 @@ namespace WatKhaoWong.CorePopups
         [field: Space]
         [field: SerializeField] public LocalizedString InfoText { get; private set; }
         [field: SerializeField] public Color32 InfoTextColor { get; private set; }
+        [field: Space]
+        [field: SerializeField] public LocalizedString CancelText { get; private set; }
+        [field: SerializeField] public LocalizedString ConfirmText { get; private set; }
+        [field: Space]
+        [field: SerializeField] public Color32 CancelButtonColor { get; private set; } = default;
+        [field: SerializeField] public Color32 ConfirmButtonColor { get; private set; } = default;
         #endregion
 
 

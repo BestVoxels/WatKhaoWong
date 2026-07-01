@@ -567,6 +567,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4284440415
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -1515,6 +1539,143 @@ MonoBehaviour:
   _popups:
   - animator: {fileID: 0}
     isShowOnStart: 0
+--- !u!1 &1935610722974231547
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4509219297408738130}
+  - component: {fileID: 1989699708828445420}
+  m_Layer: 0
+  m_Name: '[Used App Before] Confirm Popup'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &4509219297408738130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1935610722974231547}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8957285791042727729}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1989699708828445420
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1935610722974231547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a47fa6504fc44f59da0d81b6d6e1ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onCloseButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  <TitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 137812603793563648
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 137813847190790144
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoTextColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4283651013
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 137824527449055232
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 137824572609126400
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4287001699
+  _onCancelButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onConfirmButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1978769299464423222
 GameObject:
   m_ObjectHideFlags: 0
@@ -1604,7 +1765,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5139859818429395931}
+      - m_Target: {fileID: 5172958195843342049}
         m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
         m_MethodName: OpenPopup
         m_Mode: 2
@@ -1683,6 +1844,7 @@ Transform:
   - {fileID: 5678461660514629473}
   - {fileID: 6675819335345893483}
   - {fileID: 1131416671213019686}
+  - {fileID: 8957285791042727729}
   - {fileID: 2359309693349905283}
   - {fileID: 2105428144081095887}
   - {fileID: 6154184566422174654}
@@ -1705,7 +1867,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ea9374b509b70f4bba37e4a2ca8cf00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueIdentifier: dd1c2031-8012-46f0-aaea-77f88003db22
+  uniqueIdentifier: 91169173-f18f-4daf-a31a-eb6537348454
 --- !u!82 &1550010843227078331
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2512,6 +2674,104 @@ MonoBehaviour:
     animator: {fileID: 0}
     isShowOnStart: 0
   _popups: []
+--- !u!1 &2519477200568942491
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1315731744438756376}
+  - component: {fileID: 8917335372270887426}
+  m_Layer: 0
+  m_Name: '[Member Exists] Alert Popup'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &1315731744438756376
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2519477200568942491}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8957285791042727729}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8917335372270887426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2519477200568942491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6c0107836b340ef9c8ce4cdc0c5e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onCloseButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  <TitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 2890654539776
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 137811795278553088
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoTextColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4283651013
+  _onAlertButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &2597142764813745737
 GameObject:
   m_ObjectHideFlags: 0
@@ -3118,6 +3378,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4284440415
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -3155,6 +3439,241 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
+--- !u!1 &2842785728157367184
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5463598666437757915}
+  - component: {fileID: 1715382403949852775}
+  m_Layer: 0
+  m_Name: '[New Account Created] Alert Popup'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &5463598666437757915
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2842785728157367184}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8957285791042727729}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1715382403949852775
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2842785728157367184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6c0107836b340ef9c8ce4cdc0c5e2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onCloseButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  <TitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 2890654539776
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 137829426614231040
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoTextColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4284440415
+  _onAlertButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
+--- !u!1 &3010631905250119513
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4361274778468074644}
+  - component: {fileID: 4965956188221595604}
+  m_Layer: 0
+  m_Name: '[Before Confirm] Confirm Popup'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &4361274778468074644
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3010631905250119513}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8957285791042727729}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4965956188221595604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3010631905250119513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a47fa6504fc44f59da0d81b6d6e1ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onCloseButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  <TitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 2890654539776
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 137829405571407872
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoTextColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4283651013
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  _onCancelButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onConfirmButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -3243,6 +3762,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4284440415
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -3530,6 +4073,8 @@ MonoBehaviour:
     isShowOnStart: 0
   - animator: {fileID: 0}
     isShowOnStart: 0
+  - animator: {fileID: 0}
+    isShowOnStart: 0
 --- !u!1 &3500879887283931748
 GameObject:
   m_ObjectHideFlags: 0
@@ -3610,6 +4155,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4283651013
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -3779,6 +4348,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4284440415
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -4108,6 +4701,143 @@ MonoBehaviour:
     animator: {fileID: 0}
     isShowOnStart: 0
   _popups: []
+--- !u!1 &3931519139559890228
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2130344075694943233}
+  - component: {fileID: 1377048023658126027}
+  m_Layer: 0
+  m_Name: '[Cant Find ID] Confirm Popup'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &2130344075694943233
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3931519139559890228}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8957285791042727729}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1377048023658126027
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3931519139559890228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36a47fa6504fc44f59da0d81b6d6e1ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onCloseButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  <TitleText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 137812603793563648
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 137829397472206848
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <InfoTextColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4283651013
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 137829402253713408
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+    m_TableEntryReference:
+      m_KeyId: 137829403948212224
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4287001699
+  _onCancelButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onConfirmButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172958195843342049}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &4015423802478686636
 GameObject:
   m_ObjectHideFlags: 0
@@ -6149,6 +6879,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4284440415
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -6274,6 +7028,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4284440415
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -6729,6 +7507,118 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!1 &5195681312675432531
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8957285791042727729}
+  - component: {fileID: 2173626022081702807}
+  - component: {fileID: 8458208558688556708}
+  m_Layer: 0
+  m_Name: Register System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &8957285791042727729
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5195681312675432531}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1315731744438756376}
+  - {fileID: 4509219297408738130}
+  - {fileID: 2130344075694943233}
+  - {fileID: 4361274778468074644}
+  - {fileID: 5463598666437757915}
+  m_Father: {fileID: 2637654065332200263}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2173626022081702807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5195681312675432531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c7642683b5044a06bfd4d24dace5373, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-WatKhaoWong-Admin::WatKhaoWong.Admin.Register
+  _onBackButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8458208558688556708}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePage
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 395407326740636967}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: OpenPageOpposite
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onChangeLangButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6508334557537320780}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: OpenPopup
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &8458208558688556708
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5195681312675432531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57fcdb414b3242fd9646a8f1842a6b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _getUserDataToCheckIfGuest: 1
+  _page:
+    animator: {fileID: 0}
+    isShowOnStart: 0
+  _dim:
+    animator: {fileID: 0}
+    isShowOnStart: 0
+  _popups: []
 --- !u!1 &5605130862741587945
 GameObject:
   m_ObjectHideFlags: 0
@@ -7032,7 +7922,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5139859818429395931}
+      - m_Target: {fileID: 5172958195843342049}
         m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
         m_MethodName: OpenPopup
         m_Mode: 2
@@ -7143,6 +8033,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4283651013
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -7280,6 +8194,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4283651013
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -7586,7 +8524,7 @@ MonoBehaviour:
   _onCloseButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5139859818429395931}
+      - m_Target: {fileID: 5172958195843342049}
         m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
         m_MethodName: ClosePopup
         m_Mode: 2
@@ -7619,10 +8557,34 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4283651013
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5139859818429395931}
+      - m_Target: {fileID: 5172958195843342049}
         m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
         m_MethodName: ClosePopup
         m_Mode: 2
@@ -7649,7 +8611,7 @@ MonoBehaviour:
   _onConfirmButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5139859818429395931}
+      - m_Target: {fileID: 5172958195843342049}
         m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
         m_MethodName: ClosePopup
         m_Mode: 2
@@ -8973,6 +9935,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4284440415
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -9832,7 +10818,31 @@ MonoBehaviour:
       m_Calls: []
   _onRegisterMemberButtonClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 395407326740636967}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePageOpposite
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8458208558688556708}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: OpenPage
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _statusText: {fileID: 0}
   _image: {fileID: 0}
   references:
@@ -9938,6 +10948,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4283651013
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -10930,6 +11964,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4284440415
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -11294,7 +12352,7 @@ MonoBehaviour:
   _onCloseButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5139859818429395931}
+      - m_Target: {fileID: 5172958195843342049}
         m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
         m_MethodName: ClosePopup
         m_Mode: 2
@@ -11327,10 +12385,34 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4283651013
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5139859818429395931}
+      - m_Target: {fileID: 5172958195843342049}
         m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
         m_MethodName: ClosePopup
         m_Mode: 2
@@ -11357,7 +12439,7 @@ MonoBehaviour:
   _onConfirmButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5139859818429395931}
+      - m_Target: {fileID: 5172958195843342049}
         m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
         m_MethodName: ClosePopup
         m_Mode: 2
@@ -11574,6 +12656,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4284440415
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -12769,6 +13875,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4284440415
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
@@ -12894,6 +14024,30 @@ MonoBehaviour:
   <InfoTextColor>k__BackingField:
     serializedVersion: 2
     rgba: 4284440415
+  <CancelText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <ConfirmText>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CancelButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <ConfirmButtonColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
   _onCancelButtonClick:
     m_PersistentCalls:
       m_Calls:
