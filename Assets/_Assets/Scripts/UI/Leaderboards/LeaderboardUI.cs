@@ -4,8 +4,10 @@ using System.Threading.Tasks;
 using UnityEngine;
 using WatKhaoWong.Leaderboards;
 using WatKhaoWong.Identities;
+using WatKhaoWong.UI.Identities;
 using WatKhaoWong.Challenges;
 using WatKhaoWong.Utils.Core;
+using WatKhaoWong.Utils.Localization;
 
 namespace WatKhaoWong.UI.Leaderboards
 {
@@ -30,6 +32,8 @@ namespace WatKhaoWong.UI.Leaderboards
         private Challenge _challenge;
         private MyUserData _myUserData;
         private RowUIPool _rowUIPool;
+        private GameObject _player;
+        private RowUI.CacheData _rowUICacheData;
         #endregion
 
 
@@ -43,12 +47,13 @@ namespace WatKhaoWong.UI.Leaderboards
         #region --Methods-- (Built In)
         private void Awake()
         {
-            GameObject player = GameObject.FindWithTag("Player");
+            _player = GameObject.FindWithTag("Player");
 
-            _leaderboard = player.GetComponentInChildren<Leaderboard>();
-            _challenge = player.GetComponentInChildren<Challenge>();
-            _myUserData = player.GetComponentInChildren<MyUserData>();
+            _leaderboard = _player.GetComponentInChildren<Leaderboard>();
+            _challenge = _player.GetComponentInChildren<Challenge>();
+            _myUserData = _player.GetComponentInChildren<MyUserData>();
             _rowUIPool = GetComponent<RowUIPool>();
+            InitRowUICacheData();
 
             UIRefresher.OnLeaderboardRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
 
@@ -69,6 +74,17 @@ namespace WatKhaoWong.UI.Leaderboards
         private void InitialSetup()
         {
             SetupFilterButtonsUI();
+        }
+
+        private void InitRowUICacheData()
+        {
+            _rowUICacheData = new RowUI.CacheData
+            {
+                Player = _player,
+                Row = _player.GetComponentInChildren<Row>(),
+                Localizer = FindAnyObjectByType<Localizer>(),
+                OtherAccountPopupUI = FindAnyObjectByType<OtherAccountPopupUI>(FindObjectsInactive.Include),
+            };
         }
         #endregion
 
@@ -98,7 +114,7 @@ namespace WatKhaoWong.UI.Leaderboards
                 RowUI createdPrefab = _rowUIPool.Pool.Get();
 
                 createdPrefab.transform.SetSiblingIndex(rowCounter - 1); // -1 bcuz Index starts at 0.
-                createdPrefab.Setup(otherUserData, rowCounter, _leaderboard.Category, ELeaderboardPresence.Present, _leaderboard.IsLeaderboardExists());
+                createdPrefab.Setup(otherUserData, rowCounter, _leaderboard.Category, ELeaderboardPresence.Present, _leaderboard.IsLeaderboardExists(), _rowUICacheData);
 
                 _activeRowUIs.Add(createdPrefab);
 
@@ -108,7 +124,7 @@ namespace WatKhaoWong.UI.Leaderboards
 
         private void SetupMyRow()
         {
-            _myRowUI.Setup(_myUserData, _leaderboard.GetMyRank(), _leaderboard.Category, _leaderboard.GetMyPresence(), _leaderboard.IsLeaderboardExists());
+            _myRowUI.Setup(_myUserData, _leaderboard.GetMyRank(), _leaderboard.Category, _leaderboard.GetMyPresence(), _leaderboard.IsLeaderboardExists(), _rowUICacheData);
         }
 
         private void ClearRows()

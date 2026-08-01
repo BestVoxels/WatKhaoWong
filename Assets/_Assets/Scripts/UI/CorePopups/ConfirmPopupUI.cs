@@ -64,13 +64,13 @@ namespace WatKhaoWong.UI.CorePopups
             if (!_confirmPopup.CancelText.IsEmpty)
                 _cancelButtonText.text = _confirmPopup.CancelText.GetLocalizedString();
 
-            if (_confirmPopup.CancelButtonColor.r == 0 && _confirmPopup.CancelButtonColor.g == 0 && _confirmPopup.CancelButtonColor.b == 0 && _confirmPopup.CancelButtonColor.a == 0)
+            if (_confirmPopup.CancelButtonColor.r != 0 || _confirmPopup.CancelButtonColor.g != 0 || _confirmPopup.CancelButtonColor.b != 0 || _confirmPopup.CancelButtonColor.a != 0)
                 _cancelButtonImage.color = _confirmPopup.CancelButtonColor;
 
             if (!_confirmPopup.ConfirmText.IsEmpty)
                 _confirmButtonText.text = _confirmPopup.ConfirmText.GetLocalizedString();
 
-            if (_confirmPopup.ConfirmButtonColor.r == 0 && _confirmPopup.ConfirmButtonColor.g == 0 && _confirmPopup.ConfirmButtonColor.b == 0 && _confirmPopup.ConfirmButtonColor.a == 0)
+            if (_confirmPopup.ConfirmButtonColor.r != 0 || _confirmPopup.ConfirmButtonColor.g != 0 || _confirmPopup.ConfirmButtonColor.b != 0 || _confirmPopup.ConfirmButtonColor.a != 0)
                 _confirmButtonImage.color = _confirmPopup.ConfirmButtonColor;
         }
         #endregion

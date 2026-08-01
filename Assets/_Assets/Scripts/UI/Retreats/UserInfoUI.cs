@@ -217,12 +217,12 @@ namespace WatKhaoWong.UI.Retreats
             ClearRows(); //+Prevent duplicates Rows Bug.
 
             short rowCounter = 1;
-            await foreach ((StayEntry StayEntry, string KeyId) each in _userInfo.GetRows(_userData.GetUserKeyID()))
+            await foreach ((StayEntry stayEntry, string keyId) each in _userInfo.GetRows(_userData.GetUserKeyID()))
             {
                 StayEntryRowUI createdPrefab = _rowUIPool.Pool.Get();
 
                 createdPrefab.transform.SetSiblingIndex(rowCounter - 1); // -1 bcuz Index starts at 0.
-                createdPrefab.Setup(each.StayEntry, each.KeyId,  rowCounter);
+                createdPrefab.Setup(each.stayEntry, each.keyId,  rowCounter);
 
                 _activeRowUIs.Add(createdPrefab);
 

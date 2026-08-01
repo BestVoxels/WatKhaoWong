@@ -4,6 +4,8 @@ using UnityEngine.UI;
 using WatKhaoWong.Admin;
 using WatKhaoWong.Retreats;
 using WatKhaoWong.Utils.UI;
+using WatKhaoWong.Identities;
+using WatKhaoWong.SceneManagement;
 
 namespace WatKhaoWong.UI.Admin
 {
@@ -24,11 +26,14 @@ namespace WatKhaoWong.UI.Admin
 
 
         #region --Fields-- (In Class)
+        private StayEntry _stayEntry;
+        private string _keyId;
+        private IUserData _userData;
         private string _notes;
 
         private UserInfo _userInfo;
-        private InputFieldValidator _inputFieldValidator;
         private ApprovalNoPopup _approvalNoPopup;
+        private InputFieldValidator _inputFieldValidator;
         #endregion
 
 
@@ -66,6 +71,17 @@ namespace WatKhaoWong.UI.Admin
 
 
 
+        #region --Methods-- (Custom PUBLIC)
+        public void Setup(StayEntry stayEntry, string keyId, IUserData userData)
+        {
+            _stayEntry = stayEntry;
+            _keyId = keyId;
+            _userData = userData;
+        }
+        #endregion
+
+
+
         #region --Methods-- (Subscriber) ~Popup Header UI~
         private void Close() => _approvalNoPopup.OnCloseButtonClick();
         #endregion
@@ -78,7 +94,7 @@ namespace WatKhaoWong.UI.Admin
         private void Confirm()
         {
             if (Validate())
-                _approvalNoPopup.OnValidateSucceeded();
+                _approvalNoPopup.OnValidateSucceeded(_stayEntry, _keyId, _userData, _notes);
             else
                 _approvalNoPopup.OnValidateFailed();
         }

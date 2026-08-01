@@ -745,6 +745,48 @@ namespace WatKhaoWong.Identities
         {
             _data.UpdateMiniInfo(miniInfoInspector, nationalIDInfo, passportInfo, localizer, serverTime);
         }
+
+
+        // -More Info-
+        public string GetAllUserNameText(NationalIDInfo nationalIDInfo, PassportInfo passportInfo)
+        {
+            return _data.GetAllUserNameText(nationalIDInfo, passportInfo);
+        }
+
+        public string GetAllUserNameTextCombined(NationalIDInfo nationalIDInfo, PassportInfo passportInfo)
+        {
+            return _data.GetAllUserNameTextCombined(nationalIDInfo, passportInfo);
+        }
+
+        public async Task<int> GetAge(NationalIDInfo nationalIDInfo, PassportInfo passportInfo, ServerTime serverTime)
+        {
+            return await _data.GetAge(nationalIDInfo, passportInfo, serverTime);
+        }
+
+        public string GetNationalIDAndPassportNumberCombined(NationalIDInfo nationalIDInfo, PassportInfo passportInfo)
+        {
+            return _data.GetNationalIDAndPassportNumberCombined(nationalIDInfo, passportInfo);
+        }
+        
+        public async Task<string> GetPlateNumberFromActiveStayEntry()
+        {
+            return _data.GetPlateNumber(await GetActiveStayEntry());
+        }
+
+        public async Task<string> GetBuildingNameFromActiveStayEntry(Localizer localizer)
+        {
+            return _data.GetBuildingName(await GetActiveStayEntry(), localizer);
+        }
+
+        public async Task<string> GetRoomNumberFromActiveStayEntry()
+        {
+            return _data.GetRoomNumber(await GetActiveStayEntry());
+        }
+
+        public string GetAccountStatusTextCombined(Localizer localizer)
+        {
+            return _data.GetAccountStatusTextCombined(GetAccountStatus(), localizer);
+        }
         #endregion
 
 

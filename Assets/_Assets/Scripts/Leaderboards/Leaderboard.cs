@@ -94,7 +94,7 @@ namespace WatKhaoWong.Leaderboards
         private MyUserData _myUserData;
         private ServerTime _serverTime;
         private StatusText _statusText;
-        private List<UIState> _uiStates = new List<UIState>();
+        private List<UIStateA> _uiStates = new List<UIStateA>();
         #endregion
 
 
@@ -147,7 +147,7 @@ namespace WatKhaoWong.Leaderboards
 
             foreach (var each in GameObject.FindGameObjectsWithTag("Leaderboard"))
             {
-                _uiStates.Add(each.GetComponentInChildren<UIState>(true));
+                _uiStates.Add(each.GetComponentInChildren<UIStateA>(true));
             }
             
             //_uiStates = FindObjectsByType<UIState>(FindObjectsInactive.Include, FindObjectsSortMode.None); // This way can't filter only "Leaderboard" tag

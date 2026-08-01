@@ -1,4 +1,4 @@
-﻿namespace WatKhaoWong.Retreats
+﻿namespace WatKhaoWong.Utils.Localization
 {
     public enum ETimePeriod
     {

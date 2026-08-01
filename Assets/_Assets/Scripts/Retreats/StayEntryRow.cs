@@ -318,7 +318,7 @@ namespace WatKhaoWong.Retreats
             ActiveStay activeStay = null;
 
             // Check for Time Period
-            ETimePeriod? timePeriod = _userInputData.setTimeData.GetTimePeriod(nowDate);
+            ETimePeriod? timePeriod = DateExtension.GetTimePeriod(_userInputData.setTimeData.startDate, nowDate);
             switch (timePeriod)
             {
                 // --- Past ---

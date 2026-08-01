@@ -1,5 +1,6 @@
 using System;
 using System.Globalization;
+using WatKhaoWong.Utils.Localization;
 
 namespace WatKhaoWong.Utils.Core
 {
@@ -76,6 +77,33 @@ namespace WatKhaoWong.Utils.Core
             }
 
             return age;
+        }
+
+        public static ETimePeriod? GetTimePeriod(string startDateString, DateTime nowDate)
+        {
+            if (!startDateString.TryParseGregorian(out DateTime startDate))
+            {
+                return null;
+            }
+
+            return GetTimePeriod(startDate, nowDate);
+        }
+
+        public static ETimePeriod? GetTimePeriod(DateTime startDate, DateTime nowDate)
+        {
+            if (startDate == default)
+                return null;
+
+            if (startDate.Date < nowDate.Date)
+                return ETimePeriod.Past;
+
+            if (startDate.Date == nowDate.Date)
+                return ETimePeriod.Present;
+
+            if (startDate.Date > nowDate.Date)
+                return ETimePeriod.Future;
+
+            return null;
         }
         #endregion
     }

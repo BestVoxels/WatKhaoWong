@@ -4,8 +4,8 @@ using System.Globalization;
 using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Utils.Localization;
 using WatKhaoWong.SceneManagement;
-using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
+using System.Threading.Tasks;
 
 namespace WatKhaoWong.Identities
 {
@@ -145,7 +145,8 @@ namespace WatKhaoWong.Identities
             // Compute for Status Text
             if (newStatus == null) return;
 
-            oldStatus.infoText.gameObject.SetActive(false);
+            if (oldStatus.infoText != null)
+                oldStatus.infoText.gameObject.SetActive(false);
             if (newStatus.StatusInfo != null)
             {
                 oldStatus.statusText.text = localizer.LocalizeAccountStatus(newStatus.StatusInfo.Status);
@@ -161,11 +162,13 @@ namespace WatKhaoWong.Identities
 
                     case EAccountStatus.BanTemporary:
                         oldStatus.indicatorImage.color = _softRed;
-                        oldStatus.infoText.gameObject.SetActive(true);
+                        if (oldStatus.infoText != null)
+                            oldStatus.infoText.gameObject.SetActive(true);
 
 
                         newStatus.BanEndDate.TryParseGregorian(out DateTime endDate);
-                        oldStatus.infoText.text = localizer.FormatBanEndDate(endDate);
+                        if (oldStatus.infoText != null)
+                            oldStatus.infoText.text = localizer.FormatBanEndDate(endDate);
                         break;
 
                     case EAccountStatus.BanPermanent:
@@ -179,8 +182,9 @@ namespace WatKhaoWong.Identities
             }
 
             // Compute for Additional Notes
-            oldStatus.notesText.gameObject.SetActive(false);
-            if (newStatus.NotesInfo != null)
+            if (oldStatus.notesText != null)
+                oldStatus.notesText.gameObject.SetActive(false);
+            if (newStatus.NotesInfo != null && oldStatus.notesText != null)
             {
                 bool hasNotes = !string.IsNullOrWhiteSpace(newStatus.NotesInfo.Text);
 
@@ -233,6 +237,98 @@ namespace WatKhaoWong.Identities
             // Third IF none exists USE DEFAULT names & hide age
             miniInfoInspector.nameText.text = GetUserNameText();
             miniInfoInspector.ageText.text = string.Empty;
+        }
+
+        internal string GetAllUserNameText(NationalIDInfo nationalIDInfo, PassportInfo passportInfo)
+        {
+            // First CHECK for 'NationalIDInfo'
+            if (nationalIDInfo != null)
+                return $"{nationalIDInfo.Prefix} {nationalIDInfo.FirstName} {nationalIDInfo.LastName}";
+
+            // Second CHECK for 'PassportInfo'
+            if (passportInfo != null)
+                return passportInfo.FullName;
+
+            // Third IF none exists USE DEFAULT names
+            return GetUserNameText();
+        }
+
+        internal string GetAllUserNameTextCombined(NationalIDInfo nationalIDInfo, PassportInfo passportInfo)
+        {
+            string result = GetUserNameText();
+
+            // First CHECK for 'NationalIDInfo'
+            if (nationalIDInfo != null)
+                result += $" {nationalIDInfo.Prefix} {nationalIDInfo.FirstName} {nationalIDInfo.LastName} ";
+
+            // Second CHECK for 'PassportInfo'
+            if (passportInfo != null)
+                result += passportInfo.FullName;
+
+            // Third IF none exists USE DEFAULT names
+            return result;
+        }
+
+        internal async Task<int> GetAge(NationalIDInfo nationalIDInfo, PassportInfo passportInfo, ServerTime serverTime)
+        {
+            // First CHECK for 'NationalIDInfo'
+            if (nationalIDInfo != null && serverTime != null && nationalIDInfo.BirthDate.TryParseGregorianOnlyDateFormat(out DateTime birthDate))
+                return DateExtension.CalculateAge(birthDate, await serverTime.Now());
+
+            // Second CHECK for 'PassportInfo'
+            if (passportInfo != null && serverTime != null && passportInfo.BirthDate.TryParseGregorianOnlyDateFormat(out birthDate))
+                return DateExtension.CalculateAge(birthDate, await serverTime.Now());
+
+            // Third IF none exists NO age
+            return -1;
+        }
+
+        internal string GetNationalIDAndPassportNumberCombined(NationalIDInfo nationalIDInfo, PassportInfo passportInfo)
+        {
+            string result = string.Empty;
+
+            // First CHECK for 'NationalIDInfo'
+            if (nationalIDInfo != null)
+                result += $" {nationalIDInfo.NationalID} ";
+
+            // Second CHECK for 'PassportInfo'
+            if (passportInfo != null)
+                result += passportInfo.PassportNumber;
+
+            return result;
+        }
+
+        internal string GetPlateNumber(StayEntry stayEntry)
+        {
+            if (stayEntry == null || stayEntry.Transportation == null) return null;
+            if ((EHasCar)Enum.Parse(typeof(EHasCar), stayEntry.Transportation.HasCar) == EHasCar.None) return null;
+            if (string.IsNullOrWhiteSpace(stayEntry.Transportation.CarPlateNumber)) return null;
+
+            return stayEntry.Transportation.CarPlateNumber;
+        }
+
+        internal string GetBuildingName(StayEntry stayEntry, Localizer localizer)
+        {
+            if (stayEntry == null || stayEntry.RoomInfo == null) return null;
+            if (string.IsNullOrWhiteSpace(stayEntry.RoomInfo.BuildingName)) return null;
+
+            return localizer.LocalizeBuildingNameLangCombined(stayEntry.RoomInfo.BuildingName);
+        }
+
+        internal string GetRoomNumber(StayEntry stayEntry)
+        {
+            if (stayEntry == null || stayEntry.RoomInfo == null) return null;
+            if (string.IsNullOrWhiteSpace(stayEntry.RoomInfo.RoomNumber)) return null;
+
+            return stayEntry.RoomInfo.RoomNumber;
+        }
+
+        internal string GetAccountStatusTextCombined(AccountStatus accountStatus, Localizer localizer)
+        {
+            if (accountStatus == null || accountStatus.StatusInfo == null) return null;
+            if (string.IsNullOrWhiteSpace(accountStatus.StatusInfo.Status)) return null;
+
+            return localizer.LocalizeAccountStatusLangCombined(accountStatus.StatusInfo.Status);
         }
         #endregion
     }

@@ -74,12 +74,14 @@ namespace WatKhaoWong.Core
             if (string.IsNullOrWhiteSpace(_remoteConfigService.LiveAppVersioniOS) || string.IsNullOrWhiteSpace(_remoteConfigService.InReviewAppVersioniOS))
             {
                 _onAppVersionNotFoundIOS?.Invoke();
+                Debug.LogError("AppVersionNotFoundIOS!");
                 return;
             }
 #elif UNITY_ANDROID
             if (string.IsNullOrWhiteSpace(_remoteConfigService.LiveAppVersionAndroid) || string.IsNullOrWhiteSpace(_remoteConfigService.InReviewAppVersionAndroid))
             {
                 _onAppVersionNotFoundAndroid?.Invoke();
+                Debug.LogError("AppVersionNotFoundAndroid!");
                 return;
             }
 #endif

@@ -1,10 +1,16 @@
-﻿using TMPro;
+﻿using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+using TMPro;
 using Michsky.MUIP;
 using UnityEngine;
 using UnityEngine.UI;
 using WatKhaoWong.Admin;
 using WatKhaoWong.Utils.UI;
 using WatKhaoWong.Retreats;
+using WatKhaoWong.Identities;
+using WatKhaoWong.SceneManagement;
+using WatKhaoWong.Utils.Localization;
 
 namespace WatKhaoWong.UI.Admin
 {
@@ -20,6 +26,9 @@ namespace WatKhaoWong.UI.Admin
         [SerializeField] private TMP_InputField _roomNumberInputField;
         [SerializeField] private InputFieldStatus _roomNumberInputFieldStatus;
         [Space]
+        [SerializeField] private GameObject[] _toShowHideWhenIsStaying;
+        [SerializeField] private GameObject[] _toShowHideWhenNotStaying;
+        [Space]
         [SerializeField] private Button _cancelButton;
         [SerializeField] private Button _confirmButton;
         #endregion
@@ -27,12 +36,17 @@ namespace WatKhaoWong.UI.Admin
 
 
         #region --Fields-- (In Class)
+        private StayEntry _stayEntry;
+        private string _keyId;
+        private IUserData _userData;
         private byte _buildingIndex;
         private string _roomNumber;
 
+        private AccommodationApproval _accommodationApproval;
         private UserInfo _userInfo;
-        private InputFieldValidator _inputFieldValidator;
         private ApprovalYesPopup _approvalYesPopup;
+        private InputFieldValidator _inputFieldValidator;
+        private SavingWrapper _savingWrapper;
         #endregion
 
 
@@ -41,9 +55,11 @@ namespace WatKhaoWong.UI.Admin
         private void Awake()
         {
             GameObject player = GameObject.FindWithTag("Player");
+            _accommodationApproval = player.GetComponentInChildren<AccommodationApproval>();
             _userInfo = player.GetComponentInChildren<UserInfo>();
             _approvalYesPopup = player.GetComponentInChildren<ApprovalYesPopup>();
             _inputFieldValidator = FindAnyObjectByType<InputFieldValidator>();
+            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
 
             _closeButton.onClick.AddListener(Close);
 
@@ -52,13 +68,6 @@ namespace WatKhaoWong.UI.Admin
 
             _buildingDropdown.onValueChanged.AddListener(BuildingDropdown);
         }
-
-        private void OnEnable()
-        {
-            RefreshUI();
-
-            SetupIndexResultFromDropdown();
-        }
         #endregion
 
 
@@ -66,16 +75,16 @@ namespace WatKhaoWong.UI.Admin
         #region --Methods-- (Custom PRIVATE)
         private void RefreshUI()
         {
-            // TODO Find Logic to ShowOfferText if needed. & Update accordingly
-            byte goodReputationAmount = 0;
-            _offerText.text = _approvalYesPopup.OfferText.GetLocalizedString(goodReputationAmount);
+            ToShowOfferText();
+
+            ToShowHideIfIsStaying();
         }
 
         private bool Validate()
         {
             bool status = true;
 
-            if (!IsRoomNumberValidated()) status = false;
+            if (IsStayingOvernight() && !IsRoomNumberValidated()) status = false;
             return status;
         }
 
@@ -86,6 +95,89 @@ namespace WatKhaoWong.UI.Admin
         private void SetupIndexResultFromDropdown()
         {
             _buildingIndex = (byte)_buildingDropdown.index;
+        }
+
+        private async void ToShowOfferText()
+        {
+            _offerText.gameObject.SetActive(false);
+
+            byte goodReputationAmount = await GetGoodReputationAmount();
+            if (goodReputationAmount >= _accommodationApproval.TargetToOffer)
+            {
+                _offerText.gameObject.SetActive(true);
+                _offerText.text = _approvalYesPopup.OfferText.GetLocalizedString(goodReputationAmount);
+            }
+        }
+
+        private void ToShowHideIfIsStaying()
+        {
+            if (IsStayingOvernight())
+            {
+                foreach (GameObject each in _toShowHideWhenIsStaying)
+                    each.SetActive(true);
+
+                foreach (GameObject each in _toShowHideWhenNotStaying)
+                    each.SetActive(false);
+                return;
+            }
+
+            foreach (GameObject each in _toShowHideWhenIsStaying)
+                    each.SetActive(false);
+
+            foreach (GameObject each in _toShowHideWhenNotStaying)
+                each.SetActive(true);
+        }
+
+        private async Task<byte> GetGoodReputationAmount()
+        {            
+            IAsyncEnumerable<(StayEntry, string)> rows = _savingWrapper.LoadPastEntryFromUser(_userData.GetUserKeyID());
+
+            if (rows == null)
+            {
+                Debug.LogError("Error : There is no data on Server. Because 'rows' is null.");
+                return 0;
+            }
+
+            byte goodReputationAmount = 0;
+            await foreach ((StayEntry stayEntry, string keyId) eachData in rows)
+            {
+                Enum.TryParse(eachData.stayEntry.Reputation, true, out EReputation eReputation);
+
+                if (eReputation == EReputation.Good)
+                    goodReputationAmount++;
+            }
+
+            return goodReputationAmount;
+        }
+
+        private bool IsStayingOvernight()
+        {
+            if (_stayEntry == null)
+                return false;
+
+            return ((EIsStaying)Enum.Parse(typeof(EIsStaying), _stayEntry.StayInfo.IsStaying)) == EIsStaying.Staying;
+        }
+
+        private void FilterIsNotStayingData()
+        {
+            if (IsStayingOvernight()) return;
+
+            _roomNumber = null; // 'AccommodationApproval.cs' check if Null
+            _buildingIndex = 0;
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC)
+        public void Setup(StayEntry stayEntry, string keyId, IUserData userData)
+        {
+            _stayEntry = stayEntry;
+            _keyId = keyId;
+            _userData = userData;
+
+            RefreshUI();
+            SetupIndexResultFromDropdown();
         }
         #endregion
 
@@ -108,7 +200,10 @@ namespace WatKhaoWong.UI.Admin
         private void Confirm()
         {
             if (Validate())
-                _approvalYesPopup.OnValidateSucceeded();
+            {
+                FilterIsNotStayingData();
+                _approvalYesPopup.OnValidateSucceeded(_stayEntry, _keyId, _userData, _buildingIndex, _roomNumber);
+            }
             else
                 _approvalYesPopup.OnValidateFailed();
         }

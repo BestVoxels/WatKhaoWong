@@ -76,6 +76,15 @@ namespace WatKhaoWong.Identities
 
         public void UpdateMiniInfo(MiniInfoInspector miniInfoInspector, NationalIDInfo nationalIDInfo, PassportInfo passportInfo, Localizer localizer, ServerTime serverTime);
 
+        public string GetAllUserNameText(NationalIDInfo nationalIDInfo, PassportInfo passportInfo);
+        public string GetAllUserNameTextCombined(NationalIDInfo nationalIDInfo, PassportInfo passportInfo);
+        public Task<int> GetAge(NationalIDInfo nationalIDInfo, PassportInfo passportInfo, ServerTime serverTime);
+        public string GetNationalIDAndPassportNumberCombined(NationalIDInfo nationalIDInfo, PassportInfo passportInfo);
+        public Task<string> GetPlateNumberFromActiveStayEntry();
+        public Task<string> GetBuildingNameFromActiveStayEntry(Localizer localizer);
+        public Task<string> GetRoomNumberFromActiveStayEntry();
+        public string GetAccountStatusTextCombined(Localizer localizer);
+
         // Meditation Retreat  ~SETTER~
         public Task SetDataActiveStay(ActiveStay activeStay);
 

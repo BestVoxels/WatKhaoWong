@@ -66,9 +66,8 @@ namespace WatKhaoWong.UI.Leaderboards
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _row = GameObject.FindWithTag("Player").GetComponentInChildren<Row>();
-
-            _localizer = FindAnyObjectByType<Localizer>();
+            // _row = GameObject.FindWithTag("Player").GetComponentInChildren<Row>();
+            // _localizer = FindAnyObjectByType<Localizer>();
 
             _rowButton.onClick.AddListener(RowClick);
         }
@@ -91,8 +90,8 @@ namespace WatKhaoWong.UI.Leaderboards
         {
             _rowUIPool = rowUIPool;
 
-            _localizer = FindAnyObjectByType<Localizer>();
-            _otherAccountPopupUI = FindAnyObjectByType<OtherAccountPopupUI>(FindObjectsInactive.Include);  // For 'RowType.OtherUser'
+            // _localizer = FindAnyObjectByType<Localizer>();
+            // _otherAccountPopupUI = FindAnyObjectByType<OtherAccountPopupUI>(FindObjectsInactive.Include);  // For 'RowType.OtherUser'
         }
 
         public void Release()
@@ -100,9 +99,13 @@ namespace WatKhaoWong.UI.Leaderboards
             _rowUIPool.Release(this);
         }
 
-        public void Setup(IUserData userdata, ushort rankNumber, ELeaderboardCategory category, ELeaderboardPresence myPresence, bool isLeaderboardExists)
+        public void Setup(IUserData userdata, ushort rankNumber, ELeaderboardCategory category, ELeaderboardPresence myPresence, bool isLeaderboardExists, CacheData cacheData)
         {
             _userData = userdata;
+
+            _row = cacheData.Row;
+            _localizer = cacheData.Localizer;
+            _otherAccountPopupUI = cacheData.OtherAccountPopupUI;
 
             RefreshUI(category, isLeaderboardExists);
 
@@ -211,6 +214,18 @@ namespace WatKhaoWong.UI.Leaderboards
             if (_localizer == null || _userData == null) return;
 
             _titleText.text = _localizer.LocalizeUserTitle(_userData.GetTitleText());
+        }
+        #endregion
+
+
+
+        #region --Classes-- (Custom PUBLIC)
+        public class CacheData
+        {
+            public GameObject Player { get; set; }
+            public Row Row { get; set; }
+            public Localizer Localizer { get; set; }
+            public OtherAccountPopupUI OtherAccountPopupUI { get; set; }
         }
         #endregion
     }

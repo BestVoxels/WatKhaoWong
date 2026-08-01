@@ -259,7 +259,7 @@ namespace WatKhaoWong.UI.Retreats
 
         public void RefreshUIWithServerData(StayEntry stayEntry, EStayStatus? stayStatus)
         {
-            if (stayStatus == EStayStatus.Completed || stayStatus == EStayStatus.Rejected)
+            if (stayStatus == EStayStatus.Completed || stayStatus == EStayStatus.Rejected) // TODO if 'Rejected' this code may have to be changed, assign '_stayEntry' to null and call ShowResultTextsUI();
                 return;
 
             _stayEntry = stayEntry;

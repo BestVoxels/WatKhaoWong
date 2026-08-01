@@ -270,6 +270,26 @@ namespace WatKhaoWong.SceneManagement
             }
         }
 
+        /// <summary>
+        /// Supports "StayRequests" and "ScheduledStay" and "ActiveStay" Category only.
+        /// </summary>
+        public async IAsyncEnumerable<(StayEntry, string)> LoadEntryFromCategory(ECategoryNode categoryNode)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) yield break;
+            if (categoryNode != ECategoryNode.StayRequests && categoryNode != ECategoryNode.ScheduledStay && categoryNode != ECategoryNode.ActiveStay) yield break;
+            // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
+
+            await foreach (DataSnapshot each in _savingSystem.value.LoadChildren(categoryNode.ToString()))
+            {
+                string key = each.Key;
+
+                string jsonString = each.GetRawJsonValue();
+                StayEntry stayEntry = JsonConvert.DeserializeObject<StayEntry>(jsonString);
+
+                yield return (stayEntry, key);
+            }
+        }
+
         public async Task<string> LoadActiveStayKeyIDFromUser(string userID)
         {
             if (userID == null) return null;

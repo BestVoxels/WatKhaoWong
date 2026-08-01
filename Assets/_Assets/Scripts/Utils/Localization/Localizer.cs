@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.Utils.Localization
@@ -56,6 +57,26 @@ namespace WatKhaoWong.Utils.Localization
             return eAccountStatusText;
         }
 
+        public string LocalizeAccountStatusLangCombined(string eAccountStatusText)
+        {
+            Locale thai = LocalizationSettings.AvailableLocales.GetLocale("th");
+            Locale english = LocalizationSettings.AvailableLocales.GetLocale("en");
+
+            string result = eAccountStatusText;
+
+            if (Enum.TryParse(eAccountStatusText, true, out EAccountStatus accountStatus))
+            {
+                LocalizedAccountStatusEntry firstMatch = _LocalizedAccountStatusEntries.First(e => e.accountStatus == accountStatus);
+                
+                var table = firstMatch.localizedString.TableReference;
+                var entry = firstMatch.localizedString.TableEntryReference;
+
+                result = $"{LocalizationSettings.StringDatabase.GetLocalizedString(table, entry, thai)} {LocalizationSettings.StringDatabase.GetLocalizedString(table, entry, english)}";
+            }
+
+            return result;
+        }
+
         public string LocalizeUserTitle(string eTitleText)
         {
             if (Enum.TryParse(eTitleText, true, out EUserTitle title))
@@ -78,6 +99,26 @@ namespace WatKhaoWong.Utils.Localization
                 return _LocalizedBuildingNameEntries.First(e => e.buildingName == buildingName).localizedString.GetLocalizedString();
 
             return eBuildingNameText;
+        }
+
+        public string LocalizeBuildingNameLangCombined(string eBuildingNameText)
+        {
+            Locale thai = LocalizationSettings.AvailableLocales.GetLocale("th");
+            Locale english = LocalizationSettings.AvailableLocales.GetLocale("en");
+
+            string result = eBuildingNameText;
+
+            if (Enum.TryParse(eBuildingNameText, true, out EBuildingName buildingName))
+            {
+                LocalizedBuildingNameEntry firstMatch = _LocalizedBuildingNameEntries.First(e => e.buildingName == buildingName);
+                
+                var table = firstMatch.localizedString.TableReference;
+                var entry = firstMatch.localizedString.TableEntryReference;
+
+                result = $"{LocalizationSettings.StringDatabase.GetLocalizedString(table, entry, thai)} {LocalizationSettings.StringDatabase.GetLocalizedString(table, entry, english)}";
+            }
+
+            return result;
         }
 
         public string LocalizeHasCar(string eHasCarText)

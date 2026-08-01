@@ -73,13 +73,12 @@ GameObject:
   m_Component:
   - component: {fileID: 1034419732397684569}
   - component: {fileID: 812278999171910611}
-  - component: {fileID: 1753165992578704759}
-  - component: {fileID: 8327161962850753886}
-  - component: {fileID: 4547055691273789791}
-  - component: {fileID: 8618476284205863882}
+  - component: {fileID: 8984748509714836830}
+  - component: {fileID: 5208112454682055429}
+  - component: {fileID: 4081185641049032350}
   m_Layer: 5
   m_Name: Approval Board
-  m_TagString: Leaderboard
+  m_TagString: ApprovalBoard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
@@ -126,7 +125,7 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!114 &1753165992578704759
+--- !u!114 &8984748509714836830
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -135,16 +134,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 2399303655008984333}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a55f6e1621c042249dfdedafab6958b, type: 3}
+  m_Script: {fileID: 11500000, guid: a0e5f208f528241f3b24b1e6f2b44b81, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  _rowPrefab: {fileID: 100224748807216795, guid: e137ff56481694b909c5ad2f366be7fd,
+  m_EditorClassIdentifier: Assembly-WatKhaoWong-UI::WatKhaoWong.UI.Admin.ApprovalRowUIPool
+  _rowPrefab: {fileID: 5901937357102163826, guid: 9ed4d97b9d4264d168ee306a4435dcd3,
     type: 3}
   _spawnParent: {fileID: 3279790014159123162}
   _isClearExistPrefabs: 1
-  _poolSize: 100
+  _poolSize: 50
   _preWarmOnStart: 0
---- !u!114 &8327161962850753886
+--- !u!114 &5208112454682055429
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,14 +152,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2399303655008984333}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6fb6a62cdfba4efaab2185367982dab, type: 3}
+  m_Script: {fileID: 11500000, guid: a0d7b12e429ff4c76a797a87d4f366f5, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-WatKhaoWong-UI::WatKhaoWong.UI.Leaderboards.ApprovalBoardUI
   _dataIndicatorText: {fileID: 6347139456388486387}
-  _countDownBannerText: {fileID: 0}
   _tabsTransform: {fileID: 216798318203420418}
-  _myRowUI: {fileID: 0}
---- !u!114 &4547055691273789791
+--- !u!114 &4081185641049032350
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -169,26 +166,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2399303655008984333}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 083fcd51ce1af4b4fa98c241613b9a33, type: 3}
+  m_Script: {fileID: 11500000, guid: 1ae6a9c20b3f74476b556d9693ff50a0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  _challengeCreationButton: {fileID: 0}
-  _challengePendingButton: {fileID: 0}
-  _countDownBannerEventTriggers:
-  - {fileID: 0}
-  - {fileID: 0}
---- !u!114 &8618476284205863882
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2399303655008984333}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85c2f6cff5dc441e38b983947d31947c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-WatKhaoWong-Utils::WatKhaoWong.Utils.UI.UIStateB
 --- !u!1 &2630107178921226099
 GameObject:
   m_ObjectHideFlags: 0
@@ -3380,7 +3360,7 @@ PrefabInstance:
     - target: {fileID: 113994600771367541, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_Name
-      value: Total Tab Button
+      value: Pending Tab Button
       objectReference: {fileID: 0}
     - target: {fileID: 156664351357048306, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
@@ -3554,7 +3534,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 113994600771367541, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8996471329165470612}
+      addedObject: {fileID: 2207316234188346968}
   m_SourcePrefab: {fileID: 100100000, guid: 594328452b48643c19c5fcf568f7e905, type: 3}
 --- !u!1 &2022418475364637514 stripped
 GameObject:
@@ -3562,7 +3542,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2127369865684707647}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8996471329165470612
+--- !u!114 &2207316234188346968
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3571,9 +3551,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2022418475364637514}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dae6917ce3b8d4688a089ca8c603a400, type: 3}
+  m_Script: {fileID: 11500000, guid: 87264ca80ae6c4a51b18fc07a3d0bb27, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-WatKhaoWong-UI::WatKhaoWong.UI.Admin.ApprovalFilterUI
   _category: 0
   _button: {fileID: 6620810608925839631}
   _buttonImage: {fileID: 2281489904118234317}
@@ -3620,6 +3600,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rejected Tab Button
       objectReference: {fileID: 0}
+    - target: {fileID: 113994600771367541, guid: 594328452b48643c19c5fcf568f7e905,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 156664351357048306, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_Color.b
@@ -3663,7 +3648,7 @@ PrefabInstance:
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
@@ -3673,17 +3658,17 @@ PrefabInstance:
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
@@ -3723,12 +3708,12 @@ PrefabInstance:
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 800
       objectReference: {fileID: 0}
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -47.5
       objectReference: {fileID: 0}
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
@@ -3782,7 +3767,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 113994600771367541, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1801990734505614241}
+      addedObject: {fileID: 1042094915775383885}
   m_SourcePrefab: {fileID: 100100000, guid: 594328452b48643c19c5fcf568f7e905, type: 3}
 --- !u!114 &2161433849837021456 stripped
 MonoBehaviour:
@@ -3802,7 +3787,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 2293002670741454050}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1801990734505614241
+--- !u!114 &1042094915775383885
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -3811,9 +3796,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2181603400772931223}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dae6917ce3b8d4688a089ca8c603a400, type: 3}
+  m_Script: {fileID: 11500000, guid: 87264ca80ae6c4a51b18fc07a3d0bb27, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-WatKhaoWong-UI::WatKhaoWong.UI.Admin.ApprovalFilterUI
   _category: 2
   _button: {fileID: 6464449367909106898}
   _buttonImage: {fileID: 2161433849837021456}
@@ -4907,6 +4892,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Approved Tab Button
       objectReference: {fileID: 0}
+    - target: {fileID: 113994600771367541, guid: 594328452b48643c19c5fcf568f7e905,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 156664351357048306, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_Color.b
@@ -4950,7 +4940,7 @@ PrefabInstance:
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
@@ -4960,17 +4950,17 @@ PrefabInstance:
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: 320
       objectReference: {fileID: 0}
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
@@ -5010,12 +5000,12 @@ PrefabInstance:
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 470
       objectReference: {fileID: 0}
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -47.5
       objectReference: {fileID: 0}
     - target: {fileID: 3834700785630816603, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
@@ -5069,7 +5059,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 113994600771367541, guid: 594328452b48643c19c5fcf568f7e905,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1309332461322136953}
+      addedObject: {fileID: 3688153127727787238}
   m_SourcePrefab: {fileID: 100100000, guid: 594328452b48643c19c5fcf568f7e905, type: 3}
 --- !u!224 &955936239222439043 stripped
 RectTransform:
@@ -5083,7 +5073,7 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 4067791692397876696}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1309332461322136953
+--- !u!114 &3688153127727787238
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5092,9 +5082,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4172390998353323949}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dae6917ce3b8d4688a089ca8c603a400, type: 3}
+  m_Script: {fileID: 11500000, guid: 87264ca80ae6c4a51b18fc07a3d0bb27, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-WatKhaoWong-UI::WatKhaoWong.UI.Admin.ApprovalFilterUI
   _category: 1
   _button: {fileID: 9085877323793788392}
   _buttonImage: {fileID: 4206124111819407402}
