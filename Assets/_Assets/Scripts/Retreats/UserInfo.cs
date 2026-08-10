@@ -206,8 +206,10 @@ namespace WatKhaoWong.Retreats
 
 
         #region --Methods-- (Custom PUBLIC) ~Page Setup~
-        public void Setup(IUserData userData)
+        public async void Setup(IUserData userData)
         {
+            if (_currentView == EUserInfoView.OtherUser && !await MyUserData.IsAdmin()) return;
+
             OnViewSetup?.Invoke(_currentView, userData);
         }
         #endregion

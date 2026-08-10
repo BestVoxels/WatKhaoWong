@@ -39,7 +39,7 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Subscriber) ~UnityEvent~
         public async void RequestCapIncrease()
         {
-            bool isMyUserDataSaveLoaded = await _myUserData.LoadCompletionSource.Task;
+            bool isMyUserDataSaveLoaded = await MyUserData.LoadCompletionSource.Task;
 
             if (isMyUserDataSaveLoaded == false)
             {

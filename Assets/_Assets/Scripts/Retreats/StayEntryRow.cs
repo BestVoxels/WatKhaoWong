@@ -165,8 +165,6 @@ namespace WatKhaoWong.Retreats
         private bool IsCurrentRow() => _systemData.rowType == RowType.Current;
         private bool IsPastRow() => _systemData.rowType == RowType.Past;
 
-        private bool IsAdmin() => _myUserData.GetRole() == EUserRole.Admin;
-
         private UserInputStayEntryData FilterUserInputStayEntryData(UserInputStayEntryData inputData)
         {
             // BuildingName & RoomNumber
@@ -311,7 +309,7 @@ namespace WatKhaoWong.Retreats
         /// </summary>
         public async void AddToServer()
         {
-            if (!IsAdmin()) return;
+            if (!await MyUserData.IsAdmin()) return;
 
             DateTime nowDate = await _serverTime.Now();
             StayEntry stayEntry = null;
@@ -385,7 +383,7 @@ namespace WatKhaoWong.Retreats
 
         public async void UpdateOnServer()
         {
-            if (!IsAdmin()) return;
+            if (!await MyUserData.IsAdmin()) return;
 
             if (_systemData.status == null)
             {
@@ -431,9 +429,9 @@ namespace WatKhaoWong.Retreats
             _statusText.Show(_userInfo.StatusChangesSaved.GetLocalizedString(), _userInfo.StatusChangesSavedColor);
         }
 
-        public void DeleteFromServer()
+        public async void DeleteFromServer()
         {
-            if (!IsAdmin()) return;
+            if (!await MyUserData.IsAdmin()) return;
 
             if (_systemData.status == null)
             {

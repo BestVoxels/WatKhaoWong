@@ -43,7 +43,6 @@ namespace WatKhaoWong.Admin
         private string _roomNumber;
 
         private AccommodationApproval _accommodationApproval;
-        private MyUserData _myUserData;
         private SavingWrapper _savingWrapper;
         private ServerTime _serverTime;
         private StatusText _statusText;
@@ -56,13 +55,10 @@ namespace WatKhaoWong.Admin
         {
             GameObject player = GameObject.FindWithTag("Player");
             _accommodationApproval = player.GetComponentInChildren<AccommodationApproval>();
-            _myUserData = player.GetComponentInChildren<MyUserData>();
 
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
             _serverTime = FindAnyObjectByType<ServerTime>();
             _statusText = FindAnyObjectByType<StatusText>();
-
-            _userData = _myUserData;
         }
         #endregion
 
@@ -94,7 +90,6 @@ namespace WatKhaoWong.Admin
 
 
         #region --Methods-- (Custom PRIVATE)
-        private bool IsAdmin() => _myUserData.GetRole() == EUserRole.Admin;
         #endregion
 
 
@@ -102,7 +97,7 @@ namespace WatKhaoWong.Admin
         #region --Methods-- (Subscriber) ~UnityEvent~
         public async void UpdateOnServer()
         {
-            if (!IsAdmin()) return;
+            if (!await MyUserData.IsAdmin()) return;
 
             DateTime nowDate = await _serverTime.Now();
             StayEntry stayEntry = null;

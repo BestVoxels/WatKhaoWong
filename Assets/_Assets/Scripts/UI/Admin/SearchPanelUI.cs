@@ -33,7 +33,7 @@ namespace WatKhaoWong.UI.Admin
 
             _ui.criteriaDropdown.onValueChanged.AddListener(CriteriaDropdownValue);
             _ui.searchButton.onClick.AddListener(SearchConfirm);
-            _ui.searchDataInputField.onEndEdit.AddListener(inputText => { if (string.IsNullOrWhiteSpace(inputText)) _searchPanel.RemoveSearchFilter(); });
+            _ui.searchDataInputField.onEndEdit.AddListener(inputText => { if (string.IsNullOrWhiteSpace(inputText)) _searchPanel.RemoveSearchFilter(_ui.location); });
         }
 
         private void Start()
@@ -71,7 +71,7 @@ namespace WatKhaoWong.UI.Admin
         {
             if (Validate())
             {
-                _searchPanel.StartSearchFilter(_criteriaIndex, _searchData);
+                _searchPanel.StartSearchFilter(_ui.location, _criteriaIndex, _searchData);
             }
             else
             {

@@ -189,11 +189,6 @@ namespace WatKhaoWong.Leaderboards
 
 
 
-        #region --Methods-- (Custom PUBLIC)
-        #endregion
-
-
-
         #region --Methods-- (Custom PUBLIC) ~Leaderboard~
         public ushort GetMyRank() => Records[Category].MyRank;
 
@@ -246,7 +241,7 @@ namespace WatKhaoWong.Leaderboards
             if (Records[Category].CachedRows.Count == 0)
             {
                 ushort index = 0;
-                await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValue(categoryNode, valueNode, _maxRowNumber))
+                await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValueReverse(categoryNode, valueNode, _maxRowNumber))
                 {
                     ++index;
                     if (!IsLeaderboardExists())
@@ -406,7 +401,7 @@ namespace WatKhaoWong.Leaderboards
             if ((_challenge.CanLive(_leaderboardFirstUploadTimeOfChallengeTM) && await _challenge.CanLiveNow()) || !_isLeaderboardTMChallengeExists) return;
 
             ushort i = _rewardWinnerMaxRowNumber;
-            await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValue(ECategoryNode.LeaderboardTMChallenge, EValueNode.ChallengeTMPoint, _recordWinnerMaxRowNumber))
+            await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValueReverse(ECategoryNode.LeaderboardTMChallenge, EValueNode.ChallengeTMPoint, _recordWinnerMaxRowNumber))
             {
                 DataSnapshot data = await _savingWrapper.LoadOtherUser(eachData.Key);
                 OtherUserData anyUserData = new OtherUserData(data);

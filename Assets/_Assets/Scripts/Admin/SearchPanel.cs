@@ -3,8 +3,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Localization;
 using WatKhaoWong.Attributes;
-using WatKhaoWong.SceneManagement;
-using Firebase.Database;
 using WatKhaoWong.Identities;
 using System.Threading.Tasks;
 using WatKhaoWong.Utils.Localization;
@@ -37,14 +35,31 @@ namespace WatKhaoWong.Admin
 
 
         #region --Properties-- (Auto)
-        public bool HasFilter { get; private set; } = false;
+        private ESearchPanelLocation CurrentLocation { get; set; }
+        #endregion
+
+
+
+        #region --Properties-- (With Backing Fields)
+        // Doing this way to PREVENT Null Error from accessing Records. This way it will gets value when it needs, no need to initialize on Start().
+        private RecordCollection Records
+        {
+            get
+            {
+                if (_records == null)
+                    _records = new();
+
+                return _records;
+            }
+
+            set => _records = value;
+        }
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        private byte _criteriaIndex;
-        private string _searchData;
+        private RecordCollection _records;
 
         private ServerTime _serverTime;
         private Localizer _localizer;
@@ -63,21 +78,21 @@ namespace WatKhaoWong.Admin
 
 
         #region --Methods-- (Custom PUBLIC) ~Page UI Buttons~
-        public void StartSearchFilter(byte criteriaIndex, string searchData)
+        public void StartSearchFilter(ESearchPanelLocation location, byte criteriaIndex, string searchData)
         {
-            HasFilter = true;
-            _criteriaIndex = criteriaIndex;
-            _searchData = searchData;
+            CurrentLocation = location;
+            Records[CurrentLocation].HasFilter = true;
+            Records[CurrentLocation].CriteriaIndex = criteriaIndex;
+            Records[CurrentLocation].SearchData = searchData;
 
             OnUIUpdated?.Invoke();
             _onSearchFilterStarted?.Invoke();
         }
 
-        public void RemoveSearchFilter()
+        public void RemoveSearchFilter(ESearchPanelLocation location)
         {
-            HasFilter = false;
-            _criteriaIndex = 0;
-            _searchData = null;
+            CurrentLocation = location;
+            Records[CurrentLocation].RemoveSearchFilter();
             
             OnUIUpdated?.Invoke();
             _onSearchFilterRemoved?.Invoke();
@@ -92,123 +107,181 @@ namespace WatKhaoWong.Admin
 
 
         #region --Methods-- (Custom PUBLIC) ~Filter Methods~
-        public async Task<(StayEntry, string, DataSnapshot)> FilterApprovalRowData((StayEntry stayEntry, string key, DataSnapshot dataSnapshot) input)
+        public void SetLocation(ESearchPanelLocation location) => CurrentLocation = location;
+
+        public bool HasFilter() => Records[CurrentLocation].HasFilter;
+
+        public async Task<IUserData> FilterRowData(IUserData userData)
         {
-            IUserData userData = new OtherUserData(input.dataSnapshot);
-            switch (_criteriaIndex)
-            {
-                case 0:
-                    string name = userData.GetAllUserNameTextCombined(await userData.GetDataNationalIDInfo(), await userData.GetDataPassportInfo());
-
-                    if (IsFullNameMatch(name))
-                        return input;
-                    break;
-                case 1:
-                    string number = userData.GetNationalIDAndPassportNumberCombined(await userData.GetDataNationalIDInfo(), await userData.GetDataPassportInfo());
-
-                    if (IsNationalIDAndPassportNumberMatch(number))
-                        return input;
-                    break;
-                case 2:
-                    int age = await userData.GetAge(await userData.GetDataNationalIDInfo(), await userData.GetDataPassportInfo(), _serverTime);
-
-                    if (IsAgeMatch(age))
-                        return input;
-                    break;
-                case 3:
-                    string plateNumber = await userData.GetPlateNumberFromActiveStayEntry();
-
-                    if (IsPlateNumberMatch(plateNumber))
-                        return input;
-                    break;
-                case 4:
-                    string buildingName = await userData.GetBuildingNameFromActiveStayEntry(_localizer);
-
-                    if (IsBuildingNameMatch(buildingName))
-                        return input;
-                    break;
-                case 5:
-                    string roomNumber = await userData.GetRoomNumberFromActiveStayEntry();
-
-                    if (IsRoomNumberMatch(roomNumber))
-                        return input;
-                    break;
-                case 6:
-                    string accountStatus = userData.GetAccountStatusTextCombined(_localizer);
-
-                    if (IsAccountStatusMatch(accountStatus))
-                        return input;
-                    break;
-            }
-
-            return (null, null, null);
+            if (IsFilterPassed(userData))
+                return userData;
+            else
+                return null;
         }
         #endregion
 
 
 
         #region --Methods-- (Custom PRIVATE)
+        private bool IsFilterPassed(IUserData userData)
+        {
+            switch (Records[CurrentLocation].CriteriaIndex)
+            {
+                case 0:
+                    string name = userData.GetAllUserNameTextCombined(userData.GetDataNationalIDInfoNoLoad(), userData.GetDataPassportInfoNoLoad());
+
+                    if (IsFullNameMatch(name))
+                        return true;
+                    break;
+                case 1:
+                    string number = userData.GetNationalIDAndPassportNumberCombined(userData.GetDataNationalIDInfoNoLoad(), userData.GetDataPassportInfoNoLoad());
+
+                    if (IsNationalIDAndPassportNumberMatch(number))
+                        return true;
+                    break;
+                case 2:
+                    int age = userData.GetAge(userData.GetDataNationalIDInfoNoLoad(), userData.GetDataPassportInfoNoLoad(), _serverTime);
+
+                    if (IsAgeMatch(age))
+                        return true;
+                    break;
+                case 3:
+                    string plateNumber = userData.GetPlateNumberFromActiveStayEntry();
+
+                    if (IsPlateNumberMatch(plateNumber))
+                        return true;
+                    break;
+                case 4:
+                    string buildingName = userData.GetBuildingNameFromActiveStayEntry(_localizer);
+
+                    if (IsBuildingNameMatch(buildingName))
+                        return true;
+                    break;
+                case 5:
+                    string roomNumber = userData.GetRoomNumberFromActiveStayEntry();
+
+                    if (IsRoomNumberMatch(roomNumber))
+                        return true;
+                    break;
+                case 6:
+                    string accountStatus = userData.GetAccountStatusTextCombined(_localizer);
+
+                    if (IsAccountStatusMatch(accountStatus))
+                        return true;
+                    break;
+            }
+
+            return false;
+        }
         private bool IsFullNameMatch(string inputName)
         {
-            print($"InputName : {inputName} / SearchData from User : {_searchData}");
+            // print($"InputName : {inputName} / SearchData from User : {Records[CurrentLocation].SearchData}");
             if (string.IsNullOrWhiteSpace(inputName))
                 return true;
 
-            return inputName.Contains(_searchData, StringComparison.OrdinalIgnoreCase);
+            return inputName.Contains(Records[CurrentLocation].SearchData, StringComparison.OrdinalIgnoreCase);
         }
 
         private bool IsNationalIDAndPassportNumberMatch(string number)
         {
-            print($"number : {number} / SearchData from User : {_searchData}");
+            // print($"number : {number} / SearchData from User : {Records[CurrentLocation].SearchData}");
             if (string.IsNullOrWhiteSpace(number))
                 return false;
 
-            return number.Contains(_searchData, StringComparison.OrdinalIgnoreCase);
+            return number.Contains(Records[CurrentLocation].SearchData, StringComparison.OrdinalIgnoreCase);
         }
 
         private bool IsAgeMatch(int age)
         {
-            print($"age : {age} / SearchData from User : {_searchData}");
+            // print($"age : {age} / SearchData from User : {Records[CurrentLocation].SearchData}");
             if (age <= -1)
                 return false;
 
-            return age.ToString().Contains(_searchData, StringComparison.OrdinalIgnoreCase);
+            return age.ToString().Contains(Records[CurrentLocation].SearchData, StringComparison.OrdinalIgnoreCase);
         }
 
         private bool IsPlateNumberMatch(string plateNumber)
         {
-            print($"plateNumber : {plateNumber} / SearchData from User : {_searchData}");
+            // print($"plateNumber : {plateNumber} / SearchData from User : {Records[CurrentLocation].SearchData}");
             if (string.IsNullOrWhiteSpace(plateNumber))
                 return false;
 
-            return plateNumber.Contains(_searchData, StringComparison.OrdinalIgnoreCase);
+            return plateNumber.Contains(Records[CurrentLocation].SearchData, StringComparison.OrdinalIgnoreCase);
         }
 
         private bool IsBuildingNameMatch(string buildingName)
         {
-            print($"buildingName : {buildingName} / SearchData from User : {_searchData}");
+            // print($"buildingName : {buildingName} / SearchData from User : {Records[CurrentLocation].SearchData}");
             if (string.IsNullOrWhiteSpace(buildingName))
                 return false;
 
-            return buildingName.Contains(_searchData, StringComparison.OrdinalIgnoreCase);
+            return buildingName.Contains(Records[CurrentLocation].SearchData, StringComparison.OrdinalIgnoreCase);
         }
 
         private bool IsRoomNumberMatch(string roomNumber)
         {
-            print($"roomNumber : {roomNumber} / SearchData from User : {_searchData}");
+            // print($"roomNumber : {roomNumber} / SearchData from User : {Records[CurrentLocation].SearchData}");
             if (string.IsNullOrWhiteSpace(roomNumber))
                 return false;
 
-            return roomNumber.Contains(_searchData, StringComparison.OrdinalIgnoreCase);
+            return roomNumber.Contains(Records[CurrentLocation].SearchData, StringComparison.OrdinalIgnoreCase);
         }
 
         private bool IsAccountStatusMatch(string accountStatus)
         {
-            print($"accountStatus : {accountStatus} / SearchData from User : {_searchData}");
+            // print($"accountStatus : {accountStatus} / SearchData from User : {Records[CurrentLocation].SearchData}");
             if (string.IsNullOrWhiteSpace(accountStatus))
                 return false;
 
-            return accountStatus.Contains(_searchData, StringComparison.OrdinalIgnoreCase);
+            return accountStatus.Contains(Records[CurrentLocation].SearchData, StringComparison.OrdinalIgnoreCase);
+        }
+        #endregion
+
+
+
+        #region --Classes-- (Custom PRIVATE)
+        private class Record
+        {
+            public bool HasFilter = false;
+            public byte CriteriaIndex = 0;
+            public string SearchData = null;
+
+            public void RemoveSearchFilter()
+            {
+                HasFilter = false;
+                CriteriaIndex = 0;
+                SearchData = null;
+            }
+        }
+
+        private class RecordCollection
+        {
+            // Collection
+            private readonly Record[] _records = new Record[2];
+
+            // Indexer
+            public Record this[ESearchPanelLocation location]
+            {
+                get => _records[GetInt(location)];
+            }
+
+            // Constructor
+            public RecordCollection()
+            {
+                for (byte i = 0; i < _records.Length; i++)
+                    _records[i] = new Record();
+            }
+
+            // Methods
+            private int GetInt(ESearchPanelLocation location)
+            {
+                return location switch
+                {
+                    ESearchPanelLocation.SearchBoard => 0,
+                    ESearchPanelLocation.ApprovalBoard => 1,
+                    _ => -1
+                };
+            }
         }
         #endregion
     }

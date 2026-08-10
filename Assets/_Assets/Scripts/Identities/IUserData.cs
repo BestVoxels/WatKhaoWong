@@ -62,12 +62,15 @@ namespace WatKhaoWong.Identities
         public bool GetTempleGuideConfirmed();
 
         public Task<StayEntry> GetActiveStayEntry();
+        public StayEntry GetActiveStayEntryNoLoad();
 
         public Task<ActiveStay> GetDataActiveStay();
 
         public Task<NationalIDInfo> GetDataNationalIDInfo();
+        public NationalIDInfo GetDataNationalIDInfoNoLoad();
 
         public Task<PassportInfo> GetDataPassportInfo();
+        public PassportInfo GetDataPassportInfoNoLoad();
 
         public Task<GeneralInfo> GetDataGeneralInfo();
 
@@ -78,11 +81,11 @@ namespace WatKhaoWong.Identities
 
         public string GetAllUserNameText(NationalIDInfo nationalIDInfo, PassportInfo passportInfo);
         public string GetAllUserNameTextCombined(NationalIDInfo nationalIDInfo, PassportInfo passportInfo);
-        public Task<int> GetAge(NationalIDInfo nationalIDInfo, PassportInfo passportInfo, ServerTime serverTime);
+        public int GetAge(NationalIDInfo nationalIDInfo, PassportInfo passportInfo, ServerTime serverTime);
         public string GetNationalIDAndPassportNumberCombined(NationalIDInfo nationalIDInfo, PassportInfo passportInfo);
-        public Task<string> GetPlateNumberFromActiveStayEntry();
-        public Task<string> GetBuildingNameFromActiveStayEntry(Localizer localizer);
-        public Task<string> GetRoomNumberFromActiveStayEntry();
+        public string GetPlateNumberFromActiveStayEntry();
+        public string GetBuildingNameFromActiveStayEntry(Localizer localizer);
+        public string GetRoomNumberFromActiveStayEntry();
         public string GetAccountStatusTextCombined(Localizer localizer);
 
         // Meditation Retreat  ~SETTER~

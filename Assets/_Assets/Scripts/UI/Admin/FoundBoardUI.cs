@@ -1,39 +1,40 @@
 using System.Collections.Generic;
-using TMPro;
 using System.Threading.Tasks;
 using UnityEngine;
-using WatKhaoWong.SceneManagement;
+using UnityEngine.UI;
 using WatKhaoWong.Admin;
 using WatKhaoWong.Retreats;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Utils.Localization;
-using WatKhaoWong.Utils.Core;
 using WatKhaoWong.Identities;
+using WatKhaoWong.Utils.Core;
 
 namespace WatKhaoWong.UI.Admin
 {
-    [RequireComponent(typeof(ApprovalRowUIPool))]
-    public class ApprovalBoardUI : MonoBehaviour
+    [RequireComponent(typeof(FoundRowUIPool))]
+    public class FoundBoardUI : MonoBehaviour
     {
         #region --Fields-- (Inspector)
         [Header("Board Stuffs")]
         [SerializeField] private ESearchPanelLocation _locationForSearchPanel;
         [Space]
-        [SerializeField] private TMP_Text _dataIndicatorText;
+        [SerializeField] private GameObject _noDataPanel;
         [Space]
         [SerializeField] private Transform _tabsTransform;
+        [Space]
+        [SerializeField] private Button _registerMemberButton;
         #endregion
 
 
 
         #region --Fields-- (In Class)
-        private List<ApprovalRowUI> _activeRowUIs = new List<ApprovalRowUI>();
+        private List<FoundRowUI> _activeRowUIs = new List<FoundRowUI>();
 
-        private ApprovalBoard _board;
-        private ApprovalRowUIPool _rowUIPool;
+        private FoundBoard _board;
+        private FoundRowUIPool _rowUIPool;
         private SearchPanel _searchPanel;
         private GameObject _player;
-        private ApprovalRowUI.CacheData _approvalRowUICacheData;
+        private FoundRowUI.CacheData _foundRowUICacheData;
         #endregion
 
 
@@ -49,17 +50,19 @@ namespace WatKhaoWong.UI.Admin
         private void Awake()
         {
             _player = GameObject.FindWithTag("Player");
-            _board = _player.GetComponentInChildren<ApprovalBoard>();
-            _rowUIPool = GetComponent<ApprovalRowUIPool>();
+            _board = _player.GetComponentInChildren<FoundBoard>();
+            _rowUIPool = GetComponent<FoundRowUIPool>();
             _searchPanel = _player.GetComponentInChildren<SearchPanel>();
 
-            InitApprovalRowUICacheData();
+            InitFoundRowUICacheData();
 
-            _board.OnIsBoardExistsUpdated += ShowHideDataIndicatorText;
+            _registerMemberButton.onClick.AddListener(RegisterMember);
+
+            _board.OnIsBoardExistsUpdated += ShowHideNoDataPanel;
         }
 
         private void Start()
-        {            
+        {
             InitialSetup();
         }
 
@@ -70,7 +73,7 @@ namespace WatKhaoWong.UI.Admin
             if (!await MyUserData.IsAdmin()) return;
 
             // Use OnDisable()/OnEnable() because don't want UI to update on the background.
-            UIRefresher.OnApprovalBoardRefreshed += RefreshUI;
+            UIRefresher.OnFoundBoardRefreshed += RefreshUI;
             _searchPanel.OnUIUpdated += RefreshUI;
 
             RefreshUI();
@@ -79,9 +82,9 @@ namespace WatKhaoWong.UI.Admin
         private async void OnDisable()
         {
             if (!await MyUserData.IsAdmin()) return;
-            
+
             // Use OnDisable()/OnEnable() because don't want UI to update on the background.
-            UIRefresher.OnApprovalBoardRefreshed -= RefreshUI;
+            UIRefresher.OnFoundBoardRefreshed -= RefreshUI;
             _searchPanel.OnUIUpdated -= RefreshUI;
         }
         #endregion
@@ -102,9 +105,9 @@ namespace WatKhaoWong.UI.Admin
         {
             ClearRows();
 
-            //+Prevent some ApprovalBoardUI GameObject show Empty Data (No Rows), solve by make ApprovalBoardUI GameObject that comes after wait first then loads when Async is done.
+            //+Prevent some FoundBoardUI GameObject show Empty Data (No Rows), solve by make FoundBoardUI GameObject that comes after wait first then loads when Async is done.
             float timer = 0f;
-            while (ApprovalBoard.IsAsyncRunning == true)
+            while (FoundBoard.IsAsyncRunning == true)
             {
                 timer += Time.deltaTime;
 
@@ -116,15 +119,15 @@ namespace WatKhaoWong.UI.Admin
             ClearRows(); //+Prevent duplicates Rows Bug.
 
             ushort rowCounter = 1;
-            await foreach ((StayEntry stayEntry, string keyId, IUserData userData) rowData in _board.GetRows(_locationForSearchPanel))
+            await foreach (IUserData userData in _board.GetRows(_locationForSearchPanel))
             {
-                if (rowData.stayEntry == null || rowCounter > _board.MaxRowNumber) continue;
+                if (userData == null || rowCounter > _board.MaxRowNumber) continue;
 
-                ApprovalRowUI createdPrefab = _rowUIPool.Pool.Get();
+                FoundRowUI createdPrefab = _rowUIPool.Pool.Get();
 
                 createdPrefab.transform.SetSiblingIndex(rowCounter - 1); // -1 bcuz Index starts at 0.
-                createdPrefab.Setup(rowData, rowCounter, _board.Category, _approvalRowUICacheData);
-                
+                createdPrefab.Setup(userData, rowCounter, _board.Category, _foundRowUICacheData);
+
                 _activeRowUIs.Add(createdPrefab);
 
                 ++rowCounter;
@@ -133,24 +136,21 @@ namespace WatKhaoWong.UI.Admin
 
         private void ClearRows()
         {
-            foreach (ApprovalRowUI eachRow in _activeRowUIs)
+            foreach (FoundRowUI eachRow in _activeRowUIs)
                 eachRow.Release();
 
             _activeRowUIs.Clear();
         }
 
-        private void InitApprovalRowUICacheData()
+        private void InitFoundRowUICacheData()
         {
-            _approvalRowUICacheData = new ApprovalRowUI.CacheData
+            _foundRowUICacheData = new FoundRowUI.CacheData
             {
                 Player = _player,
-                ApprovalRow = _player.GetComponentInChildren<ApprovalRow>(),
-                SetTimePopup = _player.GetComponentInChildren<AccommodationSetTimePopup>(),
+                FoundRow = _player.GetComponentInChildren<FoundRow>(),
                 UserInfo = _player.GetComponentInChildren<UserInfo>(),
                 Localizer = FindAnyObjectByType<Localizer>(),
-                ServerTime = FindAnyObjectByType<ServerTime>(),
-                ApprovalNoPopupUI = FindAnyObjectByType<ApprovalNoPopupUI>(FindObjectsInactive.Include),
-                ApprovalYesPopupUI = FindAnyObjectByType<ApprovalYesPopupUI>(FindObjectsInactive.Include)
+                ServerTime = FindAnyObjectByType<ServerTime>()
             };
         }
         #endregion
@@ -160,7 +160,7 @@ namespace WatKhaoWong.UI.Admin
         #region --Methods-- (Custom PRIVATE) ~FilterButtons~
         private void SetupFilterButtonsUI()
         {
-            foreach (ApprovalFilterUI button in _tabsTransform.GetComponentsInChildren<ApprovalFilterUI>())
+            foreach (FoundFilterUI button in _tabsTransform.GetComponentsInChildren<FoundFilterUI>())
             {
                 button.Setup(_board);
             }
@@ -168,7 +168,7 @@ namespace WatKhaoWong.UI.Admin
 
         private void UpdateFilterButtonsUI()
         {
-            foreach (ApprovalFilterUI button in _tabsTransform.GetComponentsInChildren<ApprovalFilterUI>())
+            foreach (FoundFilterUI button in _tabsTransform.GetComponentsInChildren<FoundFilterUI>())
             {
                 button.RefreshUI();
             }
@@ -185,9 +185,14 @@ namespace WatKhaoWong.UI.Admin
             await BuildRows();
         }
 
-        private void ShowHideDataIndicatorText()
+        private void ShowHideNoDataPanel()
         {
-            _dataIndicatorText.gameObject.SetActive(_board.IsBoardExists() == false);
+            _noDataPanel.SetActive(_board.IsBoardExists() == false);
+        }
+
+        private void RegisterMember()
+        {
+            _board.OnRegisterMemberButtonClick();
         }
         #endregion
     }

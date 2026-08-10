@@ -567,8 +567,9 @@ GameObject:
   - component: {fileID: 8608683674106184083}
   - component: {fileID: 48160304519491832}
   - component: {fileID: 9030062219438266530}
-  - component: {fileID: 9206549790109965470}
   - component: {fileID: 4227249316008023409}
+  - component: {fileID: 7670100669213741191}
+  - component: {fileID: 561527397417590981}
   m_Layer: 5
   m_Name: Found Row
   m_TagString: Untagged
@@ -706,26 +707,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &9206549790109965470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4194755697132043539}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
-  m_IgnoreLayout: 0
-  m_MinWidth: -1
-  m_MinHeight: -1
-  m_PreferredWidth: -1
-  m_PreferredHeight: 180
-  m_FlexibleWidth: -1
-  m_FlexibleHeight: -1
-  m_LayoutPriority: 1
 --- !u!114 &4227249316008023409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -742,6 +723,8 @@ MonoBehaviour:
   - {fileID: 889660567719429838}
   - {fileID: 5941167889339555375}
   - {fileID: 1097171739932346552}
+  - {fileID: 6036769376712569366}
+  - {fileID: 5654485476792047430}
   _pressCurve:
     serializedVersion: 2
     m_Curve:
@@ -802,6 +785,54 @@ MonoBehaviour:
   _pressCurveSpeed: 1
   _liftCurveSpeed: 1.5
   <Interactable>k__BackingField: 1
+--- !u!114 &7670100669213741191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4194755697132043539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c21bd95358a8477e907afc8bc31e35e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-WatKhaoWong-UI::FoundRowUI
+  _rowButton: {fileID: 8608683674106184083}
+  _rankText: {fileID: 3698647104397133367}
+  _icon:
+    backgroundImage: {fileID: 3947416651097706082}
+    iconImage: {fileID: 4767119909816102917}
+    aspectRatioFitter: {fileID: 9062396857863716353}
+    iconRect: {fileID: 3356390192724015410}
+    decoratorSpawnParent: {fileID: 3077884969343832633}
+  _miniInfoInspectorUI:
+    nameText: {fileID: 6390416280170238138}
+    ageText: {fileID: 6152032488268602929}
+  _accountStatusUI:
+    statusText: {fileID: 7233389125685788924}
+    indicatorImage: {fileID: 2928338757857989110}
+    infoText: {fileID: 0}
+    notesText: {fileID: 0}
+--- !u!114 &561527397417590981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4194755697132043539}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.LayoutElement
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: 180
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &5517406361696591302
 GameObject:
   m_ObjectHideFlags: 0
@@ -1122,6 +1153,7 @@ GameObject:
   - component: {fileID: 6036769376712569366}
   - component: {fileID: 183159729311482648}
   - component: {fileID: 9064581331103236558}
+  - component: {fileID: 9027667131223731621}
   m_Layer: 5
   m_Name: Horizontal 2
   m_TagString: Untagged
@@ -1195,6 +1227,18 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!225 &9027667131223731621
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7525155135724762270}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &8126865927984484491
 GameObject:
   m_ObjectHideFlags: 0
@@ -1856,3 +1900,27 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 9103503479232061385}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2928338757857989110 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6266099978860138047, guid: 5e625d559aef64f7a88d37bec3009dd6,
+    type: 3}
+  m_PrefabInstance: {fileID: 9103503479232061385}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &7233389125685788924 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1888148692935122741, guid: 5e625d559aef64f7a88d37bec3009dd6,
+    type: 3}
+  m_PrefabInstance: {fileID: 9103503479232061385}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

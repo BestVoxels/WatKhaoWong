@@ -31,6 +31,7 @@ namespace WatKhaoWong.Identities
         private readonly Color32 _softRed = new Color32(255, 124, 0, 255); // FF7C00
         private readonly Color32 _red = new Color32(255, 46, 0, 255); // FF2E00
         private readonly Color32 _pink = new Color32(255, 0, 252, 255); // FF00FC
+        private readonly Color32 _blank = new Color32(211, 211, 211, 255); // DDDDDD
 
         private readonly NumberFormatInfo _nfi;
         #endregion
@@ -142,13 +143,24 @@ namespace WatKhaoWong.Identities
 
         internal void UpdateAccountStatus(AccountStatusInspector oldStatus, AccountStatus newStatus, Localizer localizer)
         {
-            // Compute for Status Text
-            if (newStatus == null) return;
+            // No Data to Update, so just set to default values.
+            if (newStatus == null)
+            {
+                oldStatus.statusText.text = "-";
+                oldStatus.indicatorImage.color = _blank;
+
+                if (oldStatus.infoText != null)
+                    oldStatus.infoText.gameObject.SetActive(false);
+                if (oldStatus.notesText != null)
+                    oldStatus.notesText.gameObject.SetActive(false);
+                return;
+            }
 
             if (oldStatus.infoText != null)
                 oldStatus.infoText.gameObject.SetActive(false);
-            if (newStatus.StatusInfo != null)
+            if (newStatus.StatusInfo != null && localizer != null)
             {
+                // Debug.Log($"Localizer: {localizer == null}, OldStatus: {oldStatus == null}, OldStatus.StatusText: {oldStatus.statusText == null}, NewStatus.StatusInfo: {newStatus.StatusInfo.Status == null}, NewStatus.StatusInfo: {newStatus.StatusInfo == null}");
                 oldStatus.statusText.text = localizer.LocalizeAccountStatus(newStatus.StatusInfo.Status);
 
                 // Compute for Color
@@ -167,7 +179,7 @@ namespace WatKhaoWong.Identities
 
 
                         newStatus.BanEndDate.TryParseGregorian(out DateTime endDate);
-                        if (oldStatus.infoText != null)
+                        if (oldStatus.infoText != null && localizer != null)
                             oldStatus.infoText.text = localizer.FormatBanEndDate(endDate);
                         break;
 
@@ -202,7 +214,7 @@ namespace WatKhaoWong.Identities
             }
         }
 
-        internal async void UpdateMiniInfo(MiniInfoInspector miniInfoInspector, NationalIDInfo nationalIDInfo, PassportInfo passportInfo, Localizer localizer, ServerTime serverTime)
+        internal void UpdateMiniInfo(MiniInfoInspector miniInfoInspector, NationalIDInfo nationalIDInfo, PassportInfo passportInfo, Localizer localizer, ServerTime serverTime)
         {
             // First CHECK for 'NationalIDInfo'
             if (nationalIDInfo != null && localizer != null)
@@ -212,7 +224,7 @@ namespace WatKhaoWong.Identities
                 // Calculate age
                 if (serverTime != null && nationalIDInfo.BirthDate.TryParseGregorianOnlyDateFormat(out DateTime birthDate))
                 {
-                    int age = DateExtension.CalculateAge(birthDate, await serverTime.Now());
+                    int age = DateExtension.CalculateAge(birthDate, serverTime.NowSinceAppStart());
                     miniInfoInspector.ageText.text = localizer.FormatAge(age);
                 }
 
@@ -227,7 +239,7 @@ namespace WatKhaoWong.Identities
                 // Calculate age
                 if (serverTime != null && passportInfo.BirthDate.TryParseGregorianOnlyDateFormat(out DateTime birthDate))
                 {
-                    int age = DateExtension.CalculateAge(birthDate, await serverTime.Now());
+                    int age = DateExtension.CalculateAge(birthDate, serverTime.NowSinceAppStart());
                     miniInfoInspector.ageText.text = localizer.FormatAge(age);
                 }
 
@@ -269,15 +281,17 @@ namespace WatKhaoWong.Identities
             return result;
         }
 
-        internal async Task<int> GetAge(NationalIDInfo nationalIDInfo, PassportInfo passportInfo, ServerTime serverTime)
+        internal int GetAge(NationalIDInfo nationalIDInfo, PassportInfo passportInfo, ServerTime serverTime)
         {
+            if (serverTime == null) return -1;
+
             // First CHECK for 'NationalIDInfo'
             if (nationalIDInfo != null && serverTime != null && nationalIDInfo.BirthDate.TryParseGregorianOnlyDateFormat(out DateTime birthDate))
-                return DateExtension.CalculateAge(birthDate, await serverTime.Now());
+                return DateExtension.CalculateAge(birthDate, serverTime.NowSinceAppStart());
 
             // Second CHECK for 'PassportInfo'
             if (passportInfo != null && serverTime != null && passportInfo.BirthDate.TryParseGregorianOnlyDateFormat(out birthDate))
-                return DateExtension.CalculateAge(birthDate, await serverTime.Now());
+                return DateExtension.CalculateAge(birthDate, serverTime.NowSinceAppStart());
 
             // Third IF none exists NO age
             return -1;

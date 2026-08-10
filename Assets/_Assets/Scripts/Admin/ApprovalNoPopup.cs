@@ -32,7 +32,6 @@ namespace WatKhaoWong.Admin
         private string _notes;
 
         private AccommodationApproval _accommodationApproval;
-        private MyUserData _myUserData;
         private SavingWrapper _savingWrapper;
         private StatusText _statusText;
         #endregion
@@ -44,12 +43,9 @@ namespace WatKhaoWong.Admin
         {
             GameObject player = GameObject.FindWithTag("Player");
             _accommodationApproval = player.GetComponentInChildren<AccommodationApproval>();
-            _myUserData = player.GetComponentInChildren<MyUserData>();
 
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
             _statusText = FindAnyObjectByType<StatusText>();
-
-            _userData = _myUserData;
         }
         #endregion
 
@@ -80,7 +76,6 @@ namespace WatKhaoWong.Admin
 
 
         #region --Methods-- (Custom PRIVATE)
-        private bool IsAdmin() => _myUserData.GetRole() == EUserRole.Admin;
         #endregion
 
 
@@ -88,7 +83,7 @@ namespace WatKhaoWong.Admin
         #region --Methods-- (Subscriber) ~UnityEvent~
         public async void UploadOnServer()
         {
-            if (!IsAdmin()) return;
+            if (!await MyUserData.IsAdmin()) return;
             
             // DELETE : under StayRequests's Category
             _savingWrapper.DeleteStayRequestsEntry(_keyId);

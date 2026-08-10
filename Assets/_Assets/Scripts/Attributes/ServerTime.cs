@@ -33,6 +33,7 @@ namespace WatKhaoWong.Attributes
 
         #region --Fields-- (In Class)
         private float _delayTimer = 0f;
+        private DateTime _nowSinceAppStart;
 
         private SavingWrapper _savingWrapper;
         #endregion
@@ -53,6 +54,8 @@ namespace WatKhaoWong.Attributes
         private void Start()
         {
             StartCoroutine(StartDelayTimer());
+
+            SetNowSinceAppStart();
         }
 
         private void OnDisable()
@@ -61,18 +64,33 @@ namespace WatKhaoWong.Attributes
         }
 
         //// ---DEBUGGER PURPOSE---
-        //private async void Update()
-        //{
+        // private async void Update()
+        // {
         //    if (Input.GetKeyDown(KeyCode.Space))
         //    {
         //        Debug.LogWarning(await Now());
         //    }
-        //}
+
+        //    if (Input.GetKeyDown(KeyCode.B))
+        //    {
+        //        Debug.LogWarning(NowSinceAppStart());
+        //    }
+        // }
         #endregion
 
 
 
         #region --Methods-- (Custom PUBLIC)
+        public DateTime NowSinceAppStart()
+        {
+            if (_nowSinceAppStart == default)
+            {
+                return DateTime.Now;
+            }
+
+            return _nowSinceAppStart;
+        }
+
         /// <summary>
         /// 'utc' (Greenwich Mean Time zone) + '7 hours' (Diff from Local Thai Time) = [Thailand Time]
         ///
@@ -133,6 +151,11 @@ namespace WatKhaoWong.Attributes
 
 
         #region --Methods-- (Custom PRIVATE)
+        private async void SetNowSinceAppStart()
+        {
+            _nowSinceAppStart = await Now();
+        }
+
         private bool IsDelayOnStartActive() => _delayTimer < _delayOnStartInSeconds;
 
         private IEnumerator StartDelayTimer()

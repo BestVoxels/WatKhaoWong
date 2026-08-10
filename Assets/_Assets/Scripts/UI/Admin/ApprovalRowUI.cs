@@ -79,14 +79,13 @@ namespace WatKhaoWong.UI.Admin
             _rowUIPool.Release(this);
         }
 
-        public void Setup((StayEntry stayEntry, string keyId, DataSnapshot dataSnapShot) rowData, ushort rankNumber, EApprovalCategory category, CacheData cacheData)
+        public async void Setup((StayEntry stayEntry, string keyId, IUserData userData) rowData, ushort rankNumber, EApprovalCategory category, CacheData cacheData)
         {
+            if (!await MyUserData.IsAdmin()) return;
+            
             _stayEntry = rowData.stayEntry;
             _keyId = rowData.keyId;
-            OtherUserData otherUserData = new OtherUserData(rowData.dataSnapShot);
-            _userData = otherUserData;
-
-            RefreshUI(rankNumber, category);
+            _userData = rowData.userData;
 
             _row = cacheData.ApprovalRow;
             _setTimePopup = cacheData.SetTimePopup;
@@ -96,6 +95,8 @@ namespace WatKhaoWong.UI.Admin
             _serverTime = cacheData.ServerTime;
             _approvalNoPopupUI = cacheData.ApprovalNoPopupUI;
             _approvalYesPopupUI = cacheData.ApprovalYesPopupUI;
+
+            RefreshUI(rankNumber, category);
         }
         #endregion
 

@@ -43,7 +43,7 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Subscriber)
         private async void SetTMPointCap()
         {
-            bool isMyUserDataSaveLoaded = await _myUserData.LoadCompletionSource.Task;
+            bool isMyUserDataSaveLoaded = await MyUserData.LoadCompletionSource.Task;
 
             if (isMyUserDataSaveLoaded == false)
             {

@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0d7b12e429ff4c76a797a87d4f366f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-WatKhaoWong-UI::WatKhaoWong.UI.Leaderboards.ApprovalBoardUI
+  _locationForSearchPanel: 1
   _dataIndicatorText: {fileID: 6347139456388486387}
   _tabsTransform: {fileID: 216798318203420418}
 --- !u!114 &4081185641049032350
@@ -5295,6 +5296,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ChildAlignment
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 9100634692513258456, guid: 00738adbe32b943d69c4c88902fb791f,
+        type: 3}
+      propertyPath: m_Padding.m_Bottom
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 9100634692513258456, guid: 00738adbe32b943d69c4c88902fb791f,
         type: 3}

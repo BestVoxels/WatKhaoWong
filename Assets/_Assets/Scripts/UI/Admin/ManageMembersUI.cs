@@ -1,9 +1,10 @@
-using TMPro;
 using UnityEngine;
+using TMPro;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using WatKhaoWong.Admin;
 using WatKhaoWong.Identities;
+using WatKhaoWong.SceneManagement;
 
 namespace WatKhaoWong.UI.Admin
 {
@@ -39,14 +40,19 @@ namespace WatKhaoWong.UI.Admin
 
 
         #region --Fields-- (In Class)
+        private int _totalUsersNumber = 0;
+        private int _activeUsersNumber = 0;
+
         private ManageMembers _manageMembers;
         private MyUserData _myUserData;
+        private SavingWrapper _savingWrapper;
         #endregion
 
 
 
         #region --Fields-- (Constant)
         private const float MultiplierRatioForDecorator = 160f / 135f;  // Formula : [CHANGE THIS] ManageMembersUI Profile's Size  %  [FIX] Inventory Profile's Size (original looks)
+        private const float WaitUIToTurnOffOnStartTime = 3.5f;
         #endregion
 
         
@@ -54,8 +60,10 @@ namespace WatKhaoWong.UI.Admin
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _manageMembers = GameObject.FindWithTag("Player").GetComponentInChildren<ManageMembers>();
-            _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
+            GameObject _player = GameObject.FindWithTag("Player");
+            _manageMembers = _player.GetComponentInChildren<ManageMembers>();
+            _myUserData = _player.GetComponentInChildren<MyUserData>();
+            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
 
             _backButton.onClick.AddListener(Back);
             _changeLangButton.onClick.AddListener(ChangeLang);
@@ -86,9 +94,43 @@ namespace WatKhaoWong.UI.Admin
             UIRefresher.OnLocalizeDynamicString += RefreshStatUI;
         }
 
-        private void Start()
+        private async void Start()
         {
+            if (!await MyUserData.IsAdmin()) return;
+
             RefreshUI();
+            UpdateTotalNumbers();
+        }
+
+        private async void OnEnable()
+        {
+            if (Time.time < WaitUIToTurnOffOnStartTime) return; // Prevent OnEnable() on first Start when UI are seting itself which then it will hide itself. We only want OnEnable() when user open UI.
+            if (!await MyUserData.IsAdmin()) return;
+
+            RefreshUI();
+            UpdateTotalNumbers();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE)
+        private async void UpdateTotalNumbers()
+        {
+            if (!await MyUserData.IsAdmin()) return;
+
+            int count = 0;
+            await foreach (var snapshot in _savingWrapper.LoadAllUsers())
+                count++;
+
+            _totalUsersNumber = count;
+
+            count = 0;
+            await foreach (var snapshot in _savingWrapper.LoadEntryFromCategory(ECategoryNode.ActiveStay))
+                count++;
+
+            _activeUsersNumber = count;
+            RefreshStatUI();
         }
         #endregion
 
@@ -137,8 +179,8 @@ namespace WatKhaoWong.UI.Admin
         {
             _userNameText.text = _myUserData.GetUserNameText();
 
-            _totalUsersText.text = _manageMembers.TotalUsersText.GetLocalizedString($"{_manageMembers.ValueTextFormatBegin}{_myUserData.GetTotalTMPointsText()}{_manageMembers.ValueTextFormatEnd}");
-            _activeStayText.text = _manageMembers.ActiveStayText.GetLocalizedString($"{_manageMembers.ValueTextFormatBegin}{_myUserData.GetTodayTMPointsText()}{_manageMembers.ValueTextFormatEnd}");
+            _totalUsersText.text = _manageMembers.TotalUsersText.GetLocalizedString($"{_manageMembers.ValueTextFormatBegin}{(_totalUsersNumber == 0 ? "-" : _totalUsersNumber.ToString())}{_manageMembers.ValueTextFormatEnd}");
+            _activeStayText.text = _manageMembers.ActiveStayText.GetLocalizedString($"{_manageMembers.ValueTextFormatBegin}{(_activeUsersNumber == 0 ? "-" : _activeUsersNumber.ToString())}{_manageMembers.ValueTextFormatEnd}");
         }
         #endregion
     }

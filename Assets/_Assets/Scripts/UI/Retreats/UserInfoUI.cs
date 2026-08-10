@@ -366,7 +366,7 @@ namespace WatKhaoWong.UI.Retreats
             buttonText.text = (_userInfo.ViewEditMode == EViewEditMode.View) ? _userInfo.EditButtonText.GetLocalizedString() : _userInfo.ViewButtonText.GetLocalizedString();
         }
 
-        private void ShowHideUIByViewEditMode()
+        private async void ShowHideUIByViewEditMode()
         {
             bool showOnEditMode = _userInfo.ViewEditMode == EViewEditMode.Edit;
 
@@ -375,7 +375,7 @@ namespace WatKhaoWong.UI.Retreats
 
             foreach (GameObject each in _toShowHideByModeOnlyAdmin)
             {
-                if (_myUserData.GetRole() == EUserRole.Admin)
+                if (await MyUserData.IsAdmin())
                     each.SetActive(showOnEditMode);
                 else
                     each.SetActive(false);

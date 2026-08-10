@@ -873,6 +873,209 @@ MonoBehaviour:
   references:
     version: 2
     RefIds: []
+--- !u!1 &1135594288529587207
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1992614414195819327}
+  - component: {fileID: 49202956457700674}
+  - component: {fileID: 2848659268410993078}
+  m_Layer: 0
+  m_Name: Found Board System
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1992614414195819327
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135594288529587207}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5581187577861510003}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &49202956457700674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135594288529587207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a5660eaba8cd74f20a543166fe3e04cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-WatKhaoWong-Admin::FoundBoard
+  _defaultCategory: 0
+  <MaxRowNumber>k__BackingField: 50
+  <SelectedColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4287001699
+  <UnselectedColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4290687917
+  <LoadCategoryCompleted>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 54932451028361216
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <LoadCategoryCompletedColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 4288011303
+  <CantChangeCategory>k__BackingField:
+    m_TableReference:
+      m_TableCollectionName: GUID:a4b8da3ff4f874004a692e692c1d5ebf
+    m_TableEntryReference:
+      m_KeyId: 52817726043840512
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  <CantChangeCategoryColor>k__BackingField:
+    serializedVersion: 2
+    rgba: 0
+  <CategoryName>k__BackingField:
+  - category: 0
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+      m_TableEntryReference:
+        m_KeyId: 145105418500169728
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  - category: 1
+    localizedString:
+      m_TableReference:
+        m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
+      m_TableEntryReference:
+        m_KeyId: 130220802593251328
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
+  _onRegisterMemberButtonClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172062190344081683}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePageOpposite
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8458208558688556708}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: OpenPage
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 2173626022081702807}
+        m_TargetAssemblyTypeName: WatKhaoWong.Admin.Register, Assembly-WatKhaoWong-Admin
+        m_MethodName: SetPreviousPageToOpenOpposite
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 3710708710425334946}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
+--- !u!114 &2848659268410993078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1135594288529587207}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 236bb8e78e26740b6beef41be82ccd78, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-WatKhaoWong-Admin::FoundRow
+  _onRowClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5172062190344081683}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: ClosePageOpposite
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5073534146836879691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Retreats.UserInfo, Assembly-WatKhaoWong-Retreats
+        m_MethodName: SetPreviousPageToOpenOpposite
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 3710708710425334946}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5073534146836879691}
+        m_TargetAssemblyTypeName: WatKhaoWong.Retreats.UserInfo, Assembly-WatKhaoWong-Retreats
+        m_MethodName: ShowOtherUser
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 5578088579055343095}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: OpenPage
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1187216208980445647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1425,8 +1628,20 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 461764613598572982}
-        m_TargetAssemblyTypeName: WatKhaoWong.Core.ShowHidePagePopupUI, Assembly-WatKhaoWong-Core
-        m_MethodName: OpenPopup
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: OpenPopupIfNotGuest
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Animator, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 4956454277919580197}
+        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
+        m_MethodName: OpenPopupIfGuest
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1868,7 +2083,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ea9374b509b70f4bba37e4a2ca8cf00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueIdentifier: 4f732f58-21fc-448c-91d9-53c0676831bd
+  uniqueIdentifier: 9a28688e-7b96-42cd-a265-b9eda6ad8570
 --- !u!82 &1550010843227078331
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2817,18 +3032,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1259ebe27c93444d926a6e0b49aa467, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-WatKhaoWong-Admin::WatKhaoWong.Admin.SearchPanel
-  _statusNotFound:
-    m_TableReference:
-      m_TableCollectionName: GUID:925772f4ec3eb491696ab6551b56094f
-    m_TableEntryReference:
-      m_KeyId: 130220782359928832
-      m_Key: 
-    m_FallbackState: 0
-    m_WaitForCompletion: 0
-    m_LocalVariables: []
-  _statusNotFoundColor:
-    serializedVersion: 2
-    rgba: 4285887999
   <StatusMustBeFilled>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
@@ -7682,10 +7885,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 395407326740636967}
-        m_TargetAssemblyTypeName: WatKhaoWong.UI.ShowHidePagePopupUI, Assembly-WatKhaoWong-UI
-        m_MethodName: OpenPageOpposite
-        m_Mode: 4
+      - m_Target: {fileID: 2173626022081702807}
+        m_TargetAssemblyTypeName: WatKhaoWong.Admin.Register, Assembly-WatKhaoWong-Admin
+        m_MethodName: OpenPreviousPage
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10941,6 +11144,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2173626022081702807}
+        m_TargetAssemblyTypeName: WatKhaoWong.Admin.Register, Assembly-WatKhaoWong-Admin
+        m_MethodName: SetPreviousPageToOpenOpposite
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 7219289763067761947}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _statusText: {fileID: 0}
   _image: {fileID: 0}
   references:
@@ -11769,6 +11984,17 @@ MonoBehaviour:
             - _conditionType: 23
               _conditionValues: 
               _negate: 0
+  - gameObjectsUI:
+    - {fileID: 0}
+    condition:
+      _conditionText: (IsRoleEquals == Admin)
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 4
+              _conditionValues: 01000000
+              _negate: 0
   _hideUIByCondition:
   - gameObjectsUI:
     - {fileID: 0}
@@ -11981,6 +12207,17 @@ MonoBehaviour:
           - _or1:
             - _conditionType: 23
               _conditionValues: 
+              _negate: 1
+  - gameObjectsUI:
+    - {fileID: 0}
+    condition:
+      _conditionText: (IsRoleEquals != Admin)
+      _and4:
+      - _or3:
+        - _and2:
+          - _or1:
+            - _conditionType: 4
+              _conditionValues: 01000000
               _negate: 1
 --- !u!1 &7788181461619012287
 GameObject:
@@ -12857,6 +13094,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-WatKhaoWong-Admin::WatKhaoWong.Admin.ApprovalBoard
   _defaultCategory: 0
+  <MaxRowNumber>k__BackingField: 50
   <SelectedColor>k__BackingField:
     serializedVersion: 2
     rgba: 4287001699
@@ -14425,6 +14663,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9027074836127617407}
+  - {fileID: 1992614414195819327}
   - {fileID: 235278615708803639}
   m_Father: {fileID: 2637654065332200263}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -38,8 +38,6 @@ namespace WatKhaoWong.UI.Retreats
         private AccommodationSetTimePopup _setTimePopup;
         private InputFieldValidator _inputFieldValidator;
         private IObjectPool<StayEntryRowUI> _rowUIPool;
-        private MyUserData _myUserData;
-        private StatusText _statusText;
 
         // For -Setter-
         private byte _activityIndex;
@@ -176,8 +174,6 @@ namespace WatKhaoWong.UI.Retreats
 
         private bool IsPastRow() => _rowType == StayEntryRow.RowType.Past;
 
-        private bool IsAdmin() => _myUserData.GetRole() == EUserRole.Admin;
-
         private bool GetAllowPastDate()
         {
             if (IsAdderRow() || IsPastRow())
@@ -226,7 +222,6 @@ namespace WatKhaoWong.UI.Retreats
             _userInfo = player.GetComponentInChildren<UserInfo>();
             _stayEntryRow = player.GetComponentInChildren<StayEntryRow>();
             _setTimePopup = player.GetComponentInChildren<AccommodationSetTimePopup>();
-            _myUserData = player.GetComponentInChildren<MyUserData>();
             _localizer = FindAnyObjectByType<Localizer>(FindObjectsInactive.Include);
             _inputFieldValidator = FindAnyObjectByType<InputFieldValidator>();
             _accommodationFormUI = FindAnyObjectByType<AccommodationFormUI>(FindObjectsInactive.Include);
@@ -378,10 +373,10 @@ namespace WatKhaoWong.UI.Retreats
 
 
         #region --Methods-- (Subscriber)
-        private void ShowModifierPanelUI(EViewEditMode mode)
+        private async void ShowModifierPanelUI(EViewEditMode mode)
         {
             if (IsAdderRow()) return;
-            if (!IsAdmin()) return;
+            if (!await MyUserData.IsAdmin()) return;
             
             bool isEditing = mode == EViewEditMode.Edit;
 
@@ -519,10 +514,10 @@ namespace WatKhaoWong.UI.Retreats
             }
         }
 
-        private void DeleteButton()
+        private async void DeleteButton()
         {
             if (IsAdderRow()) return;
-            if (!IsAdmin()) return;
+            if (!await MyUserData.IsAdmin()) return;
 
             SystemStayEntryData systemData = new SystemStayEntryData()
             {

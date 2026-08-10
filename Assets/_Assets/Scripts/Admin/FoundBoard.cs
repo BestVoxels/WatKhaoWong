@@ -8,14 +8,15 @@ using WatKhaoWong.SceneManagement;
 using UnityEngine.Localization;
 using WatKhaoWong.Utils.UI;
 using WatKhaoWong.Identities;
+using UnityEngine.Events;
 
 namespace WatKhaoWong.Admin
 {
-    public class ApprovalBoard : MonoBehaviour
+    public class FoundBoard : MonoBehaviour
     {
         #region --Fields-- (Inspector)
         [Header("Board Settings")]
-        [SerializeField] private EApprovalCategory _defaultCategory;
+        [SerializeField] private EFoundCategory _defaultCategory;
         #endregion
 
 
@@ -38,9 +39,16 @@ namespace WatKhaoWong.Admin
 
 
 
+        #region --Events-- (UnityEvent)
+        [Header("ManageMembers UI Event")]
+        [SerializeField] private UnityEvent _onRegisterMemberButtonClick;
+        #endregion
+
+
+
         #region --Events-- (Delegate as Action)
         public event Action OnCategoryChanged;
-        public event Action OnCallRefreshApprovalBoardUI;
+        public event Action OnCallRefreshFoundBoardUI;
         public event Action OnIsBoardExistsUpdated;
         #endregion
 
@@ -52,15 +60,13 @@ namespace WatKhaoWong.Admin
         private SavingWrapper _savingWrapper;
         private StatusText _statusText;
         private SearchPanel _searchPanel;
-        private ApprovalNoPopup _approvalNoPopup;
-        private ApprovalYesPopup _approvalYesPopup;
-        private List<UIStateB> _uiStates = new List<UIStateB>();
+        private List<UIStateC> _uiStates = new List<UIStateC>();
         #endregion
 
 
 
         #region --Properties-- (With Backing Fields)
-        public EApprovalCategory Category
+        public EFoundCategory Category
         {
             get => _defaultCategory;
 
@@ -98,23 +104,18 @@ namespace WatKhaoWong.Admin
 
 
         #region --Methods-- (Built In)
-        private async void Awake()
+        private void Awake()
         {
             GameObject player = GameObject.FindWithTag("Player");
             _searchPanel = player.GetComponentInChildren<SearchPanel>();
-            _approvalNoPopup = player.GetComponentInChildren<ApprovalNoPopup>();
-            _approvalYesPopup = player.GetComponentInChildren<ApprovalYesPopup>();
 
             _savingWrapper = FindAnyObjectByType<SavingWrapper>();
             _statusText = FindAnyObjectByType<StatusText>();
 
-            foreach (var each in GameObject.FindGameObjectsWithTag("ApprovalBoard"))
+            foreach (var each in GameObject.FindGameObjectsWithTag("FoundBoard"))
             {
-                _uiStates.Add(each.GetComponentInChildren<UIStateB>(true));
+                _uiStates.Add(each.GetComponentInChildren<UIStateC>(true));
             }
-
-            _approvalNoPopup.OnRejected += (stayEntry, stayStatus) => LoadSave();
-            _approvalYesPopup.OnAccepted += (stayEntry, stayStatus) => LoadSave();
         }
 
         private void OnEnable()
@@ -154,7 +155,7 @@ namespace WatKhaoWong.Admin
         #region --Methods-- (Custom PUBLIC) ~Leaderboard~
         public bool IsBoardExists() => Records[Category].IsBoardExists;
 
-        public async IAsyncEnumerable<(StayEntry, string, IUserData)> GetRows(ESearchPanelLocation location)
+        public async IAsyncEnumerable<IUserData> GetRows(ESearchPanelLocation location)
         {
             //+Prevent duplicates Rows Bug. Since we are dealing with 'await' so we only allow ONE instance of this method to run at a time.
             //+Prevent some LeaderboardUI GameObject show Empty Data (No Rows), solve by make LeaderboardUI GameObject that comes after wait first then loads when Async is done.
@@ -162,11 +163,10 @@ namespace WatKhaoWong.Admin
 
             IsAsyncRunning = true;
 
-            IAsyncEnumerable<(StayEntry, string, IUserData)> rows = Category switch
+            IAsyncEnumerable<IUserData> rows = Category switch
             {
-                EApprovalCategory.Pending => GetRowsFromServer(ECategoryNode.StayRequests),
-                EApprovalCategory.Approved => null, // GetRowsFromServer(ECategoryNode.ScheduledStay), // TODO : Probably combine both .ScheduledStay & .ActiveStay
-                EApprovalCategory.Rejected => null, // GetRowsFromServer(ECategoryNode.ActiveStay), // TODO : Probably create new .RejectedStay to store data
+                EFoundCategory.Total => GetRowsFromServer(ECategoryNode.Users),
+                EFoundCategory.AtTemple => GetRowsFromServer(ECategoryNode.ActiveStay),
                 _ => null
             };
 
@@ -180,17 +180,17 @@ namespace WatKhaoWong.Admin
             _searchPanel.SetLocation(location);
 
             ushort index = 0;
-            await foreach ((StayEntry stayEntry, string keyId, IUserData userData) each in rows)
+            await foreach (IUserData each in rows)
             {
-                if (each.stayEntry == null) continue;
+                if (each == null) continue;
 
                 if (_searchPanel.HasFilter())
                 {
-                    IUserData filteredData = await _searchPanel.FilterRowData(each.userData);
+                    var filteredData = await _searchPanel.FilterRowData(each);
                     if (filteredData == null) continue;
 
                     index++;
-                    yield return (each.stayEntry, each.keyId, filteredData);
+                    yield return filteredData;
                 }
                 else
                 {
@@ -211,26 +211,49 @@ namespace WatKhaoWong.Admin
 
 
 
-        #region --Methods-- (Custom PRIVATE)
-        private async IAsyncEnumerable<(StayEntry, string, IUserData)> GetRowsFromServer(ECategoryNode categoryNode)
+        #region --Methods-- (Custom PUBLIC) ~Page UI Buttons~
+        public void OnRegisterMemberButtonClick()
         {
+            _onRegisterMemberButtonClick?.Invoke();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE)
+        private async IAsyncEnumerable<IUserData> GetRowsFromServer(ECategoryNode categoryNode)
+        {            
             // *** First Initialize List & also Return Asynchronous one by one when loaded from server. ***
             if (Records[Category].CachedRows.Count == 0)
             {
                 ushort index = 0;
-                await foreach ((StayEntry stayEntry, string keyId) in _savingWrapper.LoadEntryFromCategory(categoryNode))
+                if (categoryNode == ECategoryNode.Users)
                 {
-                    DataSnapshot dataSnapShot = await _savingWrapper.LoadOtherUser(stayEntry.UserId);
-                    if (dataSnapShot == null) continue;
+                    await foreach (DataSnapshot dataSnapShot in _savingWrapper.LoadAllUsers())
+                    {
+                        ++index;
+                        IUserData data = new OtherUserData(dataSnapShot);
+                        await data.GetActiveStayEntry(); // Call this so "SearchPanel" can filter by "ActiveStayEntry" without having to call "await GetActiveStayEntry()".
+                        
+                        Records[Category].CachedRows.Add(data);
 
-                    IUserData data = new OtherUserData(dataSnapShot);
-                    await data.GetActiveStayEntry(); // Call this so "SearchPanel" can filter by "ActiveStayEntry" without having to call "await GetActiveStayEntry()".
+                        yield return data;
+                    }
+                }
+                else if (categoryNode == ECategoryNode.ActiveStay)
+                {
+                    await foreach ((StayEntry stayEntry, string keyId) in _savingWrapper.LoadEntryFromCategory(ECategoryNode.ActiveStay))
+                    {
+                        DataSnapshot dataSnapShot = await _savingWrapper.LoadOtherUser(stayEntry.UserId);
+                        if (dataSnapShot == null) continue;
 
-                    ++index;
+                        ++index;
+                        IUserData userData = new OtherUserData(dataSnapShot);
 
-                    Records[Category].CachedRows.Add((stayEntry, keyId, data));
+                        Records[Category].CachedRows.Add(userData);
 
-                    yield return (stayEntry, keyId, data);
+                        yield return userData;
+                    }
                 }
 
                 // Indicates when Leaderboard is loaded.
@@ -245,7 +268,7 @@ namespace WatKhaoWong.Admin
             }
 
             // *** Return List as Synchronous ***
-            foreach ((StayEntry, string, IUserData) each in Records[Category].CachedRows)
+            foreach (IUserData each in Records[Category].CachedRows)
                 yield return each;
         }
 
@@ -253,7 +276,7 @@ namespace WatKhaoWong.Admin
         {
             // Clear All Record Category CachedRows so that it has to fetch from database again.
             Records.ClearAllCachedRows();
-            OnCallRefreshApprovalBoardUI?.Invoke();
+            OnCallRefreshFoundBoardUI?.Invoke();
         }
         #endregion
 
@@ -274,7 +297,7 @@ namespace WatKhaoWong.Admin
         #region --Classes-- (Custom PRIVATE)
         private class Record
         {
-            private ApprovalBoard _board;
+            private FoundBoard _board;
             private bool _defaultIsBoardExists = false;
             public bool IsBoardExists
             {
@@ -285,11 +308,11 @@ namespace WatKhaoWong.Admin
                     _board.OnIsBoardExistsUpdated?.Invoke();
                 }
             }
-            public List<(StayEntry, string, IUserData)> CachedRows { get; private set; } = new();
+            public List<IUserData> CachedRows { get; private set; } = new();
 
-            public Record(ApprovalBoard approvalBoard)
+            public Record(FoundBoard foundBoard)
             {
-                _board = approvalBoard;
+                _board = foundBoard;
             }
         }
 
@@ -299,16 +322,16 @@ namespace WatKhaoWong.Admin
             private readonly Record[] _records = new Record[3];
 
             // Indexer
-            public Record this[EApprovalCategory category]
+            public Record this[EFoundCategory category]
             {
                 get => _records[GetInt(category)];
             }
 
             // Constructor
-            public RecordCollection(ApprovalBoard approvalBoard)
+            public RecordCollection(FoundBoard foundBoard)
             {
                 for (byte i = 0; i < _records.Length; i++)
-                    _records[i] = new Record(approvalBoard);
+                    _records[i] = new Record(foundBoard);
             }
 
             // PUBLIC Methods
@@ -319,13 +342,12 @@ namespace WatKhaoWong.Admin
             }
 
             // Methods
-            private int GetInt(EApprovalCategory category)
+            private int GetInt(EFoundCategory category)
             {
                 return category switch
                 {
-                    EApprovalCategory.Pending => 0,
-                    EApprovalCategory.Approved => 1,
-                    EApprovalCategory.Rejected => 2,
+                    EFoundCategory.Total => 0,
+                    EFoundCategory.AtTemple => 1,
                     _ => -1
                 };
             }
@@ -338,7 +360,7 @@ namespace WatKhaoWong.Admin
         [System.Serializable]
         public class CategoryNameEntry
         {
-            public EApprovalCategory category;
+            public EFoundCategory category;
             public LocalizedString localizedString;
         }
         #endregion

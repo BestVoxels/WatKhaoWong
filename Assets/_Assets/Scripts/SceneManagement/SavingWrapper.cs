@@ -117,7 +117,10 @@ namespace WatKhaoWong.SceneManagement
         /// </summary>
         public void ForceSave(ECategoryNode categoryNode, EValueNode valueNode, object saveValue)
         {
-            _ = _savingSystem.value.Save(GetPathWithValueNode(categoryNode, valueNode), saveValue);
+            string path = GetPathWithValueNode(categoryNode, valueNode);
+            if (path == null) return;
+
+            _ = _savingSystem.value.Save(path, saveValue);
         }
 
         /// <summary>
@@ -234,7 +237,7 @@ namespace WatKhaoWong.SceneManagement
             return await _savingSystem.value.Load(Path.Combine(ECategoryNode.Users.ToString(), otherUserID));
         }
 
-        public async IAsyncEnumerable<DataSnapshot> LoadAndSortByChildValue(ECategoryNode categoryNode, EValueNode valueNode, int limitNumber)
+        public async IAsyncEnumerable<DataSnapshot> LoadAndSortByChildValueReverse(ECategoryNode categoryNode, EValueNode valueNode, int limitNumber)
         {
             if (!FirebaseUtils.IsAuthenticated()) yield break;
             // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
@@ -248,6 +251,39 @@ namespace WatKhaoWong.SceneManagement
             }
 
             foreach (DataSnapshot each in dataSnapshot.Children.Reverse()) // Call 'Reverse()' to makes it Descending
+            {
+                yield return each;
+            }
+        }
+
+        public async IAsyncEnumerable<DataSnapshot> LoadAndSortByChildValue(ECategoryNode categoryNode, EValueNode valueNode, int limitNumber)
+        {
+            if (!FirebaseUtils.IsAuthenticated()) yield break;
+            // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
+
+            DataSnapshot dataSnapshot = await _savingSystem.value.LoadAndSortByChildValue(categoryNode.ToString(), GetValueNodePath(categoryNode, valueNode), limitNumber);
+            
+            if (dataSnapshot == null)
+            {
+                Debug.LogWarning("Can't Load Child Value, maybe path is Wrong. 'dataSnapshot' is equals to 'null'.");
+                yield break;
+            }
+
+            foreach (DataSnapshot each in dataSnapshot.Children)
+            {
+                yield return each;
+            }
+        }
+
+        /// <summary>
+        /// Don't use this since this is expensive and performance consumes!
+        /// </summary>
+        public async IAsyncEnumerable<DataSnapshot> LoadAllUsers()
+        {
+            if (!FirebaseUtils.IsAuthenticated()) yield break;
+            // Don't call 'SaveExists()' to check because it has to waste downloads amount of data, right now Load() already check for .Exists within itself.
+
+            await foreach (DataSnapshot each in _savingSystem.value.LoadChildren(ECategoryNode.Users.ToString()))
             {
                 yield return each;
             }
@@ -574,7 +610,11 @@ namespace WatKhaoWong.SceneManagement
                 return Path.Combine(categoryNode.ToString(), valueNodePath);
             }
 
-            if (FirebaseUtils.CurrentUserID == null) Debug.LogError("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
+            if (FirebaseUtils.CurrentUserID == null)
+            {
+                Debug.LogWarning("Can't create Path. Current User ID is null! Maybe because User is not authenticated.");
+                return null;
+            }
             return Path.Combine(categoryNode.ToString(), FirebaseUtils.CurrentUserID, valueNodePath);
         }
 

@@ -45,7 +45,7 @@ namespace WatKhaoWong.Identities
         private async void ManuallyAdjustUsersScore()
         {
             ushort index = 0;
-            await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValue(ECategoryNode.Users, EValueNode.TotalTMPoint, 1000))
+            await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValueReverse(ECategoryNode.Users, EValueNode.TotalTMPoint, 1000))
             {
                 ++index;
 
@@ -104,7 +104,7 @@ namespace WatKhaoWong.Identities
             ushort totalPeopleWithoutScore = 0;
             int totalScore = 0;
 
-            await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValue(ECategoryNode.LeaderboardTMChallenge, EValueNode.ChallengeTMPoint, 1000))
+            await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValueReverse(ECategoryNode.LeaderboardTMChallenge, EValueNode.ChallengeTMPoint, 1000))
             {
                 ++totalPeople;
                 DataSnapshot data = eachData.Child("ChallengeTMPoint");
@@ -141,7 +141,7 @@ namespace WatKhaoWong.Identities
             ushort totalPeopleWithoutScore = 0;
             int totalScore = 0;
 
-            await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValue(ECategoryNode.Users, EValueNode.TotalTMPoint, 1000))
+            await foreach (DataSnapshot eachData in _savingWrapper.LoadAndSortByChildValueReverse(ECategoryNode.Users, EValueNode.TotalTMPoint, 1000))
             {
                 ++totalPeople;
                 DataSnapshot data = eachData.Child("TMPoints").Child("TotalTMPoint");

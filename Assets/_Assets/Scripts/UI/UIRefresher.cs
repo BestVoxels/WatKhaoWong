@@ -33,6 +33,7 @@ namespace WatKhaoWong.UI
         public static event Action OnPopupRefreshed;
         public static event Action OnLeaderboardRefreshed;
         public static event Action OnApprovalBoardRefreshed;
+        public static event Action OnFoundBoardRefreshed;
         public static event Action OnUserInfoRefreshed;
         public static event Action OnLocalizeDynamicString;
         public static event Action OnUIShowedHidByRoles;
@@ -46,6 +47,7 @@ namespace WatKhaoWong.UI
         private AccountPopup _accountPopup;
         private Leaderboard _leaderboard;
         private ApprovalBoard _approvalBoard;
+        private FoundBoard _foundBoard;
         private UserInfo _userInfo;
         private Challenge _challenge;
         private RemoteConfigService _remoteConfigService;
@@ -63,6 +65,7 @@ namespace WatKhaoWong.UI
             _accountPopup = player.GetComponentInChildren<AccountPopup>();
             _leaderboard = player.GetComponentInChildren<Leaderboard>();
             _approvalBoard = player.GetComponentInChildren<ApprovalBoard>();
+            _foundBoard = player.GetComponentInChildren<FoundBoard>();
             _userInfo = player.GetComponentInChildren<UserInfo>();
             _challenge = player.GetComponentInChildren<Challenge>();
             _remoteConfigService = FindAnyObjectByType<RemoteConfigService>(FindObjectsInactive.Include);
@@ -99,6 +102,10 @@ namespace WatKhaoWong.UI
             _approvalBoard.OnCategoryChanged += () => { RefreshApprovalBoardUI(); };
             _approvalBoard.OnCallRefreshApprovalBoardUI += () => { RefreshApprovalBoardUI(); };
 
+            // FOUND BOARD SYSTEM
+            _foundBoard.OnCategoryChanged += () => { RefreshFoundBoardUI(); };
+            _foundBoard.OnCallRefreshFoundBoardUI += () => { RefreshFoundBoardUI(); };
+
             // USER INFO SYSTEM
             _userInfo.OnTabChanged += () => { RefreshUserInfoUI(); };
             _userInfo.OnModeChanged += (mode) => { RefreshUserInfoUI(); };
@@ -124,7 +131,7 @@ namespace WatKhaoWong.UI
 
 
         #region --Methods-- (Custom PUBLIC), (Subscriber)
-        public static void RefreshAllUI()
+        public void RefreshAllUI()
         {
             RefreshHomeUI();
             RefreshPrayUI();
@@ -133,86 +140,99 @@ namespace WatKhaoWong.UI
             RefreshSettingUI();
             //RefreshAbbotHistoryUI();
             RefreshPopupUI();
-            RefreshLeaderboardUI();
-            RefreshApprovalBoardUI();
+            // RefreshLeaderboardUI(); // No need waste performance. ONLY refresh when open page.
+            // RefreshApprovalBoardUI(); // No need waste performance. ONLY refresh when open page.
+            // RefreshFoundBoardUI(); // No need waste performance. ONLY refresh when open page.
             RefreshUserInfoUI();
             ShowHideUIByRoles();
             //print("Refreshed All UI");
         }
 
-        public static void CallAllConditionCheck()
+        public void CallAllConditionCheck()
         {
             OnAllConditionCheckCalled?.Invoke();
             //print("CallAllConditionCheck : " + OnAllConditionCheckCalled?.GetInvocationList().Length);
         }
 
-        public static void RefreshHomeUI()
+        public void RefreshHomeUI()
         {
             OnHomeRefreshed?.Invoke();
             //print("Refreshed Home UI : " + OnHomeRefreshed?.GetInvocationList().Length);
         }
 
-        public static void RefreshPrayUI()
+        public void RefreshPrayUI()
         {
             OnPrayRefreshed?.Invoke();
             //print("Refreshed Pray UI : " + OnPrayRefreshed?.GetInvocationList().Length);
         }
 
-        public static void RefreshManageMembersUI()
+        public async void RefreshManageMembersUI()
         {
+            if (!await MyUserData.IsAdmin()) return;
+
             OnManageMembersRefreshed?.Invoke();
             //print("Refreshed Manage Members UI : " + OnManageMembersRefreshed?.GetInvocationList().Length);
         }
 
-        public static void RefreshMeditationRetreatUI()
+        public void RefreshMeditationRetreatUI()
         {
             OnMeditationRetreatRefreshed?.Invoke();
             //print("Refreshed Manage Members UI : " + OnMeditationRetreatRefreshed?.GetInvocationList().Length);
         }
 
-        public static void RefreshSettingUI()
+        public void RefreshSettingUI()
         {
             OnSettingRefreshed?.Invoke();
             //print("Refreshed Setting UI : " + OnSettingRefreshed?.GetInvocationList().Length);
         }
 
-        //public static void RefreshAbbotHistoryUI()
+        //public void RefreshAbbotHistoryUI()
         //{
         //    OnAbbotHistoryRefreshed?.Invoke();
         //    //print("Refreshed Abbot History UI : " + OnAbbotHistoryRefreshed?.GetInvocationList().Length);
         //}
 
-        public static void RefreshPopupUI()
+        public void RefreshPopupUI()
         {
             OnPopupRefreshed?.Invoke();
             //print("Refreshed Popup UI : " + OnPopupRefreshed?.GetInvocationList().Length);
         }
 
-        public static void RefreshLeaderboardUI()
+        public void RefreshLeaderboardUI()
         {
             OnLeaderboardRefreshed?.Invoke();
             //print("Refreshed Leaderboard UI : " + OnLeaderboardRefreshed?.GetInvocationList().Length);
         }
 
-        public static void RefreshApprovalBoardUI()
+        public async void RefreshApprovalBoardUI()
         {
+            if (!await MyUserData.IsAdmin()) return;
+
             OnApprovalBoardRefreshed?.Invoke();
             //print("Refreshed Approval Board UI : " + OnApprovalBoardRefreshed?.GetInvocationList().Length);
         }
 
-        public static void RefreshUserInfoUI()
+        public async void RefreshFoundBoardUI()
+        {
+            if (!await MyUserData.IsAdmin()) return;
+
+            OnFoundBoardRefreshed?.Invoke();
+            //print("Refreshed Found Board UI : " + OnFoundBoardRefreshed?.GetInvocationList().Length);
+        }
+
+        public void RefreshUserInfoUI()
         {
             OnUserInfoRefreshed?.Invoke();
             //print("Refreshed UserInfo UI : " + OnUserInfoRefreshed?.GetInvocationList().Length);
         }
 
-        public static void LocalizeDynamicString()
+        public void LocalizeDynamicString()
         {
             OnLocalizeDynamicString?.Invoke();
             //print("Localize Dynamic String : " + OnLocalizeDynamicString?.GetInvocationList().Length);
         }
 
-        public static void ShowHideUIByRoles()
+        public void ShowHideUIByRoles()
         {
             OnUIShowedHidByRoles?.Invoke();
             //print("Showed Hid UI By Roles : " + OnUIShowedHidByRoles?.GetInvocationList().Length);
@@ -235,6 +255,7 @@ namespace WatKhaoWong.UI
             OnPopupRefreshed = null;
             OnLeaderboardRefreshed = null;
             OnApprovalBoardRefreshed = null;
+            OnFoundBoardRefreshed = null;
             OnUserInfoRefreshed = null;
             OnLocalizeDynamicString = null;
             OnUIShowedHidByRoles = null;

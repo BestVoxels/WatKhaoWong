@@ -1,9 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine.Localization;
 using UnityEngine;
 using UnityEngine.Events;
 using WatKhaoWong.Attributes;
 using WatKhaoWong.Identities;
+using WatKhaoWong.SceneManagement;
+using WatKhaoWong.Utils.Core;
 using System.Globalization;
 
 namespace WatKhaoWong.Retreats
@@ -48,10 +52,24 @@ namespace WatKhaoWong.Retreats
 
 
 
+        #region --Events-- (Delegate as Action)
+        public event Action UserStatsUpdated;
+        #endregion
+
+
+
         #region --Fields-- (In Class)
         private NumberFormatInfo _nfi;
 
         private MyUserData _myUserData;
+        private AccommodationSetTimePopup _setTimePopup;
+        private SavingWrapper _savingWrapper;
+        #endregion
+
+
+
+        #region --Properties-- (Auto)
+        public AllYearlyStats StayStats { get; set; } = new();
         #endregion
 
 
@@ -61,6 +79,8 @@ namespace WatKhaoWong.Retreats
         {
             GameObject player = GameObject.FindWithTag("Player");
             _myUserData = player.GetComponentInChildren<MyUserData>();
+            _setTimePopup = player.GetComponentInChildren<AccommodationSetTimePopup>();
+            _savingWrapper = FindAnyObjectByType<SavingWrapper>();
         }
 
         private void Start()
@@ -68,6 +88,24 @@ namespace WatKhaoWong.Retreats
             _nfi = (NumberFormatInfo)CultureInfo.InvariantCulture.NumberFormat.Clone();
             _nfi.NumberGroupSeparator = " ";
         }
+
+        // // For Testing Purpose
+        // private void Update()
+        // {
+        //     if (Input.GetKeyDown(KeyCode.Space))
+        //     {
+        //         print($"All Years total days : {StayStats.TotalDays}");
+        //         print($"All Years total stays : {StayStats.TotalStays}");
+        //         foreach (var each in StayStats.ByYear)
+        //         {
+        //             print($"-> ByYear.Key (Year) : {each.Key} / ByYear.Value (Total days) : {each.Value.TotalDays} / ByYear.Value (Total stays) : {each.Value.TotalStays}");
+        //             foreach (var each2 in each.Value.DaysByMonth)
+        //             {
+        //                 print($"-> (month) : {each2.Key} / (how many days in this month) : {each2.Value}");
+        //             }
+        //         }
+        //     }
+        // }
         #endregion
 
 
@@ -112,7 +150,7 @@ namespace WatKhaoWong.Retreats
                 result = Math.Round(avg, 1, MidpointRounding.AwayFromZero);
             }
 
-            return _avgText.GetLocalizedString($"{_valueBegin}{result.ToString("#,0", _nfi)}{_valueEnd} {_dayText.GetLocalizedString()}{S(result)}");
+            return _avgText.GetLocalizedString($"{_valueBegin}{result.ToString("#,0.#", _nfi)}{_valueEnd} {_dayText.GetLocalizedString()}{S(result)}");
         }
 
         public string S(decimal input) => input > 1 ? _sText.GetLocalizedString() : "";
@@ -152,6 +190,97 @@ namespace WatKhaoWong.Retreats
         public void OnMyInfoButtonClick()
         {
             _onMyInfoButtonClick?.Invoke();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PUBLIC) ~User Stay Stats~
+        public async void UpdateUserStats()
+        {
+            if (!FirebaseUtils.IsAuthenticated()) return;
+
+            // Past Entry
+            IAsyncEnumerable<(StayEntry, string)> pastRows = _savingWrapper.LoadPastEntryFromUser(_myUserData.GetUserKeyID());
+            // Active Entry (Pending/Scheduled/Active)
+            StayEntry activeStayEntry = await _myUserData.GetActiveStayEntry();
+
+            // Past Entry
+            StayStats = new();
+            if (pastRows != null)
+            {
+                await foreach ((StayEntry stayEntry, string keyId) in pastRows)
+                {
+                    if (stayEntry == null) continue;
+                    if (!Enum.TryParse(stayEntry.StatusInfo.Status, true, out EStayStatus eStatus)) continue;
+                    if (eStatus != EStayStatus.Completed) continue; // ONLY add data from 'Completed' status since this is PastEntry
+
+                    stayEntry.StayInfo.StartDate.TryParseGregorian(out DateTime startDate);
+                    stayEntry.StayInfo.EndDate.TryParseGregorian(out DateTime endDate);
+                    AssignDataToStayStats(startDate, endDate);
+                }
+            }
+
+            // Active Entry (Pending/Scheduled/Active)
+            if (activeStayEntry != null)
+            {
+                activeStayEntry.StayInfo.StartDate.TryParseGregorian(out DateTime startDate2);
+                activeStayEntry.StayInfo.EndDate.TryParseGregorian(out DateTime endDate2);
+                AssignDataToStayStats(startDate2, endDate2);
+            }
+
+            UserStatsUpdated?.Invoke();
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE) ~User Stay Stats~
+        private void AssignDataToStayStats(DateTime startDate, DateTime endDate)
+        {
+            // Get Stay Duration
+            int totalDays = (endDate == default) ? 1 : (int)_setTimePopup.GetDuration(startDate, endDate).TotalDays; // IF not staying, totalDays is '1'
+            // Get what month from StartDate
+            int year = startDate.Year;
+            // Get what year from StartDate
+            int month = startDate.Month;
+
+            // Assign Data
+            StayStats.TotalDays += totalDays;
+            StayStats.TotalStays++;
+
+            if (!StayStats.ByYear.TryGetValue(year, out YearlyStats yearlyStats))
+            {
+                yearlyStats = new();
+                StayStats.ByYear[year] = yearlyStats;
+            }
+
+            yearlyStats.TotalDays += totalDays;
+            yearlyStats.TotalStays += 1;
+            yearlyStats.DaysByMonth[month] = yearlyStats.DaysByMonth.GetValueOrDefault(month) + totalDays;
+        }
+        #endregion
+
+
+
+        #region --Classes-- (Custom PUBLIC)
+        public class AllYearlyStats
+        {
+            // All years combined
+            public int TotalDays { get; set; }
+            public int TotalStays { get; set; }
+
+            // Key = year
+            public Dictionary<int, YearlyStats> ByYear { get; } = new();
+        }
+
+        public class YearlyStats
+        {
+            public int TotalDays { get; set; }
+            public int TotalStays { get; set; }
+
+            // Key = month (1-12)
+            public Dictionary<int, int> DaysByMonth { get; } = new();
         }
         #endregion
     }

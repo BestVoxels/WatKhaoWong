@@ -6,6 +6,7 @@ using WatKhaoWong.Identities;
 using WatKhaoWong.Attributes;
 using ChartAndGraph;
 using System;
+using System.Collections.Generic;
 
 namespace WatKhaoWong.UI.Retreats
 {
@@ -44,11 +45,19 @@ namespace WatKhaoWong.UI.Retreats
 
 
 
+        #region --Fields-- (Constant)
+        private const byte MinimumValueForBarChart = 1;
+        private const float WaitUIToTurnOffOnStartTime = 3.5f;
+        #endregion
+
+
+
         #region --Methods-- (Built In)
         private void Awake()
         {
-            _meditationRetreat = GameObject.FindWithTag("Player").GetComponentInChildren<MeditationRetreat>();
-            _myUserData = GameObject.FindWithTag("Player").GetComponentInChildren<MyUserData>();
+            GameObject player = GameObject.FindWithTag("Player");
+            _meditationRetreat = player.GetComponentInChildren<MeditationRetreat>();
+            _myUserData = player.GetComponentInChildren<MyUserData>();
             _serverTime = FindAnyObjectByType<ServerTime>();
 
             _backButton.onClick.AddListener(Back);
@@ -62,18 +71,40 @@ namespace WatKhaoWong.UI.Retreats
             _myInfoButton.onClick.AddListener(MyInfo);
 
             UIRefresher.OnMeditationRetreatRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
+            _meditationRetreat.UserStatsUpdated += RefreshStatUI;
 
             UIRefresher.OnLocalizeDynamicString += RefreshStatUI;
         }
 
-        private void OnEnable()
-        {
-            RefreshUI(); // To Make Graph Value not reduced by 'BarAnimation.cs'
-        }
-
         private void Start()
         {
+            _meditationRetreat.UpdateUserStats();
+
             RefreshUI();
+        }
+
+        private void OnEnable()
+        {
+            if (Time.time < WaitUIToTurnOffOnStartTime) return; // Prevent OnEnable() on first Start when UI are seting itself which then it will hide itself. We only want OnEnable() when user open UI.
+
+            _meditationRetreat.UpdateUserStats();
+
+            RefreshUI(); // To Make Graph Value not reduced by 'BarAnimation.cs'
+        }
+        #endregion
+
+
+
+        #region --Methods-- (Custom PRIVATE)
+        private void ShowHideButtons()
+        {
+            // Submit Info Button
+            _submitInfoButton.gameObject.SetActive(!_myUserData.IsGeneralInfoExists());
+
+            // Stay Form Button & My Info Button
+            _stayFormButton.gameObject.SetActive(_myUserData.IsGeneralInfoExists());
+            _myInfoButton.gameObject.SetActive(_myUserData.IsGeneralInfoExists());
+            // "_myUserData.GetTempleGuideConfirmed()" FYI code that can be checks incase need to...
         }
         #endregion
 
@@ -89,7 +120,7 @@ namespace WatKhaoWong.UI.Retreats
         #region --Methods-- (Subscriber)
         private void BarHovered(BarChart.BarEventArgs args)
         {
-            _barInfoText.text = _meditationRetreat.DaysString((int)args.Value);
+            _barInfoText.text = _meditationRetreat.DaysString(((int)args.Value) - MinimumValueForBarChart);
 
             _meditationRetreat.OnBarHovered();
         }
@@ -118,32 +149,39 @@ namespace WatKhaoWong.UI.Retreats
 
         private void RefreshUI()
         {
-            // Reset
-            _barInfoText.text = string.Empty;
-
-            // Update Bar Chart
-            byte[] monthsValue = new byte[12] { 3, 8, 0, 13, 20, 0, 0, 7, 14, 21, 0, 3 }; // TODO Get Value from '_myUserData' (From Server).
-
-            for (byte i = 0; i < 12; i++)
-            {
-                _bar.DataSource.SetValue(_bar.DataSource.GetCategoryName(i), _bar.DataSource.GetGroupName(0), monthsValue[i]);
-            }
+            ShowHideButtons();
 
             RefreshStatUI();
         }
 
-        private async void RefreshStatUI()
+        private void RefreshStatUI()
         {
-            _totalDaysText.text = _meditationRetreat.BulletString() + _meditationRetreat.DaysString(_myUserData.GetTotalTMPoints());
-            _totalVisitsText.text = _meditationRetreat.BulletString() + _meditationRetreat.VisitsString(_myUserData.GetTodayTMPoints());
-            _totalAvgText.text = _meditationRetreat.BulletString() + _meditationRetreat.AvgString(_myUserData.GetTotalTMPoints(), _myUserData.GetTodayTMPoints());
+            int currentYear = _serverTime.NowSinceAppStart().Year;
+            var thisYear = _meditationRetreat.StayStats.ByYear.GetValueOrDefault(currentYear);
 
-            _yearlyDaysText.text = _meditationRetreat.BulletString() + _meditationRetreat.DaysString(_myUserData.GetTotalTMPoints());
-            _yearlyVisitsText.text = _meditationRetreat.BulletString() + _meditationRetreat.VisitsString(_myUserData.GetTodayTMPoints());
-            _yearlyAvgText.text = _meditationRetreat.BulletString() + _meditationRetreat.AvgString(_myUserData.GetTotalTMPoints(), _myUserData.GetTodayTMPoints());
+            // Bar
+            _barInfoText.text = string.Empty; // Reset
 
-            DateTime nowDate = await _serverTime.Now();
-            _yearlyHeaderText.text = _meditationRetreat.YearlyHeaderString(nowDate.Year);
+            for (byte i = 0; i < 12; i++)
+            {
+                int days = 0;
+                if (thisYear != null && thisYear.DaysByMonth.TryGetValue(i + 1, out int daysInMonth))
+                {
+                    days = daysInMonth;
+                }
+                _bar.DataSource.SetValue(_bar.DataSource.GetCategoryName(i), _bar.DataSource.GetGroupName(0), days + MinimumValueForBarChart);
+            }
+
+            // Texts
+            _totalDaysText.text = _meditationRetreat.BulletString() + _meditationRetreat.DaysString(_meditationRetreat.StayStats.TotalDays);
+            _totalVisitsText.text = _meditationRetreat.BulletString() + _meditationRetreat.VisitsString(_meditationRetreat.StayStats.TotalStays);
+            _totalAvgText.text = _meditationRetreat.BulletString() + _meditationRetreat.AvgString(_meditationRetreat.StayStats.TotalDays, _meditationRetreat.StayStats.TotalStays);
+
+            _yearlyDaysText.text = _meditationRetreat.BulletString() + _meditationRetreat.DaysString(thisYear == null ? 0 : thisYear.TotalDays);
+            _yearlyVisitsText.text = _meditationRetreat.BulletString() + _meditationRetreat.VisitsString(thisYear == null ? 0 : thisYear.TotalStays);
+            _yearlyAvgText.text = _meditationRetreat.BulletString() + _meditationRetreat.AvgString(thisYear == null ? 0 : thisYear.TotalDays, thisYear == null ? 0 : thisYear.TotalStays);
+
+            _yearlyHeaderText.text = _meditationRetreat.YearlyHeaderString(currentYear);
         }
         #endregion
     }

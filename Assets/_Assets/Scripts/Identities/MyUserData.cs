@@ -46,7 +46,7 @@ namespace WatKhaoWong.Identities
 
 
         #region --Fields-- (In Class)
-        private readonly Data _data = new Data();
+        private static readonly Data _data = new Data();
 
         private PointUploadEvents _pointUploadEvents;
         private Challenge _challenge;
@@ -69,7 +69,7 @@ namespace WatKhaoWong.Identities
         // until MyUserData.cs' LoadSave() is fully loaded because they use some value here to check in their condition.
         // If don't do this, we can't guarantee MyUserData.cs' LoadSave() will loaded prior and value they use to check
         // will be wrong
-        public TaskCompletionSource<bool> LoadCompletionSource { get; } = new TaskCompletionSource<bool>();
+        public static TaskCompletionSource<bool> LoadCompletionSource { get; } = new TaskCompletionSource<bool>();
         #endregion
 
 
@@ -194,6 +194,14 @@ namespace WatKhaoWong.Identities
         }
 
         public EUserRole GetRole() => _data.GetRole();
+
+        public async static Task<bool> IsAdmin()
+        {
+            bool isMyUserDataSaveLoaded = await LoadCompletionSource.Task;
+            if (isMyUserDataSaveLoaded == false) return false;
+
+            return _data.GetRole() == EUserRole.Admin;
+        }
 
         public string GetTitleText()
         {
@@ -673,6 +681,7 @@ namespace WatKhaoWong.Identities
 
             return _data.StayEntry;
         }
+        public StayEntry GetActiveStayEntryNoLoad() => _data.StayEntry;
 
 
         // -Active Stay-
@@ -701,6 +710,7 @@ namespace WatKhaoWong.Identities
 
             return _data.NationalIDInfo;
         }
+        public NationalIDInfo GetDataNationalIDInfoNoLoad() => _data.NationalIDInfo;
 
 
         // -Passport-
@@ -715,6 +725,7 @@ namespace WatKhaoWong.Identities
 
             return _data.PassportInfo;
         }
+        public PassportInfo GetDataPassportInfoNoLoad() => _data.PassportInfo;
 
 
         // -General Info-
@@ -758,9 +769,9 @@ namespace WatKhaoWong.Identities
             return _data.GetAllUserNameTextCombined(nationalIDInfo, passportInfo);
         }
 
-        public async Task<int> GetAge(NationalIDInfo nationalIDInfo, PassportInfo passportInfo, ServerTime serverTime)
+        public int GetAge(NationalIDInfo nationalIDInfo, PassportInfo passportInfo, ServerTime serverTime)
         {
-            return await _data.GetAge(nationalIDInfo, passportInfo, serverTime);
+            return _data.GetAge(nationalIDInfo, passportInfo, serverTime);
         }
 
         public string GetNationalIDAndPassportNumberCombined(NationalIDInfo nationalIDInfo, PassportInfo passportInfo)
@@ -768,19 +779,19 @@ namespace WatKhaoWong.Identities
             return _data.GetNationalIDAndPassportNumberCombined(nationalIDInfo, passportInfo);
         }
         
-        public async Task<string> GetPlateNumberFromActiveStayEntry()
+        public string GetPlateNumberFromActiveStayEntry()
         {
-            return _data.GetPlateNumber(await GetActiveStayEntry());
+            return _data.GetPlateNumber(GetActiveStayEntryNoLoad());
         }
 
-        public async Task<string> GetBuildingNameFromActiveStayEntry(Localizer localizer)
+        public string GetBuildingNameFromActiveStayEntry(Localizer localizer)
         {
-            return _data.GetBuildingName(await GetActiveStayEntry(), localizer);
+            return _data.GetBuildingName(GetActiveStayEntryNoLoad(), localizer);
         }
 
-        public async Task<string> GetRoomNumberFromActiveStayEntry()
+        public string GetRoomNumberFromActiveStayEntry()
         {
-            return _data.GetRoomNumber(await GetActiveStayEntry());
+            return _data.GetRoomNumber(GetActiveStayEntryNoLoad());
         }
 
         public string GetAccountStatusTextCombined(Localizer localizer)

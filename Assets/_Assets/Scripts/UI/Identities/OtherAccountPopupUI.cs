@@ -40,7 +40,6 @@ namespace WatKhaoWong.UI.Identities
 
         #region --Fields-- (In Class)
         private IUserData _userData;
-        private MyUserData _myUserData;
         private OtherAccountPopup _otherAccountPopup;
         private UserInfo _userInfo;
         private Localizer _localizer;
@@ -58,7 +57,6 @@ namespace WatKhaoWong.UI.Identities
         private void Awake()
         {
             GameObject player = GameObject.FindWithTag("Player");
-            _myUserData = player.GetComponentInChildren<MyUserData>();
             _otherAccountPopup = player.GetComponentInChildren<OtherAccountPopup>();
             _localizer = FindAnyObjectByType<Localizer>();
             _userInfo = player.GetComponentInChildren<UserInfo>();
@@ -99,11 +97,11 @@ namespace WatKhaoWong.UI.Identities
             ShowHideUIByRole();
         }
 
-        private void ShowHideUIByRole()
+        private async void ShowHideUIByRole()
         {
             foreach (GameObject each in _toShowHideOnlyAdmin)
             {
-                each.SetActive(_myUserData.GetRole() == EUserRole.Admin); // use '_myUserData' because we want to know if current user is Admin not the one that get clicked.
+                each.SetActive(await MyUserData.IsAdmin()); // use 'MyUserData' because we want to know if current user is Admin not the one that get clicked.
             }
         }
         #endregion

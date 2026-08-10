@@ -5,6 +5,7 @@ using WatKhaoWong.Identities;
 using WatKhaoWong.Retreats;
 using WatKhaoWong.Utils.UI;
 using WatKhaoWong.SceneManagement;
+using System.Threading.Tasks;
 
 namespace WatKhaoWong.UI.Retreats
 {
@@ -286,8 +287,6 @@ namespace WatKhaoWong.UI.Retreats
             SetTextWhenPassportExists();
             SetTextWhenGeneralInfoExists();
         }
-
-        private bool IsAdmin() => _myUserData.GetRole() == EUserRole.Admin;
         #endregion
 
 
@@ -371,16 +370,16 @@ namespace WatKhaoWong.UI.Retreats
             }
         }
 
-        private void ShowHideIDCardSectionUI(bool toShow)
+        private async void ShowHideIDCardSectionUI(bool toShow)
         {
-            if (_userInfo.ViewEditMode == EViewEditMode.Edit && IsAdmin()) toShow = true;
+            if (_userInfo.ViewEditMode == EViewEditMode.Edit && await MyUserData.IsAdmin()) toShow = true;
 
             _iDCardSectionToShowHide.SetActive(toShow);
         }
 
-        private void ShowHidePassportSectionUI(bool toShow)
+        private async void ShowHidePassportSectionUI(bool toShow)
         {
-            if (_userInfo.ViewEditMode == EViewEditMode.Edit && IsAdmin()) toShow = true;
+            if (_userInfo.ViewEditMode == EViewEditMode.Edit && await MyUserData.IsAdmin()) toShow = true;
 
             _passportSectionToShowHide.SetActive(toShow);
         }
@@ -437,11 +436,11 @@ namespace WatKhaoWong.UI.Retreats
 
         #region --Methods-- (Custom PRIVATE) ~Setter~
         // -ID Card-
-        private bool ValidateIdCard()
+        private async Task<bool> ValidateIdCard()
         {
             bool status = true;
 
-            if (IsAdmin())
+            if (await MyUserData.IsAdmin())
             {
                 if (!IsNationalIdValidated()) status = false;
                 if (!IsGenderValidated()) status = false;
@@ -462,11 +461,11 @@ namespace WatKhaoWong.UI.Retreats
         }
 
         // -Passport-
-        private bool ValidatePassport()
+        private async Task<bool> ValidatePassport()
         {
             bool status = true;
 
-            if (IsAdmin())
+            if (await MyUserData.IsAdmin())
             {
                 if (!IsPpNumberValidated()) status = false;
                 if (!IsPpNationalityValidated()) status = false;
@@ -516,7 +515,7 @@ namespace WatKhaoWong.UI.Retreats
             RefreshUI();
         }
 
-        private void HandleUIByEditMode(EViewEditMode mode)
+        private async void HandleUIByEditMode(EViewEditMode mode)
         {
             bool isEditing = mode == EViewEditMode.Edit;
 
@@ -529,36 +528,36 @@ namespace WatKhaoWong.UI.Retreats
             // Show Hide GameObjects - Passport
             foreach (GameObject each in _toShowHideByModeOnlyAdmin)
             {
-                if (IsAdmin())
+                if (await MyUserData.IsAdmin())
                     each.SetActive(isEditing);
                 else
                     each.SetActive(false);
             }
 
             // Show InputFields & Hide ResultTexts - National ID
-            _nationalIdIF.gameObject.SetActive(isEditing && IsAdmin());
-            _nationalIdRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _nationalIdIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _nationalIdRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _genderIF.gameObject.SetActive(isEditing && IsAdmin());
-            _genderRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _genderIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _genderRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _prefixIF.gameObject.SetActive(isEditing && IsAdmin());
-            _prefixRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _prefixIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _prefixRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _fNameIF.gameObject.SetActive(isEditing && IsAdmin());
-            _fNameRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _fNameIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _fNameRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _lNameIF.gameObject.SetActive(isEditing && IsAdmin());
-            _lNameRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _lNameIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _lNameRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _birthDateIF.gameObject.SetActive(isEditing && IsAdmin());
-            _birthDateRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _birthDateIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _birthDateRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _issueDateIF.gameObject.SetActive(isEditing && IsAdmin());
-            _issueDateRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _issueDateIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _issueDateRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _expireDateIF.gameObject.SetActive(isEditing && IsAdmin());
-            _expireDateRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _expireDateIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _expireDateRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
             _houseNumberIF.gameObject.SetActive(isEditing);
             _houseNumberRT.gameObject.SetActive(!isEditing);
@@ -576,26 +575,26 @@ namespace WatKhaoWong.UI.Retreats
             _countryRT.gameObject.SetActive(!isEditing);
 
             // Show InputFields & Hide ResultTexts - Passport
-            _ppNumberIF.gameObject.SetActive(isEditing && IsAdmin());
-            _ppNumberRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _ppNumberIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _ppNumberRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _ppNationalityIF.gameObject.SetActive(isEditing && IsAdmin());
-            _ppNationalityRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _ppNationalityIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _ppNationalityRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _ppGenderIF.gameObject.SetActive(isEditing && IsAdmin());
-            _ppGenderRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _ppGenderIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _ppGenderRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _ppFullNameIF.gameObject.SetActive(isEditing && IsAdmin());
-            _ppFullNameRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _ppFullNameIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _ppFullNameRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _ppBirthDateIF.gameObject.SetActive(isEditing && IsAdmin());
-            _ppBirthDateRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _ppBirthDateIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _ppBirthDateRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _ppIssueDateIF.gameObject.SetActive(isEditing && IsAdmin());
-            _ppIssueDateRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _ppIssueDateIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _ppIssueDateRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
-            _ppExpireDateIF.gameObject.SetActive(isEditing && IsAdmin());
-            _ppExpireDateRT.gameObject.SetActive(IsAdmin() ? !isEditing : true);
+            _ppExpireDateIF.gameObject.SetActive(isEditing && await MyUserData.IsAdmin());
+            _ppExpireDateRT.gameObject.SetActive(await MyUserData.IsAdmin() ? !isEditing : true);
 
             // Show InputFields & Hide ResultTexts - My Info
             _phoneNumberIF.gameObject.SetActive(isEditing);
@@ -707,9 +706,9 @@ namespace WatKhaoWong.UI.Retreats
             _countryIF.text, _countryIFS, out _country,
             (_userInfo.StatusMustBeFilled.GetLocalizedString(), _userInfo.StatusMustBeFilledColor));
 
-        private void ConfirmIdCard()
+        private async void ConfirmIdCard()
         {
-            if (ValidateIdCard())
+            if (await ValidateIdCard())
             {
                 _personalRow.OnIdCardValidateSucceeded(_userData, _nationalId, _gender, _prefix, _fName, _lName, _birthDate, _issueDate, _expireDate, _houseNumber, _subDistrict, _district, _province, _country);
             }
@@ -748,9 +747,9 @@ namespace WatKhaoWong.UI.Retreats
             _ppExpireDateIF.text, _ppExpireDateIFS, out _ppExpireDate,
             (_userInfo.StatusMustBeFilled.GetLocalizedString(), _userInfo.StatusMustBeFilledColor));
 
-        private void ConfirmPassport()
+        private async void ConfirmPassport()
         {
-            if (ValidatePassport())
+            if (await ValidatePassport())
             {
                 PassportInfo passportInfo = new PassportInfo()
                 {

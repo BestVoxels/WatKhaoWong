@@ -170,8 +170,10 @@ namespace WatKhaoWong.UI.Admin
 
 
         #region --Methods-- (Custom PUBLIC)
-        public void Setup(StayEntry stayEntry, string keyId, IUserData userData)
+        public async void Setup(StayEntry stayEntry, string keyId, IUserData userData)
         {
+            if (!await MyUserData.IsAdmin()) return;
+
             _stayEntry = stayEntry;
             _keyId = keyId;
             _userData = userData;

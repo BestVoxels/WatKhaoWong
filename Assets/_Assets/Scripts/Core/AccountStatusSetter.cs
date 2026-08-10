@@ -75,7 +75,7 @@ namespace WatKhaoWong.Core
         #region --Methods-- (Custom PRIVATE)
         private async Task SetAccountStatusIfNoDataInServer()
         {
-            bool isMyUserDataSaveLoaded = await _myUserData.LoadCompletionSource.Task;
+            bool isMyUserDataSaveLoaded = await MyUserData.LoadCompletionSource.Task;
 
             if (isMyUserDataSaveLoaded == false)
             {

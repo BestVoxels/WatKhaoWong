@@ -177,10 +177,21 @@ namespace WatKhaoWong.Identities
                 if (data.ToString().TryParseGregorian(out DateTime result))
                     _data.FirstUploadTimeOfDayTM = result;
 
-            // Belongs to Meditation Retreat data
             string jsonData = bigData.Child(EParentNode.AccountStatus.ToString()).GetRawJsonValue();
             if (jsonData != null)
                 _data.AccountStatus = JsonConvert.DeserializeObject<AccountStatus>(jsonData);
+            
+            jsonData = bigData.Child(EParentNode.ActiveStay.ToString()).GetRawJsonValue();
+            if (jsonData != null)
+                _data.ActiveStay = JsonConvert.DeserializeObject<ActiveStay>(jsonData);
+
+            jsonData = bigData.Child(EParentNode.NationalIDInfo.ToString()).GetRawJsonValue();
+            if (jsonData != null)
+                _data.NationalIDInfo = JsonConvert.DeserializeObject<NationalIDInfo>(jsonData);
+
+            jsonData = bigData.Child(EParentNode.PassportInfo.ToString()).GetRawJsonValue();
+            if (jsonData != null)
+                _data.PassportInfo = JsonConvert.DeserializeObject<PassportInfo>(jsonData);
         }
         #endregion
 
@@ -195,10 +206,10 @@ namespace WatKhaoWong.Identities
         {
             if (!IsStayEntryExists())
             {
-                ActiveStay activeStay = await GetDataActiveStay();
+                // ActiveStay activeStay = await GetDataActiveStay();
                 if (!IsActiveStayExists()) return null;
 
-                Enum.TryParse(activeStay.StatusInfo.Status, true, out EStayStatus eStatus);
+                Enum.TryParse(_data.ActiveStay.StatusInfo.Status, true, out EStayStatus eStatus);
                 switch (eStatus)
                 {
                     case EStayStatus.Pending:
@@ -213,12 +224,13 @@ namespace WatKhaoWong.Identities
                         await LoadMyEntryFromActiveStay();
                         break;
                 }
-
+                
                 if (!IsStayEntryExists()) return null; // Incase can't find my 'StayEntry' under 'StayRequests' Category
             }
 
             return _data.StayEntry;
         }
+        public StayEntry GetActiveStayEntryNoLoad() => _data.StayEntry;
 
 
         // -Active Stay-
@@ -247,6 +259,7 @@ namespace WatKhaoWong.Identities
 
             return _data.NationalIDInfo;
         }
+        public NationalIDInfo GetDataNationalIDInfoNoLoad() => _data.NationalIDInfo;
 
 
         // -Passport-
@@ -261,6 +274,7 @@ namespace WatKhaoWong.Identities
 
             return _data.PassportInfo;
         }
+        public PassportInfo GetDataPassportInfoNoLoad() => _data.PassportInfo;
 
 
         // -General Info-
@@ -304,9 +318,9 @@ namespace WatKhaoWong.Identities
             return _data.GetAllUserNameTextCombined(nationalIDInfo, passportInfo);
         }
 
-        public async Task<int> GetAge(NationalIDInfo nationalIDInfo, PassportInfo passportInfo, ServerTime serverTime)
+        public int GetAge(NationalIDInfo nationalIDInfo, PassportInfo passportInfo, ServerTime serverTime)
         {
-            return await _data.GetAge(nationalIDInfo, passportInfo, serverTime);
+            return _data.GetAge(nationalIDInfo, passportInfo, serverTime);
         }
 
         public string GetNationalIDAndPassportNumberCombined(NationalIDInfo nationalIDInfo, PassportInfo passportInfo)
@@ -314,19 +328,19 @@ namespace WatKhaoWong.Identities
             return _data.GetNationalIDAndPassportNumberCombined(nationalIDInfo, passportInfo);
         }
 
-        public async Task<string> GetPlateNumberFromActiveStayEntry()
+        public string GetPlateNumberFromActiveStayEntry()
         {
-            return _data.GetPlateNumber(await GetActiveStayEntry());
+            return _data.GetPlateNumber(GetActiveStayEntryNoLoad());
         }
 
-        public async Task<string> GetBuildingNameFromActiveStayEntry(Localizer localizer)
+        public string GetBuildingNameFromActiveStayEntry(Localizer localizer)
         {
-            return _data.GetBuildingName(await GetActiveStayEntry(), localizer);
+            return _data.GetBuildingName(GetActiveStayEntryNoLoad(), localizer);
         }
 
-        public async Task<string> GetRoomNumberFromActiveStayEntry()
+        public string GetRoomNumberFromActiveStayEntry()
         {
-            return _data.GetRoomNumber(await GetActiveStayEntry());
+            return _data.GetRoomNumber(GetActiveStayEntryNoLoad());
         }
 
         public string GetAccountStatusTextCombined(Localizer localizer)

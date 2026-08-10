@@ -177,8 +177,6 @@ namespace WatKhaoWong.Retreats
         {
             _statusText.Show(_userInfo.StatusChangesSaved.GetLocalizedString(), _userInfo.StatusChangesSavedColor);
         }
-
-        private bool IsAdmin() => _myUserData.GetRole() == EUserRole.Admin;
         #endregion
 
 
@@ -197,7 +195,7 @@ namespace WatKhaoWong.Retreats
 
         public async void UploadPassportToServer()
         {
-            if (!IsAdmin()) return;
+            if (!await MyUserData.IsAdmin()) return;
 
             // Upload to Server -> 'User Themselves' Passport Info
             await _userData.SetDataPassportInfo(_passportInfo);

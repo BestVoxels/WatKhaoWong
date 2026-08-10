@@ -94,6 +94,12 @@ namespace WatKhaoWong.Retreats
 
 
 
+        #region --Fields-- (Constant)
+        private const byte DayToAddUpToMakeDurationCorrect = 1;
+        #endregion
+
+
+
         #region --Methods-- (Built In)
         private void Awake()
         {
@@ -123,6 +129,8 @@ namespace WatKhaoWong.Retreats
 
             // Don't return Negative TimeSpan
             if (duration.TotalDays < 0) return default;
+
+            duration += TimeSpan.FromDays(DayToAddUpToMakeDurationCorrect); // Plus 1 because we count first date too!
 
             return duration;
         }
@@ -276,7 +284,7 @@ namespace WatKhaoWong.Retreats
             {
                 TimeSpan duration = endDate - startDate;
 
-                totalDays = (int)Math.Round(duration.TotalDays, MidpointRounding.AwayFromZero);
+                totalDays = (int)Math.Round(duration.TotalDays, MidpointRounding.AwayFromZero) + DayToAddUpToMakeDurationCorrect; // Plus 1 because we count first date too!
 
                 return $"{DaysString(totalDays)}\n({startDate.ToGregorianString(format)} - {endDate.ToGregorianString(format)})";
             }
@@ -291,7 +299,7 @@ namespace WatKhaoWong.Retreats
             if (duration == default)
                 return "-";
 
-            int totalDays = (int)Math.Round(duration.TotalDays, MidpointRounding.AwayFromZero);
+            int totalDays = (int)Math.Round(duration.TotalDays, MidpointRounding.AwayFromZero); // no need to Plus 1 because duration must be correct.
 
             return $"<u>{totalDays} {_dayText.GetLocalizedString()}{S(totalDays)}</u>";
         }

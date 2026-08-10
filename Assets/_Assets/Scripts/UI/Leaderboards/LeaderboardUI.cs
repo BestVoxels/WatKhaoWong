@@ -40,6 +40,7 @@ namespace WatKhaoWong.UI.Leaderboards
 
         #region --Fields-- (Constant)
         private const float WaitAsyncTimeOut = 10f;
+        private const float WaitUIToTurnOffOnStartTime = 3.5f;
         #endregion
 
 
@@ -55,16 +56,29 @@ namespace WatKhaoWong.UI.Leaderboards
             _rowUIPool = GetComponent<RowUIPool>();
             InitRowUICacheData();
 
-            UIRefresher.OnLeaderboardRefreshed += RefreshUI; // Can't use OnDisable()/OnEnable() because UI won't get Updated when it disabled, we want this UI to update on the background.
-
             UIRefresher.OnLocalizeDynamicString += UpdateTexts;
         }
 
         private void Start()
         {
             InitialSetup();
+        }
+
+        private void OnEnable()
+        {
+            if (Time.time < WaitUIToTurnOffOnStartTime) return; // Prevent OnEnable() on first Start when UI are seting itself which then it will hide itself. We only want OnEnable() when user open UI.
+            if (!FirebaseUtils.IsAuthenticated()) return;
+
+            // Use OnDisable()/OnEnable() because don't want UI to update on the background.
+            UIRefresher.OnLeaderboardRefreshed += RefreshUI;
 
             RefreshUI();
+        }
+
+        private void OnDisable()
+        {
+            // Use OnDisable()/OnEnable() because don't want UI to update on the background.
+            UIRefresher.OnLeaderboardRefreshed -= RefreshUI;
         }
         #endregion
 
