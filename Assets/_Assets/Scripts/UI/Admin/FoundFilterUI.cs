@@ -41,7 +41,7 @@ namespace WatKhaoWong.UI.Admin
 
 
         #region --Methods-- (Custom PUBLIC)
-        public async void Setup(FoundBoard board)
+        public void Setup(FoundBoard board)
         {
             _board = board;
         }

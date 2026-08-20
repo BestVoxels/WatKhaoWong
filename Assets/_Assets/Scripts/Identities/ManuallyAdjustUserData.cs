@@ -27,9 +27,11 @@ namespace WatKhaoWong.Identities
             {
                 //ManuallyAdjustUsersScore();
 
-                ManuallyCountTotalScoreFromLeaderboardTMChallenge();
+                // ManuallyCountTotalScoreFromLeaderboardTMChallenge();
 
                 //ManuallyCountTotalScoreFromUsers();
+
+                // ManuallyUsersWithWeirdData();
             }
         }
         #endregion
@@ -164,6 +166,33 @@ namespace WatKhaoWong.Identities
             Debug.LogWarning($"Total People WITH Score: {totalPeople - totalPeopleWithoutScore}");
 
             Debug.LogWarning($"Total Score : {totalScore}");
+
+            _firstTime = true;
+            Debug.LogWarning("DONE");
+        }
+
+        /// <summary>
+        /// Count User with Weird Data
+        /// </summary>
+        private async void ManuallyUsersWithWeirdData()
+        {
+            ushort totalPeople = 0;
+            ushort totalPeopleWithWeirdData = 0;
+
+            await foreach (DataSnapshot eachData in _savingWrapper.LoadAllUsers())
+            {
+                ++totalPeople;
+                DataSnapshot data = eachData.Child("Stats");
+                if (!data.Exists)
+                {
+                    ++totalPeopleWithWeirdData;
+                    Debug.LogWarning($"Wierd Data Id : {eachData.Key}");
+                    continue;
+                }
+            }
+
+            Debug.LogWarning($"Total People : {totalPeople}");
+            Debug.LogWarning($"Total People with Weird Data : {totalPeopleWithWeirdData}");
 
             _firstTime = true;
             Debug.LogWarning("DONE");

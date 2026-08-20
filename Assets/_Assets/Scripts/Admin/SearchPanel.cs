@@ -111,7 +111,7 @@ namespace WatKhaoWong.Admin
 
         public bool HasFilter() => Records[CurrentLocation].HasFilter;
 
-        public async Task<IUserData> FilterRowData(IUserData userData)
+        public IUserData FilterRowData(IUserData userData)
         {
             if (IsFilterPassed(userData))
                 return userData;

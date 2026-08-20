@@ -186,7 +186,7 @@ namespace WatKhaoWong.Admin
 
                 if (_searchPanel.HasFilter())
                 {
-                    var filteredData = await _searchPanel.FilterRowData(each);
+                    var filteredData = _searchPanel.FilterRowData(each);
                     if (filteredData == null) continue;
 
                     index++;

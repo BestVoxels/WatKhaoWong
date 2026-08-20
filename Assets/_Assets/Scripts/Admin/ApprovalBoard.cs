@@ -98,7 +98,7 @@ namespace WatKhaoWong.Admin
 
 
         #region --Methods-- (Built In)
-        private async void Awake()
+        private void Awake()
         {
             GameObject player = GameObject.FindWithTag("Player");
             _searchPanel = player.GetComponentInChildren<SearchPanel>();
@@ -186,7 +186,7 @@ namespace WatKhaoWong.Admin
 
                 if (_searchPanel.HasFilter())
                 {
-                    IUserData filteredData = await _searchPanel.FilterRowData(each.userData);
+                    IUserData filteredData = _searchPanel.FilterRowData(each.userData);
                     if (filteredData == null) continue;
 
                     index++;
