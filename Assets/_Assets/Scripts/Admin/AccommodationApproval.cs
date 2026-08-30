@@ -88,7 +88,17 @@ namespace WatKhaoWong.Admin
                 Status = eStayStatus.ToString(),
                 StatusUpdatedAt = nowDate.ToGregorianString()
             };
-            stayEntry.Reputation = EReputation.Normal.ToString(); // Set Default Reputation to Normal
+            // Set Default Reputation to Normal
+            stayEntry.Reputation = EReputation.Normal.ToString();
+            // Set Default NotesInfo
+            if (stayEntry.NotesInfo == null)
+            {
+                stayEntry.NotesInfo = new NotesInfo()
+                {
+                    Text = "",
+                    Color = ""
+                };
+            }
 
             return stayEntry;
         }

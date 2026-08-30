@@ -111,7 +111,7 @@ namespace WatKhaoWong.Admin
             switch (timePeriod)
             {
                 // --- Past & Active ---
-                case ETimePeriod.Past:
+                case ETimePeriod.Past: // for Past we put to Active is correct, since CloudFunction will check for EndDate if it EndDate expire then it will auto move to User's Past
                 case ETimePeriod.Present:
                     stayEntry = await _accommodationApproval.GetStayEntry(_stayEntry, EStayStatus.Active, _buildingIndex, _roomNumber);
                     

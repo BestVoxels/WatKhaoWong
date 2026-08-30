@@ -6,8 +6,6 @@ using NativeShareNamespace;
 #endif
 
 #pragma warning disable 0414
-namespace NativeShareNamespace
-{
 public class NativeShare
 {
 	public enum ShareResult { Unknown = 0, Shared = 1, NotShared = 2 };
@@ -299,10 +297,10 @@ public class NativeShare
 		{
 			return GetTextureBytesFromCopy( texture, isJpeg );
 		}
-
-#pragma warning disable 0162
-		return null;
-#pragma warning restore 0162
+        catch
+        {
+            return null;
+        }
 	}
 
 	private byte[] GetTextureBytesFromCopy( Texture2D texture, bool isJpeg )
@@ -353,4 +351,3 @@ public class NativeShare
 	#endregion
 }
 #pragma warning restore 0414
-}

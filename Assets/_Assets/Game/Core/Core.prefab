@@ -2107,7 +2107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ea9374b509b70f4bba37e4a2ca8cf00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  uniqueIdentifier: 9a28688e-7b96-42cd-a265-b9eda6ad8570
+  uniqueIdentifier: 90f91d38-8ca7-40fa-8c4b-b686cb1136f2
 --- !u!82 &1550010843227078331
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4894,6 +4894,7 @@ Transform:
   - {fileID: 7070464524601806179}
   - {fileID: 4894843460213008174}
   - {fileID: 4089146525035716039}
+  - {fileID: 302351394333983062}
   - {fileID: 5453957320850827884}
   - {fileID: 8882057648747807207}
   - {fileID: 4423133681883869042}
@@ -5779,6 +5780,72 @@ MonoBehaviour:
     animator: {fileID: 0}
     isShowOnStart: 0
   _popups: []
+--- !u!1 &4310085941972954925
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 302351394333983062}
+  - component: {fileID: 9183661187763911029}
+  m_Layer: 0
+  m_Name: A4 Document Generator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 2147483647
+  m_IsActive: 1
+--- !u!4 &302351394333983062
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4310085941972954925}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5923315315416972317}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9183661187763911029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4310085941972954925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02f468739ef7a44e383c800d68981670, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-WatKhaoWong-Utils::WatKhaoWong.Utils.A4DocumentGenerator
+  _a4Camera: {fileID: 0}
+  _a4RenderTexture: {fileID: 8400000, guid: d3b6e1109eb404995a3fbe42aa931645, type: 2}
+  _nationalIdImage: {fileID: 0}
+  _nameValue: {fileID: 0}
+  _cardTypeValue: {fileID: 0}
+  _idNumberValue: {fileID: 0}
+  _expireDateValue: {fileID: 0}
+  _birthDateValue: {fileID: 0}
+  _ageValue: {fileID: 0}
+  _addressValue: {fileID: 0}
+  _phoneNumberValue: {fileID: 0}
+  _medicalConditionValue: {fileID: 0}
+  _urgentPhoneNumberValue: {fileID: 0}
+  _urgentRelationValue: {fileID: 0}
+  _lineIdValue: {fileID: 0}
+  _facebookValue: {fileID: 0}
+  _instagramValue: {fileID: 0}
+  _tiktokValue: {fileID: 0}
+  _buildingValue: {fileID: 0}
+  _roomNumberValue: {fileID: 0}
+  _stayDaysValue: {fileID: 0}
+  _plateNumberValue: {fileID: 0}
 --- !u!1 &4356989730591177647
 GameObject:
   m_ObjectHideFlags: 0
@@ -7626,6 +7693,33 @@ MonoBehaviour:
   _statusSucceededColor:
     serializedVersion: 2
     rgba: 4288011303
+  _noData:
+    m_TableReference:
+      m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+    m_TableEntryReference:
+      m_KeyId: 47274328377516032
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _nationalIdType:
+    m_TableReference:
+      m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+    m_TableEntryReference:
+      m_KeyId: 31305461838897152
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _passportType:
+    m_TableReference:
+      m_TableCollectionName: GUID:3139ee099bb0240bd9eb43a6d6d4b6b3
+    m_TableEntryReference:
+      m_KeyId: 31305175401488384
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   <StatusMustBeFilled>k__BackingField:
     m_TableReference:
       m_TableCollectionName: GUID:6665cdf70c4c34be2a778c41f3c326a9
@@ -7697,16 +7791,16 @@ MonoBehaviour:
   _onPrintButtonClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1908285290424802923}
-        m_TargetAssemblyTypeName: WatKhaoWong.Utils.UrlOpener, Assembly-WatKhaoWong-Utils
-        m_MethodName: OpenUrl
-        m_Mode: 5
+      - m_Target: {fileID: 2242251074633557976}
+        m_TargetAssemblyTypeName: WatKhaoWong.Retreats.AccommodationForm, Assembly-WatKhaoWong-Retreats
+        m_MethodName: SetUserDataToGenerateA4
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: www.bestvoxels.com
+          m_StringArgument: https://www.bestvoxels.com
           m_BoolArgument: 0
         m_CallState: 2
   references:

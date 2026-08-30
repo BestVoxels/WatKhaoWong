@@ -484,7 +484,7 @@ namespace WatKhaoWong.UI.Admin
 
             try
             {
-                data = JObject.Parse("{" + inputText + "}"); // TODO see if JSON from CardReader has "{ ... }" or not if not we add like this. IF Already has remove "{" and "}"
+                data = JObject.Parse(inputText);
             }
             catch
             {
